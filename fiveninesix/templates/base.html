@@ -1,0 +1,46 @@
+<!doctype html>
+<head>
+    <title>
+        596 Acres: {% block title %}{% endblock %}
+    </title>
+    {% block media %}{% endblock %}
+    <style media="screen" type="text/css">
+        body {
+            background: url({{ MEDIA_URL }}barbed_small_cropped.png);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: right bottom;
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+
+        #nav {
+            border-top: 3px solid black;
+            border-bottom: 3px solid black;
+            padding-top: 3px;
+            background: white;
+        }
+
+        #content {
+            background: white;
+        }
+    </style>
+
+    <script type="text/javascript">
+        
+    </script>
+    {% block scripts %}{% endblock %}
+</head>
+
+<body>
+    <div id="top">
+        <img src="{{ MEDIA_URL }}logo.png">
+    </div>
+    <div id="nav">
+        <img src="{{ MEDIA_URL }}home.png" /><img src="{{ MEDIA_URL }}about.png" />
+    </div>
+    <div id="content">
+    {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

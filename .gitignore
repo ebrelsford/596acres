@@ -1,0 +1,11 @@
+*.pyc
+.*.swp
+.Python
+
+settings.py
+
+bin
+build
+include
+lib
+media

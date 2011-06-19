@@ -3,10 +3,9 @@
     <title>
         596 Acres: {% block title %}{% endblock %}
     </title>
-    {% block media %}{% endblock %}
     <style media="screen" type="text/css">
         body {
-            background: url({{ MEDIA_URL }}barbed_small_cropped.png);
+            background: url({{ MEDIA_URL }}img/barbed_small_cropped.png);
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: right bottom;
@@ -18,29 +17,28 @@
             border-top: 3px solid black;
             border-bottom: 3px solid black;
             padding-top: 3px;
-            background: white;
+            background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
         }
 
         #content {
-            background: white;
+            background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
         }
     </style>
-
-    <script type="text/javascript">
-        
-    </script>
-    {% block scripts %}{% endblock %}
 </head>
 
 <body>
     <div id="top">
-        <img src="{{ MEDIA_URL }}logo.png">
+        <img src="{{ MEDIA_URL }}img/logo.png">
     </div>
     <div id="nav">
-        <img src="{{ MEDIA_URL }}home.png" /><img src="{{ MEDIA_URL }}about.png" />
+        <img src="{{ MEDIA_URL }}img/home.png" /><img src="{{ MEDIA_URL }}img/about.png" />
     </div>
     <div id="content">
     {% block content %}{% endblock %}
     </div>
+    {% block media %}{% endblock %}
+    {% block scripts %}{% endblock %}
+    <script type="text/javascript">
+    </script>
 </body>
 </html>

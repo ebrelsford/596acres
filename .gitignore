@@ -8,4 +8,6 @@ bin
 build
 include
 lib
-media
+media/cms_page_media
+/media
+/data

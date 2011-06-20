@@ -4,7 +4,7 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
 			throw "Please provide key property in options (your API key).";
 		}
         options = OpenLayers.Util.extend({
-            attribution: "Data &copy; 2010 <a href='http://openstreetmap.org/'>OpenStreetMap</a>. Rendering &copy; 2010 <a href='http://cloudmade.com'>CloudMade</a>.",
+            attribution: "Data &copy; 2011 <a href='http://openstreetmap.org/'>OpenStreetMap</a>. Rendering &copy; 2011 <a href='http://cloudmade.com'>CloudMade</a>.",
             maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
             maxResolution: 156543.0339,
             units: "m",

@@ -15,6 +15,7 @@ var LotMap = {
                 new OpenLayers.Control.Navigation(),
                 new OpenLayers.Control.Attribution(),
                 new OpenLayers.Control.LoadingPanel(),
+                new OpenLayers.Control.ZoomPanel(),
             ],
             restrictedExtent: this.createBBox(-75.066, 41.526, -72.746, 39.953), 
             zoomToMaxExtent: function() {
@@ -29,35 +30,15 @@ var LotMap = {
         });
         this.olMap.addLayer(cloudmade);
 
-        /* add the base layer */
-        /*
-        if (this.options.type === 'single' && this.options.id !== null) {
-            var gardenLayer = this.getLayer('garden', this.options.url + 'ids=' + this.options.id, this.styles['single']);
-            var t = this;
-
-            gardenLayer.events.on({
-                'loadend': function() {
-                    var feature = gardenLayer.features[0];
-                    t.olMap.setCenter(new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y), 14);
-                },
-            });
-        }
-        else {
-            this.getLayer('gardens', this.options.url + this.options.queryString, this.styles['default']);
-        }
-
-        this.hoverControl = this.getControlHoverFeature(this.olMap.layers[1]);
-        */
-
-
         this.olMap.zoomToMaxExtent();
 
         return this;
     },
 
     options: {
-        center: new OpenLayers.LonLat(-8230729.8555054, 4970948.0494563),
-        initialZoom: 10,
+        /*center: new OpenLayers.LonLat(-8230729.8555054, 4970948.0494563),*/
+        center: new OpenLayers.LonLat(-8234102.434993, 4960767.039686),
+        initialZoom: 11,
         addContentToPopup: function(popup, feature) { ; },
         type: null, 
         id: null, /* put something here if using type='single' */

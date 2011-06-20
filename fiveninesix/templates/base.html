@@ -11,6 +11,7 @@
             background-position: right bottom;
             padding-left: 100px;
             padding-right: 100px;
+            padding-bottom: 50px;
             font-family: Arial,Helvetica;
         }
 
@@ -24,6 +25,10 @@
             text-decoration: none;
         }
 
+        img {
+            border: 0;
+        }
+
         #nav {
             border-top: 3px solid black;
             border-bottom: 3px solid black;
@@ -31,9 +36,23 @@
             background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
         }
 
+        #nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #nav ul li {
+            float: left;
+        }
+
         #content {
             background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
-            padding-top: 5px;
+            padding: 5px;
+        }
+
+        #content #side {
+            padding-left: 5px;
         }
 
         .olControlAttribution {
@@ -52,8 +71,6 @@
             bottom: 10px;
             left: 10px;
         }
-
-        
     </style>
 </head>
 
@@ -62,7 +79,18 @@
         <img src="{{ MEDIA_URL }}img/logo.png">
     </div>
     <div id="nav">
-        <img src="{{ MEDIA_URL }}img/home.png" /><img src="{{ MEDIA_URL }}img/about.png" />
+        <ul>
+            <li>
+                <a href="/"><img src="{{ MEDIA_URL }}img/home.png" /></a>
+            </li>
+            <li>
+                <a href="/about"><img src="{{ MEDIA_URL }}img/about.png" /></a>
+            </li>
+            <li>
+                <a href="/get_involved"><img src="{{ MEDIA_URL }}img/get_involved.png"/></a>
+            </li>
+        </ul>
+        <div style="clear: both;"></div>
     </div>
     <div id="content">
     {% block content %}{% endblock %}

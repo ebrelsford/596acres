@@ -32,17 +32,19 @@ var LotMap = {
 
         this.olMap.zoomToMaxExtent();
 
+        var lot_layer = this.getLayer('lots', this.options.url + this.options.queryString, this.styles['default']);
+        this.addControls([lot_layer]);
+
         return this;
     },
 
     options: {
-        /*center: new OpenLayers.LonLat(-8230729.8555054, 4970948.0494563),*/
         center: new OpenLayers.LonLat(-8234102.434993, 4960767.039686),
         initialZoom: 11,
         addContentToPopup: function(popup, feature) { ; },
         type: null, 
         id: null, /* put something here if using type='single' */
-        url: '/gardens/geojson?',
+        url: '/lots/geojson?',
         queryString: '',
     },
 
@@ -55,10 +57,9 @@ var LotMap = {
 
     styles: {
         'default': {
-            pointRadius: '5',
+            pointRadius: '3',
             fillColor: '#3f9438',
-            fillOpacity: '0.4',
-            strokeOpacity: '0.8',
+            fillOpacity: '0.8',
             strokeWidth: 0,
         },
         'single': { 
@@ -119,12 +120,12 @@ var LotMap = {
     },
 
     createAndOpenPopup: function(feature) {
-        var content = "<div style=\"min-width: 500px; min-height: 250px;\"></div>";
+        var content = "<div style=\"min-width: 250px; min-height: 200px;\"></div>";
         var t = this;
 
         var popup = new OpenLayers.Popup.Anchored("chicken", 
                                     feature.geometry.getBounds().getCenterLonLat(),
-                                    new OpenLayers.Size(500, 300),
+                                    new OpenLayers.Size(300, 200),
                                     content,
                                     null, 
                                     true, 

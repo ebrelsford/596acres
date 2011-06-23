@@ -6,6 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^lots/geojson', 'lots.views.lot_geojson'),
+    url(r'^lots/(?P<bbl>\d+)/details/json/$', 'lots.views.details'),
+
     url(r'^', include('cms.urls')),
 )
 

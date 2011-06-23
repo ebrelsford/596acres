@@ -12,7 +12,18 @@
 {% block scripts %}
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#map').lotmap();
+            $('#map').lotmap({
+                queryString: 'source=OASIS',   
+                addContentToPopup: function(popup, feature) {
+                    $.getJSON('/lots/' + feature.fid +'/details/json/', function(details) {
+                        var $clone = $('#popup_template').clone();
+                        $clone.find('td[class!=""]').each(function(i) {
+                           $(this).text(details[$(this).attr('class')]); 
+                        });
+                        $(popup).find('div').append($clone.show());
+                    });
+                },
+            });
         });
     </script>
 {% endblock %}
@@ -23,5 +34,37 @@
     {% placeholder "main" %}
     </div>
     <div style="clear: both;"></div>
+
+    <div id="popup_template" style="display: none;">
+        <table>
+            <tr>
+                <td>address</td>
+                <td class="address"></td>
+            </tr>
+            <tr>
+                <td>zipcode</td>
+                <td class="zipcode"></td>
+            </tr>
+            <tr>
+                <td>bbl</td>
+                <td class="bbl"></td>
+            </tr>
+            <tr>
+                <td>block</td>
+                <td class="block"></td>
+            </tr>
+            <tr>
+                <td>lot</td>
+                <td class="lot"></td>
+            </tr>
+            <tr>
+                <td>owner</td>
+                <td class="owner"></td>
+            </tr>
+            <tr>
+                <td>area</td>
+                <td class="area"></td>
+            </tr>
+    </div>
 {% endblock %}
 

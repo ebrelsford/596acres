@@ -95,10 +95,12 @@
     <div id="content">
     {% block content %}{% endblock %}
     </div>
-    <script src="{{ MEDIA_URL }}cms/js/lib/jquery.query.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}cms/js/lib/jquery.js" type="text/javascript"></script>
     {% block media %}{% endblock %}
     {% block scripts %}{% endblock %}
     <script type="text/javascript">
     </script>
+
+    {#<!-- STATS: Total: %(totTime).2f Python: %(pyTime).2f DB: %(dbTime).2f Queries: %(queries)d -->#}
 </body>
 </html>

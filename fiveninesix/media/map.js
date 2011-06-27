@@ -168,12 +168,12 @@ var LotMap = {
     },
 
     layerUrls: {
-        'City Councils': "resources/geojson/nycc.geojson",
-        'City Council Labels': "resources/geojson/nycc_centroids.geojson",
-        'Community Districts': "resources/geojson/nycd.geojson",
-        'Community District Labels': "resources/geojson/nycd_centroids.geojson",
-        'Boroughs': "resources/geojson/boroughs.geojson",
-        'Borough Labels': "resources/geojson/borough_centroids.geojson",
+        'City Councils': "/media/geojson/nycc.geojson",
+        'City Council Labels': "/media/geojson/nycc_centroids.geojson",
+        'Community Districts': "/media/geojson/nycd.geojson",
+        'Community District Labels': "/media/geojson/nycd_centroids.geojson",
+        'Boroughs': "/media/geojson/boroughs.geojson",
+        'Borough Labels': "/media/geojson/borough_centroids.geojson",
     },
 
     loadLayer: function(name) {
@@ -186,8 +186,8 @@ var LotMap = {
             }),
             styleMap: new OpenLayers.StyleMap({
                 'default': {
-                    'strokeWidth': 1,
-                    'strokeColor': '#000',
+                    'strokeWidth': 3,
+                    'strokeColor': '#A4788C',
                     'fillOpacity': 0,
                 },
             }),
@@ -222,6 +222,8 @@ var LotMap = {
             styleMap: new OpenLayers.StyleMap({
                 'default': {
                     'label': '${label}',
+                    'fontColor': '#7E2A70',
+                    'fontSize': '18px',
                 },
             }),
         });

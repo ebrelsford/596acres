@@ -7,6 +7,8 @@
     <script src="{{ MEDIA_URL }}OpenLayers/OpenLayers.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}cloudmade.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}map.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}jquery.smartresize.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}map-buttons.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block scripts %}
@@ -24,12 +26,32 @@
                     });
                 },
             });
+
+            $('#map_buttons').mapbuttons({
+                $map: $('#map'),
+            });
         });
     </script>
 {% endblock %}
 
 {% block content %}
     <div id="map" style="width: 60%; height: 500px; float: left;"></div>
+
+    <div id="map_buttons" style="z-index: 4999; width: 300px;">
+        <div id="political_borders" class="button">
+            <span class="label">Political Borders</span>
+            <div id="political_borders_selector" class="dropdown">
+                <ul>
+                    <li id="labels" style="border-bottom: 1px solid gray; margin-bottom: 5px;"><input type="checkbox" id="labels_checkbox" /><label for="labels_checkbox">labels</label></li>
+                    <li id="none"><input type="radio" id="none_radio" name="political_borders" checked="checked" /><label for="none_radio">none</label></li>
+                    <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
+                    <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
+                    <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div id="side" style="float: left; width: 35%;">
     {% placeholder "main" %}
     </div>

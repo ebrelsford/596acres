@@ -11,6 +11,8 @@ def lot_geojson(request):
 
     if 'source' in request.GET:
         lots = lots.filter(centroid_source=request.GET['source'])
+    if 'owner_code' in request.GET:
+        lots = lots.filter(owner__code=request.GET['owner_code'])
 
     lots_geojson = _lot_collection(lots)
     return HttpResponse(geojson.dumps(lots_geojson), mimetype='application/json')

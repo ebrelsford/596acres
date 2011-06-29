@@ -15,7 +15,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#map').lotmap({
-                queryString: 'source=OASIS&owner_code=C',   
+                queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
                 addContentToPopup: function(popup, feature) {
                     $.getJSON('/lots/' + feature.fid +'/details/json/', function(details) {
                         var $clone = $('#popup_template').clone();

@@ -10,7 +10,10 @@ def lot_geojson(request):
     lots = Lot.objects.filter(centroid__isnull=False)
 
     if 'source' in request.GET:
-        lots = lots.filter(centroid_source=request.GET['source'])
+        sources = request.GET['source'].split(',')
+        lots = lots.filter(centroid_source__in=sources)
+    if 'owner_type' in request.GET:
+        lots = lots.filter(owner__type__name=request.GET['owner_type'])
     if 'owner_code' in request.GET:
         lots = lots.filter(owner__code=request.GET['owner_code'])
 

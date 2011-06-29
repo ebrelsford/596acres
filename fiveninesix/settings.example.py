@@ -123,5 +123,8 @@ INSTALLED_APPS = (
     'cms.plugins.file',
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
+
+    'lots',
+    'organize',
 )
 

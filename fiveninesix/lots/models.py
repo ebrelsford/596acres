@@ -31,9 +31,15 @@ class Lot(models.Model):
 
 class Owner(models.Model):
     name = models.CharField(max_length=256)
-    phone = models.CharField(max_length=32, null=True)
-    type = models.ForeignKey('OwnerType', null=True)
-    code = models.CharField(max_length=8, null=True)
+    phone = models.CharField(max_length=32, null=True, blank=True)
+    type = models.ForeignKey('OwnerType', null=True, blank=True)
+    code = models.CharField(max_length=8, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 class OwnerType(models.Model):
     name = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return self.name

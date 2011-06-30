@@ -240,20 +240,12 @@ var LotMap = {
         this.selectControl.select(feature);
     },
 
-    highlightGarden: function(fid) {
-        var feature = this.olMap.layers[1].getFeatureByFid(fid);
-        if (!feature) return;
-
-        this.hoverControl.unselectAll();
-        this.hoverControl.select(feature);
-    },
-
-    unhighlightGarden: function() {
-        this.hoverControl.unselectAll();
-    },
-
     getTransformedLonLat: function(longitude, latitude) {
         return new OpenLayers.LonLat(longitude, latitude).transform(this.epsg4326, this.epsg900913);
+    },
+
+    getInverseLonLat: function(longitude, latitude) {
+        return new OpenLayers.LonLat(longitude, latitude).transform(this.epsg900913, this.epsg4326);
     },
 
 };

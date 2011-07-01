@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from models import Lot, Owner, OwnerType
 
 def lot_geojson(request):
-    lots = Lot.objects.filter(centroid__isnull=False)
+    lots = Lot.objects.filter(centroid__isnull=False, is_vacant=True)
 
     if 'source' in request.GET:
         sources = request.GET['source'].split(',')

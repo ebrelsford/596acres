@@ -25,6 +25,9 @@ class Lot(models.Model):
     exempt_land = models.IntegerField(null=True)
     exempt_total = models.IntegerField(null=True)
 
+    is_vacant = models.BooleanField(default=True)
+    actual_use = models.CharField(max_length=128, null=True, blank=True)
+
     centroid = models.PointField(null=True)
     centroid_source = models.CharField(max_length=32, null=True)
     polygon = models.MultiPolygonField(null=True)

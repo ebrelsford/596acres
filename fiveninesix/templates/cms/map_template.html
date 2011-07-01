@@ -29,9 +29,16 @@
             $('#map').lotmap({
                 queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
                 addContentToPopup: function(popup, feature) {
-                    // show popup
+                    // avoid accumulating popup_templates
+                    $('.popup_template.copy').remove();
+
+                    // loading....
+                    var $loading_clone = $('.popup_loading').clone();
+                    $(popup).find('div').append($loading_clone.addClass('copy').show());
+
+                    // get details and show popup
                     $.getJSON('/lots/' + feature.fid +'/details/json/', function(details) {
-                        var $clone = $('#popup_template').clone();
+                        var $clone = $('.popup_template').clone();
                         $clone.find('td[class!=""]').each(function(i) {
                             var class = $(this).attr('class');
                             if (class === 'links') {
@@ -41,7 +48,8 @@
                                 $(this).text(details[class]); 
                             }
                         });
-                        $(popup).find('div').append($clone.show());
+                        $loading_clone.remove();
+                        $(popup).find('div').append($clone.addClass('copy').show());
                     });
 
                     // street view
@@ -81,8 +89,12 @@
         </div>
     </div>
 
-    <div id="popup_template" style="display: none;">
-        <table>
+    <div class="popup_loading" style="display: none; text-align: center; padding-top: 20%;">
+        <img src="{{ MEDIA_URL }}img/details_loading.gif" />
+    </div>
+
+    <div class="popup_template" style="display: none;">
+        <table id="popup_details">
             <tr>
                 <td>address</td>
                 <td class="address"></td>

@@ -15,26 +15,37 @@
 
 {% block scripts %}
     <script type="text/javascript">
+        function show_with_streetview(id, feature) {
+            var lon = feature.geometry.x;
+            var lat = feature.geometry.y;
+            var point = $('#map').data('lotmap').getInverseLonLat(lon, lat);
+
+            var pan = new google.maps.StreetViewPanorama(document.getElementById(id), {
+                position: new google.maps.LatLng(point.lat, point.lon),
+            });
+        }
+
         $(document).ready(function() {
             $('#map').lotmap({
                 queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
                 addContentToPopup: function(popup, feature) {
+                    // show popup
                     $.getJSON('/lots/' + feature.fid +'/details/json/', function(details) {
                         var $clone = $('#popup_template').clone();
                         $clone.find('td[class!=""]').each(function(i) {
-                           $(this).text(details[$(this).attr('class')]); 
+                            var class = $(this).attr('class');
+                            if (class === 'links') {
+                                $(this).find('#oasislink').attr('href', 'http://www.oasisnyc.net/map.aspx?zoomto=lot:' + details['bbl']);
+                            }
+                            else {
+                                $(this).text(details[class]); 
+                            }
                         });
                         $(popup).find('div').append($clone.show());
                     });
 
-                    var lon = feature.geometry.x;
-                    var lat = feature.geometry.y;
-                    var point = $('#map').data('lotmap').getInverseLonLat(lon, lat);
-
-                    var pan = new google.maps.StreetViewPanorama(document.getElementById('streetview'), {
-                        position: new google.maps.LatLng(point.lat, point.lon),
-                    });
-
+                    // street view
+                    show_with_streetview('streetview', feature);
                 },
             });
 
@@ -81,10 +92,6 @@
                 <td class="zipcode"></td>
             </tr>
             <tr>
-                <td>bbl</td>
-                <td class="bbl"></td>
-            </tr>
-            <tr>
                 <td>block</td>
                 <td class="block"></td>
             </tr>
@@ -99,6 +106,12 @@
             <tr>
                 <td>area</td>
                 <td class="area"></td>
+            </tr>
+            <tr>
+                <td>elsewhere</td>
+                <td class="links">
+                    <a id="oasislink" target="_blank">OASIS</a>
+                </td>
             </tr>
         </table>
     </div>

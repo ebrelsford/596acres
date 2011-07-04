@@ -11,7 +11,7 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
             projection: "EPSG:900913",
 			isBaseLayer: true,
 			numZoomLevels: 19,
-			displayOutsideMaxExtent: true,
+			displayOutsideMaxExtent: false,
 			wrapDateLine: true,
 			styleId: 1
         }, options);

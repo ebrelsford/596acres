@@ -17,16 +17,19 @@ var LotMap = {
                 new OpenLayers.Control.LoadingPanel(),
                 new OpenLayers.Control.ZoomPanel(),
             ],
-            restrictedExtent: this.createBBox(-75.066, 41.526, -72.746, 39.953), 
+            restrictedExtent: this.createBBox(-74.319, 40.948, -73.584, 40.476), 
             zoomToMaxExtent: function() {
                 this.setCenter(t.options.center, t.options.initialZoom);
+            },
+            isValidZoomLevel: function(zoomLevel) {
+                return (zoomLevel > 9 && zoomLevel < this.getNumZoomLevels());
             }
         });
 
         var cloudmade = new OpenLayers.Layer.CloudMade("CloudMade", {
             key: '781b27aa166a49e1a398cd9b38a81cdf',
             styleId: '15434',
-            transitionEffect: 'resize'
+            transitionEffect: 'resize',
         });
         this.olMap.addLayer(cloudmade);
 

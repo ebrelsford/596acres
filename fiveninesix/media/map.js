@@ -120,12 +120,12 @@ var LotMap = {
     },
 
     createAndOpenPopup: function(feature) {
-        var content = "<div style=\"min-width: 250px; min-height: 200px;\"></div>";
+        var content = "<div style=\"min-width: 250px; min-height: 250px;\"></div>";
         var t = this;
 
         var popup = new OpenLayers.Popup.Anchored("chicken", 
                                     feature.geometry.getBounds().getCenterLonLat(),
-                                    new OpenLayers.Size(300, 200),
+                                    new OpenLayers.Size(300, 300),
                                     content,
                                     null, 
                                     true, 

@@ -46,12 +46,12 @@
                     $.getJSON('/lots/' + feature.fid +'/details/json/', function(details) {
                         var $clone = $('.popup_template').clone();
                         $clone.find('td[class!=""]').each(function(i) {
-                            var class = $(this).attr('class');
-                            if (class === 'links') {
+                            var class_name = $(this).attr('class');
+                            if (class_name === 'links') {
                                 $(this).find('#oasislink').attr('href', 'http://www.oasisnyc.net/map.aspx?zoomto=lot:' + details['bbl']);
                             }
                             else {
-                                $(this).text(details[class]); 
+                                $(this).text(details[class_name]); 
                             }
                         });
                         $loading_clone.remove();

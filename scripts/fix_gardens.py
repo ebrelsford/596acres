@@ -8,8 +8,12 @@ import sys
 import os
 import csv
 
-sys.path.append('/Users/eric/Documents/activism/596acres')
-sys.path.append('/Users/eric/Documents/activism/596acres/fiveninesix')
+BASE_DIR = os.path.sep.join((os.path.abspath(os.path.curdir), '..'))
+PROJECT_DIR = os.path.sep.join((BASE_DIR, 'fiveninesix'))
+
+sys.path.append(BASE_DIR)
+sys.path.append(PROJECT_DIR)
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'fiveninesix.settings'
 
 from fiveninesix.lots.models import Lot

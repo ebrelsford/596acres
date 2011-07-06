@@ -1,0 +1,139 @@
+body {
+    background: url({{ MEDIA_URL }}img/barbed_small_cropped.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right bottom;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-bottom: 50px;
+    font-family: Arial,Helvetica;
+}
+
+a:hover, a:active {
+    color: #2C8020;
+    text-decoration: underline;
+}
+
+a:link, a:visited {
+    color: #2C8020;
+    text-decoration: none;
+}
+
+img {
+    border: 0;
+}
+
+#nav {
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+    padding-top: 3px;
+    background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
+}
+
+#nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#nav ul li {
+    float: left;
+}
+#nav ul.children {
+    display: none;
+    position: absolute;
+    z-index: 3000;
+    background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
+    border: 1px solid black;
+    border-top: 0;
+    margin-left: 15px;
+    min-width: 125px;
+}
+#nav ul.children li {
+    float: none;
+    padding: 10px;
+}
+#nav ul.children li:hover {
+    background: #BDBDBD;
+}
+#nav ul.children a {
+    color: black;
+}
+
+#breadcrumbs {
+    font-size: 12px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+#breadcrumbs ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#breadcrumbs ul li {
+    float: left;
+    padding-right: 5px;
+}
+
+#content {
+    background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
+    padding: 5px;
+}
+
+#content #side {
+    padding-left: 5px;
+}
+
+.olControlAttribution {
+    bottom: 3px !important;
+}
+
+.olControlZoomPanel {
+    top: 14px !important;
+    left: 14px !important;
+}
+
+.olControlLoadingPanel {
+    background-image: url({{ MEDIA_URL }}img/ajax-loader.gif);
+    width: 16px;
+    height: 16px;
+    bottom: 10px;
+    left: 10px;
+}
+
+#map_buttons {
+    position: absolute;
+    font-size: 10px;
+}
+
+#map_buttons ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#map_buttons .map_button {
+    background: white;
+    border: 1px solid black;
+    padding: 2px;
+    float: right;
+    margin-left: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#map_buttons .map_button.expanded .label {
+    margin-bottom: 5px;
+    border-bottom: 1px solid gray;
+}
+
+#map_buttons .dropdown {
+    display: none;
+    text-align: left;
+}
+
+#popup_details {
+    width: 100%;
+    height: 100%;
+}

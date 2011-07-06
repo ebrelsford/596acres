@@ -1,5 +1,5 @@
 body {
-    background: url({{ MEDIA_URL }}img/barbed_small_cropped.png);
+    background: url(../img/barbed_small_cropped.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right bottom;
@@ -27,7 +27,7 @@ img {
     border-top: 3px solid black;
     border-bottom: 3px solid black;
     padding-top: 3px;
-    background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
+    background-image: url(../img/opacity_80_bg.png);
 }
 
 #nav ul {
@@ -43,7 +43,7 @@ img {
     display: none;
     position: absolute;
     z-index: 3000;
-    background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
+    background-image: url(../img/opacity_80_bg.png);
     border: 1px solid black;
     border-top: 0;
     margin-left: 15px;
@@ -77,7 +77,7 @@ img {
 }
 
 #content {
-    background-image: url({{ MEDIA_URL }}img/opacity_80_bg.png);
+    background-image: url(../img/opacity_80_bg.png);
     padding: 5px;
 }
 
@@ -95,7 +95,7 @@ img {
 }
 
 .olControlLoadingPanel {
-    background-image: url({{ MEDIA_URL }}img/ajax-loader.gif);
+    background-image: url(../img/ajax-loader.gif);
     width: 16px;
     height: 16px;
     bottom: 10px;

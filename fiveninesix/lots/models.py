@@ -34,7 +34,10 @@ class Lot(models.Model):
 
 class Owner(models.Model):
     name = models.CharField(max_length=256)
+    person = models.CharField(max_length=128, null=True, blank=True)
     phone = models.CharField(max_length=32, null=True, blank=True)
+    site = models.URLField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
     type = models.ForeignKey('OwnerType', null=True, blank=True)
     code = models.CharField(max_length=8, null=True, blank=True)
 

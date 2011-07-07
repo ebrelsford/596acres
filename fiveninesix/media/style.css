@@ -3,8 +3,6 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right bottom;
-    padding-left: 100px;
-    padding-right: 100px;
     padding-bottom: 50px;
     font-family: Arial,Helvetica;
 }
@@ -27,7 +25,6 @@ img {
     border-top: 3px solid black;
     border-bottom: 3px solid black;
     padding-top: 3px;
-    background-image: url(/media/img/opacity_80_bg.png);
 }
 
 #nav ul {
@@ -76,11 +73,25 @@ img {
     padding-right: 5px;
 }
 
-#content {
+#outer {
+    width: 959px;
+    margin-left: auto;
+    margin-right: auto;
     background-image: url(/media/img/opacity_80_bg.png);
-    padding: 5px;
 }
 
+#main {
+    padding: 5px;
+}
+#main #sidebar {
+    float: right;
+    width: 210px;
+    border-left: 1px solid black;
+}
+
+#main #content {
+    margin-right: 225px;
+}
 #content #side {
     padding-left: 5px;
 }

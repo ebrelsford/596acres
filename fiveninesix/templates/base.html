@@ -11,23 +11,31 @@
 </head>
 
 <body>
-    <div id="top">
-        <img src="{{ MEDIA_URL }}img/logo.png">
-    </div>
-    <div id="nav">
-        <ul>
-            {% show_menu 0 100 100 100 "cms/menu.html" %}
-        </ul>
-        <div style="clear: both;"></div>
-    </div>
-    <div id="breadcrumbs">
-        <ul>
-        {% show_breadcrumb "cms/breadcrumb.html" %}
-        </ul>
-        <div style="clear: both;"></div>
-    </div>
-    <div id="content">
-    {% block content %}{% endblock %}
+    <div id="outer">
+        <div id="top">
+            <img src="{{ MEDIA_URL }}img/logo.png">
+        </div>
+        <div id="nav">
+            <ul>
+                {% show_menu 0 100 100 100 "cms/menu.html" %}
+            </ul>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="breadcrumbs">
+            <ul>
+            {% show_breadcrumb "cms/breadcrumb.html" %}
+            </ul>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="main">
+            <div id="sidebar">
+                <iframe src="http://www.facebook.com/plugins/activity.php?site=596acres.org&amp;width=200&amp;height=300&amp;header=true&amp;colorscheme=light&amp;font=arial&amp;border_color&amp;recommendations=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:300px; float: right;" allowTransparency="true"></iframe>
+            </div>
+            <div id="content">
+            {% block content %}{% endblock %}
+            </div>
+            <div style="clear: both;"></div>
+        </div>
     </div>
     {% if user.is_anonymous %}
     <script src="{{ MEDIA_URL }}admin/js/jquery.js" type="text/javascript"></script>
@@ -39,6 +47,10 @@
                 function() { $(this).find('.children').show(); },
                 function() { $(this).find('.children').hide(); }
             );
+
+            if ($('#sidebar').height() < $('#content').height()) {
+                $('#sidebar').height($('#content').height());
+            }
         });
     </script>
     {% block media %}{% endblock %}

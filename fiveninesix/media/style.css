@@ -89,7 +89,7 @@ img {
     border-left: 1px solid black;
 }
 
-#main #content {
+#main #content.with-sidebar {
     margin-right: 225px;
 }
 #content #side {

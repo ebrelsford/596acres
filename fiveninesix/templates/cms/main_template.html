@@ -9,6 +9,25 @@
     {% plugins_media %}
 {% endblock %}
 
+{% block sidebar %}
+<div id="sidebar">
+    <iframe src="http://www.facebook.com/plugins/activity.php?site=596acres.org&amp;width=200&amp;height=300&amp;header=true&amp;colorscheme=light&amp;font=arial&amp;border_color&amp;recommendations=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:300px; float: right;" allowTransparency="true"></iframe>
+</div>
+{% endblock %}
+
 {% block content %}
+<div id="content" class="with-sidebar">
     {% placeholder "main" %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super.block }}
+<script type="text/javascript">
+$(document).ready(function() {
+    if ($('#sidebar').height() < $('#content').height()) {
+        $('#sidebar').height($('#content').height());
+    }
+});
+</script>
 {% endblock %}

@@ -71,10 +71,17 @@
     </script>
 {% endblock %}
 
+{% block sidebar %}
+{% endblock %}
+
 {% block content %}
+<div id="content">
     <div id="map_container" style="width:60%; float:left;">
         <div id="map" style="width: 100%; height: 500px;"></div>
         <div id="streetview" style="width: 100%; height: 200px;"></div>
+        <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F596acres.org&layout=button_count&show_faces=false&width=50&action=like&height=80" 
+            scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px; padding-top: 5px;" allowTransparency="true">
+        </iframe>
     </div>
 
     <div id="side" style="float: left; width: 35%;">
@@ -146,5 +153,6 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 

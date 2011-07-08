@@ -29,8 +29,17 @@ def details(request, bbl=None):
         'lot': lot.lot,
         'zipcode': lot.zipcode,
         'owner': lot.owner.name,
+        'owner_id': lot.owner.id,
         'area': float(lot.area),
     }
+    return HttpResponse(json.dumps(details), mimetype='application/json')
+
+def owner_details(request, id=None):
+    owner = get_object_or_404(Owner, id=id)
+    details = owner.__dict__
+    for k in details.keys():
+        if k.startswith('_'):
+            del details[k]
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
 def _lot_collection(lots):

@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     url(r'^lots/geojson', 'lots.views.lot_geojson'),
     url(r'^lots/(?P<bbl>\d+)/details/json/$', 'lots.views.details'),
 
+    url(r'^owners/(?P<id>\d+)/details/json/$', 'lots.views.owner_details'),
+
     url(r'^', include('cms.urls')),
 )
 

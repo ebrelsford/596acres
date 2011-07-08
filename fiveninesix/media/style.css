@@ -40,7 +40,7 @@ img {
 #nav ul.children {
     display: none;
     position: absolute;
-    z-index: 3000;
+    z-index: 6000;
     background-image: url(/media/img/opacity_80_bg.png);
     border: 1px solid black;
     border-top: 0;

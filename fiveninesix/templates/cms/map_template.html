@@ -32,6 +32,7 @@
         }
 
         function shorten_url_text(url, l) {
+            if (!url) return url;
             url = url.replace('http://', '')
                      .replace('www.', '');
             if (url.length > l) {

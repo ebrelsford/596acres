@@ -87,12 +87,13 @@ img {
 }
 #main #sidebar {
     float: right;
-    width: 210px;
+    width: 299px;
     border-left: 1px solid black;
+    padding-left: 5px;
 }
 
 #main #content.with-sidebar {
-    margin-right: 225px;
+    margin-right: 300px;
 }
 #content #side {
     padding-left: 5px;

@@ -8,6 +8,7 @@ class LotAdmin(admin.ModelAdmin):
     ordering = ('address',)
 
 class OwnerAdmin(admin.ModelAdmin):
+    search_fields = ('name', 'person')
     list_display = ('name', 'code', 'person', 'phone', 'site', 'type',)
     list_filter = ('type',)
     ordering = ('name',)

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_with_sidebar.html" %}
 {% load cms_tags %}
 
 {% block title %}
@@ -9,25 +9,6 @@
     {% plugins_media %}
 {% endblock %}
 
-{% block sidebar %}
-<div id="sidebar">
-    <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:299px; height:395px;" src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2F596Acres&width=298&colorscheme=light&show_faces=true&stream=true&header=false&height=395"></iframe>
-</div>
-{% endblock %}
-
-{% block content %}
-<div id="content" class="with-sidebar">
+{% block content_main %}
     {% placeholder "main" %}
-</div>
-{% endblock %}
-
-{% block scripts %}
-{{ super.block }}
-<script type="text/javascript">
-$(document).ready(function() {
-    if ($('#sidebar').height() < $('#content').height()) {
-        $('#sidebar').height($('#content').height());
-    }
-});
-</script>
 {% endblock %}

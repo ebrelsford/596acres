@@ -150,3 +150,14 @@ img {
 .popup_template {
     font-size: 12px;
 }
+
+form > table th {
+    text-align: left;
+}
+
+.errorlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: red;
+}

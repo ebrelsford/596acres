@@ -154,6 +154,12 @@ img {
 form > table th {
     text-align: left;
 }
+form > table td {
+    width: 35%;
+}
+form > table td input[type=text] {
+    width: 90%;
+}
 
 .errorlist {
     list-style: none;

@@ -94,6 +94,7 @@ img {
 
 #main #content.with-sidebar {
     margin-right: 300px;
+    padding-right: 10px;
 }
 #content #side {
     padding-left: 5px;

@@ -17,6 +17,7 @@ class JoinUsRequest(models.Model):
         ('SUGGEST', 'suggest location'),
     )
     reason = models.CharField("how I can help", max_length=16, choices=REASON_CHOICES)
+    address = models.CharField('where we should put a map?', max_length=128, null=True, blank=True)
     name = models.CharField(max_length=128)
     email = models.EmailField()
     phone = models.CharField(max_length=32, null=True, blank=True)

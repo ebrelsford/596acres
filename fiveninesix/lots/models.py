@@ -32,6 +32,9 @@ class Lot(models.Model):
     centroid_source = models.CharField(max_length=32, null=True, blank=True)
     polygon = models.MultiPolygonField(null=True, blank=True)
 
+    def __unicode__(self):
+        return self.bbl
+
 class Owner(models.Model):
     name = models.CharField(max_length=256)
     person = models.CharField(max_length=128, null=True, blank=True)

@@ -151,6 +151,20 @@ img {
 div.tabs {
     font-size: 12px;
 }
+div.tabs #organize ul {
+    list-style: none;
+}
+.ui-tabs {
+    border: 0 !important;
+}
+.ui-tabs .ui-tabs-nav {
+    border: 0 !important;
+    border-bottom: 1px solid black !important;
+    background: white !important;
+}
+.ui-tabs .ui-tabs-nav li a {
+    padding-bottom: 0;
+}
 
 form > table th {
     text-align: left;

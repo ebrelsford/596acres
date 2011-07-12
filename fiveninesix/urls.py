@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     url(r'^owners/(?P<id>\d+)/details/json/$', 'lots.views.owner_details'),
 
     url(r'^organizers/lot/(?P<bbl>\d+)/details/json/$', 'organize.views.details'),
+    url(r'^lot/(?P<bbl>\d+)/organizers/add/$', 'organize.views.add_organizer'),
+    url(r'^lot/(?P<bbl>\d+)/organizers/add/thanks/$', 'organize.views.add_organizer_thanks'),
 
     url(r'^', include('cms.urls')),
 )

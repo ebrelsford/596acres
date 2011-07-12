@@ -3,9 +3,9 @@
 <div>
     <div class="tabs">
         <ul>
-            <li><a href="#lot">Lot</a></li>
-            <li><a href="#owner">Owner</a></li>
-            <li><a href="#organize">Organize</a></li>
+            <li><a href="#lot"><img src="{{ MEDIA_URL }}img/tabs_lot.png" /></a></li>
+            <li><a href="#owner"><img src="{{ MEDIA_URL }}img/tabs_owner.png" /></a></li>
+            <li><a href="#organize"><img src="{{ MEDIA_URL }}img/tabs_organize.png" /></a></li>
         </ul>
         <div id="lot">
             <table>
@@ -108,8 +108,19 @@
             {% endif %}
         </div>
         <div id="organize">
-            <table>
-            </table>
+            <div>
+                Currently organizing here:
+                <ul>
+                {% for organizer in organizers %}
+                    <li><a href="{{ organizer.url }}" target="_blank">{{ organizer.name }}</a></li>
+                {% empty %}
+                No one yet.
+                {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <a class="add_organizer" href="#">I'm organizing here!</a>
+            </div>
         </div>
     </div>
 </div>

@@ -57,4 +57,5 @@ def tabs(request, bbl=None):
 
     return render_to_response('lots/tabs.html', {
         'lot': lot,
+        'organizers': lot.organizer_set.all()
     }, context_instance=RequestContext(request))

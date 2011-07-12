@@ -31,16 +31,6 @@
             });
         }
 
-        function shorten_url_text(url, l) {
-            if (!url) return url;
-            url = url.replace('http://', '')
-                     .replace('www.', '');
-            if (url.length > l) {
-                url = url.substr(0, l) + '...';
-            }
-            return url;
-        }
-
         $(document).ready(function() {
             $('#map').lotmap({
                 queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
@@ -50,12 +40,31 @@
                     $(popup).find('div').append($loading_clone.addClass('copy').show());
 
                     $(popup).load('/lot/' + feature.fid + '/tabs/', function() {
+                        // ....done loading
                         $loading_clone.remove();
+
+                        // link to owner tab
                         $(popup).find('.tabs').tabs()
                             .find('tr.owner').click(function() {
                                 $(this).parents('.tabs').tabs('select', '#owner');
                                 return false;
                             });
+
+                        // form-in-a-tab
+                        $organize_tab = $(popup).find('.tabs #organize');
+                        $organize_tab.find('a.add_organizer').click(function() {
+                            var url = '/lot/' + feature.fid + '/organizers/add/';
+                            $organize_tab.load(url, function() {
+                                var $form = $(this).find('form');
+                                $form.submit(function(e) {
+                                    // post to same url
+                                    $organize_tab.load(url, $form.serializeArray());
+                                    $organize_tab.load('/lot/' + feature.fid + '/organizers/add/thanks/');
+                                    return false;
+                                });  
+                            });
+                            return false;
+                        });
                     });
 
                     // street view

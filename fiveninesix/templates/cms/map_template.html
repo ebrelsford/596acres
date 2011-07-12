@@ -41,64 +41,21 @@
             return url;
         }
 
-        function add_lot_details($tab, details) {
-            $tab.find('td[class!=""]').each(function() {
-                var class_name = $(this).attr('class');
-                if (class_name === 'links') {
-                    $(this).find('#oasislink').attr('href', 'http://www.oasisnyc.net/map.aspx?zoomto=lot:' + details['bbl']);
-                }
-                else {
-                    $(this).find('span').text(details[class_name]); 
-                }
-            });
-            $tab.find('.owner a').click(function() {
-                $tab.parents('.tabs').tabs('select', '#owner');
-            });
-        }
-
-        function add_owner_details($tab, details) {
-            $tab.find('td[class!=""]').each(function() {
-                var class_name = $(this).attr('class');
-                if (class_name === 'email') {
-                    var email = details[class_name];
-                    $(this).find('a').attr('href', 'mailto:' + email).text(email); 
-                }
-                else if (class_name === 'site') {
-                    var url = details[class_name];
-                    $(this).find('a').attr('href', url).text(shorten_url_text(url, 30)); 
-                }
-                else {
-                    $(this).find('span').text(details[class_name]); 
-                }
-            });
-        }
-
         $(document).ready(function() {
             $('#map').lotmap({
                 queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
                 addContentToPopup: function(popup, feature) {
-                    // avoid accumulating popup_templates
-                    $('.popup_template.copy').remove();
-
                     // loading....
                     var $loading_clone = $('.popup_loading').clone();
                     $(popup).find('div').append($loading_clone.addClass('copy').show());
 
-                    // get details and show popup
-                    $.getJSON('/lots/' + feature.fid +'/details/json/', function(details) {
-                        // populate template
-                        var $clone = $('.popup_template').clone();
-                        var $tabs = $clone.find('.tabs').tabs();
-                        add_lot_details($tabs.find('#lot'), details);
-
-                        // show template
+                    $(popup).load('/lot/' + feature.fid + '/tabs/', function() {
                         $loading_clone.remove();
-                        $(popup).find('div').append($clone.addClass('copy').show());
-
-                        // load owner details
-                        $.getJSON('/owners/' + details['owner_id'] +'/details/json/', function(owner_details) {
-                            add_owner_details($tabs.find('#owner'), owner_details);
-                        });
+                        $(popup).find('.tabs').tabs()
+                            .find('tr.owner').click(function() {
+                                $(this).parents('.tabs').tabs('select', '#owner');
+                                return false;
+                            });
                     });
 
                     // street view
@@ -148,100 +105,6 @@
 
     <div class="popup_loading" style="display: none; text-align: center; padding-top: 20%;">
         <img src="{{ MEDIA_URL }}img/details_loading.gif" />
-    </div>
-
-    <div class="popup_template" style="display: none;">
-        <div class="tabs">
-            <ul>
-                <li><a href="#lot">Lot</a></li>
-                <li><a href="#owner">Owner</a></li>
-                <li><a href="#groups">Groups</a></li>
-            </ul>
-            <div id="lot">
-                <table>
-                    <tr>
-                        <th>address</th>
-                        <td class="address">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>zipcode</th>
-                        <td class="zipcode">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>block</th>
-                        <td class="block">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>lot</th>
-                        <td class="lot">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>owner</th>
-                        <td class="owner">
-                            <span></span>
-                            (<a href="#">details</a>)
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>area</th>
-                        <td class="area">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>elsewhere</th>
-                        <td class="links">
-                            <a id="oasislink" target="_blank">OASIS</a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="owner">
-                <table>
-                    <tr>
-                        <th>name</th>
-                        <td class="name">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>contact</th>
-                        <td class="person">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>phone</th>
-                        <td class="phone">
-                            <span></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>email</th>
-                        <td class="email">
-                            <a target="_blank"></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>site</th>
-                        <td class="site">
-                            <a target="_blank"></a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="groups">
-                more soon
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

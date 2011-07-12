@@ -1,0 +1,118 @@
+<!doctype html>
+<body>
+<div>
+    <div class="tabs">
+        <ul>
+            <li><a href="#lot">Lot</a></li>
+            <li><a href="#owner">Owner</a></li>
+            <li><a href="#organize">Organize</a></li>
+        </ul>
+        <div id="lot">
+            <table>
+                <tr>
+                    <th>address</th>
+                    <td>
+                        <span>{{ lot.address|default:'' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>zipcode</th>
+                    <td>
+                        <span>{{ lot.zipcode|default:'' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>block</th>
+                    <td>
+                        <span>{{ lot.block|default:'' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>lot</th>
+                    <td>
+                        <span>{{ lot.lot|default:'' }}</span>
+                    </td>
+                </tr>
+                <tr class="owner">
+                    <th>owner</th>
+                    <td>
+                        <span>
+                            {% if lot.owner %}
+                            {{ lot.owner.name|default:'' }} (<a href="">details</a>)
+                            {% else %}
+                            we don't know
+                            {% endif %}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>area</th>
+                    <td>
+                        <span>
+                            {% if lot.area %}
+                                {{ lot.area }} square feet
+                            {% else %}
+                                unknown
+                            {% endif %}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>elsewhere</th>
+                    <td class="links">
+                        <a id="oasislink" target="_blank" href="http://www.oasisnyc.net/map.aspx?zoomto=lot:{{ lot.bbl }}">OASIS</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="owner">
+            {% if lot.owner %}
+            <table>
+                <tr>
+                    <th>name</th>
+                    <td>
+                        <span>{{ lot.owner.name|default:'' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>contact</th>
+                    <td>
+                        <span>{{ lot.owner.person|default:'' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>phone</th>
+                    <td>
+                        <span>{{ lot.owner.phone|default:'' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>email</th>
+                    <td>
+                        {% if lot.owner.email %}
+                        <a target="_blank" href="mailto:{{ lot.owner.email }}">{{ lot.owner.email }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>site</th>
+                    <td class="site">
+                        {% if lot.owner.site %}
+                        {{ lot.owner.site|urlizetrunc:"40" }}
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            {% else %}
+            We don't know who owns this lot.
+            {% endif %}
+        </div>
+        <div id="organize">
+            <table>
+            </table>
+        </div>
+    </div>
+</div>
+<body>
+</html>
+

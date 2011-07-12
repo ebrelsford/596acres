@@ -1,8 +1,9 @@
 body {
-    background: url(/media/img/barbed_small_cropped.png);
+    background: url(/media/img/background.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right bottom;
+    background-size: 1000px 427px;
     padding-bottom: 50px;
     font-family: Arial,Helvetica;
 }
@@ -80,6 +81,17 @@ img {
     margin-left: auto;
     margin-right: auto;
     background-image: url(/media/img/opacity_80_bg.png);
+}
+
+#top a#logo {
+    width: 400px; 
+    height: 100px; 
+    display: block;
+}
+#top a#logo div {
+    background-image: url(/media/img/logo.png); 
+    width: 400px; 
+    height: 100px;
 }
 
 #main {

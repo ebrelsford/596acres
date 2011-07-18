@@ -122,11 +122,13 @@ img {
 }
 
 .olControlLoadingPanel {
-    background-image: url(/media/img/ajax-loader.gif);
-    width: 16px;
-    height: 16px;
-    bottom: 10px;
-    left: 10px;
+    background-image: url(/media/img/loading_large.gif);
+    width: 64px;
+    height: 64px;
+    top: 10px;
+    left: 45%;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 #map_buttons {

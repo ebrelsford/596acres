@@ -60,6 +60,7 @@ var LotMap = {
         url: '/lots/geojson?',
         queryString: '',
         onLoad: function(feature) {},
+        onFeatureUnselect: function(feature) {},
     },
 
     createBBox: function(lon1, lat1, lon2, lat2) {
@@ -121,6 +122,7 @@ var LotMap = {
                     var feature = event.feature;
                     if(feature.popup) {
                         t.olMap.removePopup(feature.popup);
+                        t.options.onFeatureUnselect(feature);
                         feature.popup.destroy();
                         delete feature.popup;
                     }

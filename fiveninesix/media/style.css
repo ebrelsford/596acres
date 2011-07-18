@@ -194,3 +194,23 @@ form > table td input[type=text] {
     padding: 0;
     color: red;
 }
+
+#lot-details > div {
+    width: 65%;
+}
+#lot-details div table,
+#lot-details div tr {
+    width: 100%;
+}
+#lot-details div th {
+    text-align: left;
+}
+#lot-details div td {
+    width: 70%;
+}
+#lot-details h1 {
+    margin-top: 0;
+}
+#lot-details h2 {
+    margin-bottom: 0;
+}

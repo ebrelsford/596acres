@@ -23,20 +23,28 @@ def details(request, bbl=None):
         })
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
-def add_organizer(request, bbl=None):
+def add_organizer(request, bbl=None, ajax=False):
+    lots = Lot.objects.filter(bbl=bbl)
     if request.method == 'POST':    
         form = OrganizerForm(request.POST)
         if form.is_valid():
             organizer = form.save()
-            #return redirect(add_organizer_thanks)
-            return add_organizer_thanks(request)
+            if ajax:
+                return add_organizer_thanks(request)
+            else:
+                return redirect('lots.views.details', bbl=bbl)
     else:
         form = OrganizerForm(initial={
-            'lots': Lot.objects.filter(bbl=bbl)
+            'lots': lots,
         })
 
-    return render_to_response('organize/add_organizer.html', {
+    template = 'organize/add_organizer.html'
+    if ajax:
+        template = 'organize/add_organizer_ajax.html'
+
+    return render_to_response(template, {
         'form': form,
+        'lot': lots[0],
     }, context_instance=RequestContext(request))
 
 def add_organizer_thanks(request):

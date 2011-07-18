@@ -35,8 +35,19 @@ var LotMap = {
 
         this.olMap.zoomToMaxExtent();
 
-        var lot_layer = this.getLayer('lots', this.options.url + this.options.queryString, this.styles['default']);
-        this.addControls([lot_layer]);
+        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString, this.styles['default']);
+        this.lot_layer.events.on({
+            'loadend': function() {
+                if (t.lot_layer.features.length == 1) {
+                    var feature = t.lot_layer.features[0];
+                    t.centerOnFeature(t.lot_layer, feature.fid);
+                    t.options.onLoad(feature);
+                }
+                else {
+                    t.addControls([t.lot_layer]);
+                }
+            },
+        });
 
         return this;
     },
@@ -46,9 +57,9 @@ var LotMap = {
         initialZoom: 11,
         addContentToPopup: function(popup, feature) { ; },
         type: null, 
-        id: null, /* put something here if using type='single' */
         url: '/lots/geojson?',
         queryString: '',
+        onLoad: function(feature) {},
     },
 
     createBBox: function(lon1, lat1, lon2, lat2) {
@@ -233,14 +244,12 @@ var LotMap = {
         this.olMap.addLayer(layer);
     },
 
-    selectAndCenterOnGarden: function(fid) {
-        var feature = this.surveyedGardensLayer.getFeatureByFid(fid);
+    centerOnFeature: function(layer, fid) {
+        var feature = layer.getFeatureByFid(fid);
         if (!feature) return;
 
         var l = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
         this.olMap.setCenter(l, 15);
-        this.selectControl.unselectAll();
-        this.selectControl.select(feature);
     },
 
     getTransformedLonLat: function(longitude, latitude) {

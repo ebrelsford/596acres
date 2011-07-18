@@ -17,11 +17,14 @@ def lot_geojson(request):
         lots = lots.filter(owner__type__name=request.GET['owner_type'])
     if 'owner_code' in request.GET:
         lots = lots.filter(owner__code=request.GET['owner_code'])
+    if 'bbls' in request.GET:
+        bbls = request.GET['bbls'].split(',')
+        lots = lots.filter(bbl__in=bbls)
 
     lots_geojson = _lot_collection(lots)
     return HttpResponse(geojson.dumps(lots_geojson), mimetype='application/json')
 
-def details(request, bbl=None):
+def details_json(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     details = {
         'address': lot.address,
@@ -34,6 +37,13 @@ def details(request, bbl=None):
         'area': float(lot.area),
     }
     return HttpResponse(json.dumps(details), mimetype='application/json')
+
+def details(request, bbl=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    return render_to_response('lots/details.html', {
+        'lot': lot,
+        'organizers': lot.organizer_set.all()
+    }, context_instance=RequestContext(request))
 
 def owner_details(request, id=None):
     owner = get_object_or_404(Owner, id=id)

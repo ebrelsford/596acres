@@ -1,0 +1,141 @@
+{% extends "lots/base.html" %}
+
+{% block title %}{{ block.super }}: Details{% endblock %}
+
+{% block inner_right %}
+<div id="share-container" style="padding-top: 5px;">
+    <div>
+        <iframe src="http://www.facebook.com/plugins/like.php?href={{ request.build_absolute_uri|urlencode:"" }}&layout=button_count&show_faces=false&width=50&action=like&height=25" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:25px; padding-top: 5px;" allowTransparency="true">
+        </iframe>
+    </div>
+    <div>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-text="596 Acres" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    </div>
+</div>
+{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="lot-details">
+    <h1>Lot {{ lot.bbl }}</h1>
+    <div id="basics">
+        <h2>details</h2>
+        <table>
+            <tr>
+                <th>address</th>
+                <td>
+                    <span>{{ lot.address|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>zipcode</th>
+                <td>
+                    <span>{{ lot.zipcode|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>block</th>
+                <td>
+                    <span>{{ lot.block|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>lot</th>
+                <td>
+                    <span>{{ lot.lot|default:'' }}</span>
+                </td>
+            </tr>
+            <tr class="owner">
+                <th>owner</th>
+                <td>
+                    <span>
+                        {% if lot.owner %}
+                        {{ lot.owner.name|default:'' }}
+                        {% else %}
+                        we don't know
+                        {% endif %}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>area</th>
+                <td>
+                    <span>
+                        {% if lot.area %}
+                            {{ lot.area }} square feet
+                        {% else %}
+                            unknown
+                        {% endif %}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>elsewhere</th>
+                <td class="links">
+                    <a id="oasislink" target="_blank" href="http://www.oasisnyc.net/map.aspx?zoomto=lot:{{ lot.bbl }}">OASIS</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="owner">
+        <h2>owner</h2>
+        {% if lot.owner %}
+        <table>
+            <tr>
+                <th>name</th>
+                <td>
+                    <span>{{ lot.owner.name|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>contact</th>
+                <td>
+                    <span>{{ lot.owner.person|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>phone</th>
+                <td>
+                    <span>{{ lot.owner.phone|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>email</th>
+                <td>
+                    {% if lot.owner.email %}
+                    <a target="_blank" href="mailto:{{ lot.owner.email }}">{{ lot.owner.email }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>site</th>
+                <td class="site">
+                    {% if lot.owner.site %}
+                    {{ lot.owner.site|urlizetrunc:"40" }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+        {% else %}
+        We don't know who owns this lot.
+        {% endif %}
+    </div>
+    <div id="organize">
+        <h2>organize</h2>
+        <div>
+            Currently organizing here:
+            <ul>
+            {% for organizer in organizers %}
+                <li><a href="{{ organizer.url }}" target="_blank">{{ organizer.name }}</a></li>
+            {% empty %}
+            No one yet.
+            {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <a class="add_organizer" href="{% url add_organizer bbl=lot.bbl %}">I'm organizing here!</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

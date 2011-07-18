@@ -60,7 +60,9 @@ var Search = {
 
             var longitude = results[0].geometry.location.lng();
             var latitude = results[0].geometry.location.lat();
-            t.map.olMap.setCenter(t.map.getTransformedLonLat(longitude, latitude), 15);
+            var transformed = t.map.getTransformedLonLat(longitude, latitude);
+            t.map.olMap.setCenter(transformed, 15);
+            t.map.setSearchFeature(transformed);
         });
     },
 

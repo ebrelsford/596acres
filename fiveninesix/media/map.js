@@ -49,6 +49,20 @@ var LotMap = {
             },
         });
 
+        this.search_layer = new OpenLayers.Layer.Vector('search', {
+            projection: this.olMap.displayProjection,
+            styleMap: new OpenLayers.StyleMap({
+                'default': {
+                    pointRadius: '10',
+                    fillColor: '#3f3f3f',
+                    fillOpacity: '0.6',
+                    strokeWidth: 1,
+                    strokeColor: '#000000',
+                },
+            }),
+        });
+        this.olMap.addLayer(this.search_layer);
+
         return this;
     },
 
@@ -252,6 +266,12 @@ var LotMap = {
 
         var l = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
         this.olMap.setCenter(l, 15);
+    },
+
+    setSearchFeature: function(lonLat) {
+        this.search_layer.removeAllFeatures();
+        var feature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(lonLat.lon, lonLat.lat));
+        this.search_layer.addFeatures([feature]);
     },
 
     getTransformedLonLat: function(longitude, latitude) {

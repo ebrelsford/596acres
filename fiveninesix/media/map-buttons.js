@@ -12,14 +12,14 @@ var MapButtons = {
         this.$map = this.options.$map;
         this.map = this.$map.data('lotmap');
 
-        this.$elem.find('#political_borders').hover(
+        this.$elem.find('.dropdownable').hover(
             function() {
                 $(this).addClass('expanded')
-                    .find('#political_borders_selector').show();
+                    .find('.dropdown').show();
             },
             function() {
                 $(this).removeClass('expanded')
-                    .find('#political_borders_selector').hide();
+                    .find('.dropdown').hide();
             }
         );
 

@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^lot/(?P<bbl>\d+)/$', 'lots.views.details'),
     url(r'^lot/(?P<bbl>\d+)/json/$', 'lots.views.details_json'),
     url(r'^lot/(?P<bbl>\d+)/tabs/$', 'lots.views.tabs'),
+    url(r'^lot/random/$', 'lots.views.random'),
 
     url(r'^owners/(?P<id>\d+)/details/json/$', 'lots.views.owner_details'),
 

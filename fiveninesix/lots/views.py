@@ -1,5 +1,6 @@
 import geojson
 import json
+from random import randint
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
@@ -69,3 +70,7 @@ def tabs(request, bbl=None):
         'lot': lot,
         'organizers': lot.organizer_set.all()
     }, context_instance=RequestContext(request))
+
+def random(request):
+    bbls = Lot.objects.filter(is_vacant=True, centroid_source__in=('OASIS', 'Google', 'Nominatim'), owner__type__name='city').values_list('bbl', flat=True)
+    return redirect(details, bbl=bbls[randint(0, bbls.count())])

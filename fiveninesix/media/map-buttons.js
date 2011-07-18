@@ -12,26 +12,6 @@ var MapButtons = {
         this.$map = this.options.$map;
         this.map = this.$map.data('lotmap');
 
-        t.$elem.hide();
-        $(window).load(function() {
-            t.$elem.position({
-                my: 'right top',
-                at: 'right top',
-                of: t.$map,
-                offset: '-10 10',
-            });
-            t.$elem.show();
-        });
-        
-        $(window).smartresize(function() {
-            t.$elem.position({
-                my: 'right top',
-                at: 'right top',
-                of: t.$map,
-                offset: '-10 10',
-            });
-        });
-
         this.$elem.find('#political_borders').hover(
             function() {
                 $(this).addClass('expanded')

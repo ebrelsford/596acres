@@ -121,7 +121,24 @@
             </form>
             <span class="loading" style="display: none;"><img src="{{ MEDIA_URL }}img/loading_small.gif" /></span>
         </div>
-        <div id="map" style="width: 100%; height: 500px;"></div>
+
+        <div id="map_inner">
+            <div id="map_buttons">
+                <div id="political_borders" class="map_button">
+                    <span class="label">Political Borders</span>
+                    <div id="political_borders_selector" class="dropdown">
+                        <ul>
+                            <li id="labels" style="border-bottom: 1px solid gray; margin-bottom: 5px;"><input type="checkbox" id="labels_checkbox" /><label for="labels_checkbox">labels</label></li>
+                            <li id="none"><input type="radio" id="none_radio" name="political_borders" checked="checked" /><label for="none_radio">none</label></li>
+                            <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
+                            <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
+                            <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="map" style="width: 100%; height: 500px;"></div>
+        </div>
         <div id="streetview" style="width: 100%; height: 200px; display: none;"></div>
         <div>
             <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F596acres.org&layout=button_count&show_faces=false&width=50&action=like&height=25" 
@@ -137,21 +154,6 @@
     {% placeholder "main" %}
     </div>
     <div style="clear: both;"></div>
-
-    <div id="map_buttons" style="z-index: 4999; width: 300px;">
-        <div id="political_borders" class="map_button">
-            <span class="label">Political Borders</span>
-            <div id="political_borders_selector" class="dropdown">
-                <ul>
-                    <li id="labels" style="border-bottom: 1px solid gray; margin-bottom: 5px;"><input type="checkbox" id="labels_checkbox" /><label for="labels_checkbox">labels</label></li>
-                    <li id="none"><input type="radio" id="none_radio" name="political_borders" checked="checked" /><label for="none_radio">none</label></li>
-                    <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
-                    <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
-                    <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
     <div class="popup_loading" style="display: none; text-align: center; padding-top: 20%;">
         <img src="{{ MEDIA_URL }}img/loading_large.gif" />

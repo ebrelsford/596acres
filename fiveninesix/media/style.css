@@ -130,10 +130,15 @@ img {
     margin-left: auto !important;
     margin-right: auto !important;
 }
-
+#map_inner {
+    position: relative;
+}
 #map_buttons {
     position: absolute;
     font-size: 10px;
+    right: 10px;
+    top: 10px;
+    z-index: 1030;
 }
 
 #map_buttons ul {

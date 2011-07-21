@@ -124,7 +124,7 @@ img {
 }
 
 .olControlLoadingPanel {
-    background-image: url(/media/img/loading-map.gif);
+    background-image: url(/media/img/loading_map.gif);
     width: 128px;
     height: 15px;
     top: 10px;

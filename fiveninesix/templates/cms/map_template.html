@@ -23,6 +23,8 @@
 
 {% block scripts %}
     <script type="text/javascript">
+        var max_area_range = 100000;
+
         function show_with_streetview(id, feature) {
             var lon = feature.geometry.x;
             var lat = feature.geometry.y;
@@ -49,6 +51,13 @@
                     return false;
                 });  
             }
+        }
+
+        function update_area_display(min, max) {
+            if (max === max_area_range) {
+                max += '+';
+            }
+            $('#area span').text(min + ' to ' + max + ' square feet');
         }
 
         $(document).ready(function() {
@@ -104,16 +113,16 @@
             $('#area_slider').slider({
                 range: true,
                 min: 1,
-                max: 100000,
-                values: [1, 100000],
+                max: max_area_range,
+                values: [1, max_area_range],
                 slide: function(event, ui) {
-                    $('#area span').text(ui.values[0] + ' to ' + ui.values[1] + ' square feet');
+                    update_area_display(ui.values[0], ui.values[1]);
                 },
                 change: function(event, ui) {
-                    console.log(ui.values[0] + ' to ' + ui.values[1]);
                     $('#map').data('lotmap').restrictByArea(ui.values[0], ui.values[1]);
                 },
             });
+            update_area_display(1, max_area_range);
         });
     </script>
 {% endblock %}

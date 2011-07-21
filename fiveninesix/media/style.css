@@ -124,13 +124,11 @@ img {
 }
 
 .olControlLoadingPanel {
-    background-image: url(/media/img/loading_large.gif);
-    width: 64px;
-    height: 64px;
+    background-image: url(/media/img/loading-map.gif);
+    width: 128px;
+    height: 15px;
     top: 10px;
-    left: 45%;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    left: 40px;
 }
 #map_inner {
     position: relative;

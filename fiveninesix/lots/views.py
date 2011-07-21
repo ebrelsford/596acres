@@ -60,7 +60,10 @@ def _lot_collection(lots):
 def _lot_feature(lot):
     return geojson.Feature(
         lot.bbl,
-        geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y))
+        geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
+        properties={
+            'area': float(lot.area),
+        }
     )
 
 def tabs(request, bbl=None):

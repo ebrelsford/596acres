@@ -282,6 +282,37 @@ var LotMap = {
         return new OpenLayers.LonLat(longitude, latitude).transform(this.epsg900913, this.epsg4326);
     },
 
+    restrictByArea: function(min, max) {
+        var ruleMin = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.LESS_THAN,
+                property: 'area',
+                value: min,
+            }),
+            symbolizer: { 
+                display: "none", 
+            },
+        });
+        var ruleMax = new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.GREATER_THAN,
+                property: 'area',
+                value: max,
+            }),
+            symbolizer: { 
+                display: "none", 
+            },
+        });
+        var ruleElse = new OpenLayers.Rule({
+            elseFilter: true,
+            symbolizer: {
+                display: "true",
+            },
+        });
+        this.lot_layer.styleMap.styles['default'].rules.length = 0;
+        this.lot_layer.styleMap.styles['default'].addRules([ruleMin, ruleMax, ruleElse]);
+        this.lot_layer.redraw();
+    }
 };
 
 $.plugin('lotmap', LotMap);

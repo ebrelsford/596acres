@@ -100,6 +100,20 @@
             $('#map_buttons').mapbuttons({
                 $map: $('#map'),
             });
+
+            $('#area_slider').slider({
+                range: true,
+                min: 1,
+                max: 100000,
+                values: [1, 100000],
+                slide: function(event, ui) {
+                    $('#area span').text(ui.values[0] + ' to ' + ui.values[1] + ' square feet');
+                },
+                change: function(event, ui) {
+                    console.log(ui.values[0] + ' to ' + ui.values[1]);
+                    $('#map').data('lotmap').restrictByArea(ui.values[0], ui.values[1]);
+                },
+            });
         });
     </script>
 {% endblock %}
@@ -124,7 +138,7 @@
 
         <div id="map_inner">
             <div id="map_buttons">
-                <div id="political_borders" class="map_button">
+                <div id="political_borders" class="map_button dropdownable">
                     <span class="label">Political Borders</span>
                     <div id="political_borders_selector" class="dropdown">
                         <ul>
@@ -133,6 +147,18 @@
                             <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
                             <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
                             <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="filters" class="map_button dropdownable">
+                    <span class="label">Filters</span>
+                    <div id="filters_selector" class="dropdown" style="width: 400px; padding: 5px;">
+                        <ul>
+                            <li id="area" style="margin-bottom: 5px;">
+                                <label>area range:</label>
+                                <span></span>
+                                <div id="area_slider"></div>
+                            </li>
                         </ul>
                     </div>
                 </div>

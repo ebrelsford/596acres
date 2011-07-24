@@ -30,3 +30,11 @@ body {
 #map_page #map {
     height: 300px;
 }
+
+#main #sidebar {
+    display: none;
+}
+#main #content.with-sidebar {
+    margin: 0;
+    padding: 0;
+}

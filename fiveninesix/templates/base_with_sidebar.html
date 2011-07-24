@@ -1,14 +1,17 @@
 {% extends "base.html" %}
-
-{% block sidebar %}
-<div id="sidebar">
-    <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:299px; height:395px;" src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2F596Acres&width=298&colorscheme=light&show_faces=true&stream=true&header=false&height=395"></iframe>
-</div>
-{% endblock %}
+{% load cms_tags %}
 
 {% block content %}
 <div id="content" class="with-sidebar">
     {% block content_main %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="sidebar">
+    {% placeholder "sidebar" or %}
+    {% show_placeholder "sidebar" "base_sidebar" %}
+    {% endplaceholder %}
 </div>
 {% endblock %}
 

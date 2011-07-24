@@ -1,0 +1,51 @@
+<div id="{{ object.id }}" class="facebook-photo loading">
+    <a target="_blank">
+        <img />
+    </a>
+</div>
+
+<script type="text/javascript">
+    function pick(length) {
+        return Math.floor(Math.random() * length);
+    }
+
+    function pick_image(images, availableWidth) {
+        return $.grep(images, function(img, k) {
+            return img.width <= availableWidth;
+        })[0];
+    }
+
+    function display_photo($context, photo, availableWidth) {
+        var image = pick_image(photo.images, availableWidth);
+        $context.find('img').attr({
+            src: image.source,
+            alt: photo.name,
+            title: photo.name,
+        });
+        $context.find('a').attr('href', photo.link);
+        $context.find('a, img').css({
+            width: image.width,
+            height: image.height,
+        });
+    }
+
+    function display_photo_for_account($context, accountId, availableWidth) {
+        $.getJSON('https://graph.facebook.com/{{ account.facebookId }}/albums?callback=?', function(response) {
+            // TODO take care of paging albums and photos
+            var albums = response.data;
+            var album = albums[pick(albums.length)];
+
+            $.getJSON('https://graph.facebook.com/' + album.id + '/photos?callback=?', function(response) {
+                var photos = response.data;
+                var photo = photos[pick(photos.length)];
+                display_photo($context, photo, availableWidth);
+                $context.removeClass('loading');
+            });
+        });
+    }
+
+    $(document).ready(function() {
+        var $context = $('#{{ object.id }}.facebook-photo');
+        display_photo_for_account($context, {{ account.facebookId }}, {{ width|default:"1000" }});
+    });
+</script>

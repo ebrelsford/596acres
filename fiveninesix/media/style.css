@@ -224,3 +224,22 @@ form > table td input[type=text] {
 #lot-details h2 {
     margin-bottom: 0;
 }
+
+.facebook-photo {
+    padding: 5px;
+}
+.facebook-photo a {
+    margin: 0 auto; 
+    display: block;
+}
+
+.facebook-photo.loading {
+    background-image: url(/media/img/loading_large.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 128px;
+    height: 128px;
+}
+.facebook-photo.loading a {
+    display: none;
+}

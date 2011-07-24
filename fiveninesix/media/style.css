@@ -170,6 +170,14 @@ img {
     text-align: left;
 }
 
+.popup_loading {
+    background-image: url(/media/img/loading_large.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 300px;
+    height: 300px;
+}
+
 div.tabs {
     font-size: 12px;
 }

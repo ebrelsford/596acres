@@ -1,0 +1,22 @@
+body {
+    -webkit-text-size-adjust: none; 
+    padding: 5px;              
+    background: white !important;
+}
+
+#outer {
+    width: 100%;
+    background: none;
+}
+
+#top a#logo,
+#top a#logo div {
+    width: 200px; 
+    height: 50px; 
+}
+#top a#logo {
+    display: block;
+}
+#top a#logo div {
+    background-image: url(/media/img/logo_mobile.png); 
+}

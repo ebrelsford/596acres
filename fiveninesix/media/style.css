@@ -133,6 +133,28 @@ img {
     top: 10px;
     left: 40px;
 }
+
+#map_page #map_container {
+    width:60%;
+    float:left;
+}
+
+#map_page #side {
+    width: 35%;
+    float: left;
+}
+
+#map_page #map {
+    width: 100%; 
+    height: 500px;
+}
+
+#map_page #streetview {
+    width: 100%;
+    height: 200px;
+    display: none;
+}
+
 #map_inner {
     position: relative;
 }
@@ -168,6 +190,10 @@ img {
 #map_buttons .dropdown {
     display: none;
     text-align: left;
+}
+
+#searchbar form {
+    display: inline-block;
 }
 
 .popup_loading {

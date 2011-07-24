@@ -135,60 +135,62 @@
 
 {% block content %}
 <div id="content">
-    <div id="map_container" style="width:60%; float:left;">
-        <div id="searchbar">
-            <div class="warning errorlist" style="display: none;">Sorry, it doesn't seem that the address you entered is in Brooklyn. Try again?</div>
-            <span>Search for lots near an address:</span>
-            <form style="display: inline-block;">
-                <input name="address" type="text" /><input type="submit" value="search" />
-            </form>
-            <span class="loading" style="display: none;"><img src="{{ MEDIA_URL }}img/loading_small.gif" /></span>
-        </div>
-
-        <div id="map_inner">
-            <div id="map_buttons">
-                <div id="political_borders" class="map_button dropdownable">
-                    <span class="label">Political Borders</span>
-                    <div id="political_borders_selector" class="dropdown">
-                        <ul>
-                            <li id="labels" style="border-bottom: 1px solid gray; margin-bottom: 5px;"><input type="checkbox" id="labels_checkbox" /><label for="labels_checkbox">labels</label></li>
-                            <li id="none"><input type="radio" id="none_radio" name="political_borders" checked="checked" /><label for="none_radio">none</label></li>
-                            <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
-                            <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
-                            <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
-                        </ul>
-                    </div>
-                </div>
-                <div id="filters" class="map_button dropdownable">
-                    <span class="label">Filters</span>
-                    <div id="filters_selector" class="dropdown" style="width: 400px; padding: 5px;">
-                        <ul>
-                            <li id="area" style="margin-bottom: 5px;">
-                                <label>area range:</label>
-                                <span></span>
-                                <div id="area_slider"></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+    <div id="map_page">
+        <div id="map_container">
+            <div id="searchbar">
+                <div class="warning errorlist" style="display: none;">Sorry, it doesn't seem that the address you entered is in Brooklyn. Try again?</div>
+                <span>Search for lots near an address:</span>
+                <form>
+                    <input name="address" type="text" /><input type="submit" value="search" />
+                </form>
+                <span class="loading" style="display: none;"><img src="{{ MEDIA_URL }}img/loading_small.gif" /></span>
             </div>
-            <div id="map" style="width: 100%; height: 500px;"></div>
-        </div>
-        <div id="streetview" style="width: 100%; height: 200px; display: none;"></div>
-        <div>
-            <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F596acres.org&layout=button_count&show_faces=false&width=50&action=like&height=25" 
-                scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:25px; padding-top: 5px;" allowTransparency="true">
-            </iframe>
-        </div>
-        <div>
-            <a href="http://twitter.com/share" class="twitter-share-button" data-text="596 Acres" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-        </div>
-    </div>
 
-    <div id="side" style="float: left; width: 35%;">
-    {% placeholder "main" %}
+            <div id="map_inner">
+                <div id="map_buttons">
+                    <div id="political_borders" class="map_button dropdownable">
+                        <span class="label">Political Borders</span>
+                        <div id="political_borders_selector" class="dropdown">
+                            <ul>
+                                <li id="labels" style="border-bottom: 1px solid gray; margin-bottom: 5px;"><input type="checkbox" id="labels_checkbox" /><label for="labels_checkbox">labels</label></li>
+                                <li id="none"><input type="radio" id="none_radio" name="political_borders" checked="checked" /><label for="none_radio">none</label></li>
+                                <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
+                                <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
+                                <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="filters" class="map_button dropdownable">
+                        <span class="label">Filters</span>
+                        <div id="filters_selector" class="dropdown" style="width: 400px; padding: 5px;">
+                            <ul>
+                                <li id="area" style="margin-bottom: 5px;">
+                                    <label>area range:</label>
+                                    <span></span>
+                                    <div id="area_slider"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="map"></div>
+            </div>
+            <div id="streetview"></div>
+            <div>
+                <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F596acres.org&layout=button_count&show_faces=false&width=50&action=like&height=25" 
+                    scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:25px; padding-top: 5px;" allowTransparency="true">
+                </iframe>
+            </div>
+            <div>
+                <a href="http://twitter.com/share" class="twitter-share-button" data-text="596 Acres" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+            </div>
+        </div>
+
+        <div id="side">
+        {% placeholder "main" %}
+        </div>
+        <div style="clear: both;"></div>
     </div>
-    <div style="clear: both;"></div>
 
     <div class="popup_loading" style="display: none;"></div>
 </div>

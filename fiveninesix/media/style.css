@@ -195,6 +195,9 @@ img {
 #searchbar form {
     display: inline-block;
 }
+#searchbar .loading {
+    display: none;
+}
 
 .popup_loading {
     background-image: url(/media/img/loading_large.gif);

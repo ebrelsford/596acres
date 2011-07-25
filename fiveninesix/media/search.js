@@ -54,7 +54,7 @@ var Search = {
             t.$elem.find('.loading').hide();
             var sublocality = get_component(results[0], 'sublocality');
             if (sublocality !== 'Brooklyn') {
-                t.$elem.find('.warning').show();
+                t.$elem.find('.warning').text("Sorry, it doesn't seem that the address you entered is in Brooklyn. Try again?").show();
                 return;
             }
 

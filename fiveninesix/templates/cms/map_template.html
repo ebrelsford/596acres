@@ -60,6 +60,20 @@
             $('#area span').text(min + ' to ' + max + ' square feet');
         }
 
+        function is_in(longitude, latitude, bounds) {
+            return latitude <= bounds.top &&
+                latitude >= bounds.bottom &&
+                longitude <= bounds.right &&
+                longitude >= bounds.left;
+        }
+
+        var brooklyn_bounds = {
+            left: -74.319, 
+            top: 40.948, 
+            right: -73.584, 
+            bottom: 40.476,
+        };
+
         $(document).ready(function() {
             $('#map').lotmap({
                 queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
@@ -98,12 +112,7 @@
 
             $('#searchbar').search({
                 map: $('#map').data('lotmap'),
-                bounds: {
-                    left: -74.319, 
-                    top: 40.948, 
-                    right: -73.584, 
-                    bottom: 40.476,
-                },
+                bounds: brooklyn_bounds,
             });
 
             $('#map_buttons').mapbuttons({
@@ -123,6 +132,30 @@
                 },
             });
             update_area_display(1, max_area_range);
+
+            $('#searchbar input[name="current_location"]').click(function() {
+                navigator.geolocation.getCurrentPosition(
+                    function(loc) {
+                        var lon = loc.coords.longitude,
+                            lat = loc.coords.latitude;
+                        var map = $('#map').data('lotmap');
+
+                        if (is_in(lon, lat, brooklyn_bounds)) {
+                            var transformed = map.getTransformedLonLat(lon, lat);
+                            map.olMap.setCenter(transformed, 15);
+                            map.setSearchFeature(transformed);
+                        }
+                        else {
+                            $('#searchbar .warning').text("Sorry, the location we found for you is outside of Brooklyn. Try searching?").show();
+                        }
+                    },
+                    function(err) {
+                        if (err.code !== 1) {
+                            $('#searchbar .warning').text("Sorry, we're having a hard time finding your location. Try searching?").show();
+                        }
+                    }
+                );
+            });
         });
     </script>
 {% endblock %}
@@ -138,12 +171,13 @@
     <div id="map_page">
         <div id="map_container">
             <div id="searchbar">
-                <div class="warning errorlist" style="display: none;">Sorry, it doesn't seem that the address you entered is in Brooklyn. Try again?</div>
+                <div class="warning errorlist" style="display: none;"></div>
                 <span>Search for lots near an address:</span>
                 <form>
                     <input name="address" type="text" /><input type="submit" value="search" />
                 </form>
                 <img class="loading" src="{{ MEDIA_URL }}img/loading_small.gif" />
+                <input name="current_location" type="submit" value="use my current location" />
             </div>
 
             <div id="map_inner">

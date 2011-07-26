@@ -22,16 +22,21 @@ img {
     border: 0;
 }
 
+ul.nav,
+ul.nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#footer ul.nav li {
+    display: inline-block;
+}
+
 #nav {
     border-top: 3px solid black;
     border-bottom: 3px solid black;
     padding-top: 3px;
-}
-
-#nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
 }
 
 #nav > ul > li {
@@ -119,6 +124,7 @@ img {
     text-align: center;
     margin-top: 50px;
     border-top: 1px solid black;
+    padding: 10px;
 }
 
 .olControlAttribution {

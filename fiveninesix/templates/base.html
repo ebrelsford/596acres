@@ -51,7 +51,7 @@
             <a id="logo" href="/"><div></div></a>
         </div>
         <div id="nav">
-            <ul>
+            <ul class="nav">
                 {% show_menu 0 100 100 100 "cms/menu.html" %}
             </ul>
             <div style="clear: both;"></div>
@@ -72,6 +72,9 @@
 
         {% block footer %}
         <div id="footer">
+            <ul class="nav">
+                {% show_menu 0 100 100 100 "cms/footer_menu.html" %}
+            </ul>
             {% placeholder "footer" or %}
             {% show_placeholder "footer" "base_footer" %}
             {% endplaceholder %}

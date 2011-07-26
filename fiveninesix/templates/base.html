@@ -1,4 +1,4 @@
-{% load cache compress menu_tags %}
+{% load cache cms_tags compress menu_tags %}
 
 <!doctype html>
 <head>
@@ -69,6 +69,14 @@
             {% block content %}{% endblock %}
             <div style="clear: both;"></div>
         </div>
+
+        {% block footer %}
+        <div id="footer">
+            {% placeholder "footer" or %}
+            {% show_placeholder "footer" "base_footer" %}
+            {% endplaceholder %}
+        </div>
+        {% endblock %}
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js" type="text/javascript"></script>
     <script type="text/javascript">

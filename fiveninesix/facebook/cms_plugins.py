@@ -26,7 +26,7 @@ class CMSFacebookLikeboxPlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context.update({
-            'page': instance.page,
+            'page': instance.url,
             'object': instance,
             'placeholder': placeholder,
         })

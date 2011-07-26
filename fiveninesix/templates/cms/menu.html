@@ -3,7 +3,7 @@
 <li class="{% if child.selected %}selected{% endif %}{% if child.ancestor %}ancestor{% endif %}{% if child.sibling %}sibling{% endif %}{% if child.descendant %}descendant{% endif %}">
     <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">
         {% if child.menu_level == 0 %}
-        <img src="{{ MEDIA_URL }}img/{{ child.get_menu_title|lower }}.png" />
+        <img src="{{ MEDIA_URL }}img/{{ child.get_menu_title|lower|urlencode }}.png" alt="{{ child.get_menu_title }}" />
         {% else %}
         {{ child.get_menu_title }}
         {% endif %}

@@ -74,12 +74,14 @@
 
         {% block footer %}
         <div id="footer">
+        {% cache 600 footer %}
             <ul class="nav">
                 {% show_menu 0 100 100 100 "cms/footer_menu.html" %}
             </ul>
             {% placeholder "footer" or %}
             {% show_placeholder "footer" "base_footer" %}
             {% endplaceholder %}
+        {% endcache %}
         </div>
         {% endblock %}
     </div>

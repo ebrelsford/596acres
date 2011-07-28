@@ -129,3 +129,12 @@ INSTALLED_APPS = (
     'organize',
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cache_table',
+    },
+}
+
+CMS_CONTENT_CACHE_DURATION = 60
+MENU_CACHE_DURATION = 3600

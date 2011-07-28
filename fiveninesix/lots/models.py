@@ -5,7 +5,7 @@ class Lot(models.Model):
 
     address = models.CharField(max_length=256, null=True, blank=True)
     borough = models.CharField(max_length=32, null=True, blank=True)
-    bbl = models.CharField(max_length=32)
+    bbl = models.CharField(max_length=32, db_index=True)
     block = models.CharField(max_length=32)
     lot = models.CharField(max_length=32)
     zipcode = models.CharField(max_length=16, null=True, blank=True)

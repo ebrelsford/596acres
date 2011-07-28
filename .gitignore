@@ -9,6 +9,8 @@ build
 include
 lib
 media/cms_page_media
-media/CACHE
+/fiveninesix/media/CACHE
 /media
 /data
+/share
+/src

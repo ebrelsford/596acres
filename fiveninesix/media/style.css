@@ -6,6 +6,7 @@ body {
     background-size: 1000px 427px;
     padding-bottom: 50px;
     font-family: Arial,Helvetica;
+    font-size: 12px;
 }
 
 a:hover, a:active {
@@ -138,6 +139,9 @@ ul.nav ul {
     top: 14px !important;
     left: 14px !important;
 }
+.olControlZoomPanel div {
+    background-image: url(/media/img/zoom-panel.png) !important;
+}
 
 .olControlLoadingPanel {
     background-image: url(/media/img/loading_map.gif);
@@ -145,6 +149,15 @@ ul.nav ul {
     height: 15px;
     top: 10px;
     left: 40px;
+}
+
+.olPopup {
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    border: 1px solid black !important;
+}
+.olPopupCloseBox {
+    background-image: url(/media/img/close.gif) !important;
 }
 
 #map_page #map_container {

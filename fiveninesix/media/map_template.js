@@ -39,7 +39,8 @@ function update_area_display(min, max) {
     if (max === max_area_range) {
         max += '+';
     }
-    $('#area span').text(min + ' to ' + max + ' square feet');
+    $('#area .min').text(min);
+    $('#area .max').text(max);
 }
 
 function is_in(longitude, latitude, bounds) {

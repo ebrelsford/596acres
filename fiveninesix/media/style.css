@@ -228,6 +228,28 @@ ul.nav ul {
     display: none;
 }
 
+.filters {
+    font-size: 14px;
+}
+.filters ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.filters .label {
+    display: inline-block;
+    width: 50%;
+}
+.filters .range {
+    font-weight: bold;
+}
+.filters #area_slider {
+    display: inline-block;
+    width: 42%;
+    margin-left: 5%;
+}
+
+
 .popup_loading {
     background-image: url(/media/img/loading_large.gif);
     background-repeat: no-repeat;

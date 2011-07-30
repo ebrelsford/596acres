@@ -41,6 +41,17 @@
     <div id="map_page">
         <div id="map_container">
 
+            <div class="filters">
+                <ul>
+                    <li id="area" style="margin-bottom: 5px;">
+                        <span class="label">
+                            lot size: <span class="range min"></span> to <span class="range max"></span> square feet
+                        </span>
+                        <div id="area_slider"></div>
+                    </li>
+                </ul>
+            </div>
+
             <div id="map_inner">
                 <div id="map_buttons">
                     <div id="political_borders" class="map_button dropdownable">
@@ -52,18 +63,6 @@
                                 <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
                                 <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
                                 <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div id="filters" class="map_button dropdownable">
-                        <span class="label">Filters</span>
-                        <div id="filters_selector" class="dropdown" style="width: 400px; padding: 5px;">
-                            <ul>
-                                <li id="area" style="margin-bottom: 5px;">
-                                    <label>area range:</label>
-                                    <span></span>
-                                    <div id="area_slider"></div>
-                                </li>
                             </ul>
                         </div>
                     </div>

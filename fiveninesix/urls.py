@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^lot/(?P<bbl>\d+)/tabs/$', 'lots.views.tabs'),
 
     url(r'^owners/(?P<id>\d+)/details/json/$', 'lots.views.owner_details'),
+    url(r'^owners/json/$', 'lots.views.owners_json'),
 
     url(r'^organizers/lot/(?P<bbl>\d+)/details/json/$', 'organize.views.details'),
     url(r'^lot/(?P<bbl>\d+)/organizers/add/ajax/$', 'organize.views.add_organizer', {

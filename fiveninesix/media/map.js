@@ -3,6 +3,10 @@ var LotMap = {
     epsg4326: new OpenLayers.Projection("EPSG:4326"),
     epsg900913: new OpenLayers.Projection("EPSG:900913"),
 
+    minArea: null,
+    maxArea: null,
+    selectedAgency: null,
+
     init: function(options, elem) {
         var t = this;
         this.options = $.extend({}, this.options, options);
@@ -282,37 +286,49 @@ var LotMap = {
         return new OpenLayers.LonLat(longitude, latitude).transform(this.epsg900913, this.epsg4326);
     },
 
-    restrictByArea: function(min, max) {
-        var ruleMin = new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.LESS_THAN,
-                property: 'area',
-                value: min,
-            }),
-            symbolizer: { 
-                display: "none", 
-            },
-        });
-        var ruleMax = new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.GREATER_THAN,
-                property: 'area',
-                value: max,
-            }),
-            symbolizer: { 
-                display: "none", 
-            },
-        });
-        var ruleElse = new OpenLayers.Rule({
-            elseFilter: true,
-            symbolizer: {
-                display: "true",
-            },
-        });
-        this.lot_layer.styleMap.styles['default'].rules.length = 0;
-        this.lot_layer.styleMap.styles['default'].addRules([ruleMin, ruleMax, ruleElse]);
-        this.lot_layer.redraw();
-    }
+    //
+    // Reload the lot layer using filters that are set by the user, then updated
+    // on this object using a filterBy*()
+    //
+    reloadLotLayer: function() {
+        this.olMap.removeLayer(this.lot_layer);
+        this.lot_layer.destroy();
+
+        var extraParameters = "";
+        if (this.selectedAgency !== null) {
+            extraParameters += '&owner_id=' + this.selectedAgency;
+        }
+        if (this.minArea !== null) {
+            extraParameters += '&min_area=' + this.minArea;
+        }
+        if (this.maxArea !== null) {
+            extraParameters += '&max_area=' + this.maxArea;
+        }
+        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString + extraParameters, this.styles['default']);
+
+        this.addControls([this.lot_layer]);
+        this.olMap.addLayer(this.lot_layer);
+    },
+    
+    //
+    // Filter by agency that owns the lots. Sets the selectedAgency and
+    // ensures that the map is updated accordingly
+    //
+    filterByAgency: function(agency_id) {
+        this.selectedAgency = agency_id;
+        this.reloadLotLayer();
+    },
+
+    //
+    // Filter by area of the lots. Sets the min and max areas and
+    // ensures that the map is updated accordingly
+    //
+    filterByArea: function(min, max) {
+        this.minArea = min;
+        this.maxArea = max;
+        this.reloadLotLayer();
+    },
+
 };
 
 $.plugin('lotmap', LotMap);

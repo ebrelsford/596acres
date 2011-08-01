@@ -18,9 +18,17 @@ def lot_geojson(request):
         lots = lots.filter(owner__type__name=request.GET['owner_type'])
     if 'owner_code' in request.GET:
         lots = lots.filter(owner__code=request.GET['owner_code'])
+    if 'owner_id' in request.GET:
+        lots = lots.filter(owner__id=request.GET['owner_id'])
     if 'bbls' in request.GET:
         bbls = request.GET['bbls'].split(',')
         lots = lots.filter(bbl__in=bbls)
+    if 'min_area' in request.GET:
+        lots = lots.filter(area__gte=request.GET['min_area'])
+    if 'max_area' in request.GET:
+        max_area = request.GET['max_area']
+        if max_area < 100000:
+            lots = lots.filter(area__lte=max_area)
 
     lots_geojson = _lot_collection(lots)
     return HttpResponse(geojson.dumps(lots_geojson), mimetype='application/json')
@@ -38,6 +46,11 @@ def details_json(request, bbl=None):
         'area': float(lot.area),
     }
     return HttpResponse(json.dumps(details), mimetype='application/json')
+
+def owners_json(request):
+    owners = dict(Owner.objects.filter(type__name='city').values_list('id', 'name'))
+    return HttpResponse(json.dumps(owners), mimetype='application/json')
+
 
 def details(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)

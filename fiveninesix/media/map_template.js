@@ -104,10 +104,24 @@ $(document).ready(function() {
             update_area_display(ui.values[0], ui.values[1]);
         },
         change: function(event, ui) {
-            $('#map').data('lotmap').restrictByArea(ui.values[0], ui.values[1]);
+            $('#map').data('lotmap').filterByArea(ui.values[0], ui.values[1]);
         },
     });
     update_area_display(1, max_area_range);
+
+    $('.filters .agency select').attr('disabled', 'disabled');
+    $.getJSON('/owners/json/', function(owners) {
+        $.each(owners, function(id, name) {
+            var option = $('<option></option>').text(name).attr('value', id);
+            $('.filters .agency select').append(option);
+        });
+        $('.filters .agency select').removeAttr('disabled');
+    });
+
+    $('.filters .agency select').change(function() {
+        var agency_id = $(this).find('option:selected').attr('value')
+        $('#map').data('lotmap').filterByAgency(agency_id);
+    });
 
     $('#searchbar input[name="current_location"]').click(function() {
         navigator.geolocation.getCurrentPosition(

@@ -50,7 +50,7 @@
                     <td>
                         <span>
                             {% if lot.area %}
-                                {{ lot.area }} square feet
+                                {{ lot.area|floatformat }} square feet
                             {% else %}
                                 unknown
                             {% endif %}

@@ -46,7 +46,7 @@
                 </td>
             </tr>
             <tr class="owner">
-                <th>owner</th>
+                <th>agency</th>
                 <td>
                     <span>
                         {% if lot.owner %}
@@ -62,7 +62,7 @@
                 <td>
                     <span>
                         {% if lot.area %}
-                            {{ lot.area }} square feet
+                            {{ lot.area|floatformat }} square feet
                         {% else %}
                             unknown
                         {% endif %}
@@ -78,7 +78,7 @@
         </table>
     </div>
     <div id="owner">
-        <h2>owner</h2>
+        <h2>agency</h2>
         {% if lot.owner %}
         <table>
             <tr>

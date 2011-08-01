@@ -132,7 +132,48 @@
             Currently organizing here:
             <ul>
             {% for organizer in organizers %}
-                <li><a href="{{ organizer.url }}" target="_blank">{{ organizer.name }}</a></li>
+                {% if forloop.last %}<li class="last">{% else %}<li>{% endif %}
+                    <table>
+                        <tr>
+                            <th>name</th>
+                            <td>
+                                <span>{{ organizer.name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>type</th>
+                            <td>
+                                <span>{{ organizer.type }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>site</th>
+                            <td>
+                                <span>
+                                {% if organizer.url %}
+                                <a href="{{ organizer.url }}" target="_blank">{{ organizer.url }}</a>
+                                {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>phone</th>
+                            <td>
+                                <span>{{ organizer.phone|default:"" }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>email</th>
+                            <td>
+                                <span>
+                                {% if organizer.email %}
+                                <a href="mailto:{{ organizer.email }}" target="_blank">{{ organizer.email }}</a>
+                                {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
             {% empty %}
             No one yet.
             {% endfor %}

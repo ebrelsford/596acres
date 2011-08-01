@@ -265,6 +265,14 @@ div.tabs {
 }
 div.tabs #organize ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
+}
+div.tabs #organize ul li {
+    border-bottom: 1px solid black;
+}
+div.tabs #organize ul li.last {
+    border-bottom: 0;
 }
 .ui-tabs {
     border: 0 !important;
@@ -276,6 +284,10 @@ div.tabs #organize ul {
 }
 .ui-tabs .ui-tabs-nav li a {
     padding-bottom: 0;
+}
+
+.ui-widget-content a {
+    color: #2C8020 !important;
 }
 
 form > table th {
@@ -314,6 +326,17 @@ form > table td input[type=text] {
 #lot-details h2 {
     margin-bottom: 0;
 }
+#lot-details #organize ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#lot-details #organize ul li {
+    border-bottom: 1px solid black;
+}
+#lot-details #organize ul li.last {
+    border-bottom: 0;
+}
 
 .facebook-photo {
     padding: 5px;
@@ -333,3 +356,5 @@ form > table td input[type=text] {
 .facebook-photo.loading a {
     display: none;
 }
+
+

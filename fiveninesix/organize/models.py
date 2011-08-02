@@ -10,6 +10,7 @@ class Organizer(models.Model):
     phone = models.CharField(max_length=32, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
 
     lots = models.ManyToManyField(Lot)
     type = models.ForeignKey('OrganizerType')

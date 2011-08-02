@@ -27,6 +27,8 @@ function submit_organize_form($tab, url) {
 }
 
 function on_organize_form_submit($tab, url) {
+    // TODO disable submit button
+    // TODO reload organize tab instead of showing 'thanks'
     return function() {
         $tab.find('form').submit(function(e) {
             submit_organize_form($tab, url);

@@ -23,11 +23,11 @@ function load_organize_form($tab, url) {
 }
 
 function submit_organize_form($tab, url) {
+    $tab.find('input[type=submit]').attr('disabled', 'disabled');
     $tab.load(url, $tab.find('form').serializeArray(), on_organize_form_submit($tab, url));
 }
 
 function on_organize_form_submit($tab, url) {
-    // TODO disable submit button
     // TODO reload organize tab instead of showing 'thanks'
     return function() {
         $tab.find('form').submit(function(e) {

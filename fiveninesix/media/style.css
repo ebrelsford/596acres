@@ -156,6 +156,9 @@ ul.nav ul {
     -moz-border-radius: 10px;
     border: 1px solid black !important;
 }
+.olPopupContent {
+    overflow: hidden !important;
+}
 .olPopupCloseBox {
     background-image: url(/media/img/close.gif) !important;
 }
@@ -276,6 +279,9 @@ div.tabs #organize ul li.last {
 }
 .ui-tabs {
     border: 0 !important;
+    height: 90%;
+    width: 98%;
+    position: absolute !important;
 }
 .ui-tabs .ui-tabs-nav {
     border: 0 !important;
@@ -284,6 +290,13 @@ div.tabs #organize ul li.last {
 }
 .ui-tabs .ui-tabs-nav li a {
     padding-bottom: 0;
+}
+.ui-tabs-panel {
+    padding: 0 !important;
+    position: absolute;
+    height: 85%;
+    width: 98%;
+    overflow-y: auto;
 }
 
 .ui-widget-content a {

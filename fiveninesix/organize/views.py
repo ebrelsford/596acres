@@ -1,7 +1,7 @@
 import json
 
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 
 from lots.models import Lot
@@ -23,6 +23,14 @@ def details(request, bbl=None):
         })
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
+def details_tab(request, bbl=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+
+    return render_to_response('organize/tab.html', {
+        'organizers': lot.organizer_set.all()
+    }, context_instance=RequestContext(request))
+
+
 def add_organizer(request, bbl=None, ajax=False):
     lots = Lot.objects.filter(bbl=bbl)
     if request.method == 'POST':    
@@ -30,7 +38,7 @@ def add_organizer(request, bbl=None, ajax=False):
         if form.is_valid():
             organizer = form.save()
             if ajax:
-                return add_organizer_thanks(request)
+                return details_tab(request, bbl=bbl)
             else:
                 return redirect('lots.views.details', bbl=bbl)
     else:
@@ -46,6 +54,3 @@ def add_organizer(request, bbl=None, ajax=False):
         'form': form,
         'lot': lots[0],
     }, context_instance=RequestContext(request))
-
-def add_organizer_thanks(request):
-    return render_to_response('organize/add_organizer_thanks.html', {}, context_instance=RequestContext(request))

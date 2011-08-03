@@ -19,21 +19,24 @@ function show_with_streetview(id, feature) {
 }
 
 function load_organize_form($tab, url) {
-    $tab.load(url, on_organize_form_submit($tab, url));
+    $tab.load(url, on_organize_tab_load($tab, url));
 }
 
 function submit_organize_form($tab, url) {
     $tab.find('input[type=submit]').attr('disabled', 'disabled');
-    $tab.load(url, $tab.find('form').serializeArray(), on_organize_form_submit($tab, url));
+    $tab.load(url, $tab.find('form').serializeArray(), on_organize_tab_load($tab, url));
 }
 
-function on_organize_form_submit($tab, url) {
-    // TODO reload organize tab instead of showing 'thanks'
+function on_organize_tab_load($tab, url) {
     return function() {
         $tab.find('form').submit(function(e) {
             submit_organize_form($tab, url);
             return false;
         });  
+        $tab.find('a.add_organizer').click(function() {
+            load_organize_form($tab, url);
+            return false;
+        });
     }
 }
 

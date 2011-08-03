@@ -315,7 +315,7 @@ var LotMap = {
     // ensures that the map is updated accordingly
     //
     filterByAgency: function(agency_id) {
-        this.selectedAgency = agency_id;
+        this.selectedAgency = agency_id === 'all' ? null : agency_id;
         this.reloadLotLayer();
     },
 

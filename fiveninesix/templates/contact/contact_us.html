@@ -1,0 +1,15 @@
+{% extends "base_with_sidebar.html" %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content_main %}
+<p>Have a question or comment for us or about this project? Use the form below!</p>
+<form method="post" action=".">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="submit" />
+</form>
+{% endblock %}
+

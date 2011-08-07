@@ -23,3 +23,11 @@ class JoinUsRequest(models.Model):
     phone = models.CharField(max_length=32, null=True, blank=True)
 
     handled = models.BooleanField(default=False)
+
+class ContactRequest(models.Model):
+    name = models.CharField(max_length=128)
+    email = models.EmailField()
+    phone = models.CharField(max_length=32, null=True, blank=True)
+    message = models.TextField()
+
+    handled = models.BooleanField(default=False)

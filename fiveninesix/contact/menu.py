@@ -10,6 +10,7 @@ class ContactMenu(CMSAttachMenu):
         nodes = []
         nodes.append(NavigationNode(_('Tell Us About the Lot in Your Life'), '/get-involved/lot-in-your-life/', 1))
         nodes.append(NavigationNode(_('Join The 596 Acres Distribution Team'), '/get-involved/join-the-team/', 2))
+        nodes.append(NavigationNode(_('Contact Us'), '/get-involved/contact-us/', 3))
         return nodes
 
 menu_pool.register_menu(ContactMenu)

@@ -110,6 +110,7 @@ ul.nav ul {
     width: 299px;
     border-left: 1px solid black;
     padding-left: 5px;
+    padding-bottom: 50px;
 }
 
 #main #content.with-sidebar {
@@ -123,7 +124,6 @@ ul.nav ul {
 #footer {
     font-size: 12px;
     text-align: center;
-    margin-top: 50px;
     border-top: 1px solid black;
     padding: 10px;
 }

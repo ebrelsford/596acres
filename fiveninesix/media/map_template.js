@@ -115,9 +115,9 @@ $(document).ready(function() {
     update_area_display(1, max_area_range);
 
     $('.filters .agency select').attr('disabled', 'disabled');
-    $.getJSON('/owners/json/', function(owners) {
-        $.each(owners, function(id, name) {
-            var option = $('<option></option>').text(name).attr('value', id);
+    $.getJSON('/owners/json/', function(data) {
+        $.each(data.owners, function(i, owner) {
+            var option = $('<option></option>').text(owner[1]).attr('value', owner[0]);
             $('.filters .agency select').append(option);
         });
         $('.filters .agency select').removeAttr('disabled');

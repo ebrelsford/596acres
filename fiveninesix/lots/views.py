@@ -48,7 +48,9 @@ def details_json(request, bbl=None):
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
 def owners_json(request):
-    owners = dict(Owner.objects.filter(type__name='city').values_list('id', 'name'))
+    owners = {
+        'owners': list(Owner.objects.filter(type__name='city').values_list('id', 'name').order_by('name')),
+    }
     return HttpResponse(json.dumps(owners), mimetype='application/json')
 
 

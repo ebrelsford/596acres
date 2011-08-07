@@ -371,3 +371,14 @@ form > table td input[type=text] {
 }
 
 
+.blog .entry {
+    width: 80%;
+    float: left;
+}
+.blog .sidebar {
+    width: 19%;
+    float: left;
+}
+.blog .sidebar h1 {
+    font-size: 12px;
+}

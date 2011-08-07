@@ -14,7 +14,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-LANGUAGES = [('en', 'en')]
+LANGUAGES = [('en-us', 'English')]
 DEFAULT_LANGUAGE = 0
 
 DATABASES = {
@@ -124,9 +124,19 @@ INSTALLED_APPS = (
     'cms.plugins.file',
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
+    'tinymce',
+    'compressor',
 
+    'cmsplugin_blog',
+    'djangocms_utils',
+    'simple_translation',
+    'tagging',
+    'missing',
+
+    'contact',
     'lots',
     'organize',
+    'facebook',
 )
 
 CACHES = {
@@ -138,3 +148,7 @@ CACHES = {
 
 CMS_CONTENT_CACHE_DURATION = 60
 MENU_CACHE_DURATION = 3600
+
+JQUERY_UI_CSS = '/media/jquery-ui/custom.css'
+JQUERY_UI_JS = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js'
+JQUERY_JS = '/media/admin/js/jquery.js'

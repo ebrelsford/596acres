@@ -378,6 +378,7 @@ form > table td input[type=text] {
 .blog .sidebar {
     width: 19%;
     float: left;
+    padding-left: 5px;
 }
 .blog .sidebar h1 {
     font-size: 12px;

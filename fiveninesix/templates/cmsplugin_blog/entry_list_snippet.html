@@ -1,15 +1,19 @@
 {% load i18n placeholder_tags cmsplugin_blog_tags simple_translation_tags %}
 
 {% for entry in entries|annotate_with_translations %}
+<div class="entry">
     {% with entry|get_preferred_translation_from_request:request as title %}
-    <h2><a href="{{ title.get_absolute_url }}">{{ title }}</a></h2>
+    <h2 class="title"><a href="{{ title.get_absolute_url }}">{{ title }}</a></h2>
 	{% endwith %}
 
     <p class="date"><span>{{ entry.pub_date|date:"d F Y" }}</span></p>
 
+    <div class="text">
     {% with entry.placeholders|choose_placeholder:"main" as main %}
         {% render_placeholder main %}
     {% endwith %}
+    </div>
+</div>
 {% empty %}
 	<p>{% trans "No news" %}<p>
 {% endfor %}

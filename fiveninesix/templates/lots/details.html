@@ -10,6 +10,14 @@
 {{ block.super }}
 <div id="lot-details">
     <h1>{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</h1>
+    {% if not lot.is_vacant %}
+    <p>
+        This lot isn't vacant.
+        {% if 'Garden' in lot.actual_use %}
+        It is part of a community garden.
+        {% endif %}
+    </p>
+    {% endif %}
     <div id="basics">
         <h2>details</h2>
         <table>

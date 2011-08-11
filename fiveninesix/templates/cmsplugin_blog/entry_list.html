@@ -1,0 +1,21 @@
+{% extends "cmsplugin_blog/cmsplugin_blog_base.html" %}
+{% load i18n cmsplugin_blog_tags simple_translation_tags %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="alternate" type="application/rss+xml" title="RSS feed for tag &quot;{{ tag|escape }}&quot;" href="{% if request.LANGUAGE_CODE %}/{{ request.LANGUAGE_CODE }}{% endif %}{% url blog_rss_tagged tag %}" />
+<link rel="alternate" type="application/rss+xml" title="RSS feed for tag &quot;{{ tag|escape }}&quot; (any language)" href="{% if request.LANGUAGE_CODE %}/{{ request.LANGUAGE_CODE }}{% endif %}{% url blog_rss_any_tagged tag %}" />
+{% endblock extrahead %}
+
+{% block title %}{% trans "News tagged" %} "{{ tag }}"{% endblock %}
+
+{% block left-col %}
+<h1>{% trans "News tagged" %} "{{ tag }}"</h1>
+
+{% include "cmsplugin_blog/entry_list_snippet.html" with entries=object_list %}
+
+{% endblock %}
+
+{% block right-col %}
+{% include "cmsplugin_blog/right_col_snippet.html" %}
+{% endblock %}

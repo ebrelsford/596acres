@@ -1,24 +1,12 @@
 {% extends "cmsplugin_blog/cmsplugin_blog_base.html" %}
-{% load i18n cmsplugin_blog_tags simple_translation_tags %}
+{% load i18n placeholder_tags cmsplugin_blog_tags simple_translation_tags %}
 
 {% block left-col %}
-<h1>{% trans "Latest entries" %}</h1>
-
-{% for entry in latest|annotate_with_translations %}
-    {% with entry|get_preferred_translation_from_request:request as title %}
-    <p>{{ entry.pub_date|date:"d b Y" }}<br/><a href="{{ title.get_absolute_url }}">{{ title }}</a></p>
-	{% endwith %}
-{% empty %}
-	<p>{% trans "No entries" %}<p>
-{% endfor %}
-
+<h1>{% trans "Latest news" %}</h1>
+{% include "cmsplugin_blog/entry_list_snippet.html" with entries=latest %}
 
 {% endblock %}
 
 {% block right-col %}
-
-{% render_month_links %}
-
-{% render_tag_links %}
-
+{% include "cmsplugin_blog/right_col_snippet.html" %}
 {% endblock %}

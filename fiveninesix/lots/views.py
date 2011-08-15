@@ -1,6 +1,8 @@
+from datetime import date
 import geojson
 import json
 from random import randint
+import simplekml
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
@@ -9,6 +11,32 @@ from django.template import RequestContext
 from models import Lot, Owner, OwnerType
 
 def lot_geojson(request):
+    lots_geojson = _lot_collection(_filter_lots(request))
+
+    response = HttpResponse(mimetype='application/json')
+    if 'download' in request.GET and request.GET['download'] == 'true':
+        response['Content-Disposition'] = 'attachment; filename="596acres (%s).geojson"' % date.today().strftime('%m-%d-%Y')
+    response.write(geojson.dumps(lots_geojson))
+    return response
+
+def lot_kml(request):
+    """Download lots as KML, filtered using the given request"""
+    kml = simplekml.Kml()
+    
+    for lot in _filter_lots(request):
+        kml.newpoint(
+            name=lot.bbl, 
+            description="bbl: %s<br/>agency: %s<br/>area: %f square feet" % (lot.bbl, lot.owner.name, lot.area), 
+            coords=[(lot.centroid.x, lot.centroid.y)]
+        )
+
+    response = HttpResponse(mimetype='application/vnd.google-earth.kml+xml')
+    if 'download' in request.GET and request.GET['download'] == 'true':
+        response['Content-Disposition'] = 'attachment; filename="596acres (%s).kml"' % date.today().strftime('%m-%d-%Y')
+    response.write(kml.kml(format=False))
+    return response
+
+def _filter_lots(request):
     mapped_lots = Lot.objects.filter(centroid__isnull=False)
     lots = mapped_lots
 
@@ -42,8 +70,7 @@ def lot_geojson(request):
             if 'garden' in lot_types:
                 lots = lots_garden
 
-    lots_geojson = _lot_collection(lots)
-    return HttpResponse(geojson.dumps(lots_geojson), mimetype='application/json')
+    return lots
 
 def details_json(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)

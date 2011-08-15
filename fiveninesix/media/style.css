@@ -253,6 +253,9 @@ ul.nav ul {
     display: inline-block;
     width: 42%;
 }
+.filters select {
+    width: 42%;
+}
 
 
 .popup_loading {

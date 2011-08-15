@@ -57,7 +57,7 @@ function is_in(longitude, latitude, bounds) {
 
 $(document).ready(function() {
     $('#map').lotmap({
-        queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
+        queryString: 'source=OASIS,Nominatim,Google&owner_type=city&lot_type=vacant',   
         addContentToPopup: function(popup, feature) {
             // loading....
             var $loading_clone = $('.popup_loading').clone();
@@ -124,8 +124,13 @@ $(document).ready(function() {
     });
 
     $('.filters .agency select').change(function() {
-        var agency_id = $(this).find('option:selected').attr('value')
+        var agency_id = $(this).find('option:selected').attr('value');
         $('#map').data('lotmap').filterByAgency(agency_id);
+    });
+
+    $('.filters .lot-type select').change(function() {
+        var lot_types = $(this).find('option:selected').attr('value').split(',');
+        $('#map').data('lotmap').filterByLotType(lot_types);
     });
 
     $('#searchbar input[name="current_location"]').click(function() {

@@ -8,6 +8,14 @@
             <li><a href="#organize"><img src="{{ MEDIA_URL }}img/tabs_organize.png" /></a></li>
         </ul>
         <div id="lot">
+            {% if not lot.is_vacant %}
+            <p>
+                This lot isn't vacant.
+                {% if 'Garden' in lot.actual_use %}
+                It is part of a community garden.
+                {% endif %}
+            </p>
+            {% endif %}
             <table>
                 <tr>
                     <th>address</th>

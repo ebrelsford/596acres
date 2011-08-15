@@ -1,11 +1,47 @@
 var LotMap = {
 
+    //
+    // projections
+    //
     epsg4326: new OpenLayers.Projection("EPSG:4326"),
     epsg900913: new OpenLayers.Projection("EPSG:900913"),
 
+    //
+    // filters
+    //
     minArea: null,
     maxArea: null,
     selectedAgency: null,
+    lot_types: ['vacant',],
+
+    //
+    // styles
+    //
+    defaultStyle: new OpenLayers.StyleMap({
+        'default': new OpenLayers.Style({             
+            pointRadius: 3,
+            fillColor: '#3f9438',
+            fillOpacity: 0.8,
+            strokeWidth: 0,
+        }),
+        'select': {
+            pointRadius: 15,
+        },
+        'temporary': {
+            pointRadius: 15,
+        },
+    }),
+
+    gardenStyle: {
+        strokeColor: 'black',
+        strokeWidth: 1,
+    },
+
+    borderStyle: {
+        'strokeWidth': 3,
+        'strokeColor': '#A4788C',
+        'fillOpacity': 0,
+    },
 
     init: function(options, elem) {
         var t = this;
@@ -13,6 +49,8 @@ var LotMap = {
 
         this.elem = elem;
         this.$elem = $(elem);
+
+        this.addRulesToStyle(this.defaultStyle.styles['default']);
 
         this.olMap = new OpenLayers.Map(this.$elem.attr('id'), {
             controls: [
@@ -39,7 +77,7 @@ var LotMap = {
 
         this.olMap.zoomToMaxExtent();
 
-        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString, this.styles['default']);
+        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString);
         this.lot_layer.events.on({
             'loadend': function() {
                 if (t.lot_layer.features.length == 1) {
@@ -88,29 +126,30 @@ var LotMap = {
         return b;
     },
 
-    styles: {
-        'default': {
-            pointRadius: '3',
-            fillColor: '#3f9438',
-            fillOpacity: '0.8',
-            strokeWidth: 0,
-        },
-        'single': { 
-            pointRadius: '6', 
-            fillColor: '#f9ff51', 
-            fillOpacity: '0.6',
-        },
-    },
+    //
+    // Add style rule to check for gardens and style them differently
+    //
+    addRulesToStyle: function(style) {
+         style.addRules([
+             new OpenLayers.Rule({
+                 filter: new OpenLayers.Filter.Comparison({
+                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                     property: 'is_garden',
+                     value: true,
+                 }),
+                 symbolizer: this.gardenStyle,
+             }),
+             new OpenLayers.Rule({
+                 elseFilter: true,
+             }),
+         ]);
+     },
 
-    getStyles: function(style) {
-        return new OpenLayers.StyleMap({'default': style, 'select': {pointRadius: 15}, 'temporary': {pointRadius: 10}});
-    },
-
-    getLayer: function(name, url, style) {
+    getLayer: function(name, url) {
         var layer = new OpenLayers.Layer.Vector(name, {
             projection: this.olMap.displayProjection,
             strategies: [new OpenLayers.Strategy.Fixed()],
-            styleMap: this.getStyles(style),
+            styleMap: this.defaultStyle,
             protocol: new OpenLayers.Protocol.HTTP({
                 url: url,
                 format: new OpenLayers.Format.GeoJSON()
@@ -120,6 +159,9 @@ var LotMap = {
         return layer;
     },
 
+    //
+    // Add hover and select controls to the given layer
+    //
     addControls: function(layers) {
         this.getControlHoverFeature(layers);
         this.selectControl = this.getControlSelectFeature(layers);
@@ -219,11 +261,7 @@ var LotMap = {
                 format: new OpenLayers.Format.GeoJSON(),
             }),
             styleMap: new OpenLayers.StyleMap({
-                'default': {
-                    'strokeWidth': 3,
-                    'strokeColor': '#A4788C',
-                    'fillOpacity': 0,
-                },
+                'default': this.borderStyle,
             }),
         });
         this.olMap.addLayer(layer);
@@ -304,7 +342,11 @@ var LotMap = {
         if (this.maxArea !== null) {
             extraParameters += '&max_area=' + this.maxArea;
         }
-        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString + extraParameters, this.styles['default']);
+        if (this.lot_types) {
+            extraParameters += '&lot_type=' + this.lot_types.join(',');
+        }
+
+        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString + extraParameters);
 
         this.addControls([this.lot_layer]);
         this.olMap.addLayer(this.lot_layer);
@@ -326,6 +368,17 @@ var LotMap = {
     filterByArea: function(min, max) {
         this.minArea = min;
         this.maxArea = max;
+        this.reloadLotLayer();
+    },
+
+    //
+    // Filter by the type of lot. The currently allowed types are:
+    //  * 'vacant' and
+    //  * 'garden'
+    // and they can independently be true or false.
+    //
+    filterByLotType: function(types) {
+        this.lot_types = types;
         this.reloadLotLayer();
     },
 

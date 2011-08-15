@@ -9,7 +9,8 @@ from django.template import RequestContext
 from models import Lot, Owner, OwnerType
 
 def lot_geojson(request):
-    lots = Lot.objects.filter(centroid__isnull=False, is_vacant=True)
+    mapped_lots = Lot.objects.filter(centroid__isnull=False)
+    lots = mapped_lots
 
     if 'source' in request.GET:
         sources = request.GET['source'].split(',')
@@ -29,6 +30,17 @@ def lot_geojson(request):
         max_area = request.GET['max_area']
         if max_area < 100000:
             lots = lots.filter(area__lte=max_area)
+    if 'lot_type' in request.GET:
+        lot_types = request.GET['lot_type'].split(',')
+        lots_vacant = lots.filter(is_vacant=True)
+        lots_garden = lots.filter(actual_use__startswith='Garden')
+        if 'vacant' in lot_types and 'garden' in lot_types:
+            lots = lots_vacant | lots_garden
+        else:
+            if 'vacant' in lot_types:
+                lots = lots_vacant
+            if 'garden' in lot_types:
+                lots = lots_garden
 
     lots_geojson = _lot_collection(lots)
     return HttpResponse(geojson.dumps(lots_geojson), mimetype='application/json')
@@ -78,7 +90,8 @@ def _lot_feature(lot):
         geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
         properties={
             'area': float(lot.area),
-        }
+            'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
+        },
     )
 
 def tabs(request, bbl=None):

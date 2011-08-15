@@ -77,7 +77,7 @@ var LotMap = {
 
         this.olMap.zoomToMaxExtent();
 
-        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString);
+        this.lot_layer = this.getLayer('lots', this.options.url + this.getQueryString());
         this.lot_layer.events.on({
             'loadend': function() {
                 if (t.lot_layer.features.length == 1) {
@@ -325,13 +325,9 @@ var LotMap = {
     },
 
     //
-    // Reload the lot layer using filters that are set by the user, then updated
-    // on this object using a filterBy*()
+    // Get the query string for the currently chosen parameters
     //
-    reloadLotLayer: function() {
-        this.olMap.removeLayer(this.lot_layer);
-        this.lot_layer.destroy();
-
+    getQueryString: function() {
         var extraParameters = "";
         if (this.selectedAgency !== null) {
             extraParameters += '&owner_id=' + this.selectedAgency;
@@ -345,8 +341,18 @@ var LotMap = {
         if (this.lot_types) {
             extraParameters += '&lot_type=' + this.lot_types.join(',');
         }
+        return this.options.queryString + extraParameters;
+    },
 
-        this.lot_layer = this.getLayer('lots', this.options.url + this.options.queryString + extraParameters);
+    //
+    // Reload the lot layer using filters that are set by the user, then updated
+    // on this object using a filterBy*()
+    //
+    reloadLotLayer: function() {
+        this.olMap.removeLayer(this.lot_layer);
+        this.lot_layer.destroy();
+
+        this.lot_layer = this.getLayer('lots', this.options.url + this.getQueryString());
 
         this.addControls([this.lot_layer]);
         this.olMap.addLayer(this.lot_layer);

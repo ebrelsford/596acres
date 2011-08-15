@@ -57,7 +57,7 @@ function is_in(longitude, latitude, bounds) {
 
 $(document).ready(function() {
     $('#map').lotmap({
-        queryString: 'source=OASIS,Nominatim,Google&owner_type=city&lot_type=vacant',   
+        queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
         addContentToPopup: function(popup, feature) {
             // loading....
             var $loading_clone = $('.popup_loading').clone();

@@ -7,10 +7,10 @@
 <link rel="alternate" type="application/rss+xml" title="RSS feed for tag &quot;{{ tag|escape }}&quot; (any language)" href="{% if request.LANGUAGE_CODE %}/{{ request.LANGUAGE_CODE }}{% endif %}{% url blog_rss_any_tagged tag %}" />
 {% endblock extrahead %}
 
-{% block title %}{% trans "News tagged" %} "{{ tag }}"{% endblock %}
+{% block title %}{% trans "News" %}: {{ tag|capfirst }}{% endblock %}
 
 {% block left-col %}
-<h1>{% trans "News tagged" %} "{{ tag }}"</h1>
+<h1>{{ tag|capfirst }}</h1>
 
 {% include "cmsplugin_blog/entry_list_snippet.html" with entries=object_list %}
 

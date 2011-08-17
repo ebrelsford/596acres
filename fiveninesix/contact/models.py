@@ -65,7 +65,7 @@ class ContactRequest(AbstractContactRequest):
     def get_label_for_mail(self):
         return 'message'
 
-@receiver(post_save, sender=ContactRequest, dispatch_uid='contact_model_saved')
+@receiver(post_save, dispatch_uid='contact_model_saved')
 def contact_model_saved(sender, **kwargs):
     if issubclass(sender, AbstractContactRequest):
         _send_email_for_request(kwargs['instance'])

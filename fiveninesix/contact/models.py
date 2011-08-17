@@ -76,7 +76,8 @@ def _send_email_for_request(request):
         'A new %s was sent via 596acres.org' % request.get_label_for_mail(), 
         """Oh man! A new %s was sent via 596acres.org.
         
-Details: %s
+Details: 
+%s
 
 View on the site: %s
 

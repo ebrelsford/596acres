@@ -1,6 +1,11 @@
 <!doctype html>
 <body>
-<div>
+<div class="lot-popup">
+
+    <div class="lot-link-container">
+        <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">link to {{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a>
+    </div>
+
     <div class="tabs">
         <ul>
             <li><a href="#lot"><img src="{{ MEDIA_URL }}img/tabs_lot.png" /></a></li>
@@ -183,10 +188,6 @@
                 <a class="add_organizer" href="#">I'm organizing here!</a>
             </div>
         </div>
-    </div>
-
-    <div id="lot-link-container" style="position: absolute; bottom: 0;">
-        <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">link to {{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a>
     </div>
 </div>
 <body>

@@ -266,6 +266,10 @@ ul.nav ul {
     height: 300px;
 }
 
+.lot-popup .lot-link-container {
+    padding-left: 5px;
+}
+
 div.tabs {
     font-size: 12px;
 }

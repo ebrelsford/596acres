@@ -401,3 +401,21 @@ form > table td input[type=text] {
     margin-top: 0;
     font-size: 10px;
 }
+
+.recent-entries {
+    border-bottom: 1px solid lightGray;
+}
+.recent-entries ul {
+    padding: 0;
+    margin: 0;
+}
+.recent-entries li {
+    list-style: none;
+}
+.recent-entries .entry {
+    margin-bottom: 0;
+    border: 0;
+}
+.recent-entries .entry .title {
+    margin-top: 0;
+}

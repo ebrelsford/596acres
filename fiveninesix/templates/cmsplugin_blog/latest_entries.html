@@ -22,7 +22,7 @@
                 <div class="text">
                 {% with entry.placeholders|choose_placeholder:"main" as main %}
                     {% with main.get_plugins|first as text %}
-                    {{ text.render_plugin|truncatewords_html:"8" }} &nbsp; &nbsp; <a href="{{ title.get_absolute_url }}">more</a>
+                    {{ text.render_plugin|truncatewords_html:"8" }} &nbsp; <a href="{{ title.get_absolute_url }}">read the rest</a>
                     {% endwith %}
                 {% endwith %}
                 </div>

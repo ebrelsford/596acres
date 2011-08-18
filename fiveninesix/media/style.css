@@ -424,3 +424,6 @@ form > table td input[type=text] {
 .recent-entries .entry .title {
     margin-top: 0;
 }
+.recent-entries .entry .text p {
+    display: inline-block;
+}

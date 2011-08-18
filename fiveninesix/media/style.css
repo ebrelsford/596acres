@@ -391,6 +391,7 @@ form > table td input[type=text] {
     font-size: 12px;
 }
 .blog .entry {
+    border-bottom: 1px solid lightGray;
     margin-bottom: 50px;
 }
 .blog .entry .title {

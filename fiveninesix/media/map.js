@@ -117,6 +117,7 @@ var LotMap = {
         queryString: '',
         onLoad: function(feature) {},
         onFeatureUnselect: function(feature) {},
+        filter: true,
     },
 
     createBBox: function(lon1, lat1, lon2, lat2) {
@@ -328,6 +329,8 @@ var LotMap = {
     // Get the query string for the currently chosen parameters
     //
     getQueryString: function() {
+        if (!this.options.filter) return this.options.queryString;
+
         var extraParameters = "";
         if (this.selectedAgency !== null) {
             extraParameters += '&owner_id=' + this.selectedAgency;

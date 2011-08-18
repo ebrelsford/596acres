@@ -26,6 +26,7 @@ $(document).ready(function() {
     }
 
     $('#map').lotmap({
+        filter: false,
         queryString: 'source=OASIS,Nominatim,Google&owner_type=city&bbls={{ lot.bbl }}',   
         onLoad: function(feature) {
             show_with_streetview('streetview', feature);

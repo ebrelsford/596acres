@@ -1,4 +1,4 @@
-{% load i18n simple_translation_tags %} 
+{% load i18n placeholder_tags cmsplugin_blog_tags simple_translation_tags %} 
 
 <div class="blog recent-entries">
     <h2>Recent news</h2>
@@ -7,7 +7,6 @@
         <li class="entry">
             {% with entry|get_preferred_translation_from_request:request as title %}
             <h3 class="title"><a href="{{ title.get_absolute_url }}">{{ title }}</a></h3>
-            {% endwith %}              
 
             <div class="meta">
                 <div class="date">{{ entry.pub_date|date:"F d Y" }}</div>
@@ -20,7 +19,15 @@
                     {% endfor %}
                 </div>
                 {% endif %}
+                <div class="text">
+                {% with entry.placeholders|choose_placeholder:"main" as main %}
+                    {% with main.get_plugins|first as text %}
+                    {{ text.render_plugin|truncatewords:"8" }} &nbsp; &nbsp; <a href="{{ title.get_absolute_url }}">more</a>
+                    {% endwith %}
+                {% endwith %}
+                </div>
             </div>
+            {% endwith %}              
         </li>
 {% empty %}
         <li>

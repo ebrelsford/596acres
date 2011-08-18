@@ -111,7 +111,7 @@
                     <th>site</th>
                     <td class="site">
                         {% if lot.owner.site %}
-                        {{ lot.owner.site|urlizetrunc:"40" }}
+                        <a target="_blank" href="{{ lot.owner.site }}">{{ lot.owner.site }}</a>
                         {% endif %}
                     </td>
                 </tr>

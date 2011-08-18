@@ -3,13 +3,24 @@
 <div class="blog recent-entries">
     <h2>Recent news</h2>
     <ul>
-{% for object in latest|annotate_with_translations %}
+{% for entry in latest|annotate_with_translations %}
         <li class="entry">
-            {% with object|get_preferred_translation_from_request:request as title %}
+            {% with entry|get_preferred_translation_from_request:request as title %}
             <h3 class="title"><a href="{{ title.get_absolute_url }}">{{ title }}</a></h3>
             {% endwith %}              
 
-            <p class="date">{{ object.pub_date|date:"F d Y" }}</p>
+            <div class="meta">
+                <div class="date">{{ entry.pub_date|date:"F d Y" }}</div>
+
+                {% if entry.entry_tags %}
+                <div class="tags">
+                    tags: 
+                    {% for tag in entry.entry_tags %}
+                    <a href="{% url blog_archive_tagged tag=tag.name %}">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
         </li>
 {% empty %}
         <li>

@@ -6,7 +6,18 @@
     <h2 class="title"><a href="{{ title.get_absolute_url }}">{{ title }}</a></h2>
 	{% endwith %}
 
-    <p class="date"><span>{{ entry.pub_date|date:"d F Y" }}</span></p>
+    <div class="meta">
+        <div class="date"><span>{{ entry.pub_date|date:"d F Y" }}</span></div>
+
+        {% if entry.entry_tags %}
+        <div class="tags">
+            tags: 
+            {% for tag in entry.entry_tags %}
+            <a href="{% url blog_archive_tagged tag=tag.name %}">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
 
     <div class="text">
     {% with entry.placeholders|choose_placeholder:"main" as main %}

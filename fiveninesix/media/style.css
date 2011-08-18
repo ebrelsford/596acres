@@ -397,9 +397,9 @@ form > table td input[type=text] {
 .blog .entry .title {
     margin-bottom: 0;
 }
-.blog .entry .date {
-    margin-top: 0;
+.blog .entry .meta {
     font-size: 10px;
+    margin-bottom: 10px;
 }
 
 .recent-entries {

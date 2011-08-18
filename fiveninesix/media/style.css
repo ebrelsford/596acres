@@ -84,6 +84,14 @@ ul.nav ul {
     padding-right: 5px;
 }
 
+.subnav {
+    font-size: 12px;
+    text-align: center;
+}
+.subnav li {
+    display: inline-block;
+}
+
 #outer {
     width: 959px;
     margin-left: auto;

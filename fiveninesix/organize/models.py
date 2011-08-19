@@ -7,13 +7,13 @@ class Organizer(models.Model):
     Someone organizing around a lot or lots.
     """
     name = models.CharField(max_length=256)
+    type = models.ForeignKey('OrganizerType')
     phone = models.CharField(max_length=32, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
 
     lots = models.ManyToManyField(Lot)
-    type = models.ForeignKey('OrganizerType')
 
     def __unicode__(self):
         return self.name

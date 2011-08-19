@@ -2,6 +2,7 @@
 
 {% block scripts %}
 <script type="text/javascript">
+    {{ block.super }}
     $(document).ready(function() {
         $('.organizer').hover(
             function() { $(this).find('.actions').fadeIn(); },

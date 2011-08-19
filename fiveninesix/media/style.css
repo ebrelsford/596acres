@@ -355,11 +355,17 @@ form > table td input[type=text] {
     margin: 0;
     padding: 0;
 }
-#lot-details #organize ul li {
+#lot-details #organize .organizer {
     border-bottom: 1px solid black;
 }
-#lot-details #organize ul li.last {
+#lot-details #organize .organizer.last {
     border-bottom: 0;
+}
+#lot-details #organize .organizer .actions {
+    display: none;
+    float: right;
+    margin-top: 3px;
+    margin-right: 3px;
 }
 
 .facebook-photo {

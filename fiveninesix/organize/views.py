@@ -54,3 +54,26 @@ def add_organizer(request, bbl=None, ajax=False):
         'form': form,
         'lot': lots[0],
     }, context_instance=RequestContext(request))
+
+def edit_organizer(request, bbl=None, id=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    organizer = get_object_or_404(Organizer, id=id)
+
+    if request.method == 'POST':    
+        form = OrganizerForm(request.POST, instance=organizer)
+        if form.is_valid():
+            organizer = form.save()
+            return redirect('lots.views.details', bbl=bbl)
+    else:
+        form = OrganizerForm(instance=organizer)
+
+    return render_to_response('organize/edit_organizer.html', {
+        'form': form,
+        'lot': lot,
+    }, context_instance=RequestContext(request))
+
+def delete_organizer(request, bbl=None, id=None):
+    organizer = get_object_or_404(Organizer, id=id)
+    organizer.delete()
+
+    return redirect('lots.views.details', bbl=bbl)

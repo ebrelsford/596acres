@@ -1,5 +1,20 @@
 {% extends "lots/base.html" %}
 
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.organizer').hover(
+            function() { $(this).find('.actions').fadeIn(); },
+            function() { $(this).find('.actions').fadeOut(); }
+        );
+
+        $('.actions .delete').click(function() {
+            return confirm('Are you sure you want to delete this organizer? There is no undoing this!');
+        });
+    });
+</script>
+{% endblock %}
+
 {% block title %}{{ block.super }}: Details{% endblock %}
 
 {% block inner_right %}
@@ -132,7 +147,15 @@
             Currently organizing here:
             <ul>
             {% for organizer in organizers %}
-                {% if forloop.last %}<li class="last">{% else %}<li>{% endif %}
+                <li class="organizer{% if forloop.last %} last{% endif %}">
+                    <div class="actions">
+                        <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}">
+                            <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />
+                        </a>
+                        <a class="delete" href="{% url organize.views.delete_organizer bbl=lot.bbl id=organizer.id %}">
+                            <img title="delete this organizer" alt="delete this organizer" src="{{ MEDIA_URL }}img/trash.png" />
+                        </a>
+                    </div>
                     <table>
                         <tr>
                             <th>name</th>

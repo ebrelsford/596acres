@@ -1,0 +1,22 @@
+{% extends "lots/base.html" %}
+
+{% block title %}{{ block.super }}: Edit organizer{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="lot-details">
+    <h1>Edit organizer</h1>
+    <h2><a href="{% url lots.views.details bbl=lot.bbl %}">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a></h2>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="submit" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+

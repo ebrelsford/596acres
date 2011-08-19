@@ -67,9 +67,8 @@ ul.nav ul {
 
 #breadcrumbs {
     font-size: 12px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-top: 5px;
 }
 #breadcrumbs ul {
     list-style: none;

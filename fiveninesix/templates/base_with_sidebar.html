@@ -3,6 +3,13 @@
 
 {% block content %}
 <div id="content" class="with-sidebar">
+    {% block breadcrumbs %}
+    <div id="breadcrumbs">
+        <ul>
+        {% show_breadcrumb "cms/breadcrumb.html" %}
+        </ul>
+    </div>
+    {% endblock %}
     {% block subnav %}
     <div class="subnav">
         <ul class="nav">

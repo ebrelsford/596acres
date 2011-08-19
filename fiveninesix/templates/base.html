@@ -58,14 +58,6 @@
             </ul>
             <div style="clear: both;"></div>
         </div>
-        {% block breadcrumbs %}
-        <div id="breadcrumbs">
-            <ul>
-            {% show_breadcrumb "cms/breadcrumb.html" %}
-            </ul>
-            <div style="clear: both;"></div>
-        </div>
-        {% endblock %}
         <div id="main">
             {% block sidebar %}{% endblock %}
             {% block content %}{% endblock %}

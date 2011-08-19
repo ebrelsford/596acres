@@ -1,7 +1,7 @@
 {% load i18n placeholder_tags cmsplugin_blog_tags simple_translation_tags %}
 
 {% for entry in entries|annotate_with_translations %}
-<div class="entry">
+<div class="entry{% if forloop.last %} last{% endif %}">
     {% with entry|get_preferred_translation_from_request:request as title %}
     <h2 class="title"><a href="{{ title.get_absolute_url }}">{{ title }}</a></h2>
 	{% endwith %}

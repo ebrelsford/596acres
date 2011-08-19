@@ -397,10 +397,14 @@ form > table td input[type=text] {
 }
 .blog .entry {
     border-bottom: 1px solid lightGray;
-    margin-bottom: 50px;
+    padding-bottom: 25px;
+    padding-top: 5px;
+}
+.blog .entry.last {
+    border-bottom: 0;
 }
 .blog .entry .title {
-    margin-bottom: 0;
+    margin: 0;
 }
 .blog .entry .meta {
     font-size: 10px;
@@ -408,7 +412,11 @@ form > table td input[type=text] {
 }
 
 .recent-entries {
-    border-bottom: 1px solid lightGray;
+    border-bottom: 1px solid black;
+}
+.recent-entries h2 {
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 .recent-entries ul {
     padding: 0;
@@ -419,10 +427,11 @@ form > table td input[type=text] {
 }
 .recent-entries .entry {
     margin-bottom: 0;
-    border: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
-.recent-entries .entry .title {
-    margin-top: 0;
+.recent-entries .entry .meta {
+    margin-bottom: 0;
 }
 .recent-entries .entry .text p {
     display: inline-block;

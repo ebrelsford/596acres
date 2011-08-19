@@ -4,7 +4,7 @@
     <h2>Recent news</h2>
     <ul>
 {% for entry in latest|annotate_with_translations %}
-        <li class="entry">
+        <li class="entry{% if forloop.last %} last{% endif %}">
             {% with entry|get_preferred_translation_from_request:request as title %}
             <h3 class="title"><a href="{{ title.get_absolute_url }}">{{ title }}</a></h3>
 

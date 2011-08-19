@@ -1,8 +1,8 @@
 {% extends "lots/base.html" %}
 
 {% block scripts %}
-<script type="text/javascript">
     {{ block.super }}
+<script type="text/javascript">
     $(document).ready(function() {
         $('.organizer').hover(
             function() { $(this).find('.actions').fadeIn(); },

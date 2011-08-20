@@ -362,7 +362,6 @@ form > table td input[type=text] {
     border-bottom: 0;
 }
 #lot-details #organize .organizer .actions {
-    display: none;
     float: right;
     margin-top: 3px;
     margin-right: 3px;

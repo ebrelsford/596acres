@@ -4,11 +4,6 @@
     {{ block.super }}
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.organizer').hover(
-            function() { $(this).find('.actions').fadeIn(); },
-            function() { $(this).find('.actions').fadeOut(); }
-        );
-
         $('.actions .delete').click(function() {
             return confirm('Are you sure you want to delete this organizer? There is no undoing this!');
         });

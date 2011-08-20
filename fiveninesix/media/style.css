@@ -273,6 +273,11 @@ ul.nav ul {
 .lot-popup .lot-link-container {
     padding-left: 5px;
 }
+.lot-popup h1 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
 
 div.tabs {
     font-size: 12px;

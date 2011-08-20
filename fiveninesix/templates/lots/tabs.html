@@ -3,7 +3,8 @@
 <div class="lot-popup">
 
     <div class="lot-link-container">
-        <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">link to {{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a>
+        <h1>{{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}</h1>
+        <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">Go to this lot's page</a> or look at the information we have for it in the tabs below.
     </div>
 
     <div class="tabs">

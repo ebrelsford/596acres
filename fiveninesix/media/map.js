@@ -96,7 +96,7 @@ var LotMap = {
             styleMap: new OpenLayers.StyleMap({
                 'default': {
                     pointRadius: '10',
-                    fillColor: '#3f3f3f',
+                    fillColor: '#F3FA2D',
                     fillOpacity: '0.6',
                     strokeWidth: 1,
                     strokeColor: '#000000',

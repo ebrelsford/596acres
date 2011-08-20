@@ -235,8 +235,11 @@ ul.nav ul {
     display: none;
 }
 
-.filters {
+.filters.top {
     font-size: 14px;
+}
+.filters.bottom {
+    margin-top: 5px;
 }
 .filters ul {
     list-style: none;

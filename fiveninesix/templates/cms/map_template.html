@@ -38,27 +38,13 @@
     <div id="map_page">
         <div id="map_container">
 
-            <div class="filters">
+            <div class="filters top">
                 <ul>
                     <li id="area" style="margin-bottom: 5px;">
                         <span class="label">
-                            lot size: <span class="range min"></span> to <span class="range max"></span> square feet
+                            Lot size: <span class="range min"></span> to <span class="range max"></span> square feet
                         </span>
                         <div id="area_slider"></div>
-                    </li>
-                    <li class="agency">
-                        <span class="label">agency:</span>
-                        <select disabled="disabled">
-                            <option value="all">all</option>
-                        </select>
-                    </li>
-                    <li class="lot-type">
-                        <span class="label">type:</span>
-                        <select>
-                            <option value="vacant">vacant lots</option>
-                            <option value="garden">community gardens</option>
-                            <option value="vacant,garden">vacant lots and community gardens</option>
-                        </select>
                     </li>
                 </ul>
             </div>
@@ -82,6 +68,7 @@
                 <div id="map"></div>
             </div>
             <div id="streetview"></div>
+
             <div id="searchbar">
                 <div class="warning errorlist" style="display: none;"></div>
                 <span>Search for lots near an address:</span>
@@ -90,6 +77,25 @@
                 </form>
                 <img class="loading" src="{{ MEDIA_URL }}img/loading_small.gif" alt="loading..." />
                 <input name="current_location" type="submit" value="use my current location" />
+            </div>
+
+            <div class="filters bottom">
+                <ul>
+                    <li class="agency">
+                        <span class="label">Agency:</span>
+                        <select disabled="disabled">
+                            <option value="all">all</option>
+                        </select>
+                    </li>
+                    <li class="lot-type">
+                        <span class="label">Lot type:</span>
+                        <select>
+                            <option value="vacant">vacant lots</option>
+                            <option value="garden">community gardens</option>
+                            <option value="vacant,garden">vacant lots and community gardens</option>
+                        </select>
+                    </li>
+                </ul>
             </div>
 
             <div class="download">

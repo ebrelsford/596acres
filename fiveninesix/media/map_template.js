@@ -1,4 +1,5 @@
 var max_area_range = 100000;
+var sv = new google.maps.StreetViewService();
 
 var brooklyn_bounds = {
     left: -74.319, 
@@ -12,10 +13,22 @@ function show_with_streetview(id, feature) {
     var lat = feature.geometry.y;
     var point = $('#map').data('lotmap').getInverseLonLat(lon, lat);
 
-    $('#' + id).slideDown();
-    var pan = new google.maps.StreetViewPanorama(document.getElementById(id), {
-        addressControl: false,
-        position: new google.maps.LatLng(point.lat, point.lon),
+    console.log('here');
+
+    sv.getPanoramaByLocation(new google.maps.LatLng(point.lat, point.lon), 50, function(result, status) {
+        if (status == google.maps.StreetViewStatus.OK) {
+            $('#' + id).slideDown();
+            var pan = new google.maps.StreetViewPanorama(document.getElementById(id), {
+                addressControl: false,
+                pano: result.location.pano,
+            });
+        }
+        else {
+            console.log(result);
+            console.log(status);
+            $('#streetview-error').slideDown();
+            //display error 
+        }
     });
 }
 
@@ -88,7 +101,7 @@ $(document).ready(function() {
         },
 
         onFeatureUnselect: function(feature) {
-            $('#streetview').slideUp();
+            $('.streetview').slideUp();
         }
     });
 

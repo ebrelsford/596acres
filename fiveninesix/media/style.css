@@ -188,6 +188,13 @@ ul.nav ul {
     display: none;
 }
 
+#streetview-error {
+    display: none;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
 #map_inner {
     position: relative;
 }

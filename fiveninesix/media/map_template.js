@@ -14,6 +14,7 @@ function show_with_streetview(id, feature) {
 
     $('#' + id).slideDown();
     var pan = new google.maps.StreetViewPanorama(document.getElementById(id), {
+        addressControl: false,
         position: new google.maps.LatLng(point.lat, point.lon),
     });
 }

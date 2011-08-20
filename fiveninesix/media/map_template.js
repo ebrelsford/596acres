@@ -24,10 +24,7 @@ function show_with_streetview(id, feature) {
             });
         }
         else {
-            console.log(result);
-            console.log(status);
             $('#streetview-error').slideDown();
-            //display error 
         }
     });
 }

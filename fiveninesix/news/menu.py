@@ -13,8 +13,10 @@ class NewsMenu(CMSAttachMenu):
 
     def get_nodes(self, request):
         nodes = []
-        nodes.append(NavigationNode(_('Events'), self._get_tag_url('events'), 1))
-        nodes.append(NavigationNode(_('Press'), self._get_tag_url('press'), 2))
+        nodes.append(NavigationNode(_('596 Acres Press'), self._get_tag_url('596 acres press'), 2))
+        nodes.append(NavigationNode(_('Events & Opportunities'), self._get_tag_url('events & opportunities'), 1))
+        nodes.append(NavigationNode(_('Of note'), self._get_tag_url('of note'), 1))
+        nodes.append(NavigationNode(_('Site Updates'), self._get_tag_url('site updates'), 1))
         return nodes
 
 menu_pool.register_menu(NewsMenu)

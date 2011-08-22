@@ -1,0 +1,34 @@
+{% extends "admin_tools/dashboard/module.html" %}
+{% block module_content %}     
+<style>
+ul.common-tasks {
+}
+ul.common-tasks li {
+    width: 45%;
+    float: left;
+    padding: 10px;
+    text-align: center;
+}
+ul.common-tasks li a {
+    font-size: 16px !important;
+}
+</style>
+<ul class="common-tasks">
+    {% spaceless %}    
+    <li>
+        <a href="{% url admin:cmsplugin_blog_entry_add %}"><img src="{{ MEDIA_URL }}img/spechbubble.png" /> add news</a>
+    </li>
+    <li>
+        <a href="{% url admin:cmsplugin_blog_entry_changelist %}"><img src="{{ MEDIA_URL }}img/spechbubble_2.png" /> view news</a>
+    </li>
+    <li>
+        <a href="{% url admin:cms_page_add %}"><img src="{{ MEDIA_URL }}img/doc_new.png" /> add a page</a>
+    </li>
+    <li>
+        <a href="{% url admin:cms_page_changelist %}"><img src="{{ MEDIA_URL }}img/document.png" /> view pages</a>
+    </li>
+    {% endspaceless %} 
+</ul>
+<div style="clear: both;"></div>
+{% endblock %}                 
+

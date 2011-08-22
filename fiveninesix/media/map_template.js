@@ -17,8 +17,8 @@ function show_with_streetview(id, feature) {
 
     sv.getPanoramaByLocation(new google.maps.LatLng(point.lat, point.lon), 50, function(result, status) {
         if (status == google.maps.StreetViewStatus.OK) {
-            $('#' + id).slideDown();
-            var pan = new google.maps.StreetViewPanorama(document.getElementById(id), {
+            $('#' + id).show();
+            new google.maps.StreetViewPanorama(document.getElementById(id), {
                 addressControl: false,
                 pano: result.location.pano,
             });
@@ -99,7 +99,9 @@ $(document).ready(function() {
 
         onFeatureUnselect: function(feature) {
             $('.streetview').slideUp();
-        }
+        },
+
+        // TODO on hover, show area
     });
 
     $('#searchbar').search({

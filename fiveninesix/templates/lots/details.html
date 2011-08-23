@@ -4,9 +4,6 @@
     {{ block.super }}
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.actions .delete').click(function() {
-            return confirm('Are you sure you want to delete this organizer? There is no undoing this!');
-        });
     });
 </script>
 {% endblock %}
@@ -147,9 +144,6 @@
                     <div class="actions">
                         <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}">
                             <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />
-                        </a>
-                        <a class="delete" href="{% url organize.views.delete_organizer bbl=lot.bbl id=organizer.id %}">
-                            <img title="delete this organizer" alt="delete this organizer" src="{{ MEDIA_URL }}img/trash.png" />
                         </a>
                     </div>
                     <table>

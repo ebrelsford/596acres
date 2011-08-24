@@ -1,4 +1,17 @@
+{% load i18n placeholder_tags cmsplugin_blog_tags simple_translation_tags %}
+
 <div id="share-container" style="padding-top: 5px;">
+    <div>
+    {% with page_url=request.build_absolute_uri|urlencode:"" title=object|get_preferred_translation_from_request:request %}
+        <a class="a2a_dd" href="http://www.addtoany.com/share_save?linkurl={{ page_url }}&amp;linkname={{ title }}"><img src="http://static.addtoany.com/buttons/share_save_120_16.gif" width="120" height="16" border="0" alt="Share"/></a>
+        <script type="text/javascript">
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "{{ title }}";
+            a2a_config.linkurl = "{{ page_url }}";
+        </script>
+        <script type="text/javascript" src="http://static.addtoany.com/menu/page.js"></script>
+    {% endwith %}
+    </div>
     <div>
         <iframe src="http://www.facebook.com/plugins/like.php?href={{ request.build_absolute_uri|urlencode:"" }}&layout=button_count&show_faces=false&width=50&action=like&height=25" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:25px; padding-top: 5px;" allowTransparency="true">
         </iframe>

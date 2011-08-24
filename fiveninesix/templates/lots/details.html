@@ -11,7 +11,9 @@
 {% block title %}{{ block.super }}: Details{% endblock %}
 
 {% block inner_right %}
+{% with title=lot.borough|add:", block "|add:lot.block|add:", lot "|add:lot.lot %}
 {% include "share_box_snippet.html" %}
+{% endwith %}
 {% endblock %}
 
 {% block content_main %}

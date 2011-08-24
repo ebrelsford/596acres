@@ -15,7 +15,7 @@
         </ul>
         <div id="lot">
             {% if not lot.is_vacant %}
-            <p>
+            <p style="font-weight: bold;">
                 This lot isn't vacant.
                 {% if 'Garden' in lot.actual_use %}
                 It is part of a community garden.
@@ -128,6 +128,10 @@
             {% endif %}
         </div>
         <div id="organize">
+            {% if not lot.is_vacant %}
+            <p>This lot is part of a community garden! It's already organized.</p>
+            <p>If you would like to become a part of the garden, please drop by and introduce yourself.</p>
+            {% else %}
             <div>
                 Currently organizing here:
                 <ul>
@@ -188,6 +192,7 @@
             <div>
                 <a class="add_organizer" href="#">I'm organizing here!</a>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

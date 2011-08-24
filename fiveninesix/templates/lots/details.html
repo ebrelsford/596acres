@@ -21,7 +21,7 @@
 <div id="lot-details">
     <h1>{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</h1>
     {% if not lot.is_vacant %}
-    <p>
+    <p style="font-weight: bold;">
         This lot isn't vacant.
         {% if 'Garden' in lot.actual_use %}
         It is part of a community garden.
@@ -138,6 +138,10 @@
     </div>
     <div id="organize">
         <h2>organize</h2>
+        {% if not lot.is_vacant %}
+        <p>This lot is part of a community garden! It's already organized.</p>
+        <p>If you would like to become a part of the garden, please drop by and introduce yourself.</p>
+        {% else %}
         <div>
             Currently organizing here:
             <ul>
@@ -203,6 +207,7 @@
         <div>
             <a class="add_organizer" href="{% url add_organizer bbl=lot.bbl %}">I'm organizing here!</a>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

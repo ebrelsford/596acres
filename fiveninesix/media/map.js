@@ -37,6 +37,11 @@ var LotMap = {
         strokeWidth: 1,
     },
 
+    organizedStyle: {
+        strokeColor: 'yellow',
+        strokeWidth: 1,
+    },
+
     borderStyle: {
         'strokeWidth': 3,
         'strokeColor': '#A4788C',
@@ -139,6 +144,14 @@ var LotMap = {
                      value: true,
                  }),
                  symbolizer: this.gardenStyle,
+             }),
+             new OpenLayers.Rule({
+                 filter: new OpenLayers.Filter.Comparison({
+                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                     property: 'has_organizers',
+                     value: true,
+                 }),
+                 symbolizer: this.organizedStyle,
              }),
              new OpenLayers.Rule({
                  elseFilter: true,

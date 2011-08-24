@@ -8,10 +8,11 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 
-from models import Lot, Owner, OwnerType
+from models import Lot, Owner
 
 def lot_geojson(request):
-    lots_geojson = _lot_collection(_filter_lots(request))
+    lots = _filter_lots(request).values('bbl', 'area', 'centroid', 'organizer', 'actual_use')
+    lots_geojson = _lot_collection(lots)
 
     response = HttpResponse(mimetype='application/json')
     if 'download' in request.GET and request.GET['download'] == 'true':
@@ -113,11 +114,12 @@ def _lot_collection(lots):
 
 def _lot_feature(lot):
     return geojson.Feature(
-        lot.bbl,
-        geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
+        lot['bbl'],
+        geometry=geojson.Point(coordinates=(lot['centroid'].x, lot['centroid'].y)),
         properties={
-            'area': float(lot.area),
-            'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
+            'area': float(lot['area']),
+            'is_garden': lot['actual_use'] and lot['actual_use'].startswith('Garden'),
+            'has_organizers': lot['organizer'] is not None,
         },
     )
 

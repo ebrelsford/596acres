@@ -1,4 +1,4 @@
-var max_area_range = 100000;
+var max_area_range = 3;
 var sv = new google.maps.StreetViewService();
 
 var brooklyn_bounds = {
@@ -115,9 +115,10 @@ $(document).ready(function() {
 
     $('#area_slider').slider({
         range: true,
-        min: 1,
         max: max_area_range,
-        values: [1, max_area_range],
+        min: 0,
+        step: .05,
+        values: [0, max_area_range],
         slide: function(event, ui) {
             update_area_display(ui.values[0], ui.values[1]);
         },
@@ -125,7 +126,7 @@ $(document).ready(function() {
             $('#map').data('lotmap').filterByArea(ui.values[0], ui.values[1]);
         },
     });
-    update_area_display(1, max_area_range);
+    update_area_display(0, max_area_range);
 
     $('.filters .agency select').attr('disabled', 'disabled');
     $.getJSON('/owners/json/', function(data) {

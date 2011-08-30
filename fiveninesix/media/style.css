@@ -263,6 +263,9 @@ ul.nav ul {
 }
 .filters .range {
     font-weight: bold;
+    display: inline-block;
+    text-align: right;
+    width: 30px;
 }
 .filters #area_slider {
     display: inline-block;

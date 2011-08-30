@@ -11,7 +11,7 @@ from django.template import RequestContext
 from models import Lot, Owner
 
 def lot_geojson(request):
-    lots = _filter_lots(request).values('bbl', 'area', 'centroid', 'organizer', 'actual_use')
+    lots = _filter_lots(request).values('bbl', 'area_acres', 'centroid', 'organizer', 'actual_use')
     lots_geojson = _lot_collection(lots)
 
     response = HttpResponse(mimetype='application/json')
@@ -27,7 +27,7 @@ def lot_kml(request):
     for lot in _filter_lots(request):
         kml.newpoint(
             name=lot.bbl, 
-            description="bbl: %s<br/>agency: %s<br/>area: %f square feet" % (lot.bbl, lot.owner.name, lot.area), 
+            description="bbl: %s<br/>agency: %s<br/>area: %f acres" % (lot.bbl, lot.owner.name, lot.area_acres), 
             coords=[(lot.centroid.x, lot.centroid.y)]
         )
 
@@ -54,11 +54,11 @@ def _filter_lots(request):
         bbls = request.GET['bbls'].split(',')
         lots = lots.filter(bbl__in=bbls)
     if 'min_area' in request.GET:
-        lots = lots.filter(area__gte=request.GET['min_area'])
+        lots = lots.filter(area_acres__gte=request.GET['min_area'])
     if 'max_area' in request.GET:
         max_area = request.GET['max_area']
-        if max_area < 100000:
-            lots = lots.filter(area__lte=max_area)
+        if max_area < 3:
+            lots = lots.filter(area_acres__lte=max_area)
     if 'lot_type' in request.GET:
         lot_types = request.GET['lot_type'].split(',')
         lots_vacant = lots.filter(is_vacant=True)
@@ -83,7 +83,7 @@ def details_json(request, bbl=None):
         'zipcode': lot.zipcode,
         'owner': lot.owner.name,
         'owner_id': lot.owner.id,
-        'area': float(lot.area),
+        'area': float(lot.area_acres),
     }
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
@@ -117,7 +117,7 @@ def _lot_feature(lot):
         lot['bbl'],
         geometry=geojson.Point(coordinates=(lot['centroid'].x, lot['centroid'].y)),
         properties={
-            'area': float(lot['area']),
+            'area': float(lot['area_acres']),
             'is_garden': lot['actual_use'] and lot['actual_use'].startswith('Garden'),
             'has_organizers': lot['organizer'] is not None,
         },

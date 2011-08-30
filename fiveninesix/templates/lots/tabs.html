@@ -63,8 +63,8 @@
                     <th>area</th>
                     <td>
                         <span>
-                            {% if lot.area %}
-                                {{ lot.area|floatformat }} square feet
+                            {% if lot.area_acres %}
+                                {{ lot.area_acres|floatformat:"-3" }} acres
                             {% else %}
                                 unknown
                             {% endif %}

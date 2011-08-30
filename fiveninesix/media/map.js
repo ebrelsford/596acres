@@ -365,6 +365,7 @@ var LotMap = {
     // on this object using a filterBy*()
     //
     reloadLotLayer: function() {
+        this.selectControl.unselectAll();
         this.olMap.removeLayer(this.lot_layer);
         this.lot_layer.destroy();
 

@@ -13,8 +13,6 @@ function show_with_streetview(id, feature) {
     var lat = feature.geometry.y;
     var point = $('#map').data('lotmap').getInverseLonLat(lon, lat);
 
-    console.log('here');
-
     sv.getPanoramaByLocation(new google.maps.LatLng(point.lat, point.lon), 50, function(result, status) {
         if (status == google.maps.StreetViewStatus.OK) {
             $('#' + id).show();

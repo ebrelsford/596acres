@@ -284,6 +284,10 @@ ul.nav ul {
     height: 300px;
 }
 
+.lot-popup {
+    height: 100%;
+    width: 100%;
+}
 .lot-popup .lot-link-container {
     padding-left: 5px;
 }
@@ -307,24 +311,26 @@ div.tabs #organize ul li {
 div.tabs #organize ul li.last {
     border-bottom: 0;
 }
-.ui-tabs {
-    border: 0 !important;
-    height: 90%;
-    width: 98%;
-    position: absolute !important;
+
+.lot-popup .lot-link-container {
+    height: 55px;
 }
-.ui-tabs .ui-tabs-nav {
-    border: 0 !important;
-    border-bottom: 1px solid black !important;
-    background: white !important;
+
+.lot-popup .ui-tabs {
+    border: 0;
 }
-.ui-tabs .ui-tabs-nav li a {
+.lot-popup .ui-tabs .ui-tabs-nav {
+    border: 0;
+    border-bottom: 1px solid black;
+    background: white;
+    height: 30px;
+}
+.lot-popup .ui-tabs .ui-tabs-nav li a {
     padding-bottom: 0;
 }
-.ui-tabs-panel {
-    padding: 0 !important;
-    position: absolute;
-    height: 85%;
+.lot-popup .ui-tabs-panel {
+    padding: 0;
+    height: 200px;
     width: 98%;
     overflow-y: auto;
 }

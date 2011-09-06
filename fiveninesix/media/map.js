@@ -121,7 +121,10 @@ var LotMap = {
         url: '/lots/geojson?',
         queryString: '',
         onLoad: function(feature) {},
+        onFeatureSelect: function(feature) {},
         onFeatureUnselect: function(feature) {},
+        onFeatureHighlight: function(feature) {},
+        onFeatureUnhighlight: function(feature) {},
         filter: true,
     },
 
@@ -191,6 +194,7 @@ var LotMap = {
                     var feature = event.feature;
                     var popup = t.createAndOpenPopup(feature);
                     t.options.addContentToPopup(popup, feature);
+                    t.options.onFeatureSelect(feature);
                 },
                 "featureunselected": function(event) {
                     var feature = event.feature;
@@ -234,7 +238,11 @@ var LotMap = {
         var selectControl = new OpenLayers.Control.SelectFeature(layers, {
             hover: true,
             highlightOnly: true,
-            renderIntent: 'temporary'
+            renderIntent: 'temporary',
+        });
+        selectControl.events.on({
+            'featurehighlighted': this.options.onFeatureHighlight,
+            'featureunhighlighted': this.options.onFeatureUnhighlight,
         });
         this.olMap.addControl(selectControl);
         selectControl.activate();   

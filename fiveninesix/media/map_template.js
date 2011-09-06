@@ -95,11 +95,35 @@ $(document).ready(function() {
             show_with_streetview('streetview', feature);
         },
 
+        onFeatureSelect: function(event) {
+            $('.highlight_area').hide();
+        },
+
         onFeatureUnselect: function(feature) {
             $('.streetview').slideUp();
         },
 
-        // TODO on hover, show area
+        onFeatureHighlight: function(event) {
+            var f = event.feature;
+            var acres = f.data.area;
+            if (acres === 0) {
+                acres = 'almost 0';
+            }
+            $('.highlight_area').text(acres + ' acres').show();
+            
+            var feature_position = $('#map').data('lotmap').olMap.getPixelFromLonLat(new OpenLayers.LonLat(f.geometry.x, f.geometry.y));
+
+            var map_offset = $('#map').offset();
+
+            $('.highlight_area').offset({
+                left: feature_position.x + map_offset.left + 10,
+                top: feature_position.y + map_offset.top - 10,
+            });
+        },
+
+        onFeatureUnhighlight: function(event) {
+            $('.highlight_area').hide();
+        },
     });
 
     $('#searchbar').search({

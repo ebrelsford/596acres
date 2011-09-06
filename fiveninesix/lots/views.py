@@ -117,7 +117,7 @@ def _lot_feature(lot):
         lot['bbl'],
         geometry=geojson.Point(coordinates=(lot['centroid'].x, lot['centroid'].y)),
         properties={
-            'area': float(lot['area_acres']),
+            'area': round(float(lot['area_acres']), 3),
             'is_garden': lot['actual_use'] and lot['actual_use'].startswith('Garden'),
             'has_organizers': lot['organizer'] is not None,
         },

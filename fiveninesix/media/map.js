@@ -34,12 +34,12 @@ var LotMap = {
 
     gardenStyle: {
         strokeColor: 'black',
-        strokeWidth: 1,
+        strokeWidth: 2,
     },
 
     organizedStyle: {
-        strokeColor: 'yellow',
-        strokeWidth: 1,
+        strokeColor: '#DFCB00',
+        strokeWidth: 2,
     },
 
     borderStyle: {

@@ -4,6 +4,7 @@ import json
 from random import randint
 import simplekml
 
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
@@ -11,7 +12,8 @@ from django.template import RequestContext
 from models import Lot, Owner
 
 def lot_geojson(request):
-    lots = _filter_lots(request).values('bbl', 'area_acres', 'centroid', 'organizer', 'actual_use')
+    #lots = _filter_lots(request).distinct().values('bbl', 'area_acres', 'centroid', 'actual_use').annotate(Count('organizer'))
+    lots = _filter_lots(request).distinct().annotate(Count('organizer'))
     lots_geojson = _lot_collection(lots)
 
     response = HttpResponse(mimetype='application/json')
@@ -114,12 +116,12 @@ def _lot_collection(lots):
 
 def _lot_feature(lot):
     return geojson.Feature(
-        lot['bbl'],
-        geometry=geojson.Point(coordinates=(lot['centroid'].x, lot['centroid'].y)),
+        lot.bbl,
+        geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
         properties={
-            'area': round(float(lot['area_acres']), 3),
-            'is_garden': lot['actual_use'] and lot['actual_use'].startswith('Garden'),
-            'has_organizers': lot['organizer'] is not None,
+            'area': round(float(lot.area_acres), 3),
+            'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
+            'has_organizers': lot.organizer__count > 0,
         },
     )
 

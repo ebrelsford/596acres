@@ -380,13 +380,13 @@ form > table td input[type=text] {
     margin: 0;
     padding: 0;
 }
-#lot-details #organize .organizer {
+#organize .organizer {
     border-bottom: 1px solid black;
 }
-#lot-details #organize .organizer.last {
+#organize .organizer.last {
     border-bottom: 0;
 }
-#lot-details #organize .organizer .actions {
+#organize .organizer .actions {
     float: right;
     margin-top: 3px;
     margin-right: 3px;

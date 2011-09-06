@@ -136,7 +136,12 @@
                 Currently organizing here:
                 <ul>
                 {% for organizer in organizers %}
-                    {% if forloop.last %}<li class="last">{% else %}<li>{% endif %}
+                    <li class="organizer{% if forloop.last %} last{% endif %}">
+                        <div class="actions">
+                            <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}" target="_blank">
+                                <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />
+                            </a>
+                        </div>
                         <table>
                             <tr>
                                 <th>name</th>

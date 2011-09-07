@@ -9,7 +9,10 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 
+from django_xhtml2pdf.utils import render_to_pdf_response
+
 from models import Lot, Owner
+from settings import BASE_URL
 
 def lot_geojson(request):
     #lots = _filter_lots(request).distinct().values('bbl', 'area_acres', 'centroid', 'actual_use').annotate(Count('organizer'))
@@ -136,3 +139,21 @@ def tabs(request, bbl=None):
 def random(request):
     bbls = Lot.objects.filter(is_vacant=True, centroid_source__in=('OASIS', 'Google', 'Nominatim'), owner__type__name='city').values_list('bbl', flat=True)
     return redirect(details, bbl=bbls[randint(0, bbls.count())])
+
+def pdf(request, bbl=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    lot.generate_qrcode()
+
+    return render_to_pdf_response('lots/pdf.html', context=RequestContext(request, {
+        'lot': lot,
+        'base_url': BASE_URL,
+        'organizers': lot.organizer_set.all(),
+    }), pdfname='596acres:%s.pdf' % lot.bbl)
+
+def qrcode(request, bbl=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    lot.generate_qrcode()
+
+    response = HttpResponse(mimetype='image/png')
+    response.write(lot.qrcode.read())
+    return response

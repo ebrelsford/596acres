@@ -17,6 +17,8 @@ MANAGERS = ADMINS
 LANGUAGES = [('en-us', 'English')]
 DEFAULT_LANGUAGE = 0
 
+FILE_UPLOAD_TEMP_DIR = '/tmp'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.

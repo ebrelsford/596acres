@@ -1,4 +1,12 @@
+import os
+
 from django.contrib.gis.db import models
+from django.core.files import File
+from django.core.urlresolvers import reverse
+
+from elaphe import barcode
+
+from settings import FILE_UPLOAD_TEMP_DIR, BASE_URL
 
 class Lot(models.Model):
     objects = models.GeoManager()
@@ -33,8 +41,29 @@ class Lot(models.Model):
     centroid_source = models.CharField(max_length=32, null=True, blank=True)
     polygon = models.MultiPolygonField(null=True, blank=True)
 
+    qrcode = models.ImageField(upload_to='qrcodes', null=True, blank=True)
+
     def __unicode__(self):
         return self.bbl
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('lots.views.details', (), { 'bbl': self.bbl })
+
+    def generate_qrcode(self, force=False):
+        if self.qrcode and not force:
+            return
+
+        url = BASE_URL + self.get_absolute_url()
+        lot_code = barcode('qrcode', url, options={ 'version': 3 }, scale=5, margin=10, data_mode='8bits')
+
+        temp_file_path = os.sep.join((FILE_UPLOAD_TEMP_DIR, 'qrcode.%s.png' % self.bbl))
+        
+        f = open(temp_file_path, 'wb')
+        lot_code.save(f, 'png')
+        f = open(temp_file_path, 'rb')
+        self.qrcode.save(self.bbl + '.png', File(f))
+        self.save()
 
 class Owner(models.Model):
     name = models.CharField(max_length=256)

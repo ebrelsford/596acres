@@ -1,0 +1,38 @@
+<!doctype html>
+<head>
+    <style>
+        body {
+            font-size: 24px;
+            font-family: Arial,Helvetica;
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .qrcode {
+            width: 500px;
+            padding-left: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="{{ MEDIA_URL }}img/logo_highres.png" />
+
+    <p>There are <span style="font-weight: bold;">596 acres</span> of publicly owned vacant land in Brooklyn. You're looking at <span style="font-weight: bold;">{{ lot.area_acres|floatformat:"3" }}</span> of those acres.</p>
+
+    <p>We call this lot <span style="font-weight: bold;">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}.</p>
+
+    <p>
+        {% if organizers %}
+        Your neighbors are trying to start something here. Want to get involved?
+        {% else %}
+        Help organize around this lot! 
+        {% endif %}
+        Scan the code below or go to this url: <br />
+        <div style="font-weight: bold; width: 100%; text-align: center;">{{ base_url }}{{ lot.get_absolute_url }}</div>
+    </p>
+
+    <div class="qrcode">
+        <img src="{{ lot.qrcode.url }}" width="500" height="500"  />
+    </div>
+<body>

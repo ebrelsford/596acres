@@ -12,6 +12,7 @@ django-tagging==0.3.1
 django-tinymce==1.5.1a2
 django-xhtml2pdf==0.0.3
 djangocms-utils==0.9.5
+elaphe==0.5.3
 geojson==1.0.1
 psycopg2==2.4.2
 pyproj==1.8.9

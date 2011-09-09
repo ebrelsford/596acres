@@ -2,7 +2,6 @@ import os
 
 from django.contrib.gis.db import models
 from django.core.files import File
-from django.core.urlresolvers import reverse
 
 from elaphe import barcode
 
@@ -83,3 +82,10 @@ class OwnerType(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Alias(models.Model):
+    lot = models.ForeignKey('Lot')
+    name = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return '%s -> %s' % (self.name, self.lot.bbl)

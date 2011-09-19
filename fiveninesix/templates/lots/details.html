@@ -28,7 +28,7 @@
         {% endif %}
     </p>
     {% endif %}
-    <div id="basics">
+    <div id="basics" class="section">
         <h2>details</h2>
         <table>
             <tr>
@@ -55,7 +55,7 @@
                     <span>{{ lot.lot|default:'' }}</span>
                 </td>
             </tr>
-            <tr class="owner">
+            <tr class="owner" class="section">
                 <th>agency</th>
                 <td>
                     <span>
@@ -87,7 +87,7 @@
             </tr>
         </table>
     </div>
-    <div id="owner">
+    <div id="owner" class="section">
         <h2>agency</h2>
         {% if lot.owner %}
         <table>
@@ -136,7 +136,7 @@
         We don't know who owns this lot.
         {% endif %}
     </div>
-    <div id="organize">
+    <div id="organize" class="section">
         <h2>organize</h2>
         {% if not lot.is_vacant %}
         <p>This lot is part of a community garden! It's already organized.</p>

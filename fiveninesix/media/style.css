@@ -356,17 +356,17 @@ form > table td input[type=text] {
     color: red;
 }
 
-#lot-details > div {
+#lot-details .section {
     width: 65%;
 }
-#lot-details div table,
-#lot-details div tr {
+#lot-details .section table,
+#lot-details .section tr {
     width: 100%;
 }
-#lot-details div th {
+#lot-details .section th {
     text-align: left;
 }
-#lot-details form > table > tbody > tr > td {
+#lot-details .section td {
     width: 70%;
 }
 #lot-details h1 {

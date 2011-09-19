@@ -154,3 +154,6 @@ MENU_CACHE_DURATION = 3600
 JQUERY_UI_CSS = '/media/jquery-ui/custom.css'
 JQUERY_UI_JS = 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js'
 JQUERY_JS = '/media/admin/js/jquery.js'
+
+RECAPTCHA_PRIVATE_KEY = ''
+RECAPTCHA_PUBLIC_KEY = ''

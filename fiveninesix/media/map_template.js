@@ -27,28 +27,6 @@ function show_with_streetview(id, feature) {
     });
 }
 
-function load_organize_form($tab, url) {
-    $tab.load(url, on_organize_tab_load($tab, url));
-}
-
-function submit_organize_form($tab, url) {
-    $tab.find('input[type=submit]').attr('disabled', 'disabled');
-    $tab.load(url, $tab.find('form').serializeArray(), on_organize_tab_load($tab, url));
-}
-
-function on_organize_tab_load($tab, url) {
-    return function() {
-        $tab.find('form').submit(function(e) {
-            submit_organize_form($tab, url);
-            return false;
-        });  
-        $tab.find('a.add_organizer').click(function() {
-            load_organize_form($tab, url);
-            return false;
-        });
-    }
-}
-
 function update_area_display(min, max) {
     if (max === max_area_range) {
         max += '+';
@@ -82,13 +60,6 @@ $(document).ready(function() {
                         $(this).parents('.tabs').tabs('select', '#owner');
                         return false;
                     });
-
-                // form-in-a-tab
-                $organize_tab = $(popup).find('.tabs #organize');
-                $organize_tab.find('a.add_organizer').click(function() {
-                    load_organize_form($organize_tab, '/lot/' + feature.fid + '/organizers/add/ajax/');
-                    return false;
-                });
             });
 
             // street view

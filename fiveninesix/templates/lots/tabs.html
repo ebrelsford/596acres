@@ -195,7 +195,7 @@
                 </ul>
             </div>
             <div>
-                <a class="add_organizer" href="#">I'm organizing here!</a>
+                <a class="add_organizer" href="{% url organize.views.add_organizer bbl=lot.bbl %}" target="_blank">I'm organizing here!</a>
             </div>
             {% endif %}
         </div>

@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 
+from recaptcha_works.decorators import fix_recaptcha_remote_ip
+
 from lots.models import Lot
 from forms import OrganizerForm
 from models import Organizer, OrganizerType
@@ -31,24 +33,20 @@ def details_tab(request, bbl=None):
     }, context_instance=RequestContext(request))
 
 
-def add_organizer(request, bbl=None, ajax=False):
+@fix_recaptcha_remote_ip
+def add_organizer(request, bbl=None):
     lots = Lot.objects.filter(bbl=bbl)
     if request.method == 'POST':    
         form = OrganizerForm(request.POST)
         if form.is_valid():
             organizer = form.save()
-            if ajax:
-                return details_tab(request, bbl=bbl)
-            else:
-                return redirect('lots.views.details', bbl=bbl)
+            return redirect('lots.views.details', bbl=bbl)
     else:
         form = OrganizerForm(initial={
             'lots': lots,
         })
 
     template = 'organize/add_organizer.html'
-    if ajax:
-        template = 'organize/add_organizer_ajax.html'
 
     return render_to_response(template, {
         'form': form,

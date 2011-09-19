@@ -2,12 +2,16 @@ from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse
 from django.forms import ModelForm, MultipleHiddenInput, ModelMultipleChoiceField
 
+from recaptcha_works.fields import RecaptchaField
+
 from lots.models import Lot
 from models import Organizer
 from settings import BASE_URL
 
 class OrganizerForm(ModelForm):
     lots = ModelMultipleChoiceField(label='lots', queryset=Lot.objects.all(), widget=MultipleHiddenInput())
+
+    recaptcha = RecaptchaField(label="Prove you're human")
 
     class Meta:
         model = Organizer

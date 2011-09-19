@@ -342,7 +342,7 @@ div.tabs #organize ul li.last {
 form > table th {
     text-align: left;
 }
-form > table td {
+form > table > tbody > tr > td {
     width: 35%;
 }
 form > table td input[type=text] {
@@ -366,7 +366,7 @@ form > table td input[type=text] {
 #lot-details div th {
     text-align: left;
 }
-#lot-details div td {
+#lot-details form > table > tbody > tr > td {
     width: 70%;
 }
 #lot-details h1 {

@@ -17,7 +17,7 @@ class OrganizerForm(ModelForm):
     class Meta:
         model = Organizer
         widgets = {
-            'facebook_page': PrefixLabelTextInput('facebook/'),
+            'facebook_page': PrefixLabelTextInput('facebook.com/'),
         }
 
     def save(self, force_insert=False, force_update=False, commit=True):

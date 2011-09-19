@@ -198,6 +198,9 @@
                             </td>
                         </tr>
                     </table>
+                    {% if organizer.facebook_page %}
+                        <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border: none; overflow: hidden; width: 299px; height: 395px; padding-left: 50px; padding-top: 10px;" src="http://www.facebook.com/plugins/likebox.php?href={{ "http://facebook.com/"|add:organizer.facebook_page|urlencode:"" }}&amp;width=298&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=395"></iframe>
+                    {% endif %}
                 </li>
             {% empty %}
             No one yet.

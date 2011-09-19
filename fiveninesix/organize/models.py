@@ -12,6 +12,7 @@ class Organizer(models.Model):
     email = models.EmailField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
+    facebook_page = models.CharField(max_length=256, null=True, blank=True)
 
     lots = models.ManyToManyField(Lot)
 

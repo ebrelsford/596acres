@@ -384,7 +384,7 @@ form > table td input[type=text] {
     border-bottom: 1px solid black;
 }
 #organize .organizer.last {
-    border-bottom: 0;
+    margin-bottom: 20px;
 }
 #organize .organizer .actions {
     float: right;
@@ -464,4 +464,11 @@ form > table td input[type=text] {
 }
 .recent-entries .entry .text p {
     display: inline-block;
+}
+
+.prefix {
+    font-size: 14px;
+}
+form > table td input.prefixed {
+    width: 50%;
 }

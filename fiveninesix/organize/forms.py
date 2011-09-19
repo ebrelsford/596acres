@@ -7,6 +7,7 @@ from recaptcha_works.fields import RecaptchaField
 from lots.models import Lot
 from models import Organizer
 from settings import BASE_URL
+from widgets import PrefixLabelTextInput
 
 class OrganizerForm(ModelForm):
     lots = ModelMultipleChoiceField(label='lots', queryset=Lot.objects.all(), widget=MultipleHiddenInput())
@@ -15,6 +16,9 @@ class OrganizerForm(ModelForm):
 
     class Meta:
         model = Organizer
+        widgets = {
+            'facebook_page': PrefixLabelTextInput('facebook/'),
+        }
 
     def save(self, force_insert=False, force_update=False, commit=True):
         organizer = super(self.__class__, self).save()

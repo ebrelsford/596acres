@@ -53,6 +53,7 @@ def add_organizer(request, bbl=None):
         'lot': lots[0],
     }, context_instance=RequestContext(request))
 
+@fix_recaptcha_remote_ip
 def edit_organizer(request, bbl=None, id=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     organizer = get_object_or_404(Organizer, id=id)

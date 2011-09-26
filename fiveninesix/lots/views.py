@@ -135,7 +135,8 @@ def tabs(request, bbl=None):
 
     return render_to_response('lots/tabs.html', {
         'lot': lot,
-        'organizers': lot.organizer_set.all()
+        'organizers': lot.organizer_set.all(),
+        'watchers': lot.watcher_set.all(),
     }, context_instance=RequestContext(request))
 
 def random(request):

@@ -4,7 +4,7 @@
 
     <div class="lot-link-container">
         <h1>{{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}</h1>
-        <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">Go to this lot's page</a> or look at the information we have for it in the tabs below.
+        <span><a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">Go to this lot's page</a> or look at the information we have for it in the tabs below.</span>
     </div>
 
     <div class="tabs">

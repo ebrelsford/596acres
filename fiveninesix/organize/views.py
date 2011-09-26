@@ -7,7 +7,7 @@ from django.template import RequestContext
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
 from lots.models import Lot
-from forms import OrganizerForm, WatcherForm
+from forms import OrganizerForm, WatcherForm, NoteForm
 from models import Organizer
 
 def details(request, bbl=None):
@@ -67,6 +67,26 @@ def add_watcher(request, bbl=None):
         })
 
     template = 'organize/add_watcher.html'
+
+    return render_to_response(template, {
+        'form': form,
+        'lot': lot,
+    }, context_instance=RequestContext(request))
+
+@fix_recaptcha_remote_ip
+def add_note(request, bbl=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    if request.method == 'POST':    
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lots.views.details', bbl=bbl)
+    else:
+        form = NoteForm(initial={
+            'lot': lot,
+        })
+
+    template = 'organize/add_note.html'
 
     return render_to_response(template, {
         'form': form,

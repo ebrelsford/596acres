@@ -5,7 +5,7 @@ from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMulti
 from recaptcha_works.fields import RecaptchaField
 
 from lots.models import Lot
-from models import Organizer, Watcher
+from models import Organizer, Watcher, Note
 from settings import BASE_URL
 from widgets import PrefixLabelTextInput
 
@@ -46,4 +46,13 @@ class WatcherForm(ModelForm):
 
     class Meta:
         model = Watcher
+        exclude = ('added',)
+        
+class NoteForm(ModelForm):
+    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
+
+    recaptcha = RecaptchaField(label="Prove you're human")
+
+    class Meta:
+        model = Note
         exclude = ('added',)

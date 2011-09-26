@@ -133,8 +133,8 @@
             <p>If you would like to become a part of the garden, please drop by and introduce yourself.</p>
             {% else %}
             <div>
-                <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> watch</a>
-                <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;"><img src="{{ MEDIA_URL }}img/users.png" /> organize</a>
+                <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> watch</a>
+                <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;" target="_blank"><img src="{{ MEDIA_URL }}img/users.png" /> organize</a>
                 <div>There {{ watchers|pluralize:"is,are" }} <span style="font-weight: bold;">{{ watchers|length }}</span> neighbor{{ watchers|pluralize }} watching this lot.</div>
             </div>
             <div>

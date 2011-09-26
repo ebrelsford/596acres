@@ -56,3 +56,15 @@ class Meeting(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Note(models.Model):
+    """
+    A note about a lot.
+    """
+    noter = models.CharField(max_length=256, verbose_name='your name')
+    text = models.TextField(verbose_name='note')
+    added = models.DateTimeField(auto_now_add=True)
+    lot = models.ForeignKey(Lot)
+
+    def __unicode__(self):
+        return "%s: %s" % (self.noter, self.text[:50])

@@ -220,6 +220,18 @@
         </div>
         {% endif %}
     </div>
+    <div id="notes" class="section">
+        <h2>notes</h2>
+        <ul class="notes">
+        {% for note in notes %}
+            <li class="note {% cycle "odd" "even" %}">
+            <span class="head">On {{ note.added|date:"F d, Y" }}, at {{ note.added|time:"g:ia" }}, {{ note.noter }} said:</span>
+            {{ note.text }}
+            </li>
+        {% endfor %}
+        </ul>
+        <a class="fns-button" href="{% url organize.views.add_note bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/spechbubble_16.png" /> &nbsp;add a note</a>
+    </div>
 </div>
 {% endblock %}
 

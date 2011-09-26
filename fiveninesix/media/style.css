@@ -502,3 +502,24 @@ a.fns-button:active {
 a.fns-button img {
     vertical-align: top;
 }
+
+ul.notes {
+    list-style: none;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 0;
+    font-size: 14px;
+}
+.notes li {
+    border-bottom: 1px solid lightGray;
+    padding: 3px;
+    padding-bottom: 10px;
+}
+.note.odd {
+}
+.note.even {
+}
+.note .head {
+    display: block;
+    font-style: italic;
+}

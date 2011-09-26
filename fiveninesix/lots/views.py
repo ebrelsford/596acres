@@ -103,7 +103,8 @@ def details(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     return render_to_response('lots/details.html', {
         'lot': lot,
-        'organizers': lot.organizer_set.all()
+        'organizers': lot.organizer_set.all(),
+        'watchers': lot.watcher_set.all(),
     }, context_instance=RequestContext(request))
 
 def owner_details(request, id=None):

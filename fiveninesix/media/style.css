@@ -472,3 +472,33 @@ form > table td input[type=text] {
 form > table td input.prefixed {
     width: 50%;
 }
+
+a.fns-button {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #FFFCE0;
+    border: 1px solid #FEEB50;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;    
+    -moz-border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    padding: 5px;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+a.fns-button:hover {
+    background-color: #FFF8BE;
+    border: 1px solid #FFE508;
+}
+a.fns-button:active {
+    position: relative;
+    top: 1px;
+}
+a.fns-button img {
+    vertical-align: top;
+}

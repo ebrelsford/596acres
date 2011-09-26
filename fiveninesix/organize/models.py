@@ -19,6 +19,19 @@ class Organizer(models.Model):
     def __unicode__(self):
         return self.name
 
+class Watcher(models.Model):
+    """
+    Someone who is watching a lot.
+    """
+    name = models.CharField(max_length=256)
+    phone = models.CharField(max_length=32, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    lot = models.ForeignKey(Lot)
+    added = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.name
+
 class OrganizerType(models.Model):
     """
     A type of organizer (eg, individual, non-profit, governmental agency, ...)

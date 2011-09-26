@@ -1,11 +1,11 @@
 from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm, MultipleHiddenInput, ModelMultipleChoiceField
+from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMultipleChoiceField, ModelChoiceField
 
 from recaptcha_works.fields import RecaptchaField
 
 from lots.models import Lot
-from models import Organizer
+from models import Organizer, Watcher
 from settings import BASE_URL
 from widgets import PrefixLabelTextInput
 
@@ -38,3 +38,12 @@ lots: %s
 """ % (organizer.name, organizer.type.name, organizer.phone, organizer.email, organizer.url, ', '.join(lots_urls),)
 
         mail_managers('A new organizer was created on 596acres.org', message)
+        
+class WatcherForm(ModelForm):
+    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
+
+    recaptcha = RecaptchaField(label="Prove you're human")
+
+    class Meta:
+        model = Watcher
+        exclude = ('added',)

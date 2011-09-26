@@ -104,7 +104,7 @@ def details(request, bbl=None):
     return render_to_response('lots/details.html', {
         'lot': lot,
         'organizers': lot.organizer_set.all(),
-        'watchers': lot.watcher_set.all(),
+        'watchers_count': lot.watcher_set.all().count(),
         'notes': lot.note_set.all().order_by('added'),
     }, context_instance=RequestContext(request))
 
@@ -136,7 +136,7 @@ def tabs(request, bbl=None):
     return render_to_response('lots/tabs.html', {
         'lot': lot,
         'organizers': lot.organizer_set.all(),
-        'watchers': lot.watcher_set.all(),
+        'watchers_count': lot.watcher_set.all().count(),
     }, context_instance=RequestContext(request))
 
 def random(request):

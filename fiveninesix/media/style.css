@@ -535,3 +535,6 @@ ul.notes {
     margin: 0;
     padding: 0;
 }
+.lot-list .lot.hovered {
+    font-weight: bold;
+}

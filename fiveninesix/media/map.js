@@ -51,6 +51,11 @@ var LotMap = {
     init: function(options, elem) {
         var t = this;
         this.options = $.extend({}, this.options, options);
+        if (this.options['filters']) {
+            if (this.options['filters']['lot_types']) {
+                this.lot_types = this.options['filters']['lot_types'];
+            }
+        }
 
         this.elem = elem;
         this.$elem = $(elem);
@@ -125,7 +130,12 @@ var LotMap = {
         onFeatureUnselect: function(feature) {},
         onFeatureHighlight: function(feature) {},
         onFeatureUnhighlight: function(feature) {},
+        popups: true,
+        select: true,
         filter: true,
+        filters: {
+            lot_types: ['vacant',],
+        },
     },
 
     createBBox: function(lon1, lat1, lon2, lat2) {
@@ -165,7 +175,9 @@ var LotMap = {
     getLayer: function(name, url) {
         var layer = new OpenLayers.Layer.Vector(name, {
             projection: this.olMap.displayProjection,
-            strategies: [new OpenLayers.Strategy.Fixed()],
+            strategies: [
+                new OpenLayers.Strategy.Fixed(),
+            ],
             styleMap: this.defaultStyle,
             protocol: new OpenLayers.Protocol.HTTP({
                 url: url,
@@ -180,8 +192,11 @@ var LotMap = {
     // Add hover and select controls to the given layer
     //
     addControls: function(layers) {
-        this.getControlHoverFeature(layers);
-        this.selectControl = this.getControlSelectFeature(layers);
+        var t = this;
+        this.hoverControl = this.getControlHoverFeature(layers);
+        if (t.options.select) {
+            this.selectControl = this.getControlSelectFeature(layers);
+        }
     },
 
     getControlSelectFeature: function(layers) {
@@ -191,14 +206,16 @@ var LotMap = {
         $.each(layers, function(i, layer) {
             layer.events.on({
                 "featureselected": function(event) {
-                    var feature = event.feature;
-                    var popup = t.createAndOpenPopup(feature);
-                    t.options.addContentToPopup(popup, feature);
+                    if (t.options.popups) {
+                        var feature = event.feature;
+                        var popup = t.createAndOpenPopup(feature);
+                        t.options.addContentToPopup(popup, feature);
+                    }
                     t.options.onFeatureSelect(feature);
                 },
                 "featureunselected": function(event) {
                     var feature = event.feature;
-                    if(feature.popup) {
+                    if(t.options.popups && feature.popup) {
                         t.olMap.removePopup(feature.popup);
                         t.options.onFeatureUnselect(feature);
                         feature.popup.destroy();
@@ -373,7 +390,9 @@ var LotMap = {
     // on this object using a filterBy*()
     //
     reloadLotLayer: function() {
-        this.selectControl.unselectAll();
+        if (this.options.select) {
+            this.selectControl.unselectAll();
+        }
         this.olMap.removeLayer(this.lot_layer);
         this.lot_layer.destroy();
 
@@ -411,6 +430,18 @@ var LotMap = {
     filterByLotType: function(types) {
         this.lot_types = types;
         this.reloadLotLayer();
+    },
+
+    highlightLot: function(fid) {
+        var feature = this.olMap.layers[1].getFeatureByFid(fid);
+        if (!feature) return;  
+
+        this.hoverControl.unselectAll();
+        this.hoverControl.select(feature);
+    },
+
+    unhighlightLot: function() { 
+        this.hoverControl.unselectAll();
     },
 
 };

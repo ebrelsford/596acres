@@ -1,13 +1,36 @@
 {% extends "base_with_sidebar.html" %}
+{% load compress %}
 
 {% block title %}Lots with organizers{% endblock %}
+
+{% block media %}
+    {{ block.super }}
+
+    {% compress js %}
+    <script src="{{ MEDIA_URL }}OpenLayers/OpenLayers.js" type="text/javascript"></script>
+    {% endcompress %}
+
+    {% compress js %}
+    <script src="{{ MEDIA_URL }}jquery-util.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}cloudmade.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}map.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}jquery.smartresize.js" type="text/javascript"></script>
+    {% endcompress %}
+{% endblock %}
+
+{% block scripts %}
+    {% compress js %}
+    <script src="{{ MEDIA_URL }}lots_list.js" type="text/javascript"></script>
+    {% endcompress %}
+{% endblock %}
 
 {% block content_main %}
 <h1>Lots with organizers</h1>
 <div>
+    <div id="map" style="width: 100%; height: 300px;"></div>
     <ul class="lot-list">
         {% for lot in lots %}
-        <li><a href="{% url lots.views.details bbl=lot.bbl %}">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a></li>
+        <li><a href="{% url lots.views.details bbl=lot.bbl %}" class="lot" id="{{ lot.bbl }}">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a></li>
         {% endfor %}
     </ul>
 </div>

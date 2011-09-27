@@ -143,6 +143,13 @@ def random(request):
     bbls = Lot.objects.filter(is_vacant=True, centroid_source__in=('OASIS', 'Google', 'Nominatim'), owner__type__name='city').values_list('bbl', flat=True)
     return redirect(details, bbl=bbls[randint(0, bbls.count())])
 
+def organizing(request):
+    lots = Lot.objects.filter(is_vacant=True).exclude(organizer=None)
+
+    return render_to_response('lots/list.html', {
+        'lots': lots,
+    }, context_instance=RequestContext(request))
+
 def pdf(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     lot.generate_qrcode()

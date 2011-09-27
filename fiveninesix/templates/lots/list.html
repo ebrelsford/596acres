@@ -1,0 +1,14 @@
+{% extends "base_with_sidebar.html" %}
+
+{% block title %}Lots with organizers{% endblock %}
+
+{% block content_main %}
+<h1>Lots with organizers</h1>
+<div>
+    <ul class="lot-list">
+        {% for lot in lots %}
+        <li><a href="{% url lots.views.details bbl=lot.bbl %}">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

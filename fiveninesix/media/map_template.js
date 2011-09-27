@@ -60,6 +60,12 @@ $(document).ready(function() {
                         $(this).parents('.tabs').tabs('select', '#owner');
                         return false;
                     });
+
+                // link to organize
+                $(popup).find('.organize-link').click(function() {
+                    $(popup).find('.tabs').tabs('select', '#organize');
+                    return false;
+                });
             });
 
             // street view

@@ -312,6 +312,9 @@ div.tabs #organize ul li.last {
     border-bottom: 0;
 }
 
+.lot-popup.organized .lot-link-container {
+    height: 70px;
+}
 .lot-popup .lot-link-container {
     height: 55px;
 }
@@ -333,6 +336,9 @@ div.tabs #organize ul li.last {
     height: 200px;
     width: 98%;
     overflow-y: auto;
+}
+.lot-popup.organized .ui-tabs-panel {
+    height: 185px;
 }
 
 .ui-widget-content a {

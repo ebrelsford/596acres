@@ -75,6 +75,8 @@ def _filter_lots(request):
                 lots = lots_vacant
             if 'garden' in lot_types:
                 lots = lots_garden
+            if 'organizing' in lot_types:
+                lots = lots_vacant.exclude(organizer=None)
 
     return lots
 

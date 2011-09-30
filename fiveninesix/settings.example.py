@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'menus',
     'mptt',
     'appmedia',
+    'sorl.thumbnail',
     'south',
     'cms.plugins.text',
     'cms.plugins.picture',

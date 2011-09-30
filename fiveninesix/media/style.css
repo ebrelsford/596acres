@@ -538,3 +538,19 @@ ul.notes {
 .lot-list .lot.hovered {
     font-weight: bold;
 }
+
+ul.pictures {
+    list-style: none;
+    margin: 10px 0;
+    padding: 0;
+}
+ul.pictures li {
+    display: inline;
+}
+
+#jquery-overlay {
+    z-index: 2000 !important;
+}
+#jquery-lightbox {
+    z-index: 2001 !important;
+}

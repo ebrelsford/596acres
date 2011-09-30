@@ -108,6 +108,7 @@ def details(request, bbl=None):
         'organizers': lot.organizer_set.all(),
         'watchers_count': lot.watcher_set.all().count(),
         'notes': lot.note_set.all().order_by('added'),
+        'pictures': lot.picture_set.all().order_by('added'),
     }, context_instance=RequestContext(request))
 
 def owner_details(request, id=None):

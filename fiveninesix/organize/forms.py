@@ -1,11 +1,11 @@
 from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMultipleChoiceField, ModelChoiceField
+from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMultipleChoiceField, ModelChoiceField, FileField
 
 from recaptcha_works.fields import RecaptchaField
 
 from lots.models import Lot
-from models import Organizer, Watcher, Note
+from models import Organizer, Watcher, Note, Picture
 from settings import BASE_URL
 from widgets import PrefixLabelTextInput
 
@@ -55,4 +55,13 @@ class NoteForm(ModelForm):
 
     class Meta:
         model = Note
+        exclude = ('added',)
+        
+class PictureForm(ModelForm):
+    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
+
+    recaptcha = RecaptchaField(label="Prove you're human")
+
+    class Meta:
+        model = Picture
         exclude = ('added',)

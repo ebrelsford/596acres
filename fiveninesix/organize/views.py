@@ -7,7 +7,7 @@ from django.template import RequestContext
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
 from lots.models import Lot
-from forms import OrganizerForm, WatcherForm, NoteForm
+from forms import OrganizerForm, WatcherForm, NoteForm, PictureForm
 from models import Organizer
 
 def details(request, bbl=None):
@@ -87,6 +87,26 @@ def add_note(request, bbl=None):
         })
 
     template = 'organize/add_note.html'
+
+    return render_to_response(template, {
+        'form': form,
+        'lot': lot,
+    }, context_instance=RequestContext(request))
+
+@fix_recaptcha_remote_ip
+def add_picture(request, bbl=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    if request.method == 'POST':    
+        form = PictureForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('lots.views.details', bbl=bbl)
+    else:
+        form = PictureForm(initial={
+            'lot': lot,
+        })
+
+    template = 'organize/add_picture.html'
 
     return render_to_response(template, {
         'form': form,

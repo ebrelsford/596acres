@@ -1,5 +1,7 @@
 from django.db import models
 
+from sorl.thumbnail import ImageField
+
 from lots.models import Lot
 
 class Organizer(models.Model):
@@ -68,3 +70,12 @@ class Note(models.Model):
 
     def __unicode__(self):
         return "%s: %s" % (self.noter, self.text[:50])
+
+class Picture(models.Model):
+    """
+    A picture of a lot.
+    """
+    picture = ImageField(upload_to='pictures')
+    description = models.TextField(null=True, blank=True)
+    added = models.DateTimeField(auto_now_add=True)
+    lot = models.ForeignKey(Lot)

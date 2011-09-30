@@ -1,9 +1,31 @@
 {% extends "lots/base.html" %}
+{% load compress thumbnail %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    {% compress css %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}jquery-lightbox/css/jquery.lightbox-0.5.css" type="text/css" />
+    {% endcompress %}
+{% endblock %}
+
+{% block media %}
+    {{ block.super }}
+    {% compress js %}
+    <script src="{{ MEDIA_URL }}jquery-lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>
+    {% endcompress %}
+{% endblock %}
 
 {% block scripts %}
     {{ block.super }}
 <script type="text/javascript">
     $(document).ready(function() {
+        $('.pictures a').lightBox({
+            imageLoading: '{{ MEDIA_URL }}jquery-lightbox/images/lightbox-ico-loading.gif',   
+            imageBtnClose: '{{ MEDIA_URL }}jquery-lightbox/images/lightbox-btn-close.gif',   
+            imageBtnPrev: '{{ MEDIA_URL }}jquery-lightbox/images/lightbox-btn-prev.gif',   
+            imageBtnNext: '{{ MEDIA_URL }}jquery-lightbox/images/lightbox-btn-next.gif',   
+            imageBlank: '{{ MEDIA_URL }}jquery-lightbox/images/lightbox-blank.gif',   
+        });
     });
 </script>
 {% endblock %}
@@ -231,6 +253,21 @@
         {% endfor %}
         </ul>
         <a class="fns-button" href="{% url organize.views.add_note bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/spechbubble_16.png" /> &nbsp;add a note</a>
+    </div>
+    <div id="pictures" class="section">
+        <h2>pictures</h2>
+        <ul class="pictures">
+        {% for picture in pictures %}
+            <li class="picture {% cycle "odd" "even" %}">
+                <a title="{{ picture.description }}" href="{{ picture.picture.url }}">
+                {% thumbnail picture.picture "200x200" as im %}
+                <img src="{{ im.url }}" />
+                {% endthumbnail %}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+        <a class="fns-button" href="{% url organize.views.add_picture bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/photo.png" /> &nbsp;add a picture</a>
     </div>
 </div>
 {% endblock %}

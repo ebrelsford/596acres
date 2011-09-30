@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^(?P<bbl>\d+)/organizers/add/$', 'organize.views.add_organizer', {}, 'add_organizer'),
     url(r'^(?P<bbl>\d+)/watchers/add/$', 'organize.views.add_watcher'),
     url(r'^(?P<bbl>\d+)/notes/add/$', 'organize.views.add_note'),
+    url(r'^(?P<bbl>\d+)/pictures/add/$', 'organize.views.add_picture'),
     url(r'^(?P<bbl>\d+)/organizers/(?P<id>\d+)/edit/$', 'organize.views.edit_organizer'),
     url(r'^(?P<bbl>\d+)/organizers/(?P<id>\d+)/delete/$', 'organize.views.delete_organizer'),
 )

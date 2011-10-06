@@ -48,7 +48,7 @@ ul.nav ul {
     display: none;
     position: absolute;
     z-index: 6000;
-    background-image: url(/media/img/opacity_80_bg.png);
+    background-color: white;
     border: 1px solid black;
     border-top: 0;
     margin-top: 5px;

@@ -1,11 +1,11 @@
 {% extends "cmsplugin_blog/cmsplugin_blog_base.html" %}
 {% load i18n placeholder_tags cmsplugin_blog_tags simple_translation_tags %}
 
-{% block title %}{% trans "News for" %} {{ day|date:"d F Y" }}{% endblock %}
+{% block title %}{% trans "News for" %} {{ day|date:"F d, Y" }}{% endblock %}
 
 {% block left-col %}
 
-<h1>{% trans "News for" %} {{ day|date:"d F Y" }}</h1>
+<h1>{% trans "News for" %} {{ day|date:"F d, Y" }}</h1>
 
 {% include "cmsplugin_blog/entry_list_snippet.html" with entries=object_list %}
 

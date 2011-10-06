@@ -9,23 +9,15 @@
             <h3 class="title"><a href="{{ title.get_absolute_url }}">{{ title }}</a></h3>
 
             <div class="meta">
-                <div class="date">{{ entry.pub_date|date:"F d Y" }}</div>
-
+                <span class="date">{{ entry.pub_date|date:"F d, Y" }}</span>
                 {% if entry.entry_tags %}
-                <div class="tags">
-                    tags: 
+                <span class="tags">
+                    in 
                     {% for tag in entry.entry_tags %}
                     <a href="{% url blog_archive_tagged tag=tag.name %}">{{ tag.name }}</a>
                     {% endfor %}
-                </div>
+                </span>
                 {% endif %}
-                <div class="text">
-                {% with entry.placeholders|choose_placeholder:"main" as main %}
-                    {% with main.get_plugins|first as text %}
-                    {{ text.render_plugin|truncatewords_html:"8" }} &nbsp; <a href="{{ title.get_absolute_url }}">read the rest</a>
-                    {% endwith %}
-                {% endwith %}
-                </div>
             </div>
             {% endwith %}              
         </li>

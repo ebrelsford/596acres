@@ -14,7 +14,7 @@
 <h1>{{ title }}</h1>
 {% endwith %}
 
-<p class="date"><span>{{ object.pub_date|date:"d F Y" }}</span></p>
+<p class="date"><span>{{ object.pub_date|date:"F d, Y" }}</span></p>
 
 {% with object.placeholders|choose_placeholder:"main" as main %}
     {% render_placeholder main %}

@@ -79,6 +79,10 @@
                     <th>elsewhere</th>
                     <td class="links">
                         <a id="oasislink" target="_blank" href="http://www.oasisnyc.net/map.aspx?zoomto=lot:{{ lot.bbl }}">See this lot on OASIS</a>, a map that combines block and lot level information from a variety of government and community sources.
+
+                        {% if 'Garden' in lot.actual_use %}
+                        <br /> <br />Check out <a id="gardenmapslink" target="_blank" href="http://www.gardenmaps.org">Garden Maps</a> for more detailed maps of New York City's community gardens.
+                        {% endif %}
                     </td>
                 </tr>
             </table>

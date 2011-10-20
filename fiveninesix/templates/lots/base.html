@@ -27,8 +27,13 @@ $(document).ready(function() {
 
     $('#map').lotmap({
         filter: false,
-        queryString: 'source=OASIS,Nominatim,Google&owner_type=city&bbls={{ lot.bbl }}',   
-        onLoad: function(feature) {
+        queryString: 'source=OASIS,Nominatim,Google&owner_type=city&bbls={{ lot.bbl }}&with_nearby_lots=yes',   
+        detailView: true,
+        detailFid: {{ lot.bbl }},
+        onLoad: function() {
+            var lotmap = $('#map').data('lotmap');
+
+            feature = lotmap.lot_layer.getFeatureByFid({{ lot.bbl }});
             show_with_streetview('streetview', feature);
         },
     });

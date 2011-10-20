@@ -4,6 +4,7 @@ import json
 from random import randint
 import simplekml
 
+from django.contrib.gis.measure import Distance
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
@@ -57,7 +58,11 @@ def _filter_lots(request):
         lots = lots.filter(owner__id=request.GET['owner_id'])
     if 'bbls' in request.GET:
         bbls = request.GET['bbls'].split(',')
-        lots = lots.filter(bbl__in=bbls)
+        if len(bbls) == 1 and request.GET.get('with_nearby_lots', 'no') == 'yes':
+            lot = Lot.objects.get(bbl=bbls[0])
+            lots = lots.filter(centroid__distance_lte=(lot.centroid, Distance(mi=.25)))
+        else:
+            lots = lots.filter(bbl__in=bbls)
     if 'min_area' in request.GET:
         lots = lots.filter(area_acres__gte=request.GET['min_area'])
     if 'max_area' in request.GET:

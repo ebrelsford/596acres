@@ -42,10 +42,27 @@ var LotMap = {
         strokeWidth: 2,
     },
 
+    detailStyle: {
+        pointRadius: 15,
+        fillOpacity: 1,
+    },
+    detailUnhighlightedStyle: {
+        fillOpacity: .3,
+        strokeOpacity: .3,
+    },
+
     borderStyle: {
-        'strokeWidth': 3,
-        'strokeColor': '#A4788C',
-        'fillOpacity': 0,
+        strokeWidth: 3,
+        strokeColor: '#A4788C',
+        fillOpacity: 0,
+    },
+    
+    searchStyle: {
+        pointRadius: 10,
+        fillColor: '#F3FA2D',
+        fillOpacity: 0.6,
+        strokeWidth: 1,
+        strokeColor: '#000000',
     },
 
     init: function(options, elem) {
@@ -90,10 +107,9 @@ var LotMap = {
         this.lot_layer = this.getLayer('lots', this.options.url + this.getQueryString());
         this.lot_layer.events.on({
             'loadend': function() {
-                if (t.lot_layer.features.length == 1) {
-                    var feature = t.lot_layer.features[0];
-                    t.centerOnFeature(t.lot_layer, feature.fid);
-                    t.options.onLoad(feature);
+                t.options.onLoad();
+                if (t.options.detailView) {
+                    t.centerOnFeature(t.lot_layer, t.options.detailFid);
                 }
                 else {
                     t.addControls([t.lot_layer]);
@@ -104,13 +120,7 @@ var LotMap = {
         this.search_layer = new OpenLayers.Layer.Vector('search', {
             projection: this.olMap.displayProjection,
             styleMap: new OpenLayers.StyleMap({
-                'default': {
-                    pointRadius: '10',
-                    fillColor: '#F3FA2D',
-                    fillOpacity: '0.6',
-                    strokeWidth: 1,
-                    strokeColor: '#000000',
-                },
+                'default': this.searchStyle,
             }),
         });
         this.olMap.addLayer(this.search_layer);
@@ -125,7 +135,8 @@ var LotMap = {
         type: null, 
         url: '/lots/geojson?',
         queryString: '',
-        onLoad: function(feature) {},
+        detailView: false,
+        onLoad: function() {},
         onFeatureSelect: function(feature) {},
         onFeatureUnselect: function(feature) {},
         onFeatureHighlight: function(feature) {},
@@ -149,27 +160,50 @@ var LotMap = {
     // Add style rule to check for gardens and style them differently
     //
     addRulesToStyle: function(style) {
-         style.addRules([
-             new OpenLayers.Rule({
-                 filter: new OpenLayers.Filter.Comparison({
-                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                     property: 'is_garden',
-                     value: true,
-                 }),
-                 symbolizer: this.gardenStyle,
-             }),
-             new OpenLayers.Rule({
-                 filter: new OpenLayers.Filter.Comparison({
-                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                     property: 'has_organizers',
-                     value: true,
-                 }),
-                 symbolizer: this.organizedStyle,
-             }),
-             new OpenLayers.Rule({
-                 elseFilter: true,
-             }),
-         ]);
+        var rules = [];
+        rules.push(new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                property: 'is_garden',
+                value: true,
+            }),
+            symbolizer: this.gardenStyle,
+        }));
+
+        rules.push(new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                property: 'has_organizers',
+                value: true,
+            }),
+            symbolizer: this.organizedStyle,
+        }));
+
+        if (this.options.detailView) {
+            rules.push(new OpenLayers.Rule({
+                filter: new OpenLayers.Filter.Logical({
+                    type: OpenLayers.Filter.Logical.NOT,
+                    filters: [
+                        new OpenLayers.Filter.FeatureId({
+                            fids: [this.options.detailFid],
+                        }),
+                    ],
+                }),
+                symbolizer: this.detailUnhighlightedStyle,
+            }));
+            rules.push(new OpenLayers.Rule({
+                filter: new OpenLayers.Filter.FeatureId({
+                    fids: [this.options.detailFid],
+                }),
+                symbolizer: this.detailStyle,
+            }));
+        }
+
+        rules.push(new OpenLayers.Rule({
+            elseFilter: true,
+        }));
+
+         style.addRules(rules);
      },
 
     getLayer: function(name, url) {

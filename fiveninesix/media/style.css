@@ -178,6 +178,21 @@ ul.nav ul {
     float: left;
 }
 
+#map_overlay {
+    width: 100%;
+    height: 500px;
+    background-image: url(/media/img/opacity_92_bg.png);
+    position: absolute;
+    padding: 45px;
+    font-size: 20px;
+    z-index: 4000;
+}
+#map_overlay .close-graphic {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 #map_page #map {
     width: 100%; 
     height: 500px;

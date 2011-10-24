@@ -21,6 +21,8 @@ urlpatterns = patterns('',
         'ajax': True,
     }),
 
+    url(r'^sessions/hide_map_overlay/$', 'sessions.views.hide_map_overlay'),
+
     url(r'^', include('cms.urls')),
 )
 

@@ -174,4 +174,17 @@ $(document).ready(function() {
         window.location.href = '/lots/' + $(this).attr('class') + '?' + $('#map').data('lotmap').getQueryString() + '&download=true';
         return false;
     });
+
+    $('#map_overlay').outerWidth($('#map').outerWidth());
+    $('#map_overlay').outerHeight($('#map').outerHeight());
+    $('#map_overlay').position({
+        my: 'left top',
+        at: 'left top',
+        of: $('#map'),
+    });
+    $('#map_overlay .close').click(function() {
+        $('#map_overlay').hide();
+        $.getJSON('/sessions/hide_map_overlay/');
+        return false;
+    });
 });

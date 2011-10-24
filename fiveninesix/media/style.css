@@ -177,15 +177,21 @@ ul.nav ul {
     width: 35%;
     float: left;
 }
-
-#map_overlay {
-    width: 100%;
-    height: 500px;
-    background-image: url(/media/img/opacity_92_bg.png);
+#map_overlay, .helpmodal {
+    background: white;
+    display: none;
     position: absolute;
-    padding: 45px;
+}
+#map_overlay {
+    padding: 10px;
+    background: white;
     font-size: 20px;
     z-index: 4000;
+    border: 1px solid black;
+    border-radius: 15px;
+
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
 }
 #map_overlay .close-graphic {
     position: absolute;

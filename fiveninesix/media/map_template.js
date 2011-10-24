@@ -175,17 +175,18 @@ $(document).ready(function() {
         return false;
     });
 
-    $('#map_overlay')
-        .outerWidth($('#map').outerWidth())
-        .outerHeight($('#map').outerHeight())
-        .position({
-            my: 'left top',
-            at: 'left top',
-            of: $('#map'),
-        })
-        .find('.close').click(function() {
-            $('#map_overlay').hide();
-            $.getJSON('/sessions/hide_map_overlay/');
-            return false;
-        });
+    var help = $('#map_overlay').help({
+        parent_div: $('#map'),
+    }).data('help');
+
+    $('#map_overlay .close').click(function() {
+        help.hide_help();
+        $.getJSON('/sessions/hide_map_overlay/');
+        return false;
+    });
+
+    $(window).load(function() {
+        help.show_help();
+    });
+
 });

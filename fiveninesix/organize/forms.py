@@ -1,6 +1,6 @@
 from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse
-from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMultipleChoiceField, ModelChoiceField, FileField
+from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMultipleChoiceField, ModelChoiceField
 
 from recaptcha_works.fields import RecaptchaField
 

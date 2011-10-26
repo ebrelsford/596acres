@@ -32,7 +32,7 @@ var Help = {
         this.modal.hide();
     },
 
-    position: function() {
+    place_on_parent: function() {
         if (this.positioned) return;
         this.positioned = true;
 
@@ -60,7 +60,7 @@ var Help = {
     },
 
     show_help: function() {
-        this.position();
+        this.place_on_parent();
         this.modal.fadeTo('fast', .5);
         this.$elem.fadeTo('fast', .9);
     },

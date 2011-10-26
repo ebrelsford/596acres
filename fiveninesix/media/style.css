@@ -1,6 +1,7 @@
 body {
     background: url(/media/img/background.png);
     background-repeat: no-repeat;
+    background-color: white;
     background-attachment: fixed;
     background-position: right bottom;
     background-size: 1000px 427px;

@@ -180,13 +180,17 @@ $(document).ready(function() {
     }).data('help');
 
     $('#map_overlay .close').click(function() {
-        help.hide_help();
+        if (help !== undefined) {
+            help.hide_help();
+        }
         $.getJSON('/sessions/hide_map_overlay/');
         return false;
     });
 
     $(window).load(function() {
-        help.show_help();
+        if (help !== undefined) {
+            help.show_help();
+        }
     });
 
 });

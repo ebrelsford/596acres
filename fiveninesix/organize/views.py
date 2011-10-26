@@ -6,8 +6,8 @@ from django.template import RequestContext
 
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
-from lots.models import Lot
 from forms import OrganizerForm, WatcherForm, NoteForm, PictureForm
+from lots.models import Lot
 from models import Organizer
 
 def details(request, bbl=None):

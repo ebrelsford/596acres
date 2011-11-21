@@ -306,6 +306,22 @@ ul.nav ul {
     height: 300px;
 }
 
+.highlight_box {
+    display: none;
+    z-index: 4000;
+    font-size: 14px;
+    position: absolute;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    max-width: 300px;
+}
+
+.highlight_box .recent_change {
+    border-top: 1px solid black;
+}
+
 .lot-popup {
     height: 100%;
     width: 100%;

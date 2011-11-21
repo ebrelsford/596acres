@@ -17,9 +17,13 @@ class Organizer(models.Model):
     facebook_page = models.CharField(max_length=256, null=True, blank=True)
 
     lots = models.ManyToManyField(Lot)
+    added = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.name
+
+    def recent_change_label(self):
+        return 'new organizer: %s' % self.name
 
 class Watcher(models.Model):
     """
@@ -33,6 +37,9 @@ class Watcher(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def recent_change_label(self):
+        return 'new watcher'
 
 class OrganizerType(models.Model):
     """
@@ -70,6 +77,9 @@ class Note(models.Model):
 
     def __unicode__(self):
         return "%s: %s" % (self.noter, self.text[:50])
+
+    def recent_change_label(self):
+        return 'new note: "%s"' % (self.text[:50])
 
 class Picture(models.Model):
     """

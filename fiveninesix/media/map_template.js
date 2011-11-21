@@ -73,7 +73,7 @@ $(document).ready(function() {
         },
 
         onFeatureSelect: function(event) {
-            $('.highlight_area').hide();
+            $('.highlight_box').hide();
         },
 
         onFeatureUnselect: function(feature) {
@@ -86,20 +86,25 @@ $(document).ready(function() {
             if (acres === 0) {
                 acres = 'almost 0';
             }
-            $('.highlight_area').text(acres + ' acres').show();
+            $('.highlight_box').text(acres + ' acres').show();
+
+            var recent_change = f.data.recent_change;
+            if (recent_change) {
+                $('.highlight_box').append('<div class="recent_change">' + recent_change + '</div>');
+            }
             
             var feature_position = $('#map').data('lotmap').olMap.getPixelFromLonLat(new OpenLayers.LonLat(f.geometry.x, f.geometry.y));
 
             var map_offset = $('#map').offset();
 
-            $('.highlight_area').offset({
+            $('.highlight_box').offset({
                 left: feature_position.x + map_offset.left + 10,
                 top: feature_position.y + map_offset.top - 10,
             });
         },
 
         onFeatureUnhighlight: function(event) {
-            $('.highlight_area').hide();
+            $('.highlight_box').hide();
         },
     });
 

@@ -42,6 +42,10 @@ var LotMap = {
         strokeWidth: 2,
     },
 
+    recentChangesStyle: {
+        pointRadius: 10,
+    },
+
     detailStyle: {
         pointRadius: 15,
         fillOpacity: 1,
@@ -177,6 +181,15 @@ var LotMap = {
                 value: true,
             }),
             symbolizer: this.organizedStyle,
+        }));
+
+        rules.push(new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.NOT_EQUAL_TO,
+                property: 'recent_change',
+                value: null,
+            }),
+            symbolizer: this.recentChangesStyle,
         }));
 
         if (this.options.detailView) {

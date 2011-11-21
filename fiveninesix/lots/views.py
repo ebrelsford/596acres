@@ -13,12 +13,13 @@ from django.template import RequestContext
 from django_xhtml2pdf.utils import render_to_pdf_response
 
 from models import Lot, Owner
+from organize.models import Note, Organizer, Watcher
 from settings import BASE_URL
 
 def lot_geojson(request):
-    #lots = _filter_lots(request).distinct().values('bbl', 'area_acres', 'centroid', 'actual_use').annotate(Count('organizer'))
     lots = _filter_lots(request).distinct().annotate(Count('organizer'))
-    lots_geojson = _lot_collection(lots)
+    recent_changes = _recent_changes()
+    lots_geojson = _lot_collection(lots, recent_changes)
 
     response = HttpResponse(mimetype='application/json')
     if 'download' in request.GET and request.GET['download'] == 'true':
@@ -124,10 +125,14 @@ def owner_details(request, id=None):
             del details[k]
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
-def _lot_collection(lots):
-    return geojson.FeatureCollection(features=[_lot_feature(lot) for lot in lots])
+def _lot_collection(lots, recent_changes):
+    return geojson.FeatureCollection(features=[_lot_feature(lot, recent_changes) for lot in lots])
 
-def _lot_feature(lot):
+def _lot_feature(lot, recent_changes):
+    change = None
+    if lot.id in recent_changes:
+        change = recent_changes[lot.id].recent_change_label()
+
     return geojson.Feature(
         lot.bbl,
         geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
@@ -135,8 +140,30 @@ def _lot_feature(lot):
             'area': round(float(lot.area_acres), 3),
             'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
             'has_organizers': lot.organizer__count > 0,
+            'recent_change': change,
         },
     )
+
+def _recent_changes(maximum=5):
+    """Find recent changes globally, keyed by lot id"""
+
+    objs = []
+    for T in (Organizer, Note, Watcher):
+        objs += list(T.objects.all().order_by('-added')[:maximum])
+    objs.sort(cmp=lambda x, y: -cmp(x.added, y.added))
+    objs = objs[:maximum]
+
+    changes = {}
+    for obj in objs:
+        try:
+            changes[obj.lot.id] = obj
+        except:
+            try:
+                changes[obj.lots.all()[0].id] = obj
+            except:
+                continue
+
+    return changes
 
 def tabs(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)

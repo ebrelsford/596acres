@@ -520,8 +520,8 @@ form > table td input.prefixed {
 a.fns-button {
     font-size: 14px;
     font-weight: bold;
-    background-color: #FFFCE0;
-    border: 1px solid #FEEB50;
+    background-color: #EFFFEB;
+    border: 1px solid #49A739;
     border-radius: 5px;
     -webkit-border-radius: 5px;    
     -moz-border-radius: 5px;
@@ -536,8 +536,8 @@ a.fns-button {
     cursor: pointer;
 }
 a.fns-button:hover {
-    background-color: #FFF8BE;
-    border: 1px solid #FFE508;
+    background-color: #D7FFCC;
+    border: 1px solid #49A739;
 }
 a.fns-button:active {
     position: relative;

@@ -127,7 +127,7 @@
     <div class="highlight_box"></div>
 </div>
 
-{% if not request.session.hide_map_overlay %}
+{% if not request.session.hide_map_overlay and not is_mobile %}
 <div id="map_overlay">
     <a class="close close-graphic" href="#"><img src="{{ MEDIA_URL }}img/close.gif" /></a> 
     <div>Under this text is a map of <span style="font-weight: bold;">Brooklyn's publicly owned vacant land</span>.</div>

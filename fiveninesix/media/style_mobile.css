@@ -38,3 +38,23 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.popup_loading {
+    width: 200px;
+    height: 200px;
+}
+.lot-popup .ui-tabs .ui-tabs-nav li a {
+    padding-left: 0;
+    padding-right: 0;
+}
+.olPopupCloseBox {
+    background-image: url(/media/img/close_large.png) !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+.olControlAttribution {
+    display: none !important;
+}
+#map_buttons {
+    display: none !important;
+}

@@ -4,7 +4,7 @@
 
     <div class="lot-link-container">
         <h1>{{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}</h1>
-        <span><a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">Go to this lot's page</a> for more information.</span>
+        <span><a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">This lot's page</a> has more information.</span>
 
         {% if organizers|length > 0 %}
         <span>Neighbors are working on turning this lot into a community-determined green space. <a href="#" style="font-weight: bold;" class="organize-link">Learn more and get involved.</a></span>
@@ -56,7 +56,7 @@
                     <td>
                         <span>
                             {% if lot.owner %}
-                            {{ lot.owner.name|default:'' }} (<a href="">details</a>)
+                            <a href="">{{ lot.owner.name|default:'' }}</a>
                             {% else %}
                             we don't know
                             {% endif %}

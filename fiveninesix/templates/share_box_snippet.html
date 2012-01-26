@@ -1,5 +1,5 @@
 <div id="share-container" style="padding-top: 5px;">
-    {% with page_url=request.build_absolute_uri|urlencode:"" %}
+    {% with page_url=request.build_absolute_uri %}
     <div>
         <a class="a2a_dd" href="http://www.addtoany.com/share_save?linkurl={{ page_url }}&amp;linkname=596+acres+{{ title }}"><img src="http://static.addtoany.com/buttons/share_save_120_16.gif" width="120" height="16" border="0" alt="Share"/></a>
         <script type="text/javascript">

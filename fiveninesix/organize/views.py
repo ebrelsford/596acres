@@ -8,7 +8,7 @@ from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
 from forms import OrganizerForm, WatcherForm, NoteForm, PictureForm
 from lots.models import Lot
-from models import Organizer
+from models import Organizer, Watcher
 
 def details(request, bbl=None):
     organizers = Organizer.objects.filter(lots__bbl=bbl)
@@ -136,3 +136,21 @@ def delete_organizer(request, bbl=None, id=None):
     organizer.delete()
 
     return redirect('lots.views.details', bbl=bbl)
+
+def edit_watcher(request, hash=None):
+    watchers = Watcher.objects.filter(email_hash__istartswith=hash)
+    email = None
+    if watchers:
+        email = watchers[0].email
+
+    return render_to_response('organize/edit_watcher.html', {
+        'email': email,
+        'hash': hash,
+        'watchers': watchers,
+    }, context_instance=RequestContext(request))
+
+def delete_watcher(request, id=None, hash=None):
+    watcher = get_object_or_404(Watcher, id=id, email_hash__istartswith=hash)
+    watcher.delete()
+    return redirect('organize.views.edit_watcher', hash=hash)
+

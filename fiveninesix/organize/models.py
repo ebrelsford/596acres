@@ -1,8 +1,13 @@
+from hashlib import sha1
+
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from sorl.thumbnail import ImageField
 
 from lots.models import Lot
+from settings import WATCHER_SALT
 
 class Organizer(models.Model):
     """
@@ -32,11 +37,17 @@ class Watcher(models.Model):
     name = models.CharField(max_length=256)
     phone = models.CharField(max_length=32, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
+    email_hash = models.CharField(max_length=40, null=True, blank=True)
     lot = models.ForeignKey(Lot)
     added = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.email:
+            self.email_hash = sha1(WATCHER_SALT + self.email).hexdigest()
+        super(Watcher, self).save(*args, **kwargs)
 
     def recent_change_label(self):
         return 'new watcher'
@@ -89,3 +100,18 @@ class Picture(models.Model):
     description = models.TextField(null=True, blank=True)
     added = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot)
+
+
+#
+# Handle signals.
+#
+from notify import notify_watchers
+
+@receiver(post_save, sender=Note)
+def send_watcher_update(sender, **kwargs):
+    """
+    Send watchers of a given lot updates.
+    """
+    obj = kwargs['instance']
+    if isinstance(obj, Note) and kwargs['created']:
+        notify_watchers(obj)

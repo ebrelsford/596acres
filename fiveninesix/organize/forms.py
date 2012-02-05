@@ -1,12 +1,10 @@
-from django.core.mail import mail_managers
-from django.core.urlresolvers import reverse
 from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMultipleChoiceField, ModelChoiceField
 
 from recaptcha_works.fields import RecaptchaField
 
 from lots.models import Lot
+from notify import new_organizer_notify_managers, notify_watchers
 from models import Organizer, Watcher, Note, Picture
-from settings import BASE_URL
 from widgets import PrefixLabelTextInput
 
 class OrganizerForm(ModelForm):
@@ -21,23 +19,14 @@ class OrganizerForm(ModelForm):
         }
 
     def save(self, force_insert=False, force_update=False, commit=True):
+        is_creating = False
+        if not self.instance.id:
+            is_creating = True
+
         organizer = super(self.__class__, self).save()
-        self._send_notification(organizer)
-
-    def _send_notification(self, organizer):
-        lots_urls = [BASE_URL + reverse('lots.views.details', args=(l.bbl,)) for l in organizer.lots.all()]
-        message = """Neat! A new organizer was created on 596acres.org.
-
-Details:
-name: %s
-type: %s
-phone: %s
-email: %s
-url: %s
-lots: %s
-""" % (organizer.name, organizer.type.name, organizer.phone, organizer.email, organizer.url, ', '.join(lots_urls),)
-
-        mail_managers('A new organizer was created on 596acres.org', message)
+        if is_creating:
+            new_organizer_notify_managers(organizer)
+            notify_watchers(organizer)
         
 class WatcherForm(ModelForm):
     lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
@@ -46,7 +35,7 @@ class WatcherForm(ModelForm):
 
     class Meta:
         model = Watcher
-        exclude = ('added',)
+        exclude = ('added', 'email_hash')
         
 class NoteForm(ModelForm):
     lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())

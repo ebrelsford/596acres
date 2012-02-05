@@ -12,7 +12,7 @@ class OrganizerTypeAdmin(admin.ModelAdmin):
 
 class WatcherAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email')
-    list_display = ('name', 'email', 'phone',)
+    list_display = ('name', 'email', 'phone', 'lot', 'added',)
 
 class NoteAdmin(admin.ModelAdmin):
     search_fields = ('noter', 'text')

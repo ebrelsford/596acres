@@ -47,4 +47,4 @@ def notify_watchers(obj):
     if lot:
         msg = _get_watcher_message(lot, obj_msg, obj_url_suffix=url_suffix)
 
-        mail_watchers(lot, 'Update!', msg)
+        mail_watchers(lot, 'Watched lot updated!', msg)

@@ -21,8 +21,8 @@ urlpatterns = patterns('',
         'ajax': True,
     }),
 
-    url(r'^watchers/(?P<hash>[^/]+)/$', 'organize.views.edit_watcher'),
-    url(r'^watchers/(?P<hash>[^/]+)/delete/(?P<id>\d+)/$', 'organize.views.delete_watcher'),
+    url(r'^watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_watcher'),
+    url(r'^watchers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_watcher'),
 
     url(r'^sessions/hide_map_overlay/$', 'sessions.views.hide_map_overlay'),
 

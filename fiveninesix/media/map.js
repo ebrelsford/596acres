@@ -38,7 +38,6 @@ var LotMap = {
             fillColor: '#3f9438',
             fillOpacity: 0.8,
             strokeWidth: 0,
-            strokeOpacity: 0,
         }),
         'select': {
             pointRadius: 20,
@@ -186,6 +185,7 @@ var LotMap = {
     //
     addRulesToStyle: function(style) {
         var rules = [];
+
         rules.push(new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({
                 type: OpenLayers.Filter.Comparison.EQUAL_TO,

@@ -308,20 +308,24 @@ var LotMap = {
     },
 
     createAndOpenPopup: function(feature) {
-        var width = 300;
         var t = this;
 
+        var popup_width = 300;
         var map_width = t.$elem.innerWidth();
+        var max_width = map_width - 65;
+        if (popup_width > max_width) popup_width = max_width;
+        var content_div_width = popup_width - 50;
 
-        if (width > map_width - 50) {
-            width = map_width - 50;
-        }
+        var popup_height = 300;
+        var map_height = t.$elem.innerHeight();
+        var max_height = map_height - 65;
+        if (popup_height > max_height) popup_height = max_height;
+        var content_div_height = popup_height - 50;
 
-        var div_width = width - 50;
-        var content = "<div style=\"min-width: " + div_width + "px; min-height: " + div_width + "px;\"></div>";
+        var content = "<div style=\"width: " + content_div_width + "px !important; min-height: " + content_div_height + "px;\"></div>";
         var popup = new OpenLayers.Popup.Anchored("chicken", 
                                     feature.geometry.getBounds().getCenterLonLat(),
-                                    new OpenLayers.Size(width, width),
+                                    new OpenLayers.Size(popup_width, popup_height),
                                     content,
                                     null, 
                                     true, 
@@ -331,8 +335,7 @@ var LotMap = {
         this.olMap.addPopup(popup);
 
         // don't let the close box add whitespace to the popup
-        var new_width = $('.olPopupContent').width() + $('.olPopupCloseBox').width();
-        $('.olPopupContent').width(new_width);
+        $('.olPopupContent').width($('.olPopupContent').width() + 20);
         return $('#chicken_contentDiv');
     },
 

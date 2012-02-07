@@ -2,12 +2,79 @@
 <body>
 <div class="lot-popup{% if organizers|length > 0 %} organized{% endif %}">
 
+    {% if is_mobile %}
+
+    <div class="lot-link-container">
+        <h1>{{ lot.borough }}:<br />block {{ lot.block }}, lot {{ lot.lot }}</h1>
+
+        <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">This lot's page</a> has more information.
+        {% if organizers %}
+        Neighbors are working on turning this lot into a community-determined green space. <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">Learn more and get involved.</a>
+        {% endif %}
+    </div>
+
+    <div id="lot">
+        {% if not lot.is_vacant %}
+        <p style="font-weight: bold;">
+            This lot isn't vacant.
+            {% if 'Garden' in lot.actual_use %}
+            It is part of a community garden.
+            {% endif %}
+        </p>
+        {% endif %}
+        <table>
+            <tr>
+                <th>address</th>
+                <td>
+                    <span>{{ lot.address|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>zipcode</th>
+                <td>
+                    <span>{{ lot.zipcode|default:'' }}</span>
+                </td>
+            </tr>
+            <tr class="owner">
+                <th>agency</th>
+                <td>
+                    <span>
+                        {% if lot.owner %}
+                        {{ lot.owner.name|default:'' }}
+                        {% else %}
+                        we don't know
+                        {% endif %}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>area</th>
+                <td>
+                    <span>
+                        {% if lot.area_acres %}
+                            {{ lot.area_acres|floatformat:"-3" }} acres
+                        {% else %}
+                            unknown
+                        {% endif %}
+                    </span>
+                </td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 5px;">
+            <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> watch</a>
+            <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;" target="_blank"><img src="{{ MEDIA_URL }}img/users.png" /> organize</a>
+        </div>
+    </div>
+
+    {% else %}
+
     <div class="lot-link-container">
         <h1>{{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}</h1>
-        <span><a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">This lot's page</a> has more information.</span>
 
-        {% if organizers|length > 0 %}
-        <span>Neighbors are working on turning this lot into a community-determined green space. <a href="#" style="font-weight: bold;" class="organize-link">Learn more and get involved.</a></span>
+        <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">This lot's page</a> has more information.
+        {% if organizers %}
+        Neighbors are working on turning this lot into a community-determined green space. <a href="#" style="font-weight: bold;" class="organize-link">Learn more and get involved.</a>
         {% endif %}
     </div>
 
@@ -210,6 +277,8 @@
             {% endif %}
         </div>
     </div>
+    {% endif %}
+
 </div>
 <body>
 </html>

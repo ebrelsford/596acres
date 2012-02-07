@@ -47,6 +47,11 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
+
+.lot-popup.organized .lot-link-container {
+    height: 95px;
+}
+
 .olPopupCloseBox {
     background-image: url(/media/img/close_large.png) !important;
     width: 40px !important;
@@ -54,6 +59,10 @@ body {
 }
 .olControlAttribution {
     display: none !important;
+}
+.olControlZoomPanel {
+    top: 2px !important;
+    left: 2px !important;
 }
 #map_buttons {
     display: none !important;

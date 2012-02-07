@@ -233,6 +233,15 @@ var LotMap = {
             }));
         }
 
+        if (this.options.mobile) {
+            rules.push(new OpenLayers.Rule({
+                minScaleDenominator: 100000,
+                symbolizer: {
+                    pointRadius: 3,
+                },
+            }));
+        }
+
         rules.push(new OpenLayers.Rule({
             elseFilter: true,
         }));

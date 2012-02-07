@@ -44,6 +44,7 @@ function is_in(longitude, latitude, bounds) {
 
 $(document).ready(function() {
     $('#map').lotmap({
+        mobile: $('#map').hasClass('mobile'),
         queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
         addContentToPopup: function(popup, feature) {
             // loading....

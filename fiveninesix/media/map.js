@@ -32,6 +32,22 @@ var LotMap = {
         },
     }),
 
+    mobileStyle: new OpenLayers.StyleMap({
+        'default': new OpenLayers.Style({             
+            pointRadius: 10,
+            fillColor: '#3f9438',
+            fillOpacity: 0.8,
+            strokeWidth: 0,
+            strokeOpacity: 0,
+        }),
+        'select': {
+            pointRadius: 20,
+        },
+        'temporary': {
+            pointRadius: 20,
+        },
+    }),
+
     gardenStyle: {
         strokeColor: 'black',
         strokeWidth: 2,
@@ -81,7 +97,11 @@ var LotMap = {
         this.elem = elem;
         this.$elem = $(elem);
 
-        this.addRulesToStyle(this.defaultStyle.styles['default']);
+        this.style = this.defaultStyle;
+        if (this.options.mobile) {
+            this.style = this.mobileStyle;
+        }
+        this.addRulesToStyle(this.style.styles['default']);
 
         this.olMap = new OpenLayers.Map(this.$elem.attr('id'), {
             controls: [
@@ -148,6 +168,7 @@ var LotMap = {
         popups: true,
         select: true,
         filter: true,
+        mobile: false,
         filters: {
             lot_types: ['vacant',],
         },
@@ -225,7 +246,7 @@ var LotMap = {
             strategies: [
                 new OpenLayers.Strategy.Fixed(),
             ],
-            styleMap: this.defaultStyle,
+            styleMap: this.style,
             protocol: new OpenLayers.Protocol.HTTP({
                 url: url,
                 format: new OpenLayers.Format.GeoJSON()

@@ -5,6 +5,9 @@ from models import Lot, Owner, OwnerType
 class LotAdmin(admin.ModelAdmin):
     search_fields = ('address', 'bbl')
     list_display = ('address', 'borough', 'bbl', 'zipcode', 'owner', 'area',)
+
+    # TODO link from admin to owner__type='city', is_vacant=True, is_reviewed=False
+    list_filter = ('owner__type', 'is_vacant',)
     ordering = ('address',)
 
 class OwnerAdmin(admin.ModelAdmin):

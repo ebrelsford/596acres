@@ -1,0 +1,34 @@
+{% extends "base_with_sidebar.html" %}
+
+{% block title %}{{ block.super }}: Review Lots{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.reviewable-lots a').click(function() {
+            window.open('http://www.oasisnyc.net/map.aspx?zoomto=lot:' + $(this).attr('id'));
+        });
+    })    
+</script>
+{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="lot-details">
+    <h1>Review Lots</h1>
+    <span>There are {{ count }} lots left to review. Here are a few:
+    <div>
+        <ul class="reviewable-lots">
+            {% for lot in lots %}
+            <li>
+                <a id="{{ lot.bbl }}" href="{% url lots.views.add_review bbl=lot.bbl %}" target="_blank">{{ lot.bbl }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

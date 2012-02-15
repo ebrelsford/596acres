@@ -30,6 +30,11 @@ class Organizer(models.Model):
     def recent_change_label(self):
         return 'new organizer: %s' % self.name
 
+    class Meta:
+        permissions = (
+            ('email_organizers', 'Can send an email to all organizers'),
+        )
+
 class Watcher(models.Model):
     """
     Someone who is watching a lot.

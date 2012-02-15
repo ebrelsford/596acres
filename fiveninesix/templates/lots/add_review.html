@@ -1,0 +1,55 @@
+{% extends "lots/base.html" %}
+
+{% block title %}{{ block.super }}: Review lot{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    function toggle_enabled($element, enable) {
+        if (enable) {
+            $element.removeAttr('disabled');
+        }
+        else {
+            $element.attr('disabled', 'disabled');
+        }
+    }
+
+    function set_toggle_enabler(toggler_name, togglee_name) {
+        var $toggler = $(':input[name="' + toggler_name + '"]');
+        var $togglee = $(':input[name="' + togglee_name + '"]');
+
+        toggle_enabled($togglee, $toggler.is(':checked'));
+        $toggler.change(function() {
+            toggle_enabled($togglee, $(this).is(':checked'));
+        });
+    }
+
+    function hide_hpd_rows() {
+        if ($('form.hpd').length === 0) {
+            $(':input[name^="hpd"]').parents('tr').hide();
+        }
+    }
+
+    $(document).ready(function() {
+        set_toggle_enabler('in_use', 'actual_use');
+        hide_hpd_rows();
+    });
+</script>
+{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="lot-details">
+    <h1>Review lot</h1>
+    <h2><a href="{% url lots.views.details bbl=lot.bbl %}">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a></h2>
+    <div>
+        <form method="post" class="lot-review{% if lot.owner.name == "HOUSING PRESERVATION" %} hpd{% endif %}">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="submit" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+

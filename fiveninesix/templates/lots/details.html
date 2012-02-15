@@ -58,6 +58,53 @@
         {% endif %}
     </p>
     {% endif %}
+
+    {% if review %}
+    <div id="review" class="section">
+        <h2>review</h2>
+        <table>
+            <tr>
+                <th>in use</th>
+                <td>
+                    <span>{{ review.in_use|yesno }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>actual use</th>
+                <td>
+                    <span>{{ review.actual_use|default:"none" }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>accessible</th>
+                <td>
+                    <span>{{ review.accessible|yesno }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>needs to be visited</th>
+                <td>
+                    <span>{{ review.needs_further_review|yesno:"yes,no (but it wouldn't hurt to take a walk)" }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>nearby lots</th>
+                <td>
+                    <span>{{ review.nearby_lots|default:"none" }}</span>
+                </td>
+            </tr>
+            {% if review.hpd_plans %}
+            <tr>
+                <th>hpd plans</th>
+                <td>
+                    <span>{{ review.hpd_plans_details|default:"there are plans, but we don't have the details" }}</span>
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+    {% endif %}
+
     <div id="basics" class="section">
         <h2>details</h2>
         <table>

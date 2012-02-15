@@ -4,6 +4,7 @@ import json
 from random import randint
 import simplekml
 
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
 from django.http import HttpResponse
@@ -12,7 +13,8 @@ from django.template import RequestContext
 
 from django_xhtml2pdf.utils import render_to_pdf_response
 
-from models import Lot, Owner
+from forms import ReviewForm
+from models import Lot, Owner, Review
 from organize.models import Note, Organizer, Watcher
 from settings import BASE_URL
 
@@ -109,8 +111,13 @@ def owners_json(request):
 
 def details(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
+    review = Review.objects.filter(lot=lot).order_by('-reviewed')
+    if review:
+        review = review[0]
+
     return render_to_response('lots/details.html', {
         'lot': lot,
+        'review': review,
         'organizers': lot.organizer_set.all(),
         'watchers_count': lot.watcher_set.all().count(),
         'notes': lot.note_set.all().order_by('added'),
@@ -202,3 +209,33 @@ def qrcode(request, bbl=None):
     response = HttpResponse(mimetype='image/png')
     response.write(lot.qrcode.read())
     return response
+
+@permission_required('lots.add_review')
+def add_review(request, bbl=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    if request.method == 'POST':    
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lots.views.details', bbl=bbl)
+    else:
+        initial_data = {
+            'reviewer': request.user,
+            'lot': lot,
+            'in_use': not lot.is_vacant,
+            'actual_use': lot.actual_use,
+        }
+
+        reviews = Review.objects.filter(lot=lot).order_by('-reviewed')
+        fields = ('in_use', 'actual_use', 'accessible', 'needs_further_review', 'nearby_lots', 'hpd_plans', 'hpd_plans_details')
+        if reviews:
+            last_review = reviews[0]
+            for field in fields:
+                initial_data[field] = last_review.__dict__[field]
+
+        form = ReviewForm(initial=initial_data) 
+
+    return render_to_response('lots/add_review.html', {
+        'form': form,
+        'lot': lot,
+    }, context_instance=RequestContext(request))

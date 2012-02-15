@@ -10,6 +10,7 @@ class FNSAdminMenu(CMSAttachMenu):
         nodes = []
         nodes.append(NavigationNode(_('Email All Organizers'), '/fnsadmin/organizers/mail/', 1))
         nodes.append(NavigationNode(_('Add News'), '/admin/cmsplugin_blog/entry/add/', 2))
+        nodes.append(NavigationNode(_('Review Lots'), '/fnsadmin/lots/review/', 3))
         return nodes
 
 menu_pool.register_menu(FNSAdminMenu)

@@ -1,0 +1,5 @@
+{% extends "base_with_sidebar.html" %}
+
+{% block breadcrumbs %}
+{{ block.super }}<a href="{% url farmingconcrete.views.account %}">Your account</a>
+{% endblock %}

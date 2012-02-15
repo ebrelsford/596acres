@@ -6,7 +6,7 @@ import settings
 
 def mail_organizers(subject, message, fail_silently=False, connection=None, html_message=None):             
     """Sends a message to all organizers."""
-    organizers = Organizer.objects.filter(email__isnull=False)
+    organizers = Organizer.objects.filter(email__isnull=False).exclude(email='')
     _mail_multiple(subject, message, [o.email for o in organizers], fail_silently=fail_silently, connection=connection, html_message=html_message)
 
 def mail_watchers(lot, subject, message, fail_silently=False, connection=None, html_message=None):             
@@ -28,9 +28,10 @@ def _mail_multiple_personalized(subject, messages, fail_silently=False, connecti
 
 def _mail_multiple(subject, message, email_addresses, fail_silently=False, connection=None, html_message=None):
     """Sends a message to multiple email addresses. Based on django.core.mail.mail_admins()"""
-    mail = EmailMultiAlternatives(u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject), message, from_email=settings.SERVER_EMAIL,
-                                  to=email_addresses, connection=connection, bcc=settings.MANAGERS)          
-    if html_message:
-        mail.attach_alternative(html_message, 'text/html')
-    mail.send(fail_silently=fail_silently)
+    for email_address in email_addresses:
+        mail = EmailMultiAlternatives(u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject), message, from_email=settings.SERVER_EMAIL,
+                                      to=[email_address], connection=connection, bcc=settings.MANAGERS)          
+        if html_message:
+            mail.attach_alternative(html_message, 'text/html')
+        mail.send(fail_silently=fail_silently)
 

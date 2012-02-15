@@ -10,11 +10,6 @@ body {
     font-size: 12px;
 }
 
-a:link:hover, a:link:active {
-    color: #2C8020;
-    text-decoration: underline;
-}
-
 a:link, a:visited {
     color: #2C8020;
     text-decoration: none;
@@ -388,9 +383,14 @@ form > table th {
 }
 form > table > tbody > tr > td {
     width: 35%;
+    padding: 10px 0;
 }
 form > table td input[type=text] {
     width: 90%;
+}
+
+.helptext {
+    font-style: italic;   
 }
 
 .errorlist {

@@ -1,5 +1,6 @@
 import os
 
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.core.files import File
 
@@ -89,3 +90,31 @@ class Alias(models.Model):
 
     def __unicode__(self):
         return '%s -> %s' % (self.name, self.lot.bbl)
+
+class LotGroup(models.Model):
+    name = models.CharField(max_length=256)
+    lots = models.ManyToManyField(Lot)
+
+class Review(models.Model):
+    """
+    A (manual) review of a Lot that gives us more details than we got from the city's data.
+    """
+    lot = models.ForeignKey(Lot)
+    reviewer = models.ForeignKey(User, blank=True, null=True)
+    reviewed = models.DateTimeField(auto_now_add=True)
+    
+    in_use = models.BooleanField(blank=False, null=False, default=False, help_text="the lot is not fenced, is being used")
+    actual_use = models.CharField(blank=True, null=True, max_length=128, help_text="eg, 'garden' or 'parking'")
+    accessible = models.BooleanField(blank=False, null=False, default=True, help_text="there is access to the lot from the street or from an adjacent lot with access to the street")
+    needs_further_review = models.BooleanField(blank=False, null=False, default=False, help_text="should be visited on foot (please state why in notes)")
+
+    nearby_lots = models.TextField(blank=True, null=True, help_text="BBLs of nearby/adjacent vacant lots that might be used in coordination with this lot")
+
+    hpd_plans = models.NullBooleanField('HPD plans', blank=True, null=True, help_text="does HPD have open RFPs or other development plans for this lot?")
+    hpd_plans_details = models.TextField('HPD plans details', blank=True, null=True, help_text="details about HPD's plans for this lot, if any")
+
+
+    # TODO eventually?
+    # direction the lot faces/of street access?
+    # height of building(s) nearby? ie, that might obstruct sun
+    # "intended use", if looking through history shows it was supposed to have been a playground, garden, park, ...

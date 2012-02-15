@@ -42,7 +42,7 @@
     <h1>Review lot</h1>
     <h2><a href="{% url lots.views.details bbl=lot.bbl %}">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a></h2>
     <div>
-        <form method="post" class="lot-review{% if lot.owner.name == "HOUSING PRESERVATION" %} hpd{% endif %}">
+        <form method="post" class="lot-review{% if lot.owner.name == "Housing Preservation and Development" %} hpd{% endif %}">
             {% csrf_token %}
             <table>
                 {{ form.as_table }}

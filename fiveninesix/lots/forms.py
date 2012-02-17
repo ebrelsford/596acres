@@ -19,8 +19,10 @@ class ReviewForm(ModelForm):
     def save(self, commit=True):
         lot = self.cleaned_data['lot']
 
-        note = Note(noter=self.cleaned_data['reviewer'].first_name, lot=lot, text=self.cleaned_data['note'])
-        note.save()
+        note_text = self.cleaned_data['note']
+        if note_text:
+            note = Note(noter=self.cleaned_data['reviewer'].first_name, lot=lot, text=note_text)
+            note.save()
         del self.cleaned_data['note']
 
         super(ReviewForm, self).save(commit=commit)

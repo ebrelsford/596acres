@@ -5,7 +5,7 @@
 {% block scripts %}
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.reviewable-lots a').click(function() {
+        $('.reviewable-lot').click(function() {
             $(this).addClass('reviewed');
             window.open('http://www.oasisnyc.net/map.aspx?zoomto=lot:' + $(this).attr('id'));
         });

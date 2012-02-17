@@ -436,6 +436,10 @@ form > table td input[type=text] {
     margin-right: 3px;
 }
 
+.reviewable-lot.reviewed {
+    text-decoration: line-through;
+}
+
 .facebook-photo {
     padding: 5px;
 }

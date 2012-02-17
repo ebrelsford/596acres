@@ -8,6 +8,8 @@ urlpatterns = patterns('',
     url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^lots/review/get/', 'fns_admin.views.get_lots_to_review'),
+
     url(r'^lots/geojson', 'lots.views.lot_geojson'),
     url(r'^lots/kml', 'lots.views.lot_kml'),
     url(r'^lots/(?P<bbl>\d+)/review/$', 'lots.views.add_review'),

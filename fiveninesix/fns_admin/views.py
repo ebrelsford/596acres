@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import permission_required
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext
 
 from forms import MailOrganizersForm
@@ -31,3 +31,10 @@ def review_lots(request):
         'lots': reviewable_lots[:20],
         'count': reviewable_lots.count(),
     }, context_instance=RequestContext(request))
+
+@permission_required('lots.add_review')
+def get_lots_to_review(request):
+    start, count = int(request.GET.get('start', 5)), int(request.GET.get('count', 20))
+    reviewable_lots = Lot.objects.filter(is_vacant=True, owner__type__name__iexact='city', review=None)[start:(start + count)]
+    return render(request, 'fns_admin/review_lots_snippet.html', { 'lots': reviewable_lots })
+

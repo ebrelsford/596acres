@@ -4,11 +4,21 @@
 
 {% block scripts %}
 <script type="text/javascript">
-    $(document).ready(function() {
+    function init_lot_links() {
         $('.reviewable-lot').click(function() {
             $(this).addClass('reviewed');
             window.open('http://www.oasisnyc.net/map.aspx?zoomto=lot:' + $(this).attr('id'));
+
+            var to_review = $('.reviewable-lot:not(".reviewed")').length;
+            if (to_review < 5) {
+                $('.reviewable-lots:last').after('<ul class="reviewable-lots"></ul>');
+                $('.reviewable-lots:last').load("{% url fns_admin.views.get_lots_to_review %}?start=" + to_review, init_lot_links);
+            }
         });
+    };
+
+    $(document).ready(function() {
+        init_lot_links();
     })    
 </script>
 {% endblock %}
@@ -19,12 +29,8 @@
     <h1>Review Lots</h1>
     <span>There are {{ count }} lots left to review. Here are a few:</span>
     <div>
-        <ul>
-            {% for lot in lots %}
-            <li>
-                <a id="{{ lot.bbl }}" href="{% url lots.views.add_review bbl=lot.bbl %}" class="reviewable-lot" target="_blank">{{ lot.bbl }}</a>
-            </li>
-            {% endfor %}
+        <ul class="reviewable-lots">
+        {% include "fns_admin/review_lots_snippet.html" %}
         </ul>
     </div>
 </div>

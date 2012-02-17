@@ -4,7 +4,7 @@ import json
 from random import randint
 import simplekml
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
 from django.http import HttpResponse

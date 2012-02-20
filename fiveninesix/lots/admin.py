@@ -20,6 +20,7 @@ class OwnerTypeAdmin(admin.ModelAdmin):
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('lot', 'reviewer', 'reviewed')
+    list_filter = ('in_use', 'actual_use', 'accessible', 'needs_further_review',)
 
 admin.site.register(Lot, LotAdmin)
 admin.site.register(Owner, OwnerAdmin)

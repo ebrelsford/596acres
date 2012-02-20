@@ -101,7 +101,7 @@ class Review(models.Model):
     """
     lot = models.ForeignKey(Lot)
     reviewer = models.ForeignKey(User, blank=True, null=True)
-    reviewed = models.DateTimeField(auto_now_add=True)
+    added = models.DateTimeField(auto_now_add=True)
     
     in_use = models.BooleanField(blank=False, null=False, default=False, help_text="the lot is not fenced, is being used")
     actual_use = models.CharField(blank=True, null=True, max_length=128, help_text="eg, 'garden' or 'parking'")

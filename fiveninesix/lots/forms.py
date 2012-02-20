@@ -13,7 +13,7 @@ class ReviewForm(ModelForm):
 
     class Meta:
         model = Review
-        exclude = ('reviewed',)
+        exclude = ('added',)
         fields = ('lot', 'reviewer', 'in_use', 'actual_use', 'accessible', 'needs_further_review', 'nearby_lots', 'note', 'hpd_plans', 'hpd_plans_details')
 
     def save(self, commit=True):

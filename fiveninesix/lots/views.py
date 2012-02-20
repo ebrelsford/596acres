@@ -111,7 +111,7 @@ def owners_json(request):
 
 def details(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
-    review = Review.objects.filter(lot=lot).order_by('-reviewed')
+    review = Review.objects.filter(lot=lot).order_by('-added')
     if review:
         review = review[0]
 
@@ -226,7 +226,7 @@ def add_review(request, bbl=None):
             'actual_use': lot.actual_use,
         }
 
-        reviews = Review.objects.filter(lot=lot).order_by('-reviewed')
+        reviews = Review.objects.filter(lot=lot).order_by('-added')
         fields = ('in_use', 'actual_use', 'accessible', 'needs_further_review', 'nearby_lots', 'hpd_plans', 'hpd_plans_details')
         if reviews:
             last_review = reviews[0]

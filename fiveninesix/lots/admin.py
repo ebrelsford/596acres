@@ -20,8 +20,8 @@ class OwnerTypeAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 class ReviewAdmin(LotRelatedModelAdmin):
-    list_display = ('lot', 'reviewer', 'reviewed', 'acres', 'view_lot', 'view_in_oasis',)
-    list_filter = ('in_use', 'actual_use', 'accessible', 'needs_further_review', 'reviewed',)
+    list_display = ('lot', 'reviewer', 'added', 'acres', 'view_lot', 'view_in_oasis',)
+    list_filter = ('in_use', 'actual_use', 'accessible', 'needs_further_review', 'added',)
 
     def acres(self, obj):
         return obj.lot.area_acres

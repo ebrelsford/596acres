@@ -1,25 +1,30 @@
 from django.contrib import admin
 
+from fiveninesix.admin import LotRelatedModelAdmin
 from models import Note, Organizer, OrganizerType, Watcher, Picture
 
 class OrganizerAdmin(admin.ModelAdmin):
-    search_fields = ('name',)
+    search_fields = ('name', 'email',)
     list_display = ('name', 'email', 'phone', 'url',)
+    list_filter = ('added',)
 
 class OrganizerTypeAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_display = ('name', 'is_group',)
 
-class WatcherAdmin(admin.ModelAdmin):
+class WatcherAdmin(LotRelatedModelAdmin):
     search_fields = ('name', 'email')
-    list_display = ('name', 'email', 'phone', 'lot', 'added',)
+    list_display = ('name', 'email', 'phone', 'lot', 'added', 'view_lot', 'view_in_oasis',)
+    list_filter = ('added',)
 
-class NoteAdmin(admin.ModelAdmin):
+class NoteAdmin(LotRelatedModelAdmin):
     search_fields = ('noter', 'text')
-    list_display = ('noter', 'text')
+    list_display = ('noter', 'text', 'added', 'view_lot', 'view_in_oasis',)
+    list_filter = ('added',)
 
-class PictureAdmin(admin.ModelAdmin):
-    list_display = ('picture', 'added')
+class PictureAdmin(LotRelatedModelAdmin):
+    list_display = ('picture', 'added', 'view_lot', 'view_in_oasis',)
+    list_filter = ('added',)
 
 admin.site.register(Organizer, OrganizerAdmin)
 admin.site.register(OrganizerType, OrganizerTypeAdmin)

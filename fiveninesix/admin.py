@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.urlresolvers import reverse
 
 class LotRelatedModelAdmin(admin.ModelAdmin):
     """
@@ -18,7 +19,7 @@ def _view_lot(lot):
     """
     A link to open the given lot on the site.
     """
-    return '<a target="_blank" href="/lots/%s">%s</a>' % (lot.bbl, lot.bbl,)
+    return '<a target="_blank" href="%s">%s</a>' % (reverse('lots.views.details', kwargs={ 'bbl': lot.bbl }), lot.bbl,)
 
 def _view_in_oasis(lot):
     """

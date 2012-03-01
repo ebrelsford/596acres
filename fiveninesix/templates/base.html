@@ -24,7 +24,9 @@
     {% endcompress %}
 
     {% compress css %}
-    <link rel="stylesheet" href="{{ MEDIA_URL }}style_mobile.css" type="text/css" media="only screen and (max-device-width: 480px)" />
+    {% if is_mobile %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}style_mobile.css" type="text/css" />
+    {% endif %}
     {% endcompress %}
 
     {% block stylesheets %}

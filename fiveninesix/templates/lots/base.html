@@ -45,10 +45,12 @@ $(document).ready(function() {
 {% block breadcrumbs %}{% endblock %}
 
 {% block content_main %}
+{% if not is_mobile %}
 <div id="map-container" style="width: 34%; float: right;">
     <div id="map" style="width: 100%; height: 200px;"></div>
     <div id="streetview" style="width: 100%; height: 200px;"></div>
     {% block inner_right %}
     {% endblock %}
 </div>
+{% endif %}
 {% endblock %}

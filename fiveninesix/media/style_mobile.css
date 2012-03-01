@@ -39,6 +39,20 @@ body {
     padding: 0;
 }
 
+form > table td input[type=text] {
+    width: 50%;
+}
+
+#lot-details .section {
+    width: 100%;
+}
+#lot-details .section th {
+    width: 50%;
+}
+#lot-details .section td {
+    width: 50%;
+}
+
 .popup_loading {
     width: 200px;
     height: 200px;

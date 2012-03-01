@@ -14,16 +14,9 @@ from django.template import RequestContext
 from django_xhtml2pdf.utils import render_to_pdf_response
 
 from forms import ReviewForm
-from models import Lot, Owner, Review
+from models import Lot, Owner, Review, LOT_QUERIES
 from organize.models import Note, Organizer, Watcher
 from settings import BASE_URL
-
-QUERIES = {
-    'vacant': Lot.objects.filter(is_vacant=True, group_has_access=False, organizer=None),
-    'garden': Lot.objects.filter(actual_use__startswith='Garden'),
-    'organizing': Lot.objects.exclude(organizer=None),
-    'accessed': Lot.objects.filter(group_has_access=True),
-}
 
 def lot_geojson(request):
     lots = _filter_lots(request).distinct().annotate(Count('organizer'))
@@ -83,19 +76,11 @@ def _filter_lots(request):
         lot_types = request.GET['lot_type'].split(',')
         lots_by_lot_type = Lot.objects.none()
         for lot_type in lot_types:
-            if lot_type in QUERIES:
-                lots_by_lot_type = lots_by_lot_type | QUERIES[lot_type]
+            if lot_type in LOT_QUERIES:
+                lots_by_lot_type = lots_by_lot_type | LOT_QUERIES[lot_type]
         lots = lots & lots_by_lot_type
 
     return lots
-
-def count_json(request):
-    return HttpResponse(json.dumps({
-        'vacant': QUERIES['vacant'].count(),
-        'organizing': QUERIES['organizing'].count(),
-        'accessed': QUERIES['accessed'].count(),
-        'garden': QUERIES['garden'].count(),
-    }), mimetype='application/json')
 
 def details_json(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)

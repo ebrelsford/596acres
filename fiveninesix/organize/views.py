@@ -11,7 +11,7 @@ from lots.models import Lot
 from models import Organizer, Watcher
 
 def details(request, bbl=None):
-    organizers = Organizer.objects.filter(lots__bbl=bbl)
+    organizers = Organizer.objects.filter(lot__bbl=bbl)
 
     details = []
     for organizer in organizers:
@@ -21,7 +21,7 @@ def details(request, bbl=None):
             'email': organizer.email,
             'url': organizer.url,
             'type': organizer.type.name,
-            'lots': [l.bbl for l in organizer.lots.all()]
+            'lots': [organizer.lot.bbl],
         })
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
@@ -35,7 +35,7 @@ def details_tab(request, bbl=None):
 
 @fix_recaptcha_remote_ip
 def add_organizer(request, bbl=None):
-    lots = Lot.objects.filter(bbl=bbl)
+    lot = get_object_or_404(Lot, bbl=bbl)
     if request.method == 'POST':    
         form = OrganizerForm(request.POST)
         if form.is_valid():
@@ -43,14 +43,14 @@ def add_organizer(request, bbl=None):
             return redirect('lots.views.details', bbl=bbl)
     else:
         form = OrganizerForm(initial={
-            'lots': lots,
+            'lot': lot,
         })
 
     template = 'organize/add_organizer.html'
 
     return render_to_response(template, {
         'form': form,
-        'lot': lots[0],
+        'lot': lot,
     }, context_instance=RequestContext(request))
 
 @fix_recaptcha_remote_ip

@@ -3,9 +3,9 @@ from django.contrib import admin
 from fiveninesix.admin import LotRelatedModelAdmin
 from models import Note, Organizer, OrganizerType, Watcher, Picture
 
-class OrganizerAdmin(admin.ModelAdmin):
+class OrganizerAdmin(LotRelatedModelAdmin):
     search_fields = ('name', 'email',)
-    list_display = ('name', 'email', 'phone', 'url',)
+    list_display = ('name', 'email', 'phone', 'url', 'view_lot', 'view_in_oasis',)
     list_filter = ('added',)
 
 class OrganizerTypeAdmin(admin.ModelAdmin):

@@ -6,7 +6,7 @@ from models import Note, Organizer
 from settings import BASE_URL
 
 def new_organizer_notify_managers(organizer):
-    lots_urls = [BASE_URL + reverse('lots.views.details', args=(l.bbl,)) for l in organizer.lots.all()]
+    lot_url = BASE_URL + reverse('lots.views.details', args=(organizer.lot.bbl,))
     message = """Neat! A new organizer was created on 596acres.org.
 
 Details:
@@ -15,8 +15,8 @@ type: %s
 phone: %s
 email: %s
 url: %s
-lots: %s
-""" % (organizer.name, organizer.type.name, organizer.phone, organizer.email, organizer.url, ', '.join(lots_urls),)
+lot: %s
+""" % (organizer.name, organizer.type.name, organizer.phone, organizer.email, organizer.url, lot_url,)
 
     mail_managers('A new organizer was created on 596acres.org', message)
 
@@ -32,15 +32,13 @@ def notify_watchers(obj):
     """
     Send watchers of a given lot updates.
     """
-    lot = None
+    lot = obj.lot
     obj_msg = None
     url_suffix = '#'
     if isinstance(obj, Note):
-        lot = obj.lot
         obj_msg = "A note was added by %s:\n\"%s\" " % (obj.noter, obj.text)
         url_suffix += 'notes'
     elif isinstance(obj, Organizer):
-        lot = obj.lots.all()[0]
         obj_msg = "A new organizer named %s was added. " % obj.name
         url_suffix += 'organizers'
 

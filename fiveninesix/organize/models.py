@@ -21,7 +21,7 @@ class Organizer(models.Model):
     notes = models.TextField(null=True, blank=True)
     facebook_page = models.CharField(max_length=256, null=True, blank=True)
 
-    lots = models.ManyToManyField(Lot)
+    lot = models.ForeignKey(Lot, null=True)
     added = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):

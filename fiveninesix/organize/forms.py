@@ -1,4 +1,4 @@
-from django.forms import ModelForm, HiddenInput, MultipleHiddenInput, ModelMultipleChoiceField, ModelChoiceField
+from django.forms import ModelForm, HiddenInput, ModelChoiceField
 
 from recaptcha_works.fields import RecaptchaField
 
@@ -8,7 +8,7 @@ from models import Organizer, Watcher, Note, Picture
 from widgets import PrefixLabelTextInput
 
 class OrganizerForm(ModelForm):
-    lots = ModelMultipleChoiceField(label='lots', queryset=Lot.objects.all(), widget=MultipleHiddenInput())
+    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
 
     recaptcha = RecaptchaField(label="Prove you're human")
 

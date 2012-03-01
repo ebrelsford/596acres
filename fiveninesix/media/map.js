@@ -58,8 +58,10 @@ var LotMap = {
     },
 
     groupHasAccessStyle: {
-        strokeColor: '#FF0DFF',
+        fillColor: '#FF0DFF',
+        strokeColor: '#DFCB00',
         strokeWidth: 2,
+        pointRadius: 7,
     },
 
     recentChangesStyle: {
@@ -290,6 +292,16 @@ var LotMap = {
         }
     },
 
+    removeControls: function() {
+        var t = this;
+        this.hoverControl.deactivate();
+        this.olMap.removeControl(this.hoverControl);
+        if (t.options.select) {
+            this.selectControl.deactivate();
+            this.olMap.removeControl(this.selectControl);
+        }
+    },
+
     getControlSelectFeature: function(layers) {
         var selectControl = new OpenLayers.Control.SelectFeature(layers);
         var t = this;
@@ -495,6 +507,7 @@ var LotMap = {
         if (this.options.select) {
             this.selectControl.unselectAll();
         }
+        this.removeControls();
         this.olMap.removeLayer(this.lot_layer);
         this.lot_layer.destroy();
 

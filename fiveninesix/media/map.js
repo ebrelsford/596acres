@@ -12,7 +12,7 @@ var LotMap = {
     minArea: null,
     maxArea: null,
     selectedAgency: null,
-    lot_types: ['vacant',],
+    lot_types: ['vacant','organizing','accessed',],
 
     //
     // styles
@@ -174,7 +174,7 @@ var LotMap = {
         filter: true,
         mobile: false,
         filters: {
-            lot_types: ['vacant',],
+            lot_types: ['vacant','organizing','accessed',],
         },
     },
 

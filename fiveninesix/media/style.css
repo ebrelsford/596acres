@@ -596,3 +596,11 @@ ul.pictures li {
 #jquery-lightbox {
     z-index: 2001 !important;
 }
+
+.map-legend ul {
+    list-style: none;
+    padding: 0;
+}
+.map-legend img {
+    vertical-align: bottom;
+}

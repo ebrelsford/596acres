@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'missing',
 
     'contact',
+    'legend',
     'lots',
     'organize',
     'facebook',

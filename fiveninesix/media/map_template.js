@@ -147,11 +147,6 @@ $(document).ready(function() {
         $('#map').data('lotmap').filterByAgency(agency_id);
     });
 
-    $('.filters .lot-type select').change(function() {
-        var lot_types = $(this).find('option:selected').attr('value').split(',');
-        $('#map').data('lotmap').filterByLotType(lot_types);
-    });
-
     $('#searchbar input[name="current_location"]').click(function() {
         navigator.geolocation.getCurrentPosition(
             function(loc) {

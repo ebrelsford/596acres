@@ -74,17 +74,17 @@ def _filter_lots(request):
             lots = lots.filter(area_acres__lte=max_area)
     if 'lot_type' in request.GET:
         lot_types = request.GET['lot_type'].split(',')
-        lots_vacant = lots.filter(is_vacant=True)
-        lots_garden = lots.filter(actual_use__startswith='Garden')
-        if 'vacant' in lot_types and 'garden' in lot_types:
-            lots = lots_vacant | lots_garden
-        else:
-            if 'vacant' in lot_types:
-                lots = lots_vacant
-            if 'garden' in lot_types:
-                lots = lots_garden
-            if 'organizing' in lot_types:
-                lots = lots_vacant.exclude(organizer=None)
+        qs = {
+            'vacant': Lot.objects.filter(is_vacant=True, group_has_access=False, organizer=None),
+            'garden': Lot.objects.filter(actual_use__startswith='Garden'),
+            'organizing': Lot.objects.exclude(organizer=None),
+            'accessed': Lot.objects.filter(group_has_access=True),
+        }
+        lots_by_lot_type = Lot.objects.none()
+        for lot_type in lot_types:
+            if lot_type in qs:
+                lots_by_lot_type = lots_by_lot_type | qs[lot_type]
+        lots = lots & lots_by_lot_type
 
     return lots
 

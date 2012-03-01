@@ -1,0 +1,37 @@
+<script>
+    $(document).ready(function() {
+        $('.map-legend input[type="checkbox"]').change(function() {
+            var lot_types = $.map($('.map-legend input[type="checkbox"]:checked'), function(e, i) { return $(e).attr('name'); });
+            $('#map').data('lotmap').filterByLotType(lot_types); // Obviously only going to work on map_template pages
+        });
+    });
+</script>
+
+<div class="map-legend">
+    <ul>
+        <li>
+            <input type="checkbox" name="vacant" id="vacant" checked="checked" />
+            <label for="vacant">
+                <img src="{{ MEDIA_URL }}img/vacant.png" alt="vacant lot (point)" /> vacant lots
+            </label>
+        </li>
+        <li>
+            <input type="checkbox" name="organizing" id="organizing" checked="checked" />
+            <label for="organizing">
+                <img src="{{ MEDIA_URL }}img/organizing.png" alt="vacant lot with organizers (point)" /> vacant lots being organized around
+            </label>
+        </li>
+        <li>
+            <input type="checkbox" name="accessed" id="accessed" checked="checked" />
+            <label for="accessed">
+                <img src="{{ MEDIA_URL }}img/vacant.png" alt="vacant lot where groups have access (point)" /> vacant lots where groups have gained access
+            </label>
+        </li>
+        <li>
+            <input type="checkbox" name="garden" id="garden" />
+            <label for="garden">
+                <img src="{{ MEDIA_URL }}img/gardened.png" alt="community garden (point)" /> community gardens
+            </label>
+        </li>
+    </ul>
+</div>

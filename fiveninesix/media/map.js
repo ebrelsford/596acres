@@ -57,6 +57,11 @@ var LotMap = {
         strokeWidth: 2,
     },
 
+    groupHasAccessStyle: {
+        strokeColor: '#FF0DFF',
+        strokeWidth: 2,
+    },
+
     recentChangesStyle: {
         pointRadius: 10,
     },
@@ -202,6 +207,15 @@ var LotMap = {
                 value: true,
             }),
             symbolizer: this.organizedStyle,
+        }));
+
+        rules.push(new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                property: 'group_has_access',
+                value: true,
+            }),
+            symbolizer: this.groupHasAccessStyle,
         }));
 
         rules.push(new OpenLayers.Rule({

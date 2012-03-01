@@ -36,6 +36,7 @@ class Lot(models.Model):
 
     is_vacant = models.BooleanField(default=True)
     actual_use = models.CharField(max_length=128, null=True, blank=True)
+    group_has_access = models.BooleanField(default=False)
 
     centroid = models.PointField(null=True)
     centroid_source = models.CharField(max_length=32, null=True, blank=True)

@@ -5,6 +5,18 @@ from mail import mail_watchers
 from models import Note, Organizer
 from settings import BASE_URL
 
+def new_note_notify_managers(note):
+    lot_url = BASE_URL + reverse('lots.views.details', args=(note.lot.bbl,))
+    message = """A new note was added on 596acres.org.
+
+Details:
+from: %s
+text: %s
+lot: %s
+""" % (note.noter, note.text, lot_url,)
+
+    mail_managers('A new organizer was created on 596acres.org', message)
+
 def new_organizer_notify_managers(organizer):
     lot_url = BASE_URL + reverse('lots.views.details', args=(organizer.lot.bbl,))
     message = """Neat! A new organizer was created on 596acres.org.

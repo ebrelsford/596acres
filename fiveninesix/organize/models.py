@@ -110,7 +110,7 @@ class Picture(models.Model):
 #
 # Handle signals.
 #
-from notify import notify_watchers
+from notify import notify_watchers, new_note_notify_managers
 
 @receiver(post_save, sender=Note)
 def send_watcher_update(sender, **kwargs):
@@ -120,3 +120,4 @@ def send_watcher_update(sender, **kwargs):
     obj = kwargs['instance']
     if isinstance(obj, Note) and kwargs['created']:
         notify_watchers(obj)
+        new_note_notify_managers(obj)

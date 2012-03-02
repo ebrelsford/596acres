@@ -39,9 +39,11 @@ var Help = {
         var pWidth = this.parent_div.outerWidth();
         var pHeight = this.parent_div.outerHeight();
 
+        console.log($(this.modal));
+
         this.modal
-            .outerWidth(pWidth)
-            .outerHeight(pHeight)
+            .width(pWidth)
+            .height(pHeight)
             .position({
                 my: 'left top',
                 at: 'left top',
@@ -49,8 +51,8 @@ var Help = {
             });
 
         this.$elem
-            .outerWidth(pWidth - 100)
-            .outerHeight(pHeight - 100)
+            .width(pWidth - 100)
+            .height(pHeight - 100)
             .position({
                 my: 'left top',
                 at: 'left top',

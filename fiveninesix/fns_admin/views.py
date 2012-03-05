@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import permission_required
+from django.db.models import Count
 from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext
 
@@ -43,5 +44,7 @@ def get_lots_to_review(request):
 
 def _get_reviewable_lots():
     reviewless = Lot.objects.filter(is_vacant=True, owner__type__name__iexact='city', review=None)
-    inaccessible = Lot.objects.filter(is_vacant=True, review__accessible=False)
+    
+    # lots marked inaccessible that have not since been reviewed again (have one review)
+    inaccessible = Lot.objects.annotate(num_reviews=Count('review')).filter(is_vacant=True, review__accessible=False, num_reviews=1)
     return reviewless | inaccessible

@@ -62,8 +62,11 @@ def _filter_lots(request):
     if 'bbls' in request.GET:
         bbls = request.GET['bbls'].split(',')
         if len(bbls) == 1 and request.GET.get('with_nearby_lots', 'no') == 'yes':
-            lot = Lot.objects.get(bbl=bbls[0])
-            lots = lots.filter(centroid__distance_lte=(lot.centroid, Distance(mi=.25)))
+            target_lots = Lot.objects.filter(centroid__isnull=False, bbl=bbls[0])
+            if target_lots:
+                lots = lots.filter(centroid__distance_lte=(target_lots[0].centroid, Distance(mi=.25)))
+            else:
+                lots = Lot.objects.none()
         else:
             lots = lots.filter(bbl__in=bbls)
     if 'min_area' in request.GET:

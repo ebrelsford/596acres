@@ -9,6 +9,7 @@ var brooklyn_bounds = {
 };
 
 function show_with_streetview(id, feature) {
+    if (feature == null) return;
     var lon = feature.geometry.x;
     var lat = feature.geometry.y;
     var point = $('#map').data('lotmap').getInverseLonLat(lon, lat);

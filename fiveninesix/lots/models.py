@@ -66,14 +66,6 @@ class Lot(models.Model):
         self.qrcode.save(self.bbl + '.png', File(f))
         self.save()
 
-
-LOT_QUERIES = {
-    'vacant': Lot.objects.filter(is_vacant=True, group_has_access=False, organizer=None),
-    'garden': Lot.objects.filter(actual_use__startswith='Garden'),
-    'organizing': Lot.objects.exclude(organizer=None),
-    'accessed': Lot.objects.filter(group_has_access=True),
-}
-
 class Owner(models.Model):
     name = models.CharField(max_length=256)
     person = models.CharField(max_length=128, null=True, blank=True)
@@ -127,3 +119,11 @@ class Review(models.Model):
     # direction the lot faces/of street access?
     # height of building(s) nearby? ie, that might obstruct sun
     # "intended use", if looking through history shows it was supposed to have been a playground, garden, park, ...
+
+
+LOT_QUERIES = {
+    'vacant': Lot.objects.filter(is_vacant=True, group_has_access=False, organizer=None),
+    'garden': Lot.objects.filter(actual_use__startswith='Garden'),
+    'organizing': Lot.objects.exclude(organizer=None),
+    'accessed': Lot.objects.filter(group_has_access=True),
+}

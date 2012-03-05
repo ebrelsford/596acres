@@ -27,7 +27,7 @@
 {{ block.super }}
 <div id="lot-details">
     <h1>Review Lots</h1>
-    <span>There are {{ count }} lots left to review. Here are a few:</span>
+    <span>There are {{ count }} lots left to review, including lots marked inaccessible for re-review. Here are a few:</span>
     <div>
         <ul class="reviewable-lots">
         {% include "fns_admin/review_lots_snippet.html" %}

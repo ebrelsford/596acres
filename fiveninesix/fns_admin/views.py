@@ -26,15 +26,22 @@ def mail_organizers_done(request):
 
 @permission_required('lots.add_review')
 def review_lots(request):
-    reviewable_lots = Lot.objects.filter(is_vacant=True, owner__type__name__iexact='city', review=None)
+    reviewable_lots = _get_reviewable_lots()
+    count = reviewable_lots.count()
+    if reviewable_lots.count() > 20:
+        reviewable_lots = reviewable_lots[:20]
     return render_to_response('fns_admin/review_lots.html', {
-        'lots': reviewable_lots[:20],
-        'count': reviewable_lots.count(),
+       'lots': reviewable_lots,
+        'count': count,
     }, context_instance=RequestContext(request))
 
 @permission_required('lots.add_review')
 def get_lots_to_review(request):
     start, count = int(request.GET.get('start', 5)), int(request.GET.get('count', 20))
-    reviewable_lots = Lot.objects.filter(is_vacant=True, owner__type__name__iexact='city', review=None)[start:(start + count)]
+    reviewable_lots = _get_reviewable_lots()[start:(start + count)]
     return render(request, 'fns_admin/review_lots_snippet.html', { 'lots': reviewable_lots })
 
+def _get_reviewable_lots():
+    reviewless = Lot.objects.filter(is_vacant=True, owner__type__name__iexact='city', review=None)
+    inaccessible = Lot.objects.filter(is_vacant=True, review__accessible=False)
+    return reviewless | inaccessible

@@ -7,7 +7,7 @@
     function init_lot_links() {
         $('.reviewable-lot').click(function() {
             $(this).addClass('reviewed');
-            window.open('http://www.oasisnyc.net/map.aspx?zoomto=lot:' + $(this).attr('id'));
+            window.open('{{ OASIS_BASE_URL}}' + $(this).attr('id'));
 
             var to_review = $('.reviewable-lot:not(".reviewed")').length;
             if (to_review < 5) {

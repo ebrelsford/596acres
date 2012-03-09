@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 
+from settings import OASIS_BASE_URL
+
 class LotRelatedModelAdmin(admin.ModelAdmin):
     """
     Adds handy links for models with a Lot ForeignKey relationship.
@@ -25,4 +27,4 @@ def _view_in_oasis(lot):
     """
     A link to open the given lot in OASIS.
     """
-    return '<a target="_blank" href="http://www.oasisnyc.net/map.aspx?zoomto=lot:%s">OASIS</a>' % lot.bbl
+    return '<a target="_blank" href="%s%s">OASIS</a>' % (OASIS_BASE_URL, lot.bbl)

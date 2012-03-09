@@ -6,6 +6,7 @@ from django.template import RequestContext
 from forms import MailOrganizersForm
 from organize import mail
 from lots.models import Lot
+from settings import OASIS_BASE_URL
 
 @permission_required('organize.email_organizers')
 def mail_organizers(request):
@@ -32,8 +33,9 @@ def review_lots(request):
     if reviewable_lots.count() > 20:
         reviewable_lots = reviewable_lots[:20]
     return render_to_response('fns_admin/review_lots.html', {
-       'lots': reviewable_lots,
+        'lots': reviewable_lots,
         'count': count,
+        'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))
 
 @permission_required('lots.add_review')

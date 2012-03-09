@@ -162,3 +162,7 @@ JQUERY_JS = '/media/admin/js/jquery.js'
 
 RECAPTCHA_PRIVATE_KEY = ''
 RECAPTCHA_PUBLIC_KEY = ''
+
+WATCHER_SALT = 'SOMETHING_PRIVATE'
+
+OASIS_BASE_URL = 'http://www.oasisnyc.net/map.aspx?etabs=1&zoomto=lot:'

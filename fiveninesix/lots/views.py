@@ -16,7 +16,7 @@ from django_xhtml2pdf.utils import render_to_pdf_response
 from forms import ReviewForm
 from models import Lot, Owner, Review, LOT_QUERIES
 from organize.models import Note, Organizer, Watcher
-from settings import BASE_URL
+from settings import BASE_URL, OASIS_BASE_URL
 
 def lot_geojson(request):
     lots = _filter_lots(request).distinct().annotate(Count('organizer'))
@@ -119,6 +119,7 @@ def details(request, bbl=None):
         'watchers_count': lot.watcher_set.all().count(),
         'notes': lot.note_set.all().order_by('added'),
         'pictures': lot.picture_set.all().order_by('added'),
+        'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))
 
 def owner_details(request, id=None):
@@ -177,6 +178,7 @@ def tabs(request, bbl=None):
         'lot': lot,
         'organizers': lot.organizer_set.all(),
         'watchers_count': lot.watcher_set.all().count(),
+        'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))
 
 def random(request):

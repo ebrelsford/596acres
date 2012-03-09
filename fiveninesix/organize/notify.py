@@ -15,7 +15,7 @@ text: %s
 lot: %s
 """ % (note.noter, note.text, lot_url,)
 
-    mail_managers('A new organizer was created on 596acres.org', message)
+    mail_managers('A new note was created on 596acres.org', message)
 
 def new_organizer_notify_managers(organizer):
     lot_url = BASE_URL + reverse('lots.views.details', args=(organizer.lot.bbl,))

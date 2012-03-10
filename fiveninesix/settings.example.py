@@ -166,3 +166,4 @@ RECAPTCHA_PUBLIC_KEY = ''
 WATCHER_SALT = 'SOMETHING_PRIVATE'
 
 OASIS_BASE_URL = 'http://www.oasisnyc.net/map.aspx?etabs=1&zoomto=lot:'
+# TODO use this to link to oasis vacant lots layer http://www.oasisnyc.net/map.aspx?zoom=8&x=994472.19&y=186930.92&etabs=1&categories=PARKS_OPENSPACE%2CPROPERTY_INFO%2CBOUNDARIES&mainlayers=LU_VACANT%2CGARDENS%2CCache_Transit%2CNYCT_subway%2CLOTS&marker=994472%2C186931&query=taxlot&queryid=920%20pacific%20st,%20brooklyn

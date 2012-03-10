@@ -49,4 +49,5 @@ def _get_reviewable_lots():
     
     # lots marked inaccessible that have not since been reviewed again (have one review)
     inaccessible = Lot.objects.annotate(num_reviews=Count('review')).filter(is_vacant=True, review__accessible=False, num_reviews=1)
-    return reviewless | inaccessible
+    reviewable = reviewless | inaccessible
+    return reviewable.distinct()

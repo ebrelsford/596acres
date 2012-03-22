@@ -4,6 +4,7 @@ import json
 from random import randint
 import simplekml
 
+from django.core.cache import cache
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
@@ -19,14 +20,24 @@ from organize.models import Note, Organizer, Watcher
 from settings import BASE_URL, OASIS_BASE_URL
 
 def lot_geojson(request):
-    lots = _filter_lots(request).distinct().annotate(Count('organizer'))
-    recent_changes = _recent_changes()
-    lots_geojson = _lot_collection(lots, recent_changes)
+    cacheable = _is_base_geojson_request(request.GET)
+    cache_key = 'lots__views:lots_geojson:base'
+    geojson_response = None
+    if cacheable:
+        geojson_response = cache.get(cache_key)
+
+    if not geojson_response:
+        lots = _filter_lots(request).distinct().annotate(Count('organizer'))
+        recent_changes = _recent_changes()
+        lots_geojson = _lot_collection(lots, recent_changes)
+        geojson_response = geojson.dumps(lots_geojson)
+        if cacheable:
+            cache.set(cache_key, geojson_response, 3600)
 
     response = HttpResponse(mimetype='application/json')
     if 'download' in request.GET and request.GET['download'] == 'true':
         response['Content-Disposition'] = 'attachment; filename="596acres (%s).geojson"' % date.today().strftime('%m-%d-%Y')
-    response.write(geojson.dumps(lots_geojson))
+    response.write(geojson_response)
     return response
 
 def lot_kml(request):
@@ -240,3 +251,6 @@ def add_review(request, bbl=None):
         'form': form,
         'lot': lot,
     }, context_instance=RequestContext(request))
+
+def _is_base_geojson_request(GET):
+    return GET.get('source', '') == 'OASIS,Nominatim,Google' and GET.get('owner_type', '') == 'city' and GET.get('lot_type', '') =='vacant,organizing,accessed'

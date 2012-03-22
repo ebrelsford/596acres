@@ -37,6 +37,7 @@ class Lot(models.Model):
     is_vacant = models.BooleanField(default=True)
     actual_use = models.CharField(max_length=128, null=True, blank=True)
     group_has_access = models.BooleanField(default=False)
+    accessible = models.BooleanField(default=True, help_text="there is access to the lot from the street or from an adjacent lot with access to the street")
 
     centroid = models.PointField(null=True)
     centroid_source = models.CharField(max_length=32, null=True, blank=True)
@@ -122,8 +123,9 @@ class Review(models.Model):
 
 
 LOT_QUERIES = {
-    'vacant': Lot.objects.filter(is_vacant=True, group_has_access=False, organizer=None),
-    'garden': Lot.objects.filter(actual_use__startswith='Garden'),
-    'organizing': Lot.objects.exclude(organizer=None),
-    'accessed': Lot.objects.filter(group_has_access=True),
+    'vacant': Lot.objects.filter(accessible=True, is_vacant=True, group_has_access=False, organizer=None),
+    'garden': Lot.objects.filter(accessible=True, actual_use__startswith='Garden'),
+    'organizing': Lot.objects.exclude(accessible=False, organizer=None),
+    'accessed': Lot.objects.filter(accessible=True, group_has_access=True),
+    'inaccessible': Lot.objects.filter(accessible=False),
 }

@@ -18,6 +18,7 @@ class CMSLegendPlugin(CMSPluginBase):
                 'organizing': LOT_QUERIES['organizing'].count(),
                 'accessed': LOT_QUERIES['accessed'].count(),
                 'garden': LOT_QUERIES['garden'].count(),
+                'inaccessible': LOT_QUERIES['inaccessible'].count(),
             },
         })
         return context

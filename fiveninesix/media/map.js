@@ -64,6 +64,11 @@ var LotMap = {
         pointRadius: 7,
     },
 
+    inaccessibleStyle: {
+        pointRadius: 2,
+        fillColor: '#F00',
+    },
+
     recentChangesStyle: {
         pointRadius: 10,
     },
@@ -218,6 +223,15 @@ var LotMap = {
                 value: true,
             }),
             symbolizer: this.groupHasAccessStyle,
+        }));
+
+        rules.push(new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                property: 'accessible',
+                value: false,
+            }),
+            symbolizer: this.inaccessibleStyle,
         }));
 
         rules.push(new OpenLayers.Rule({

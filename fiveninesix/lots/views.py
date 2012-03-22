@@ -147,6 +147,7 @@ def _lot_feature(lot, recent_changes):
             'has_organizers': lot.organizer__count > 0,
             'group_has_access': lot.group_has_access,
             'recent_change': change,
+            'accessible': lot.accessible,
         },
     )
 

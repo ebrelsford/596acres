@@ -37,5 +37,13 @@
             </label>
             (<span class="count">{{ counts.garden }}</span>)
         </li>
+        <li class="inaccessible">
+            <input type="checkbox" name="inaccessible" id="inaccessible" />
+            <label for="inaccessible">
+                <img src="{{ MEDIA_URL }}img/inaccessible.png" alt="gutterspaces" />
+            </label> 
+            <a href="/about#gutterspaces">gutterspaces</a>
+            (<span class="count">{{ counts.inaccessible }}</span>)
+        </li>
     </ul>
 </div>

@@ -124,8 +124,8 @@ class Review(models.Model):
 
 LOT_QUERIES = {
     'vacant': Lot.objects.filter(accessible=True, is_vacant=True, group_has_access=False, organizer=None),
-    'garden': Lot.objects.filter(accessible=True, actual_use__startswith='Garden'),
-    'organizing': Lot.objects.exclude(accessible=False, organizer=None),
-    'accessed': Lot.objects.filter(accessible=True, group_has_access=True),
+    'garden': Lot.objects.filter(actual_use__startswith='Garden'),
+    'organizing': Lot.objects.exclude(organizer=None),
+    'accessed': Lot.objects.filter(group_has_access=True),
     'inaccessible': Lot.objects.filter(accessible=False),
 }

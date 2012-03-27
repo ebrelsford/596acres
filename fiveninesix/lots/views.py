@@ -21,7 +21,6 @@ from settings import BASE_URL, OASIS_BASE_URL
 
 def lot_geojson(request):
     cacheable = _is_base_geojson_request(request.GET)
-    print 'cacheable: ', cacheable
     cache_key = 'lots__views:lots_geojson:base'
     geojson_response = None
     if cacheable:

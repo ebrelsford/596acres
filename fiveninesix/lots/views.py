@@ -21,6 +21,7 @@ from settings import BASE_URL, OASIS_BASE_URL
 
 def lot_geojson(request):
     cacheable = _is_base_geojson_request(request.GET)
+    print 'cacheable: ', cacheable
     cache_key = 'lots__views:lots_geojson:base'
     geojson_response = None
     if cacheable:
@@ -253,4 +254,7 @@ def add_review(request, bbl=None):
     }, context_instance=RequestContext(request))
 
 def _is_base_geojson_request(GET):
+    non_base_params = ('owner_code', 'owner_id', 'bbls', 'min_area', 'max_area',)
+    if any([GET.get(x, False) for x in non_base_params]):
+        return False
     return GET.get('source', '') == 'OASIS,Nominatim,Google' and GET.get('owner_type', '') == 'city' and GET.get('lot_type', '') =='vacant,organizing,accessed'

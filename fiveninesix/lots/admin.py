@@ -21,7 +21,7 @@ class OwnerTypeAdmin(admin.ModelAdmin):
 
 class ReviewAdmin(LotRelatedModelAdmin):
     search_fields = ('bbl',)
-    list_display = ('id', 'acres', 'in_use', 'accessible', 'should_be_imported', 'imported', 'actual_use', 'reviewer', 'added', 'view_lot', 'view_in_oasis',)
+    list_display = ('id', 'in_use', 'accessible', 'should_be_imported', 'imported', 'actual_use', 'reviewer', 'added', 'acres', 'view_lot', 'view_in_oasis',)
     list_editable = ('should_be_imported',)
     list_filter = ('should_be_imported', 'imported', 'in_use', 'accessible', 'needs_further_review', 'added', 'actual_use',)
 

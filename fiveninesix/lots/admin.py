@@ -20,7 +20,7 @@ class OwnerTypeAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 class ReviewAdmin(LotRelatedModelAdmin):
-    search_fields = ('bbl',)
+    search_fields = ('lot__bbl',)
     list_display = ('id', 'in_use', 'accessible', 'should_be_imported', 'imported', 'actual_use', 'reviewer', 'added', 'acres', 'view_lot', 'view_in_oasis',)
     list_editable = ('should_be_imported',)
     list_filter = ('should_be_imported', 'imported', 'in_use', 'accessible', 'needs_further_review', 'added', 'actual_use',)

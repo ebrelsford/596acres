@@ -115,6 +115,8 @@ class Review(models.Model):
     hpd_plans = models.NullBooleanField('HPD plans', blank=True, null=True, help_text="does HPD have open RFPs or other development plans for this lot?")
     hpd_plans_details = models.TextField('HPD plans details', blank=True, null=True, help_text="details about HPD's plans for this lot, if any")
 
+    should_be_imported = models.NullBooleanField(blank=True, null=True, help_text="data should be added to the respective lot")
+    imported = models.BooleanField(blank=False, null=False, default=False, help_text="data has been added to the respective lot")
 
     # TODO eventually?
     # direction the lot faces/of street access?

@@ -488,24 +488,12 @@ form > table td input[type=text] {
     margin-bottom: 10px;
 }
 
-.recent-entries {
-    border-bottom: 1px solid black;
-}
-.recent-entries h2 {
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
 .recent-entries ul {
     padding: 0;
     margin: 0;
 }
 .recent-entries li {
     list-style: none;
-}
-.recent-entries .entry {
-    margin-bottom: 0;
-    padding-bottom: 5px;
-    padding-top: 5px;
 }
 .recent-entries .entry .meta {
     margin-bottom: 0;
@@ -603,4 +591,43 @@ ul.pictures li {
 }
 .map-legend img {
     vertical-align: bottom;
+}
+
+ul.events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.event .day,
+.event .start,
+.event .end,
+.event .location {
+    font-weight: bold;
+}
+.event .title {
+    margin: 0;
+}
+
+#event-details.event .when {
+    margin-bottom: 10px;
+}
+
+#event-details.event .where {
+    margin-bottom: 10px;
+}
+
+#side .entry,
+.events .event {
+    border-bottom: 1px solid lightGray;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+#side h2 {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+#side .section {
+    border-bottom: 1px solid black;
 }

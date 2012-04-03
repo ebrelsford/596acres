@@ -2,6 +2,8 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from cms.models import CMSPlugin
+
 class ExternalCalendar(models.Model):
     """A calendar hosted outside of our site"""
     external_id = models.CharField(max_length=256)
@@ -46,5 +48,8 @@ class Event(models.Model):
     
     @models.permalink
     def get_absolute_url(self):
-        # TODO implement
-        pass
+        return ('events_event_detail', (), { 'pk': self.id })
+
+class UpcomingEventsPlugin(CMSPlugin):
+    """A plugin that displays upcoming events"""
+    max_events = models.PositiveIntegerField(default=3)

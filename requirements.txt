@@ -15,8 +15,11 @@ django-xhtml2pdf==0.0.3
 djangocms-utils==0.9.5
 elaphe==0.5.3
 geojson==1.0.1
+google-api-python-client==1.0beta8
+oauth2==1.5.211
 psycopg2==2.4.2
 pyproj==1.8.9
+python-dateutil==2.1
 reportlab==2.5
 simple-translation==0.7.4
 simplekml==0.7.3

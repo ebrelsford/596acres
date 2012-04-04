@@ -55,8 +55,15 @@ class GoogleCalendarEventLoader(EventLoader):
         local_event.description = event.get('description', None)
         local_event.location = event.get('location', None)
 
-        local_event.start = parse(event['start']['dateTime'])
-        local_event.end = parse(event['end']['dateTime'])
+        try:
+            local_event.start = parse(event['start']['dateTime'])
+        except:
+            local_event.start = parse(event['start']['date'])
+
+        try:
+            local_event.end = parse(event['end']['dateTime'])
+        except:
+            local_event.end = parse(event['end']['date'])
 
         status = 'active'
         if event['status'] == 'cancelled':

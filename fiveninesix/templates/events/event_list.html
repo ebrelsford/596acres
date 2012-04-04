@@ -1,0 +1,18 @@
+{% extends "events/base.html" %}
+
+{% block title %}{{ block.super }}{% if past %}Past{% else %}Upcoming{% endif %}{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="event-list">
+    <h1>{% if past %}Past{% else %}Upcoming{% endif %} Events</h1>
+    {% with events=object_list %}
+    {% include "events/event_list_snippet.html" %}
+    {% endwith %}
+</div>
+{% if not past %}
+<a href="{% url events_event_list_past %}">view past events</a>
+{% else %}
+<a href="{% url events_event_list %}">view upcoming events</a>
+{% endif %}
+{% endblock %}

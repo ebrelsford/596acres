@@ -1,0 +1,22 @@
+{% extends "events/base.html" %}
+{% load event_filters %}
+
+{% block title %}{{ block.super }}{{ event.title }}{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="event-details" class="event">
+    <h1 class="what short">{{ object.title }}</h1>
+
+    {% if object.status == 'cancelled' %}
+    <div class='cancelled'>cancelled</div>
+    {% endif %}
+
+    <div class="when">
+        {{ event|eventdate }}
+    </div>
+
+    <div class="where">At <span class="location">{{ object.location|default:"" }}</span></div>
+    <div class="what long">{{ object.description|urlize|linebreaks|default:"" }}</div>
+</div>
+{% endblock %}

@@ -159,6 +159,7 @@ def _lot_feature(lot, recent_changes):
             'group_has_access': lot.group_has_access,
             'recent_change': change,
             'accessible': lot.accessible,
+            'actual_use': lot.actual_use,
         },
     )
 

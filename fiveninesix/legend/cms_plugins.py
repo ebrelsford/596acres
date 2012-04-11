@@ -19,6 +19,7 @@ class CMSLegendPlugin(CMSPluginBase):
                 'accessed': LOT_QUERIES['accessed'].count(),
                 'garden': LOT_QUERIES['garden'].count(),
                 'inaccessible': LOT_QUERIES['inaccessible'].count(),
+                'gutterspace': LOT_QUERIES['gutterspace'].count(),
             },
         })
         return context

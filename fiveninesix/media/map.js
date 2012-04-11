@@ -64,7 +64,7 @@ var LotMap = {
         pointRadius: 7,
     },
 
-    inaccessibleStyle: {
+    gutterspaceStyle: {
         pointRadius: 2,
         fillColor: '#F00',
     },
@@ -226,12 +226,22 @@ var LotMap = {
         }));
 
         rules.push(new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: 'accessible',
-                value: false,
+            filter: new OpenLayers.Filter.Logical({
+                type: OpenLayers.Filter.Logical.OR,
+                filters: [
+                    new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                        property: 'accessible',
+                        value: false,
+                    }),
+                    new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                        property: 'actual_use',
+                        value: 'gutterspace',
+                    }),
+                ],
             }),
-            symbolizer: this.inaccessibleStyle,
+            symbolizer: this.gutterspaceStyle,
         }));
 
         rules.push(new OpenLayers.Rule({

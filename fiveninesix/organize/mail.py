@@ -20,17 +20,17 @@ def mail_watchers(lot, subject, message, fail_silently=False, connection=None, h
 You are receiving this email because you are watching lot %s on 596acres.org. Please go here if you would like to change this: %s
 """ % (lot.bbl, edit_url)
         pass
-    _mail_multiple_personalized(subject, messages, fail_silently=fail_silently, connection=connection, html_message=html_message)
+    _mail_multiple_personalized(subject, messages, fail_silently=fail_silently, connection=connection, html_message=html_message, bcc=[])
 
-def _mail_multiple_personalized(subject, messages, fail_silently=False, connection=None, html_message=None):
+def _mail_multiple_personalized(subject, messages, fail_silently=False, connection=None, html_message=None, bcc=[]):
     for email, message in messages.items():
-        _mail_multiple(subject, message, [email], fail_silently=fail_silently, connection=connection, html_message=html_message)
+        _mail_multiple(subject, message, [email], fail_silently=fail_silently, connection=connection, html_message=html_message, bcc=bcc)
 
-def _mail_multiple(subject, message, email_addresses, fail_silently=False, connection=None, html_message=None, from_email=settings.SERVER_EMAIL):
+def _mail_multiple(subject, message, email_addresses, fail_silently=False, connection=None, html_message=None, from_email=settings.SERVER_EMAIL, bcc=settings.MANAGERS):
     """Sends a message to multiple email addresses. Based on django.core.mail.mail_admins()"""
     for email_address in email_addresses:
         mail = EmailMultiAlternatives(u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject), message, from_email=from_email,
-                                      to=[email_address], connection=connection, bcc=settings.MANAGERS)          
+                                      to=[email_address], connection=connection, bcc=bcc)          
         if html_message:
             mail.attach_alternative(html_message, 'text/html')
         mail.send(fail_silently=fail_silently)

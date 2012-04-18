@@ -28,7 +28,7 @@ $(document).ready(function() {
 
     $('#map').lotmap({
         filter: false,
-        queryString: 'source=OASIS,Nominatim,Google&owner_type=city&bbls={{ lot.bbl }}&with_nearby_lots=yes',   
+        queryString: 'source=PLUTO,OASIS,Nominatim,Google&owner_type=city&bbls={{ lot.bbl }}&with_nearby_lots=yes',   
         detailView: true,
         detailFid: {{ lot.bbl }},
         onLoad: function() {

@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
     $('#map').lotmap({
-        queryString: 'source=OASIS,Nominatim,Google&owner_type=city',   
+        queryString: 'source=PLUTO,OASIS,Nominatim,Google&owner_type=city',   
 
         onFeatureHighlight: function(event) {
             $('#' + event.feature.fid).addClass('hovered');

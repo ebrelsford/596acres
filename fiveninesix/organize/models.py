@@ -113,11 +113,13 @@ class Picture(models.Model):
 from notify import notify_watchers, new_note_notify_managers
 
 @receiver(post_save, sender=Note)
-def send_watcher_update(sender, **kwargs):
+@receiver(post_save, sender=Picture)
+def send_watcher_update(sender, created=False, instance=None, **kwargs):
     """
     Send watchers of a given lot updates.
     """
-    obj = kwargs['instance']
-    if isinstance(obj, Note) and kwargs['created']:
-        notify_watchers(obj)
-        new_note_notify_managers(obj)
+    if instance and created:
+        notify_watchers(instance)
+
+        if isinstance(instance, Note):
+            new_note_notify_managers(instance)

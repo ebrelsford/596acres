@@ -2,7 +2,7 @@ from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse
 
 from mail import mail_watchers
-from models import Note, Organizer
+from models import Note, Organizer, Picture
 from settings import BASE_URL
 
 def new_note_notify_managers(note):
@@ -50,6 +50,9 @@ def notify_watchers(obj):
     if isinstance(obj, Note):
         obj_msg = "A note was added by %s:\n\"%s\" " % (obj.noter, obj.text)
         url_suffix += 'notes'
+    elif isinstance(obj, Picture):
+        obj_msg = 'A new picture was added with the description "%s".' % obj.description
+        url_suffix += 'pictures'
     elif isinstance(obj, Organizer):
         obj_msg = "A new organizer named %s was added. " % obj.name
         url_suffix += 'organizers'

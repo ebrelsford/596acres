@@ -257,4 +257,4 @@ def _is_base_geojson_request(GET):
     non_base_params = ('owner_code', 'owner_id', 'bbls', 'min_area', 'max_area',)
     if any([GET.get(x, False) for x in non_base_params]):
         return False
-    return GET.get('source', '') == 'OASIS,Nominatim,Google' and GET.get('owner_type', '') == 'city' and GET.get('lot_type', '') =='vacant,organizing,accessed'
+    return GET.get('source', '') == 'PLUTO,OASIS,Nominatim,Google' and GET.get('owner_type', '') == 'city' and GET.get('lot_type', '') =='vacant,organizing,accessed'

@@ -6,6 +6,7 @@ from lots import load
 from django.contrib.gis.geos import Point
 
 class Migration(DataMigration):
+    file = '../data/HPD-owned Parking Facilities 2011 actually parking.csv'
 
     def _get_centroid(self, lot):
         lon, lat = lot['lon'], lot['lat']
@@ -17,9 +18,9 @@ class Migration(DataMigration):
         return Point(lon, lat)
 
     def forwards(self, orm):
-        "Write your forwards methods here."
+        "Import lots from HPD file"
         owner = orm.Owner.objects.get(name='Housing Preservation and Development')
-        for lot in csv.DictReader(open('../data/HPD-owned Parking Facilities 2011 actually parking.csv', 'r')):
+        for lot in csv.DictReader(open(self.file, 'r')):
             if lot['Vacant'] != 'yes':
                 continue
 
@@ -49,8 +50,10 @@ class Migration(DataMigration):
             saved_lot.save()
 
     def backwards(self, orm):
-        "Write your backwards methods here."
-
+        "Remove lots from HPD file"
+        for lot in csv.DictReader(open(self.file, 'r')):
+            bbl = load.make_bbl(3, int(lot['Block']), int(lot['Lot']))
+            orm.Lot.objects.filter(bbl=bbl).delete()
 
     models = {
         'auth.group': {

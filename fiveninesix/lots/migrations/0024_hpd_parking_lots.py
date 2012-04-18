@@ -24,7 +24,7 @@ class Migration(DataMigration):
                 continue
 
             bbl = load.make_bbl(3, int(lot['Block']), int(lot['Lot']))
-            if orm.Lot.objects.filter(bbl=bbl).count > 0:
+            if orm.Lot.objects.filter(bbl=bbl).count() > 0:
                 print "Lot %s already exists. Skipping." % bbl
                 continue
 

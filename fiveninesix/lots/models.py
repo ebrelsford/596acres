@@ -24,8 +24,8 @@ class Lot(models.Model):
     area_acres = models.DecimalField(max_digits=10, decimal_places=6, null=True, blank=True)
 
     school_district = models.CharField(max_length=16, null=True, blank=True)
-    council_district = models.CharField(max_length=16, null=True, blank=True)
-    council = models.CharField(max_length=16, null=True, blank=True)
+    community_district = models.CharField(max_length=16, null=True, blank=True)
+    city_council_district = models.CharField(max_length=16, null=True, blank=True)
     fire_comp = models.CharField(max_length=16, null=True, blank=True)
     health_area = models.CharField(max_length=16, null=True, blank=True)
     health_ctr = models.CharField(max_length=16, null=True, blank=True)

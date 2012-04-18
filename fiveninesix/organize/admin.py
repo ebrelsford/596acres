@@ -5,8 +5,12 @@ from models import Note, Organizer, OrganizerType, Watcher, Picture
 
 class OrganizerAdmin(LotRelatedModelAdmin):
     search_fields = ('name', 'email',)
-    list_display = ('name', 'email', 'phone', 'url', 'view_lot', 'view_in_oasis',)
+    list_display = ('name', 'email', 'phone', 'url', 'lot_owner', 'view_lot', 'view_in_oasis',)
     list_filter = ('added',)
+
+    def lot_owner(self, obj):
+        return obj.lot.owner
+    lot_owner.admin_order_field = 'lot__owner__name'
 
 class OrganizerTypeAdmin(admin.ModelAdmin):
     search_fields = ('name',)

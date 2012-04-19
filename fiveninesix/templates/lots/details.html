@@ -295,7 +295,7 @@
         {% for note in notes %}
             <li class="note {% cycle "odd" "even" %}">
             <span class="head">On {{ note.added|date:"F d, Y" }}, at {{ note.added|time:"g:ia" }}, {{ note.noter }} said:</span>
-            {{ note.text|linebreaks|urlize }}
+            {{ note.text|urlize|linebreaks }}
             </li>
         {% endfor %}
         </ul>

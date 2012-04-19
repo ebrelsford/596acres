@@ -2,6 +2,10 @@
 
 {% block title %}{{ block.super }}{% if past %}Past{% else %}Upcoming{% endif %}{% endblock %}
 
+{% block page_breadcrumb %}
+<li>{% if past %}Past{% else %}Upcoming{% endif %} Events</li>
+{% endblock %}
+
 {% block content_main %}
 {{ block.super }}
 <div id="event-list">

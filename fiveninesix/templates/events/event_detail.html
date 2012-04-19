@@ -3,6 +3,10 @@
 
 {% block title %}{{ block.super }}{{ event.title }}{% endblock %}
 
+{% block page_breadcrumb %}
+<li>{{ event.title }}</li>
+{% endblock %}
+
 {% block content_main %}
 {{ block.super }}
 <div id="event-details" class="event">

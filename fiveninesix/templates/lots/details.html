@@ -106,11 +106,6 @@
         </table>
     </div>
 
-    <div id="government" class="section">
-        <h2><a name="government">government</a></h2>
-        Check out <a id="democracymap-link" target="_blank" href="http://beta.democracymap.org/map/?t=0&a={{ lot.centroid.y }}%2C{{ lot.centroid.x }}">democracy map</a>, which can help you find the elected officials for the area around this lot and when the next community board meeting will happen.
-    </div>
-
     <div id="owner" class="section">
         <h2><a name="agency">agency</a></h2>
         {% if lot.owner %}
@@ -160,6 +155,12 @@
         We don't know who owns this lot.
         {% endif %}
     </div>
+
+    <div id="government" class="section">
+        <h2><a name="government">government</a></h2>
+        Check out <a id="democracymap-link" target="_blank" href="http://beta.democracymap.org/map/?t=0&a={{ lot.centroid.y }}%2C{{ lot.centroid.x }}">democracy map</a>, which can help you find the elected officials for the area around this lot and when the next community board meeting will happen.
+    </div>
+
     <div id="organize" class="section">
         <h2><a name="organize">organize</a></h2>
         {% if not lot.is_vacant %}

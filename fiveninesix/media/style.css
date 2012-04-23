@@ -326,8 +326,12 @@ ul.nav ul {
 }
 .lot-popup h1 {
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 1px;
     font-size: 14px;
+}
+.lot-popup h1 .fns-button {
+    padding: 2px;
+    margin-left: 15px;
 }
 
 div.tabs {

@@ -70,9 +70,13 @@
     {% else %}
 
     <div class="lot-link-container">
-        <h1>{{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}</h1>
+        <h1>
+            {{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}
+            <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> watch</a>
+        </h1>
 
         <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">This lot's page</a> has more information.
+
         {% if organizers %}
         Neighbors are working on turning this lot into a community-determined green space. <a href="#" style="font-weight: bold;" class="organize-link">Learn more and get involved.</a>
         {% endif %}
@@ -282,4 +286,3 @@
 </div>
 <body>
 </html>
-

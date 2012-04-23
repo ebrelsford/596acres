@@ -8,8 +8,8 @@ class ContactMenu(CMSAttachMenu):
 
     def get_nodes(self, request):
         nodes = []
-        nodes.append(NavigationNode(_('Tell Us About the Lot in Your Life'), '/get-involved/lot-in-your-life/', 1))
-        nodes.append(NavigationNode(_('Contact Us'), '/get-involved/contact-us/', 2))
+        #nodes.append(NavigationNode(_('Tell Us About the Lot in Your Life'), '/get-involved/lot-in-your-life/', 1))
+        #nodes.append(NavigationNode(_('Contact Us'), '/get-involved/contact-us/', 2))
         return nodes
 
 menu_pool.register_menu(ContactMenu)

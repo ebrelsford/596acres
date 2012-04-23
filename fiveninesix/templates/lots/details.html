@@ -147,7 +147,7 @@
             <tr>
                 <th>notes</th>
                 <td>
-                    {{ lot.owner.notes|default:"" }}
+                    {{ lot.owner.notes|urlize|linebreaks|default:"" }}
                 </td>
             </tr>
         </table>
@@ -220,7 +220,7 @@
                         <tr>
                             <th>notes</th>
                             <td>
-                                <span>{{ organizer.notes }}</span>
+                                <span>{{ organizer.notes|urlize|linebreaks }}</span>
                             </td>
                         </tr>
                     </table>

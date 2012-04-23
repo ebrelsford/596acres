@@ -3,25 +3,7 @@ from django.template import RequestContext
 
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
-from models import ContactRequest, JoinUsRequest, LotInformationRequest
-from forms import ContactRequestForm, JoinUsRequestForm, LotInformationRequestForm
-
-@fix_recaptcha_remote_ip
-def join_us(request):
-    if request.method == 'POST':    
-        form = JoinUsRequestForm(request.POST)    
-        if form.is_valid():
-            join_request = form.save()
-            return redirect(join_us_thanks)
-    else:
-        form = JoinUsRequestForm()
-
-    return render_to_response('contact/join_us.html', {
-        'form': form,
-    }, context_instance=RequestContext(request))
-
-def join_us_thanks(request):
-    return render_to_response('contact/join_us_thanks.html', {}, context_instance=RequestContext(request))
+from forms import ContactRequestForm, LotInformationRequestForm
 
 @fix_recaptcha_remote_ip
 def lot_info(request):

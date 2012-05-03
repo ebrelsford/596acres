@@ -16,6 +16,9 @@ class GetInvolvedMenu(CMSAttachMenu):
                            reverse('contact.views.lot_info'), 2),
             NavigationNode(_('Upcoming Events'),
                            reverse('events_event_list'), 3),
+            NavigationNode(_('Opportunities'),
+                           reverse('blog_archive_tagged', 
+                                   kwargs={ 'tag': 'opportunities'}), 4),
         ]
         return nodes
 

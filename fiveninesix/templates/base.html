@@ -60,6 +60,11 @@
             <ul class="nav">
                 {% show_menu 0 100 100 100 "cms/menu.html" %}
                 <li>
+                    <a href="{% url contact.views.contact_us %}">
+                        <img src="{{ MEDIA_URL }}img/contact.png" alt="contact" />
+                    </a>
+                </li>
+                <li>
                     <a href="https://org2.democracyinaction.org/o/6654/donate_page/596"><img src="{{ MEDIA_URL }}img/donate.png" alt="donate!" /></a>
                 </li>
                 <li style="float: right; padding-top: 2px; padding-bottom: 2px; padding-right: 0;">

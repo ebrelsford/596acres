@@ -14,9 +14,9 @@ class GetInvolvedMenu(CMSAttachMenu):
                            reverse('contact.views.contact_us'), 1),
             NavigationNode(_('Tell Us About the Lot in Your Life'),
                            reverse('contact.views.lot_info'), 2),
-            NavigationNode(_('Upcoming Events'),
+            NavigationNode(_('Come to an Upcoming Event'),
                            reverse('events_event_list'), 3),
-            NavigationNode(_('Opportunities'),
+            NavigationNode(_('Work With Us'),
                            reverse('blog_archive_tagged', 
                                    kwargs={ 'tag': 'opportunities'}), 4),
         ]

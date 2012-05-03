@@ -13,6 +13,7 @@ class NewsMenu(CMSAttachMenu):
 
     def get_nodes(self, request):
         nodes = []
+        nodes.append(NavigationNode(_('Blog'), reverse('blog_archive_index'), 2))
         nodes.append(NavigationNode(_('Announcements'), self._get_tag_url('announcements'), 2))
         nodes.append(NavigationNode(_('596 Acres Press'), self._get_tag_url('596 acres press'), 2))
         nodes.append(NavigationNode(_('Tool Updates'), self._get_tag_url('tool updates'), 1))

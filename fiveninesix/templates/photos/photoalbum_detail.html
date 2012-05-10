@@ -1,0 +1,25 @@
+{% extends "photos/base.html" %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}{{ object.name }}{% endblock %}
+
+{% block page_breadcrumb %}
+<li>{{ object.name|default:"" }}</li>
+{% endblock %}
+
+{% block content_main %}
+<h1>{{ object.name }}</h1>
+<div class="description">{{ object.description|default:""|urlize|linebreaks }}</div>
+
+<ul class="pictures">
+    {% for photo in object.photo_set.all %}
+    <li class="picture">
+        <a title="{{ photo.name|default:"" }} {{ photo.description|default:"" }}" href="{{ photo.picture.url }}">
+            {% thumbnail photo.picture "150x150" crop="center" as thumb %}
+            <img src="{{ thumb.url }}" />
+            {% endthumbnail %}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

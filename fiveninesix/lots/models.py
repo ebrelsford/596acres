@@ -125,10 +125,10 @@ class Review(models.Model):
     # "intended use", if looking through history shows it was supposed to have been a playground, garden, park, ...
 
 LOT_QUERIES = {
-    'vacant': Lot.objects.filter(Q(accessible=True, is_vacant=True, group_has_access=False, organizer=None) & ~Q(actual_use='gutterspace')),
-    'garden': Lot.objects.filter(actual_use__startswith='Garden'),
-    'organizing': Lot.objects.exclude(organizer=None),
-    'accessed': Lot.objects.filter(group_has_access=True),
-    'inaccessible': Lot.objects.filter(accessible=False),
+    'vacant': Lot.objects.filter(Q(accessible=True, is_vacant=True, group_has_access=False, organizer=None, owner__type__name='city') & ~Q(actual_use='gutterspace')),
+    'garden': Lot.objects.filter(actual_use__startswith='Garden', owner__type__name='city'),
+    'organizing': Lot.objects.exclude(organizer=None, owner__type__name='city'),
+    'accessed': Lot.objects.filter(group_has_access=True, owner__type__name='city'),
+    'inaccessible': Lot.objects.filter(accessible=False, owner__type__name='city'),
     'gutterspace': Lot.objects.filter(Q(accessible=False) | Q(actual_use='gutterspace')),
 }

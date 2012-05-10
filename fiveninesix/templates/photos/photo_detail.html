@@ -1,0 +1,28 @@
+{% extends "photos/base.html" %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}{{ object.name }}{% endblock %}
+
+{% block page_breadcrumb %}
+<li>
+    <a href="{% url photos_photoalbum_detail pk=object.album.pk %}">
+        {{ object.album.name|default:"untitled" }}
+    </a>
+</li>
+<li>{{ object.name|default:"untitled" }}</li>
+{% endblock %}
+
+{% block content_main %}
+<h1>{{ object.name|default:"" }}</h1>
+
+<div>
+    {% thumbnail object.picture "600x600" as thumb %}
+    <img src="{{ thumb.url }}" />
+    {% endthumbnail %}
+</div>
+<div>
+    {% if object.description %}
+    {{ object.description }}
+    {% endif %}
+</div>
+{% endblock %}

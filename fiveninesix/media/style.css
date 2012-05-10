@@ -582,6 +582,18 @@ ul.pictures li {
     display: inline;
 }
 
+ul.albums {
+    list-style: none;
+    margin: 10px 0;
+    padding: 0;
+}
+ul.albums li {
+    float: left;
+    height: 225px;
+    padding-right: 3px;
+    width: 150px;
+}
+
 #jquery-overlay {
     z-index: 2000 !important;
 }

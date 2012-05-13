@@ -48,6 +48,12 @@ class PhotoAlbum(models.Model):
     def __unicode__(self):
         return self.name
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('photos_photoalbum_detail', (), {
+            'pk': self.pk,
+        })
+
     def _get_photos(self):
         """
         Get photos that are in this album or in child albums of this album.
@@ -83,3 +89,10 @@ class Photo(models.Model):
 
     def __unicode__(self):
         return 'photo: ' + (self.name or 'unnamed')
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('photos_photo_detail', (), {
+            'album_id': self.album.pk,
+            'pk': self.pk,
+        })

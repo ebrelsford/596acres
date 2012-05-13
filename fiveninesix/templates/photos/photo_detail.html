@@ -7,9 +7,9 @@
 <li>
     <a href="{% url photos_photoalbum_detail pk=object.album.pk %}">
         {{ object.album.name|default:"untitled" }}
-    </a>
+    </a> &raquo;
 </li>
-<li>{{ object.name|default:"untitled" }}</li>
+<li>{{ object.name|default:"" }}</li>
 {% endblock %}
 
 {% block content_main %}

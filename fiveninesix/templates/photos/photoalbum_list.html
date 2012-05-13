@@ -1,7 +1,7 @@
 {% extends "photos/base.html" %}
 {% load thumbnail %}
 
-{% block title %}{{ block.super }}{% endblock %}
+{% block title %}{{ block.super }} Albums{% endblock %}
 
 {% block page_breadcrumb %}
 <li>Albums</li>
@@ -14,15 +14,9 @@
     {% for album in object_list %}
     <li class="album">
         <a href="{% url photos_photoalbum_detail pk=album.pk %}">
-            {% if album.cover.picture %}
-                {% thumbnail album.cover.picture "150x150" crop="center" as thumb %}
-                <img src="{{ thumb.url }}" />
-                {% endthumbnail %}
-            {% else %}
-                {% thumbnail album.photo_set.all.0.picture "150x150" crop="center" as thumb %}
-                <img src="{{ thumb.url }}" />
-                {% endthumbnail %}
-            {% endif %}
+            {% thumbnail album.get_cover_photo.picture "150x150" crop="center" as thumb %}
+            <img src="{{ thumb.url }}" />
+            {% endthumbnail %}
             <div>{{ album.name }}</div>
         </a>
     </li>

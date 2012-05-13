@@ -42,8 +42,28 @@ class PhotoAlbum(models.Model):
     updated_time = models.DateTimeField(blank=True, null=True)
     lot = models.ForeignKey(Lot, blank=True, null=True)
 
+    parent_album = models.ForeignKey('self', related_name='children',
+                                     blank=True, null=True)
+
     def __unicode__(self):
         return self.name
+
+    def _get_photos(self):
+        """
+        Get photos that are in this album or in child albums of this album.
+        """
+        photos = list(self.photo_set.all())
+        for child in self.children.all():
+            photos += child.photos
+        return photos
+    photos = property(_get_photos)
+
+    def get_cover_photo(self):
+        """
+        Get the photo that should be the cover for this album.
+        """
+        if self.cover: return self.cover
+        return self.photos[0]
 
 class Photo(models.Model):
     album = models.ForeignKey(PhotoAlbum, blank=True, null=True)

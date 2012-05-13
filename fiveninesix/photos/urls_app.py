@@ -5,7 +5,10 @@ from models import PhotoAlbum
 from views import PhotoDetailView
 
 urlpatterns = patterns('',
-    url(r'^$', ListView.as_view(model=PhotoAlbum), name='photos_photoalbum_list'),
+    url(r'^$', ListView.as_view(
+            queryset=PhotoAlbum.objects.filter(parent_album=None),
+        ), 
+        name='photos_photoalbum_list'),
     url(r'^album/(?P<pk>\d+)/$', DetailView.as_view(
             model=PhotoAlbum
         ),

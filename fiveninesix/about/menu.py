@@ -12,6 +12,8 @@ class AboutMenu(CMSAttachMenu):
         nodes = [
             NavigationNode(_('Previous Events'),
                            reverse('events_event_list_past'), 1),
+            NavigationNode(_('Acres in Pictures'),
+                           reverse('photos_photoalbum_list'), 2),
         ]
         return nodes
 

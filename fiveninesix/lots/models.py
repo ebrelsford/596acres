@@ -68,6 +68,96 @@ class Lot(models.Model):
         self.qrcode.save(self.bbl + '.png', File(f))
         self.save()
 
+class ExtendedDetails(models.Model):
+    """
+    Extra details found looking at IPIS and Local Law 48 data.
+    """
+    lot = models.OneToOneField(Lot)
+
+    parcel_name = models.CharField(
+        max_length=512,
+        null=True,
+        blank=True,
+        help_text='Included in Local Law 48 and IPIS'
+    )
+
+    number_of_buildings = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text='Should always be 0 if the lot is vacant, but Local Law 48 and IPIS include it'
+    )
+
+    primary_use = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text='Primary use from IPIS data'
+    )
+    rpad_description = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text='RPAD description from IPIS data'
+    )
+    jurisdiction_code = models.CharField(
+        max_length=16,
+        null=True,
+        blank=True,
+        help_text='Jurisdiction code from IPIS data'
+    )
+    jurisdiction_description = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text='Jurisdiction description from IPIS data'
+    )
+    is_waterfront = models.NullBooleanField(
+        null=True,
+        blank=True,
+        help_text='From IPIS data'
+    )
+    is_urban_renewal = models.NullBooleanField(
+        null=True,
+        blank=True,
+        help_text='From IPIS data'
+    )
+
+    law_48_address = models.CharField(
+        max_length=512,
+        null=True,
+        blank=True,
+        help_text='Address from Local Law 48 data'
+    )
+    current_uses = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text='Current uses from Local Law 48 data'
+    )
+    has_open_petroleum_spill = models.NullBooleanField(
+        null=True,
+        blank=True,
+        help_text='From Local Law 48 data'
+    )
+    agency_codes = models.CharField(
+        max_length=64,
+        null=True,
+        blank=True,
+        help_text='In Local Law 48 data'
+    )
+    historic_district = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text='From Local Law 48 data'
+    )
+    landmark = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text='From Local Law 48 data'
+    )
+
 class Owner(models.Model):
     name = models.CharField(max_length=256)
     person = models.CharField(max_length=128, null=True, blank=True)

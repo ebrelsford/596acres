@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^lots/geojson', 'lots.views.lot_geojson'),
     url(r'^lots/kml', 'lots.views.lot_kml'),
+    url(r'^lots/csv', 'lots.views.lot_csv'),
     url(r'^lots/(?P<bbl>\d+)/review/$', 'lots.views.add_review'),
     url(r'^lot/(?P<bbl>\d+)/json/$', 'lots.views.details_json'),
     url(r'^lot/(?P<bbl>\d+)/tabs/$', 'lots.views.tabs'),

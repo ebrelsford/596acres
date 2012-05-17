@@ -1,3 +1,4 @@
+import csv
 from datetime import date
 import geojson
 import json
@@ -56,6 +57,66 @@ def lot_kml(request):
         response['Content-Disposition'] = 'attachment; filename="596acres (%s).kml"' % date.today().strftime('%m-%d-%Y')
     response.write(kml.kml(format=False))
     return response
+
+def lot_csv(request):
+    response = HttpResponse(mimetype='text/csv')
+
+    fields = (
+        'address',
+        'borough',
+        'bbl',
+        'block',
+        'lot',
+        'zipcode',
+        'agency/owner name',
+        'area (sq ft)',
+        'area (acres)',
+        'is vacant',
+        'actual use',
+        'group has access',
+        'accessible',
+        'longitude',
+        'latitude',
+    )
+
+    csv_file = csv.DictWriter(response, fields)
+
+    response.write(','.join(["%s" % field for field in fields]))
+    response.write('\n')
+    for lot in _filter_lots(request):
+        try:
+            csv_file.writerow({
+                'lot': lot.address,
+                'borough': lot.borough,
+                'bbl': lot.bbl,
+                'block': lot.zipcode,
+                'lot': lot.lot,
+                'zipcode': lot.zipcode,
+                'agency/owner name': lot.owner.name,
+                'area (sq ft)': lot.area,
+                'area (acres)': lot.area_acres,
+                'is vacant': lot.is_vacant,
+                'actual use': lot.actual_use,
+                'group has access': lot.group_has_access,
+                'accessible': lot.accessible,
+                'longitude': lot.centroid.x,
+                'latitude': lot.centroid.y,
+            })
+        except:
+            continue
+
+    response['Content-Disposition'] = 'attachment; filename="596 Acres %s lots%s.csv"' % (date.today().strftime('%m-%d-%Y'), _get_filter_description(request))
+    return response
+
+def _get_filter_description(request):
+    """Get a description of the filters being viewed in the given request."""
+    description = ''
+    if 'lot_type' in request.GET:
+        description += ' ' + request.GET['lot_type']
+    if 'owner_id' in request.GET:
+        owner = Owner.objects.get(pk=request.GET['owner_id'])
+        description += ' owned by ' + owner.name
+    return description
 
 def _filter_lots(request):
     mapped_lots = Lot.objects.filter(centroid__isnull=False)

@@ -126,7 +126,8 @@ def _filter_lots(request):
         sources = request.GET['source'].split(',')
         lots = lots.filter(centroid_source__in=sources)
     if 'owner_type' in request.GET:
-        lots = lots.filter(owner__type__name=request.GET['owner_type'])
+        owner_types = request.GET['owner_type'].split(',')
+        lots = lots.filter(owner__type__name__in=owner_types)
     if 'owner_code' in request.GET:
         lots = lots.filter(owner__code=request.GET['owner_code'])
     if 'owner_id' in request.GET:
@@ -210,18 +211,25 @@ def _lot_feature(lot, recent_changes):
     if lot.id in recent_changes:
         change = recent_changes[lot.id].recent_change_label()
 
+    properties={
+        'area': round(float(lot.area_acres), 3),
+        'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
+        'has_organizers': lot.organizer__count > 0,
+        'group_has_access': lot.group_has_access,
+        'recent_change': change,
+        'accessible': lot.accessible,
+        'actual_use': lot.actual_use,
+        'owner_type': lot.owner.type.name,
+    }
+
+    if lot.owner.type.name == 'private':
+        print 'found it!'
+        print properties
+
     return geojson.Feature(
         lot.bbl,
         geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
-        properties={
-            'area': round(float(lot.area_acres), 3),
-            'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
-            'has_organizers': lot.organizer__count > 0,
-            'group_has_access': lot.group_has_access,
-            'recent_change': change,
-            'accessible': lot.accessible,
-            'actual_use': lot.actual_use,
-        },
+        properties=properties
     )
 
 def _recent_changes(maximum=5):

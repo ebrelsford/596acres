@@ -19,16 +19,23 @@
         <li class="organizing">
             <input type="checkbox" name="organizing" id="organizing" checked="checked" />
             <label for="organizing">
-                <img src="{{ MEDIA_URL }}img/organizing.png" alt="vacant lot with organizers (point)" /> vacant lots being organized around
+                <img src="{{ MEDIA_URL }}img/organizing.png" alt="public vacant lot with organizers (point)" /> public vacant lots being organized around
             </label>
             (<span class="count">{{ counts.organizing }}</span>)
         </li>
         <li class="accessed">
             <input type="checkbox" name="accessed" id="accessed" checked="checked" />
             <label for="accessed">
-                <img src="{{ MEDIA_URL }}img/accessed.png" alt="vacant lot where groups have access (point)" /> vacant lots where groups have gained access
+                <img src="{{ MEDIA_URL }}img/accessed.png" alt="public vacant lot where groups have access (point)" /> public vacant lots where groups have access
             </label>
             (<span class="count">{{ counts.accessed }}</span>)
+        </li>
+        <li class="private">
+            <input type="checkbox" name="private" id="private" checked="checked" />
+            <label for="private">
+                <img src="{{ MEDIA_URL }}img/private_accessed.png" alt="privately owned lot (point)" /> private vacant lots where groups have access
+            </label>
+            (<span class="count">{{ counts.garden }}</span>)
         </li>
         <li class="garden">
             <input type="checkbox" name="garden" id="garden" />

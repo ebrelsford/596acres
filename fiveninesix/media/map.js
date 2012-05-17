@@ -12,7 +12,7 @@ var LotMap = {
     minArea: null,
     maxArea: null,
     selectedAgency: null,
-    lot_types: ['vacant','organizing','accessed',],
+    lot_types: ['vacant','organizing','accessed','private'],
 
     //
     // styles
@@ -62,6 +62,18 @@ var LotMap = {
         strokeColor: '#DFCB00',
         strokeWidth: 2,
         pointRadius: 7,
+    },
+
+    privateStyle: {
+        fillColor: 'blue',
+        strokeWidth: 0,
+    },
+
+    privateAccessedStyle: {
+        fillColor: '#0000FF',
+        pointRadius: 7,
+        strokeColor: '#FF0DFF',
+        strokeWidth: 2,
     },
 
     gutterspaceStyle: {
@@ -181,7 +193,7 @@ var LotMap = {
         filter: true,
         mobile: false,
         filters: {
-            lot_types: ['vacant','organizing','accessed',],
+            lot_types: ['vacant','organizing','accessed','private'],
         },
     },
 
@@ -242,6 +254,34 @@ var LotMap = {
                 ],
             }),
             symbolizer: this.gutterspaceStyle,
+        }));
+
+        rules.push(new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                property: 'owner_type',
+                value: 'private',
+            }),
+            symbolizer: this.privateStyle,
+        }));
+
+        rules.push(new OpenLayers.Rule({
+            filter: new OpenLayers.Filter.Logical({
+                type: OpenLayers.Filter.Logical.AND,
+                filters: [
+                    new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                        property: 'owner_type',
+                        value: 'private',
+                    }),
+                    new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                        property: 'group_has_access',
+                        value: true,
+                    }),
+                ],
+            }),
+            symbolizer: this.privateAccessedStyle,
         }));
 
         rules.push(new OpenLayers.Rule({

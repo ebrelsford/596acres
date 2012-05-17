@@ -89,7 +89,7 @@ def lot_csv(request):
                 'address': lot.address,
                 'borough': lot.borough,
                 'bbl': lot.bbl,
-                'block': lot.zipcode,
+                'block': lot.block,
                 'lot': lot.lot,
                 'zipcode': lot.zipcode,
                 'agency/owner name': lot.owner.name,

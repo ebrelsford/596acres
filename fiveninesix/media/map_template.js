@@ -46,7 +46,7 @@ function is_in(longitude, latitude, bounds) {
 $(document).ready(function() {
     $('#map').lotmap({
         mobile: $('#map').hasClass('mobile'),
-        queryString: 'source=PLUTO,OASIS,Nominatim,Google&owner_type=city',   
+        queryString: 'source=PLUTO,OASIS,Nominatim,Google,IPIS,Law+48&owner_type=city',   
         addContentToPopup: function(popup, feature) {
             // loading....
             var $loading_clone = $('.popup_loading').clone();
@@ -123,7 +123,7 @@ $(document).ready(function() {
         range: true,
         max: max_area_range,
         min: 0,
-        step: .05,
+        step: .001,
         values: [0, max_area_range],
         slide: function(event, ui) {
             update_area_display(ui.values[0], ui.values[1]);

@@ -155,7 +155,7 @@ def _filter_lots(request):
                 lots_by_lot_type = lots_by_lot_type | LOT_QUERIES[lot_type]
         lots = lots & lots_by_lot_type
 
-    return lots
+    return lots.distinct()
 
 def details_json(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)

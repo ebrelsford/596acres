@@ -86,7 +86,7 @@ def lot_csv(request):
     for lot in _filter_lots(request):
         try:
             csv_file.writerow({
-                'lot': lot.address,
+                'address': lot.address,
                 'borough': lot.borough,
                 'bbl': lot.bbl,
                 'block': lot.zipcode,

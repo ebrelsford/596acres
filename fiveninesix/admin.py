@@ -14,7 +14,7 @@ class LotRelatedModelAdmin(admin.ModelAdmin):
     view_lot.allow_tags = True
 
     def view_in_oasis(self, obj):
-        return _view_in_oasis(obj.lot)
+        return view_in_oasis(obj.lot)
     view_in_oasis.allow_tags = True
 
 def _view_lot(lot):
@@ -23,7 +23,7 @@ def _view_lot(lot):
     """
     return '<a target="_blank" href="%s">%s</a>' % (reverse('lots.views.details', kwargs={ 'bbl': lot.bbl }), lot.bbl,)
 
-def _view_in_oasis(lot):
+def view_in_oasis(lot):
     """
     A link to open the given lot in OASIS.
     """

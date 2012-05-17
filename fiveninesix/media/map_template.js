@@ -1,11 +1,11 @@
 var max_area_range = 3;
 var sv = new google.maps.StreetViewService();
 
-var brooklyn_bounds = {
-    left: -74.319, 
-    top: 40.948, 
-    right: -73.584, 
-    bottom: 40.476,
+var map_bounds = {
+    left: -74.569, 
+    top: 41.069, 
+    right: -73.366, 
+    bottom: 40.303,
 };
 
 function show_with_streetview(id, feature) {
@@ -112,7 +112,7 @@ $(document).ready(function() {
 
     $('#searchbar').search({
         map: $('#map').data('lotmap'),
-        bounds: brooklyn_bounds,
+        bounds: map_bounds,
     });
 
     $('#map_buttons').mapbuttons({
@@ -155,13 +155,13 @@ $(document).ready(function() {
                     lat = loc.coords.latitude;
                 var map = $('#map').data('lotmap');
 
-                if (is_in(lon, lat, brooklyn_bounds)) {
+                if (is_in(lon, lat, map_bounds)) {
                     var transformed = map.getTransformedLonLat(lon, lat);
                     map.olMap.setCenter(transformed, 15);
                     map.setSearchFeature(transformed);
                 }
                 else {
-                    $('#searchbar .warning').text("Sorry, the location we found for you is outside of Brooklyn. Try searching?").show();
+                    $('#searchbar .warning').text("Sorry, the location we found for you is outside of New York. Try searching?").show();
                 }
             },
             function(err) {

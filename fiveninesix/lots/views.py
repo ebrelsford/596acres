@@ -222,10 +222,6 @@ def _lot_feature(lot, recent_changes):
         'owner_type': lot.owner.type.name,
     }
 
-    if lot.owner.type.name == 'private':
-        print 'found it!'
-        print properties
-
     return geojson.Feature(
         lot.bbl,
         geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),

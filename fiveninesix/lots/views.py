@@ -149,11 +149,16 @@ def _lot_feature(lot, recent_changes):
     if lot.id in recent_changes:
         change = recent_changes[lot.id].recent_change_label()
 
+    try:
+        area = round(float(lot.area_acres), 3)
+    except:
+        area = 0
+
     return geojson.Feature(
         lot.bbl,
         geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
         properties={
-            'area': round(float(lot.area_acres), 3),
+            'area': area,
             'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
             'has_organizers': lot.organizer__count > 0,
             'group_has_access': lot.group_has_access,

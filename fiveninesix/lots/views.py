@@ -122,11 +122,17 @@ def _filter_lots(request):
     mapped_lots = Lot.objects.filter(centroid__isnull=False)
     lots = mapped_lots
 
+    lot_types = request.GET.get('lot_type', '').split(',')
+
     if 'source' in request.GET:
         sources = request.GET['source'].split(',')
         lots = lots.filter(centroid_source__in=sources)
     if 'owner_type' in request.GET:
-        lots = lots.filter(owner__type__name=request.GET['owner_type'])
+        owner_types = request.GET['owner_type'].split(',')
+
+        if 'private_accessed' not in lot_types and 'private' in owner_types:
+            owner_types.remove('private')
+        lots = lots.filter(owner__type__name__in=owner_types)
     if 'owner_code' in request.GET:
         lots = lots.filter(owner__code=request.GET['owner_code'])
     if 'owner_id' in request.GET:
@@ -147,8 +153,7 @@ def _filter_lots(request):
         max_area = request.GET['max_area']
         if max_area < 3:
             lots = lots.filter(area_acres__lte=max_area)
-    if 'lot_type' in request.GET:
-        lot_types = request.GET['lot_type'].split(',')
+    if lot_types:
         lots_by_lot_type = Lot.objects.none()
         for lot_type in lot_types:
             if lot_type in LOT_QUERIES:
@@ -214,19 +219,21 @@ def _lot_feature(lot, recent_changes):
         area = round(float(lot.area_acres), 3)
     except:
         area = 0
+    properties={
+        'area': round(float(lot.area_acres), 3),
+        'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
+        'has_organizers': lot.organizer__count > 0,
+        'group_has_access': lot.group_has_access,
+        'recent_change': change,
+        'accessible': lot.accessible,
+        'actual_use': lot.actual_use,
+        'owner_type': lot.owner.type.name,
+    }
 
     return geojson.Feature(
         lot.bbl,
         geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
-        properties={
-            'area': area,
-            'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
-            'has_organizers': lot.organizer__count > 0,
-            'group_has_access': lot.group_has_access,
-            'recent_change': change,
-            'accessible': lot.accessible,
-            'actual_use': lot.actual_use,
-        },
+        properties=properties
     )
 
 def _recent_changes(maximum=5):
@@ -323,4 +330,4 @@ def _is_base_geojson_request(GET):
     non_base_params = ('owner_code', 'owner_id', 'bbls', 'min_area', 'max_area',)
     if any([GET.get(x, False) for x in non_base_params]):
         return False
-    return GET.get('source', '') == 'PLUTO,OASIS,Nominatim,Google' and GET.get('owner_type', '') == 'city' and GET.get('lot_type', '') =='vacant,organizing,accessed'
+    return GET.get('source', '') == 'PLUTO,OASIS,Nominatim,Google' and GET.get('owner_type', '') == 'city,private' and GET.get('lot_type', '') =='vacant,organizing,accessed'

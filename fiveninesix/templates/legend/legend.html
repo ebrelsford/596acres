@@ -12,28 +12,35 @@
         <li class="vacant">
             <input type="checkbox" name="vacant" id="vacant" checked="checked" />
             <label for="vacant">
-                <img src="{{ MEDIA_URL }}img/vacant.png" alt="vacant lot (point)" /> vacant lots
+                <img src="{{ MEDIA_URL }}img/vacant.png" alt="vacant lot (point)" /> public vacant lots
             </label>
             (<span class="count">{{ counts.vacant }}</span>)
         </li>
         <li class="organizing">
             <input type="checkbox" name="organizing" id="organizing" checked="checked" />
             <label for="organizing">
-                <img src="{{ MEDIA_URL }}img/organizing.png" alt="vacant lot with organizers (point)" /> vacant lots being organized around
+                <img src="{{ MEDIA_URL }}img/organizing.png" alt="public vacant lot with organizers (point)" /> public vacant lots being organized around
             </label>
             (<span class="count">{{ counts.organizing }}</span>)
         </li>
         <li class="accessed">
             <input type="checkbox" name="accessed" id="accessed" checked="checked" />
             <label for="accessed">
-                <img src="{{ MEDIA_URL }}img/accessed.png" alt="vacant lot where groups have access (point)" /> vacant lots where groups have gained access
+                <img src="{{ MEDIA_URL }}img/accessed.png" alt="public vacant lot where groups have access (point)" /> public vacant lots where groups have access
             </label>
             (<span class="count">{{ counts.accessed }}</span>)
+        </li>
+        <li class="private_accessed">
+            <input type="checkbox" name="private_accessed" id="private_accessed" checked="checked" />
+            <label for="private_accessed">
+                <img src="{{ MEDIA_URL }}img/private_accessed.png" alt="privately owned lot (point)" /> private vacant lots where groups have access
+            </label>
+            (<span class="count">{{ counts.private_accessed }}</span>)
         </li>
         <li class="garden">
             <input type="checkbox" name="garden" id="garden" />
             <label for="garden">
-                <img src="{{ MEDIA_URL }}img/gardened.png" alt="community garden (point)" /> lots that are part of community gardens
+                <img src="{{ MEDIA_URL }}img/gardened.png" alt="community garden (point)" /> public lots that are part of community gardens
             </label>
             (<span class="count">{{ counts.garden }}</span>)
         </li>

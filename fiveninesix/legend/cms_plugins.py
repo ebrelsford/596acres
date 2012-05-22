@@ -9,18 +9,20 @@ class CMSLegendPlugin(CMSPluginBase):
     name = _('Map Legend')
     render_template = 'legend/legend.html'
 
+    # TODO don't be hard-coded for Brooklyn
+
     def render(self, context, instance, placeholder):
         context.update({
             'object': instance,
             'placeholder': placeholder,
             'counts': {
-                'vacant': LOT_QUERIES['vacant'].count(),
-                'organizing': LOT_QUERIES['organizing'].count(),
-                'accessed': LOT_QUERIES['accessed'].count(),
-                'garden': LOT_QUERIES['garden'].count(),
-                'private_accessed': LOT_QUERIES['private_accessed'].count(),
-                'inaccessible': LOT_QUERIES['inaccessible'].count(),
-                'gutterspace': LOT_QUERIES['gutterspace'].count(),
+                'vacant': LOT_QUERIES['vacant'].filter(borough='Brooklyn').count(),
+                'organizing': LOT_QUERIES['organizing'].filter(borough='Brooklyn').count(),
+                'accessed': LOT_QUERIES['accessed'].filter(borough='Brooklyn').count(),
+                'garden': LOT_QUERIES['garden'].filter(borough='Brooklyn').count(),
+                'private_accessed': LOT_QUERIES['private_accessed'].filter(borough='Brooklyn').count(),
+                'inaccessible': LOT_QUERIES['inaccessible'].filter(borough='Brooklyn').count(),
+                'gutterspace': LOT_QUERIES['gutterspace'].filter(borough='Brooklyn').count(),
             },
         })
         return context

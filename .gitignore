@@ -6,11 +6,12 @@ settings.py
 
 bin
 build
+data
 include
 lib
-media/cms_page_media
-/fiveninesix/media/CACHE
-/media
-/data
-/share
-/src
+media
+noncode
+scripts
+share
+src
+storage

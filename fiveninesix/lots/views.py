@@ -33,7 +33,7 @@ def lot_geojson(request):
         lots_geojson = _lot_collection(lots, recent_changes)
         geojson_response = geojson.dumps(lots_geojson)
         if cacheable:
-            cache.set(cache_key, geojson_response, 3600)
+            cache.set(cache_key, geojson_response, 6 * 60 * 60)
 
     response = HttpResponse(mimetype='application/json')
     if 'download' in request.GET and request.GET['download'] == 'true':
@@ -333,7 +333,9 @@ def add_review(request, bbl=None):
     }, context_instance=RequestContext(request))
 
 def _is_base_geojson_request(GET):
-    non_base_params = ('owner_code', 'owner_id', 'bbls', 'min_area', 'max_area',)
+    non_base_params = ('owner_code', 'owner_id', 'bbls', 'min_area', 'max_area', 'source')
     if any([GET.get(x, False) for x in non_base_params]):
         return False
-    return GET.get('source', '') == 'PLUTO,OASIS,Nominatim,Google' and GET.get('owner_type', '') == 'city,private' and GET.get('lot_type', '') =='vacant,organizing,accessed'
+    return (GET.get('owner_type', '') == 'city,private' and 
+            GET.get('lot_type', '') =='vacant,organizing,accessed,private_accessed' and
+            GET.get('boroughs', '') == 'Brooklyn')

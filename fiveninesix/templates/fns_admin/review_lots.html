@@ -7,13 +7,7 @@
     function init_lot_links() {
         $('.reviewable-lot').click(function() {
             $(this).addClass('reviewed');
-            window.open('{{ OASIS_BASE_URL}}' + $(this).attr('id'));
-
-            var to_review = $('.reviewable-lot:not(".reviewed")').length;
-            if (to_review < 5) {
-                $('.reviewable-lots:last').after('<ul class="reviewable-lots"></ul>');
-                $('.reviewable-lots:last').load("{% url fns_admin.views.get_lots_to_review %}?start=" + to_review, init_lot_links);
-            }
+            window.open('{{ OASIS_BASE_URL|safe }}' + $(this).attr('id'));
         });
     };
 
@@ -26,16 +20,37 @@
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>Review Lots</h1>
-    <span>There are {{ count }} lots left to review, including lots marked inaccessible for re-review. Here are a few:</span>
+    <h1>Review {{ borough }} Lots</h1>
+    <span>There are {{ count }} lots in {{ borough }} left to review.</span>
     <div>
-        <ul class="reviewable-lots">
-        {% include "fns_admin/review_lots_snippet.html" %}
-        </ul>
+        <table class="reviewable-lots">
+            <tr>
+                <th>bbl</th>
+                <th>sq ft</th>
+                <th>use</th>
+                <th>name</th>
+                <th>agency</th>
+            </tr>
+            {% for lot in lots %}
+            <tr>
+                <td>
+                    <a id="{{ lot.bbl }}" href="{% url lots.views.add_review bbl=lot.bbl %}" class="reviewable-lot" target="_blank">{{ lot.bbl }}</a>
+                </td>
+                <td align="right">
+                    {{ lot.area|floatformat|default:"unknown" }}
+                </td>
+                <td>
+                    {{ lot.extendeddetails.rpad_description }} : {{ lot.extendeddetails.primary_use }}
+                </td>
+                <td>
+                    {{ lot.extendeddetails.parcel_name|default:"" }}
+                </td>
+                <td>
+                    {{ lot.extendeddetails.jurisdiction_code }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}
-
-
-
-

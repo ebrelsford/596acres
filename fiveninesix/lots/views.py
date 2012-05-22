@@ -122,14 +122,20 @@ def _filter_lots(request):
     mapped_lots = Lot.objects.filter(centroid__isnull=False)
     lots = mapped_lots
 
-    lot_types = request.GET.get('lot_type', '').split(',')
+    try:
+        lot_types = request.GET['lot_type'].split(',')
+    except:
+        lot_types = []
 
+
+    if 'boroughs' in request.GET:
+        lots = lots.filter(borough__in=request.GET['boroughs'].split(','))
     if 'source' in request.GET:
-        sources = request.GET['source'].split(',')
-        lots = lots.filter(centroid_source__in=sources)
+        if request.GET['source'] != 'all':
+            sources = request.GET['source'].split(',')
+            lots = lots.filter(centroid_source__in=sources)
     if 'owner_type' in request.GET:
         owner_types = request.GET['owner_type'].split(',')
-
         if 'private_accessed' not in lot_types and 'private' in owner_types:
             owner_types.remove('private')
         lots = lots.filter(owner__type__name__in=owner_types)
@@ -153,7 +159,7 @@ def _filter_lots(request):
         max_area = request.GET['max_area']
         if max_area < 3:
             lots = lots.filter(area_acres__lte=max_area)
-    if lot_types:
+    if len(lot_types) > 0:
         lots_by_lot_type = Lot.objects.none()
         for lot_type in lot_types:
             if lot_type in LOT_QUERIES:

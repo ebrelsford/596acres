@@ -198,8 +198,8 @@ class Review(models.Model):
     
     in_use = models.BooleanField(blank=False, null=False, default=False, help_text="the lot is not fenced, is being used")
     actual_use = models.CharField(blank=True, null=True, max_length=128, help_text="eg, 'garden' or 'parking'")
-    accessible = models.BooleanField(blank=False, null=False, default=True, help_text="there is access to the lot from the street or from an adjacent lot with access to the street")
-    needs_further_review = models.BooleanField(blank=False, null=False, default=False, help_text="should be visited on foot (please state why in notes)")
+    accessible = models.BooleanField(blank=False, null=False, default=True, help_text="there is access to the lot from the street or from an adjacent lot (or community garden) with access to the street")
+    needs_further_review = models.BooleanField(blank=False, null=False, default=False, help_text="should be visited on foot or double-checked by someone else (please state why in notes)")
 
     nearby_lots = models.TextField(blank=True, null=True, help_text="BBLs of nearby/adjacent vacant lots that might be used in coordination with this lot")
 
@@ -208,11 +208,6 @@ class Review(models.Model):
 
     should_be_imported = models.NullBooleanField(blank=True, null=True, help_text="data should be added to the respective lot")
     imported = models.BooleanField(blank=False, null=False, default=False, help_text="data has been added to the respective lot")
-
-    # TODO eventually?
-    # direction the lot faces/of street access?
-    # height of building(s) nearby? ie, that might obstruct sun
-    # "intended use", if looking through history shows it was supposed to have been a playground, garden, park, ...
 
 LOT_QUERIES = {
     'vacant': Lot.objects.filter(Q(accessible=True, is_vacant=True, group_has_access=False, organizer=None, owner__type__name='city') & ~Q(actual_use='gutterspace')),

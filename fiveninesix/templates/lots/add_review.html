@@ -29,9 +29,51 @@
         }
     }
 
+    var suggested_uses = [
+        "athletic track",
+        "backyard",
+        "baseball field",
+        "basketball court",
+        "building",
+        "building under construction",
+        "bus turnaround",
+        "cemetery",
+        "community garden",
+        "construction site",
+        "football field",
+        "green space",
+        "gutterspace",
+        "industrial area",
+        "parking",
+        "picnic area",
+        "pier",
+        "private outdoor space for nearby facility",
+        "private parking",
+        "schoolyard",
+        "street",
+    ];
+
+    function add_suggested_uses() {
+        $(':input[name="actual_use"]').before('<select id="suggested_uses"></select>');
+        $('#suggested_uses').append('<option>pick a common use</option>');
+        for (i in suggested_uses) {
+            $('#suggested_uses').append('<option>' + suggested_uses[i] + '</option>');
+        }
+        
+        $('#suggested_uses').change(function() {
+            $(':input[name="actual_use"]').val($(this).val());
+            if (!$(':input[name="in_use"]').is(':checked')) {
+                $(':input[name="in_use"]')
+                    .trigger('click')
+                    .trigger('change');
+            }
+        });
+    }
+
     $(document).ready(function() {
         set_toggle_enabler('in_use', 'actual_use');
         hide_hpd_rows();
+        add_suggested_uses();
     });
 </script>
 {% endblock %}

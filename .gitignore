@@ -3,13 +3,20 @@
 .Python
 
 settings.py
+fiveninesix/media/CACHE
+fiveninesix/media/cms_page_media
+fiveninesix/media/cmsplugin_gallery
+fiveninesix/media/js
+fiveninesix/media/mirrored_pictures
+fiveninesix/media/pictures
+fiveninesix/media/qrcodes
 
 bin
 build
 data
 include
 lib
-media
+/media
 noncode
 scripts
 share

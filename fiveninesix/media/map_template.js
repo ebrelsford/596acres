@@ -123,7 +123,7 @@ $(document).ready(function() {
         range: true,
         max: max_area_range,
         min: 0,
-        step: .001,
+        step: .01,
         values: [0, max_area_range],
         slide: function(event, ui) {
             update_area_display(ui.values[0], ui.values[1]);

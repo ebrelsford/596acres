@@ -14,6 +14,7 @@
     {% endcompress %}
 
     {% compress js %}
+    <script src="{{ MEDIA_URL }}fullscreen-api-polyfill.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}jquery-util.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}cloudmade.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}map.js" type="text/javascript"></script>
@@ -22,11 +23,15 @@
     <script src="{{ MEDIA_URL }}geocode.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}search.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}help.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}openlayers-fullscreen/lib/OpenLayers/Control/FullScreen.js" type="text/javascript"></script>
     {% endcompress %}
+
+    <link rel="stylesheet" href="{{ MEDIA_URL }}openlayers-fullscreen/css/fullscreen.css" type="text/css">
 {% endblock %}
 
 {% block scripts %}
     {% compress js %}
+    <script src="{{ MEDIA_URL }}URI.min.js" type="text/javascript"></script>
     <script src="{{ MEDIA_URL }}map_template.js" type="text/javascript"></script>
     {% endcompress %}
 {% endblock %}

@@ -152,6 +152,10 @@ ul.nav ul {
     left: 40px;
 }
 
+.olControlPanel {
+    right: 0;
+}
+
 .olPopup {
     border-radius: 10px;
     -moz-border-radius: 10px;
@@ -219,7 +223,7 @@ ul.nav ul {
 #map_buttons {
     position: absolute;
     font-size: 10px;
-    right: 10px;
+    right: 30px;
     top: 10px;
     z-index: 1030;
 }

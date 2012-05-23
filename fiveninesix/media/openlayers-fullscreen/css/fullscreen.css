@@ -1,0 +1,22 @@
+.olMap.fullscreen, .olMap:-webkit-full-screen {
+    height: 100% !important;
+    width: 100% !important;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.olControlFullScreenItemActive, .olControlFullScreenItemInactive {
+    height: 20px;
+    width: 20px;
+    background-image: url(fullscreen.png);
+    cursor: pointer;
+}
+
+.olControlFullScreenItemActive {
+    background-position: 0 -25px;
+}
+
+.olControlFullScreenItemInactive {
+    background-position: 0 0;
+}

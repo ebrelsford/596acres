@@ -142,6 +142,10 @@ var LotMap = {
             }
         });
 
+        var panel = new OpenLayers.Control.Panel();
+        panel.addControls([new OpenLayers.Control.FullScreen()]);
+        this.olMap.addControl(panel);
+
         var cloudmade = new OpenLayers.Layer.CloudMade("CloudMade", {
             key: '781b27aa166a49e1a398cd9b38a81cdf',
             styleId: '15434',
@@ -159,6 +163,7 @@ var LotMap = {
                     t.centerOnFeature(t.lot_layer, t.options.detailFid);
                 }
                 else {
+                    // TODO center on features, if requested (if user looking at boroughs, specifically...)
                     t.addControls([t.lot_layer]);
                 }
             },

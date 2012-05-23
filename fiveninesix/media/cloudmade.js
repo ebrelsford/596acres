@@ -1,4 +1,4 @@
-OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
+OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     initialize: function(name, options) {
 		if (!options.key) {
 			throw "Please provide key property in options (your API key).";

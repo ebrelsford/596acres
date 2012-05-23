@@ -163,7 +163,10 @@ var LotMap = {
                     t.centerOnFeature(t.lot_layer, t.options.detailFid);
                 }
                 else {
-                    // TODO center on features, if requested (if user looking at boroughs, specifically...)
+                    if (t.options.zoomToFeatures) {
+                        var features_extent = t.lot_layer.getDataExtent(); 
+                        t.olMap.zoomToExtent(features_extent, false);
+                    }
                     t.addControls([t.lot_layer]);
                 }
             },

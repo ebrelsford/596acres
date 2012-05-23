@@ -44,9 +44,11 @@ function is_in(longitude, latitude, bounds) {
 }
 
 $(document).ready(function() {
+    var queryString = (URI().query() !== '') ? URI().query() : 'boroughs=Brooklyn';
     $('#map').lotmap({
         mobile: $('#map').hasClass('mobile'),
-        queryString: 'boroughs=Brooklyn&owner_type=city,private',   
+        queryString: queryString,
+        zoomToFeatures: true,
         addContentToPopup: function(popup, feature) {
             // loading....
             var $loading_clone = $('.popup_loading').clone();

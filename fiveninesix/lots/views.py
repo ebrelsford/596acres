@@ -125,20 +125,27 @@ def _filter_lots(request):
     try:
         lot_types = request.GET['lot_type'].split(',')
     except:
-        lot_types = []
+        lot_types = ['vacant','organizing','accessed','private_accessed']
 
+    try:
+        owner_types = request.GET['owner_type'].split(',')
+    except:
+        owner_types = ['city', 'private']
+    if 'private_accessed' not in lot_types and 'private' in owner_types:
+        owner_types.remove('private')
+    lots = lots.filter(owner__type__name__in=owner_types)
 
-    if 'boroughs' in request.GET:
-        lots = lots.filter(borough__in=request.GET['boroughs'].split(','))
+    try:
+        # TODO require permission for Bronx, SI?
+        boroughs = [b.title() for b in request.GET['boroughs'].split(',')]
+        lots = lots.filter(borough__in=boroughs)
+    except:
+        lots = lots.filter(borough='Brooklyn')
+        
     if 'source' in request.GET:
         if request.GET['source'] != 'all':
             sources = request.GET['source'].split(',')
             lots = lots.filter(centroid_source__in=sources)
-    if 'owner_type' in request.GET:
-        owner_types = request.GET['owner_type'].split(',')
-        if 'private_accessed' not in lot_types and 'private' in owner_types:
-            owner_types.remove('private')
-        lots = lots.filter(owner__type__name__in=owner_types)
     if 'owner_code' in request.GET:
         lots = lots.filter(owner__code=request.GET['owner_code'])
     if 'owner_id' in request.GET:

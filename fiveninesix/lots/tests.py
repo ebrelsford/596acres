@@ -1,16 +1,15 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
+from django.core.urlresolvers import reverse
 from django.test import TestCase
 
+class LotViewsTestCase(TestCase):
+    fixtures = [
+        'lots_test.json',
+    ]
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+    def test_base_query(self):
         """
-        Tests that 1 + 1 always equals 2.
+        Tests base lots query
         """
-        self.assertEqual(1 + 1, 2)
+        base_query = '?boroughs=Brooklyn&lot_type=vacant,organizing,accessed,private_accessed'
+        resp = self.client.get(reverse('lots.views.lot_geojson') + base_query)
+        self.assertEqual(resp.status_code, 200)

@@ -1,0 +1,105 @@
+[
+    {
+        "pk": 1, 
+        "model": "lots.lot", 
+        "fields": {
+            "accessible": true, 
+            "school_district": "16",
+            "fire_comp": "E234",
+            "community_district": null, 
+            "qrcode": "", 
+            "actual_use": "Garden|Test Garden|", 
+            "city_council_district": null, 
+            "owner": 1, 
+            "borough": "Brooklyn", 
+            "exempt_land": 0, 
+            "bbl": "3013420008", 
+            "polygon": null, 
+            "is_vacant": false, 
+            "health_ctr": "32", 
+            "zipcode": "11213", 
+            "exempt_total": 0, 
+            "centroid": "POINT (-73.9604459603999942 40.6791896597000004)", 
+            "assess_land": 1940, 
+            "lot": "8", 
+            "health_area": "3600", 
+            "police_precinct": "77", 
+            "group_has_access": false, 
+            "address": "Test lot 1", 
+            "assess_total": 1940, 
+            "area": "2615.00", 
+            "area_acres": "0.060032", 
+            "centroid_source": "OASIS", 
+            "block": "1342"
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "lots.lot", 
+        "fields": {
+            "accessible": true, 
+            "school_district": "16",
+            "fire_comp": "E234",
+            "community_district": null, 
+            "qrcode": "", 
+            "actual_use": null, 
+            "city_council_district": null, 
+            "owner": 2, 
+            "borough": "Brooklyn", 
+            "exempt_land": 0, 
+            "bbl": "3013420008", 
+            "polygon": null, 
+            "is_vacant": false, 
+            "health_ctr": "32", 
+            "zipcode": "11213", 
+            "exempt_total": 0, 
+            "centroid": "POINT (-73.9329652312000007 40.6765227339000006)", 
+            "assess_land": 1940, 
+            "lot": "8", 
+            "health_area": "3600", 
+            "police_precinct": "77", 
+            "group_has_access": false, 
+            "address": "Test Lot 2", 
+            "assess_total": 1940, 
+            "area": "2615.00", 
+            "area_acres": "0.060032", 
+            "centroid_source": "OASIS", 
+            "block": "1342"
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "lots.owner", 
+        "fields": {
+            "code": "C", 
+            "name": "Test Department One", 
+            "phone": "123-456-7890", 
+            "notes": "Test notes", 
+            "site": "", 
+            "person": "Test Owner Person 1", 
+            "type": 1, 
+            "email": "test_owner_person1@596acres.com"
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "lots.owner", 
+        "fields": {
+            "code": "C", 
+            "name": "Test Department Two", 
+            "phone": "123-456-7890", 
+            "notes": "Test notes", 
+            "site": "", 
+            "person": "Test Owner Person 2", 
+            "type": 1, 
+            "email": "test_owner_person2@596acres.com"
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "lots.ownertype", 
+        "fields": {
+            "name": "city"
+        }
+    }
+]

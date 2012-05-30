@@ -255,11 +255,13 @@
         <ul class="pictures">
         {% for picture in pictures %}
             <li class="picture {% cycle "odd" "even" %}">
-                <a title="{{ picture.description }}" href="{{ picture.picture.url }}">
-                {% thumbnail picture.picture "200x200" as im %}
-                <img src="{{ im.url }}" />
+                {% thumbnail picture.picture "700x700" as full %}
+                <a title="{{ picture.description }}" href="{{ full.url }}">
+                {% thumbnail picture.picture "200x200" as thumb %}
+                <img src="{{ thumb.url }}" />
                 {% endthumbnail %}
                 </a>
+                {% endthumbnail %}
             </li>
         {% endfor %}
         </ul>
@@ -267,4 +269,3 @@
     </div>
 </div>
 {% endblock %}
-

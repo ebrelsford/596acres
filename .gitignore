@@ -8,6 +8,7 @@ fiveninesix/media/cms_page_media
 fiveninesix/media/cmsplugin_gallery
 fiveninesix/media/js
 fiveninesix/media/mirrored_pictures
+fiveninesix/media/filer_private
 fiveninesix/media/pictures
 fiveninesix/media/qrcodes
 
@@ -21,4 +22,5 @@ noncode
 scripts
 share
 src
+static
 storage

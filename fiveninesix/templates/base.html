@@ -1,4 +1,4 @@
-{% load cache cms_tags compress menu_tags %}
+{% load cache cms_tags compress menu_tags sekizai_tags %}
 
 <!doctype html>
 <head>
@@ -17,6 +17,8 @@
     {% endif %}
 
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/fav.ico" />
+
+    {% render_block "css" %}
 
     {% compress css %}
     <link rel="stylesheet" href="{{ MEDIA_URL }}style.css" type="text/css" media="screen" />
@@ -109,5 +111,6 @@
     </script>
     {% block media %}{% endblock %}
     {% block scripts %}{% endblock %}
+    {% render_block "js" %}
 </body>
 </html>

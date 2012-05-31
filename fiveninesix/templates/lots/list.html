@@ -1,27 +1,36 @@
 {% extends "base_with_sidebar.html" %}
-{% load compress %}
+{% load sekizai_tags %}
 
 {% block title %}Lots with organizers{% endblock %}
 
 {% block media %}
     {{ block.super }}
 
-    {% compress js %}
+    {% addtoblock "js" %}
     <script src="{{ MEDIA_URL }}OpenLayers/OpenLayers.js" type="text/javascript"></script>
-    {% endcompress %}
+    {% endaddtoblock %}
 
-    {% compress js %}
+    {% addtoblock "css" %}
     <script src="{{ MEDIA_URL }}jquery-util.js" type="text/javascript"></script>
+    {% endaddtoblock %}
+
+    {% addtoblock "css" %}
     <script src="{{ MEDIA_URL }}cloudmade.js" type="text/javascript"></script>
+    {% endaddtoblock %}
+
+    {% addtoblock "css" %}
     <script src="{{ MEDIA_URL }}map.js" type="text/javascript"></script>
+    {% endaddtoblock %}
+
+    {% addtoblock "css" %}
     <script src="{{ MEDIA_URL }}jquery.smartresize.js" type="text/javascript"></script>
-    {% endcompress %}
+    {% endaddtoblock %}
 {% endblock %}
 
 {% block scripts %}
-    {% compress js %}
+    {% addtoblock "js" %}
     <script src="{{ MEDIA_URL }}lots_list.js" type="text/javascript"></script>
-    {% endcompress %}
+    {% endaddtoblock %}
 {% endblock %}
 
 {% block content_main %}

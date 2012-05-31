@@ -41,7 +41,6 @@ simple-translation==0.7.4
 simplejson==2.1.6
 simplekml==0.7.3
 six==1.1.0
-sorl-thumbnail==11.09
 -e git://github.com/jdunck/python-unicodecsv.git@22eabfe1cfebed61db8030993d0989ba4ec5a96b#egg=unicodecsv-dev
 virtualenv==1.7.1.2
 wsgiref==0.1.2

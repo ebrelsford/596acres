@@ -136,7 +136,6 @@ INSTALLED_APPS = (
     'simple_translation',
     'tagging',
     'missing',
-    'sorl.thumbnail',
 
     'about',
     'accounts',

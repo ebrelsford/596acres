@@ -257,13 +257,9 @@
         <ul class="pictures">
         {% for picture in pictures %}
             <li class="picture {% cycle "odd" "even" %}">
-                {% thumbnail picture.picture "700x700" as full %}
-                <a title="{{ picture.description }}" href="{{ full.url }}">
-                {% thumbnail picture.picture "200x200" as thumb %}
-                <img src="{{ thumb.url }}" />
-                {% endthumbnail %}
+                <a title="{{ picture.description }}" href="{% thumbnail picture.picture 700x700 %}">
+                    <img src="{% thumbnail picture.picture 200x200 crop %}" />
                 </a>
-                {% endthumbnail %}
             </li>
         {% endfor %}
         </ul>

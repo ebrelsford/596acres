@@ -9,7 +9,7 @@ from django.core.cache import cache
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 
@@ -136,8 +136,11 @@ def _filter_lots(request):
     lots = lots.filter(owner__type__name__in=owner_types)
 
     try:
-        # TODO require permission for Bronx, SI?
         boroughs = [b.title() for b in request.GET['boroughs'].split(',')]
+        if not request.user.is_authenticated():
+            public_boroughs = ['Brooklyn',]
+            if len(filter(lambda b: b not in public_boroughs, boroughs)) > 0:
+                raise Exception('Only logged-in users can view all boroughs.')
         lots = lots.filter(borough__in=boroughs)
     except:
         lots = lots.filter(borough='Brooklyn')

@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from admin_tools.dashboard import modules, Dashboard
 from admin_tools.utils import get_admin_site_name
 
-from fiveninesix.lots.models import Review
-from fiveninesix.organize.models import Note, Organizer, Picture, Watcher
+from lots.models import Review
+from organize.models import Note, Organizer, Picture, Watcher
 
 class RecentlyAddedDashboardModule(modules.LinkList):
     def __init__(self, title='The Past 7 Days', **kwargs):
@@ -20,7 +20,7 @@ class RecentlyAddedDashboardModule(modules.LinkList):
             if count == 1:
                 pluralize = ''
 
-            url = reverse('admin:%s_%s_changelist' % (model.__module__.split('.')[0], model.__name__.lower(),))
+            url = reverse('admin:%s_%s_changelist' % (model.__module__.split('.')[-2], model.__name__.lower(),))
 
             self.children.append({
                 'title': '%d %s%s' % (count, model.__name__, pluralize),

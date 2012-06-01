@@ -9,7 +9,7 @@ from django.core.cache import cache
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 

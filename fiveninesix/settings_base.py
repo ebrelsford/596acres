@@ -19,31 +19,19 @@ EMAIL_SUBJECT_PREFIX = '[596 Acres] '
 SERVER_EMAIL = 'admin@596acres.org'
 ORGANIZERS_EMAIL = 'organizers@gmail.com'
 
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# On Unix systems, a value of None will cause Django to use the same
-# timezone as the operating system.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
 TIME_ZONE = 'America/New_York'
 
 SITE_ID = 1
 
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
 USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale
 USE_L10N = True
 
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
-
 MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATIC_URL = "/static/"
+
 ADMIN_MEDIA_PREFIX = "/static/admin/"
 
 # List of callables that know how to import templates from various sources.
@@ -74,7 +62,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.static',
 
-    'cms.context_processors.media',
     'sekizai.context_processors.sekizai',
 
     'context_processors.mobile',
@@ -112,10 +99,10 @@ INSTALLED_APPS = (
     'appmedia',
     'sekizai',
     'south',
-    'cms.plugins.text',
     'cms.plugins.link',
+    'cms.plugins.picture',
     'cms.plugins.snippet',
-    'cms.plugins.googlemap',
+    'cms.plugins.text',
     'tinymce',
     'compressor',
 
@@ -138,26 +125,15 @@ INSTALLED_APPS = (
     'fns_admin',
     'contact',
     'events',
+    'facebook',
     'getinvolved',
     'legend',
     'lots',
-    'organize',
-    'photos',
-    'facebook',
     'news',
     'newsletter',
+    'organize',
+    'photos',
 )
-
-#CACHES = {
-    #'default': {
-        #'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        #'LOCATION': 'cache_table',
-    #},
-#}
-#CACHE_BACKEND = 'db://cache_table'
-#CACHE_MIDDLEWARE_SECONDS = 60 * 60
-#CACHE_MIDDLEWARE_KEY_PREFIX = ''
-#CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
 
 CMS_CONTENT_CACHE_DURATION = 60
 MENU_CACHE_DURATION = 3600
@@ -173,7 +149,6 @@ STATICFILES_FINDERS = [
     'fiveninesix.finders.AppMediaDirectoriesFinder',
 ]
 STATICFILES_DIRS = [
-    '/Users/eric/Documents/activism/596acres/lib/python2.6/site-packages/cms/static',
 ]
 ADMIN_TOOLS_INDEX_DASHBOARD = 'fiveninesix.dashboard.CustomIndexDashboard'
 
@@ -190,7 +165,6 @@ SOUTH_TESTS_MIGRATE = False
 THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.colorspace',
     'easy_thumbnails.processors.autocrop',
-    #'easy_thumbnails.processors.scale_and_crop',
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
 )

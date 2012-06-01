@@ -16,9 +16,7 @@
 <h1>{{ object.name|default:"" }}</h1>
 
 <div>
-    {% thumbnail object.picture "600x600" as thumb %}
-    <img src="{{ thumb.url }}" />
-    {% endthumbnail %}
+    <img src="{% thumbnail object.picture 600x600 %}" />
 </div>
 <div>
     {% if object.description %}

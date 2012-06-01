@@ -16,11 +16,9 @@
     <li class="picture">
         <a 
             title="{{ photo.name|default:"" }} {{ photo.description|default:"" }} (<a href='{{ photo.get_absolute_url }}'>permalink</a>)" 
-            href="{{ photo.picture.url }}" 
+            href="{% thumbnail photo.picture 700x700 %}" 
             rel="album-photos">
-            {% thumbnail photo.picture "150x150" crop="center" as thumb %}
-            <img src="{{ thumb.url }}" />
-            {% endthumbnail %}
+            <img src="{% thumbnail photo.picture 150x150 crop %}" />
         </a>
     </li>
     {% endfor %}

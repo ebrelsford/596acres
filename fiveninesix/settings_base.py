@@ -13,6 +13,7 @@ LANGUAGES = [
     ('en', gettext('English')),
 ]
 DEFAULT_LANGUAGE = 0
+LANGUAGE_CODE = 'en'
 
 EMAIL_SUBJECT_PREFIX = '[596 Acres] '
 SERVER_EMAIL = 'admin@596acres.org'
@@ -26,10 +27,6 @@ ORGANIZERS_EMAIL = 'organizers@gmail.com'
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'America/New_York'
-
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
 
@@ -70,18 +67,17 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+
     'cms.context_processors.media',
     'sekizai.context_processors.sekizai',
 
     'context_processors.mobile',
-
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
 )
 
 CMS_TEMPLATES = (

@@ -9,6 +9,7 @@ var LotMap = {
     //
     // filters
     //
+    boroughs: ['Brooklyn',],
     minArea: null,
     maxArea: null,
     selectedAgency: null,
@@ -111,10 +112,9 @@ var LotMap = {
     init: function(options, elem) {
         var t = this;
         this.options = $.extend({}, this.options, options);
+
         if (this.options['filters']) {
-            if (this.options['filters']['lot_types']) {
-                this.lot_types = this.options['filters']['lot_types'];
-            }
+            this.readFilters(this.options['filters']);
         }
 
         this.elem = elem;
@@ -142,9 +142,11 @@ var LotMap = {
             }
         });
 
-        var panel = new OpenLayers.Control.Panel();
-        panel.addControls([new OpenLayers.Control.FullScreen()]);
-        this.olMap.addControl(panel);
+        if (this.options.fullScreen) {
+            var panel = new OpenLayers.Control.Panel();
+            panel.addControls([new OpenLayers.Control.FullScreen()]);
+            this.olMap.addControl(panel);
+        }
 
         var cloudmade = new OpenLayers.Layer.CloudMade("CloudMade", {
             key: '781b27aa166a49e1a398cd9b38a81cdf',
@@ -184,25 +186,99 @@ var LotMap = {
     },
 
     options: {
+        /*
+         * map options
+         */
+
+        // the center of the map, in web mercator
         center: new OpenLayers.LonLat(-8234102.434993, 4960767.039686),
-        initialZoom: 11,
-        addContentToPopup: function(popup, feature) { ; },
-        type: null, 
-        url: '/lots/geojson?',
-        queryString: '',
+
+        // map will focus on one BBL, eg for the lot's page
         detailView: false,
-        onLoad: function() {},
+
+        // map can go into fullscreen
+        fullScreen: false,
+
+        // the zoom for the map
+        initialZoom: 11,
+
+        // map will be displayed on a mobile device
+        mobile: false,
+
+        // allow popups
+        popups: true,
+
+        // allow lot selection
+        select: true,
+
+        // zoom to the lot features on load
+        zoomToFeatures: false,
+
+        /*
+         * lot data options
+         */
+
+        // initial filters when querying for lot data
+        filters: {},
+
+        // the base query when requesting lot data
+        queryString: '',
+
+        // the base url data for the lot layer will come from
+        url: '/lots/geojson?',
+
+        /*
+         * callbacks
+         */
+        addContentToPopup: function(popup, feature) {},
         onFeatureSelect: function(feature) {},
         onFeatureUnselect: function(feature) {},
         onFeatureHighlight: function(feature) {},
         onFeatureUnhighlight: function(feature) {},
-        popups: true,
-        select: true,
-        filter: true,
-        mobile: false,
-        filters: {
-            lot_types: ['vacant','organizing','accessed','private_accessed'],
-        },
+        onLoad: function() {},
+    },
+
+    readFilters: function(f) {
+        if (f['boroughs']) {
+            this.boroughs = f['boroughs'].split(',');
+        }
+        if (f['lot_types']) {
+            this.lot_types = f['lot_types'].split(',');
+        }
+        if (f['maxArea']) {
+            this.maxArea = f['maxArea'];
+        }
+        if (f['minArea']) {
+            this.minArea = f['minArea'];
+        }
+        if (f['owner']) {
+            this.selectedAgency = f['owner'];
+        }
+        if (f['lat'] && f['lon']) {
+            this.options.center = this.getTransformedLonLat(f['lon'], f['lat']);
+            this.options.zoomToFeatures = false;
+        }
+        if (f['z']) {
+            this.options.initialZoom = f['z'];
+            this.options.zoomToFeatures = false;
+        }
+    },
+
+    exportFilters: function() {
+        var center = this.olMap.getCenter();
+        center = this.getInverseLonLat(center.lon, center.lat);
+
+        filters = {
+            'boroughs': this.boroughs.join(','),
+            'lot_types': this.lot_types.join(','),
+            'lat': Math.round(center.lat * 10000) / 10000.0,
+            'lon': Math.round(center.lon * 10000) / 10000.0,
+            'z': this.olMap.getZoom(),
+        };
+        if (this.maxArea) filters['maxArea'] = this.maxArea;
+        if (this.minArea) filters['minArea'] = this.minArea;
+        if (this.selectedAgency) filters['owner'] = this.selectedAgency;
+        return filters;
     },
 
     createBBox: function(lon1, lat1, lon2, lat2) {
@@ -553,9 +629,10 @@ var LotMap = {
     // Get the query string for the currently chosen parameters
     //
     getQueryString: function() {
-        if (!this.options.filter) return this.options.queryString;
-
         var extraParameters = "";
+        if (this.boroughs) {
+            extraParameters += '&boroughs=' + this.boroughs.join(',');
+        }
         if (this.selectedAgency !== null) {
             extraParameters += '&owner_id=' + this.selectedAgency;
         }
@@ -575,7 +652,7 @@ var LotMap = {
     // Reload the lot layer using filters that are set by the user, then updated
     // on this object using a filterBy*()
     //
-    reloadLotLayer: function() {
+    reloadLotLayer: function(center_on_load) {
         if (this.options.select) {
             this.selectControl.unselectAll();
         }
@@ -584,8 +661,18 @@ var LotMap = {
         this.lot_layer.destroy();
 
         this.lot_layer = this.getLayer('lots', this.options.url + this.getQueryString());
+        var t = this;
+        this.lot_layer.events.on({
+            'loadend': function() {
+                t.options.onLoad();
+                if (center_on_load) {
+                    var features_extent = t.lot_layer.getDataExtent(); 
+                    t.olMap.zoomToExtent(features_extent, false);
+                }
+                t.addControls([t.lot_layer]);
+            },
+        });
 
-        this.addControls([this.lot_layer]);
         this.olMap.addLayer(this.lot_layer);
     },
     
@@ -606,6 +693,14 @@ var LotMap = {
         this.minArea = min;
         this.maxArea = max;
         this.reloadLotLayer();
+    },
+
+    //
+    // Filter by boroughs.
+    //
+    filterByBoroughs: function(boroughs) {
+        this.boroughs = boroughs;
+        this.reloadLotLayer(true);
     },
 
     //

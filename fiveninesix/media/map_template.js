@@ -43,11 +43,33 @@ function is_in(longitude, latitude, bounds) {
         longitude >= bounds.left;
 }
 
+/*
+ * Make UI match the given initial filters
+ */
+function set_initial_filters(f) {
+    if (f['boroughs']) {
+        $.each(f['boroughs'].split(','), function(i, borough) {
+            $('.filters .boroughs :input[value="' + borough + '"]').attr('checked', 'yes');
+        });
+    }
+    if (f['lot_types']) {
+        $('.map-legend :input').removeAttr('checked');
+        $.each(f['lot_types'].split(','), function(i, lot_type) {
+            $('.map-legend :input[name="' + lot_type + '"]').attr('checked', 'yes');
+        });
+    }
+    // min/max area are handled in slider
+    // owner handled as select is initialized
+}
+
 $(document).ready(function() {
-    var queryString = (URI().query() !== '') ? URI().query() : 'boroughs=Brooklyn';
+    var filters = URI().query(true);
+    set_initial_filters(filters);
+
     $('#map').lotmap({
         mobile: $('#map').hasClass('mobile'),
-        queryString: queryString,
+        filters: filters,
+        fullScreen: true,
         zoomToFeatures: true,
         addContentToPopup: function(popup, feature) {
             // loading....
@@ -121,12 +143,14 @@ $(document).ready(function() {
         $map: $('#map'),
     });
 
+    var initial_min_area = filters['minArea'] || 0;
+    var initial_max_area = filters['maxArea'] || max_area_range;
     $('#area_slider').slider({
         range: true,
         max: max_area_range,
         min: 0,
         step: .01,
-        values: [0, max_area_range],
+        values: [initial_min_area, initial_max_area],
         slide: function(event, ui) {
             update_area_display(ui.values[0], ui.values[1]);
         },
@@ -134,7 +158,7 @@ $(document).ready(function() {
             $('#map').data('lotmap').filterByArea(ui.values[0], ui.values[1]);
         },
     });
-    update_area_display(0, max_area_range);
+    update_area_display(initial_min_area, initial_max_area);
 
     $('.filters .agency select').attr('disabled', 'disabled');
     $.getJSON('/owners/json/', function(data) {
@@ -143,11 +167,21 @@ $(document).ready(function() {
             $('.filters .agency select').append(option);
         });
         $('.filters .agency select').removeAttr('disabled');
+        
+        // select initial owner
+        $('.filters .agency option[value=' + filters['owner'] + ']').attr('selected', 'yes');
     });
 
     $('.filters .agency select').change(function() {
         var agency_id = $(this).find('option:selected').attr('value');
         $('#map').data('lotmap').filterByAgency(agency_id);
+    });
+
+    $('.filters .boroughs :input').change(function() {
+        var boroughs = $('.filters .boroughs :input:checked').map(function(i, element) {
+            return $(element).val();
+        });
+        $('#map').data('lotmap').filterByBoroughs(boroughs.get());
     });
 
     $('#searchbar input[name="current_location"]').click(function() {
@@ -172,6 +206,11 @@ $(document).ready(function() {
                 }
             }
         );
+    });
+
+    $('.permalink a').click(function() {
+        window.location.href = URI().query($('#map').data('lotmap').exportFilters());
+        return false;
     });
 
     $('.download a').click(function() {

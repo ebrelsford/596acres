@@ -27,7 +27,6 @@ $(document).ready(function() {
     }
 
     $('#map').lotmap({
-        filter: false,
         queryString: 'owner_type=city,private&bbls={{ lot.bbl }}&with_nearby_lots=yes',   
         detailView: true,
         detailFid: {{ lot.bbl }},

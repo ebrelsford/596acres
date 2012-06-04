@@ -65,6 +65,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'sekizai.context_processors.sekizai',
 
     'context_processors.mobile',
+    'context_processors.public_boroughs',
 )
 
 CMS_TEMPLATES = (
@@ -168,3 +169,7 @@ THUMBNAIL_PROCESSORS = (
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
 )
+
+PUBLIC_BOROUGHS = [
+    'Brooklyn',
+]

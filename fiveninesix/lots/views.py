@@ -6,6 +6,7 @@ from random import randint
 import simplekml
 
 from django.core.cache import cache
+from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
@@ -138,8 +139,7 @@ def _filter_lots(request):
     try:
         boroughs = [b.title() for b in request.GET['boroughs'].split(',')]
         if not request.user.is_authenticated():
-            public_boroughs = ['Brooklyn',]
-            if len(filter(lambda b: b not in public_boroughs, boroughs)) > 0:
+            if any(map(lambda b: b not in settings.PUBLIC_BOROUGHS, boroughs)):
                 raise Exception('Only logged-in users can view all boroughs.')
         lots = lots.filter(borough__in=boroughs)
     except:

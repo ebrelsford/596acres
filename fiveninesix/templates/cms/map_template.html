@@ -64,10 +64,6 @@
     <script src="{{ MEDIA_URL }}map_template.js" type="text/javascript"></script>
     {% endaddtoblock %}
 
-    {% addtoblock "js" %}
-    <script src="{{ MEDIA_URL }}map_template.js" type="text/javascript"></script>
-    {% endaddtoblock %}
-
     {% addtoblock "css" %}
     <link rel="stylesheet" href="{{ MEDIA_URL }}openlayers-fullscreen/css/fullscreen.css" type="text/css">
     {% endaddtoblock %}
@@ -134,15 +130,49 @@
                             <option value="all">all</option>
                         </select>
                     </li>
+                    <li class="boroughs">
+                        <span class="label">Boroughs:</span>
+                        <ul style="display: inline-block; width: 35%;">
+                            {% if not user.is_authenticated %}
+                            {% for borough in public_boroughs %}
+                            <li>
+                                <input type="checkbox" name="{{ borough|lower }}" id="{{ borough|lower }}" value="{{ borough }}" checked="yes" />
+                                <label for="{{ borough|lower }}">{{ borough }}</label>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <li>
+                                <input type="checkbox" name="bronx" id="bronx" value="Bronx" />
+                                <label for="bronx">Bronx</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="brooklyn" id="brooklyn" value="Brooklyn" checked="yes" />
+                                <label for="brooklyn">Brooklyn</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="manhattan" id="manhattan" value="Manhattan" />
+                                <label for="manhattan">Manhattan</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="queens" id="queens" value="Queens" />
+                                <label for="queens">Queens</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" name="staten_island" id="staten_island" value="Staten Island" />
+                                <label for="staten_island">Staten Island</label>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </li>
                 </ul>
-
-                {% comment %}
-                TODO borough filter
-                {% endcomment %}
             </div>
 
             <div class="download">
                 Download current lots as <a href="" class="kml">KML</a>, <a href="" class="geojson">GeoJSON</a>, or <a href="" class="csv">a spreadsheet</a>
+            </div>
+
+            <div class="permalink">
+                <a href="">Link to exactly what you're looking at right now</a>
             </div>
 
             <div class="social">

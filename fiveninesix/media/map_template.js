@@ -62,9 +62,35 @@ function set_initial_filters(f) {
     // owner handled as select is initialized
 }
 
+/*
+ * Get the currently selected boroughs.
+ */
+function get_selected_boroughs() {
+    return $('.filters .boroughs :input:checked').map(function(i, element) {
+        return $(element).val();
+    }).get();
+}
+
+/*
+ * Update the legend to show the correct counts for the selected boroughs.
+ */
+function update_legend() {
+    var boroughs = get_selected_boroughs();
+
+    $.getJSON('/lot/counts?boroughs=' + boroughs.join(','), function(data) {
+        $.each(data, function(lot_type, count) {
+            $('.map-legend .' + lot_type + ' .count').text(count);
+        });
+    });
+}
+
 $(document).ready(function() {
+    // get filters, make UI match
     var filters = URI().query(true);
     set_initial_filters(filters);
+
+    // update legend to match given filters
+    update_legend();
 
     $('#map').lotmap({
         mobile: $('#map').hasClass('mobile'),
@@ -178,19 +204,13 @@ $(document).ready(function() {
     });
 
     $('.filters .boroughs :input').change(function() {
-        var boroughs = $('.filters .boroughs :input:checked').map(function(i, element) {
-            return $(element).val();
-        }).get();
+        var boroughs = get_selected_boroughs();
 
         // update map
         $('#map').data('lotmap').filterByBoroughs(boroughs);
 
         // update legend
-        $.getJSON('/lot/counts?boroughs=' + boroughs.join(','), function(data) {
-            $.each(data, function(lot_type, count) {
-                $('.map-legend .' + lot_type + ' .count').text(count);
-            });
-        });
+        update_legend();
     });
 
     $('#searchbar input[name="current_location"]').click(function() {

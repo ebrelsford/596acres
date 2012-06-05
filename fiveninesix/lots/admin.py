@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.core.urlresolvers import reverse
 
 from fiveninesix.admin import LotRelatedModelAdmin, view_in_oasis
-from models import Lot, Owner, OwnerType, Review, ExtendedDetails
+from models import Lot, Owner, OwnerContact, OwnerType, Review, ExtendedDetails
 
 class ExtendedDetailsInline(admin.StackedInline):
     model = ExtendedDetails
@@ -24,7 +24,7 @@ class LotAdmin(admin.ModelAdmin):
                 'bbl', 
                 ('address', 'borough', 'zipcode',),
                 ('area', 'area_acres',),
-                'owner',
+                ('owner', 'owner_contact',),
                 ('is_vacant', 'actual_use', 'accessible',),
                 'group_has_access',
             ),
@@ -79,6 +79,12 @@ class OwnerAdmin(admin.ModelAdmin):
     list_filter = ('type',)
     ordering = ('name',)
 
+class OwnerContactAdmin(admin.ModelAdmin):
+    search_fields = ('name', 'owner')
+    list_display = ('name', 'owner', 'jurisdiction', 'notes', 'phone', 'email',)
+    list_filter = ('owner',)
+    ordering = ('owner', 'name',)
+
 class OwnerTypeAdmin(admin.ModelAdmin):
     list_display = ('name',)
     ordering = ('name',)
@@ -101,5 +107,6 @@ class ReviewAdmin(LotRelatedModelAdmin):
 
 admin.site.register(Lot, LotAdmin)
 admin.site.register(Owner, OwnerAdmin)
+admin.site.register(OwnerContact, OwnerContactAdmin)
 admin.site.register(OwnerType, OwnerTypeAdmin)
 admin.site.register(Review, ReviewAdmin)

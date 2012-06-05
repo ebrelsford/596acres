@@ -111,48 +111,9 @@
     <div id="owner" class="section">
         <h2><a name="agency">agency</a></h2>
         {% if lot.owner %}
-        <table>
-            <tr>
-                <th>name</th>
-                <td>
-                    <span>{{ lot.owner.name|default:'' }}</span>
-                </td>
-            </tr>
-            <tr>
-                <th>contact</th>
-                <td>
-                    <span>{{ lot.owner.person|default:'' }}</span>
-                </td>
-            </tr>
-            <tr>
-                <th>phone</th>
-                <td>
-                    <span>{{ lot.owner.phone|default:'' }}</span>
-                </td>
-            </tr>
-            <tr>
-                <th>email</th>
-                <td>
-                    {% if lot.owner.email %}
-                    <a target="_blank" href="mailto:{{ lot.owner.email }}">{{ lot.owner.email }}</a>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>site</th>
-                <td class="site">
-                    {% if lot.owner.site %}
-                    <a target="_blank" href="{{ lot.owner.site }}">{{ lot.owner.site }}</a>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>notes</th>
-                <td>
-                    {{ lot.owner.notes|urlize|linebreaks|default:"" }}
-                </td>
-            </tr>
-        </table>
+            {% with owner=lot.owner owner_contact=lot.owner_contact %}
+            {% include "lots/owner_details.html" %}
+            {% endwith %}
         {% else %}
         We don't know who owns this lot.
         {% endif %}

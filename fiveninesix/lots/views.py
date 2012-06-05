@@ -193,11 +193,11 @@ def details_json(request, bbl=None):
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
 def owners_json(request):
+    # TODO cache this
     owners = {
         'owners': list(Owner.objects.filter(type__name='city').values_list('id', 'name').order_by('name')),
     }
     return HttpResponse(json.dumps(owners), mimetype='application/json')
-
 
 def details(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)

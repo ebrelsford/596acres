@@ -1,0 +1,60 @@
+<table>
+    <tr>
+        <th>name</th>
+        <td>
+            <span>{{ owner.name|default:'' }}</span>
+        </td>
+    </tr>
+    <tr>
+        <th>contact</th>
+        <td>
+            <span>
+                {% if owner_contact %}
+                {{ owner_contact.name|default:'' }}
+                {% else %}
+                {{ owner.person|default:'' }}
+                {% endif %}
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <th>phone</th>
+        <td>
+            <span>
+                {% if owner_contact %}
+                {{ owner_contact.phone|default:'' }}
+                {% else %}
+                {{ owner.phone|default:'' }}
+                {% endif %}
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <th>email</th>
+        <td>
+            {% if owner_contact %}
+                {% if owner_contact.email %}
+                <a target="_blank" href="mailto:{{ owner_contact.email }}">{{ owner_contact.email }}</a>
+                {% endif %}
+            {% else %}
+                {% if owner.email %}
+                <a target="_blank" href="mailto:{{ owner.email }}">{{ owner.email }}</a>
+                {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>site</th>
+        <td class="site">
+            {% if owner.site %}
+            <a target="_blank" href="{{ owner.site }}">{{ owner.site }}</a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>notes</th>
+        <td>
+            {{ owner.notes|urlize|linebreaks|default:"" }}
+        </td>
+    </tr>
+</table>

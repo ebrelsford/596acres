@@ -20,6 +20,12 @@ class Lot(models.Model):
     zipcode = models.CharField(max_length=16, null=True, blank=True)
 
     owner = models.ForeignKey('Owner', null=True, blank=True)
+    owner_contact = models.ForeignKey(
+        'OwnerContact', null=True, blank=True,
+        help_text=("The person representing the lot's owner who should be "
+                   "contacted about this lot.")
+    )
+
     area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     area_acres = models.DecimalField(max_digits=10, decimal_places=6, null=True, blank=True)
 
@@ -170,6 +176,26 @@ class Owner(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class OwnerContact(models.Model):
+    """
+    A contact for an Owner. Overrides the contact information in the Owner 
+    when present.
+    """
+    owner = models.ForeignKey(Owner)
+
+    name = models.CharField(max_length=256, null=True, blank=True)
+    phone = models.CharField(max_length=32, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    jurisdiction = models.TextField(
+        null=True, blank=True,
+        help_text=("The part of the city this contact covers (eg, Queens, "
+                   "northern Brooklyn).")
+    )
+    notes = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.name, self.owner.name)
 
 class OwnerType(models.Model):
     name = models.CharField(max_length=256)

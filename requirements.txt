@@ -1,7 +1,7 @@
 Django==1.3
 PIL==1.1.7
 South==0.7.3
-cmsplugin-blog==0.9.8.1
+cmsplugin-blog==1.1.2
 cmsplugin-filer==0.8.0
 django-admin-tools==0.4.0
 django-ajax-selects==1.2.4
@@ -37,7 +37,7 @@ python-gflags==2.0
 python-memcached==1.48
 readline==6.2.2
 reportlab==2.5
-simple-translation==0.7.4
+simple_translation==0.8.6
 simplejson==2.1.6
 simplekml==0.7.3
 six==1.1.0

@@ -28,7 +28,8 @@ def contact_us(request):
         form = ContactRequestForm(request.POST)    
         if form.is_valid():
             request = form.save()
-            return redirect(contact_us_thanks)
+            # XXX temporary fix, won't work when using other languages
+            return redirect('en:contact.views.contact_us_thanks')
     else:
         form = ContactRequestForm()
 

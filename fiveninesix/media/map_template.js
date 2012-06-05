@@ -180,8 +180,17 @@ $(document).ready(function() {
     $('.filters .boroughs :input').change(function() {
         var boroughs = $('.filters .boroughs :input:checked').map(function(i, element) {
             return $(element).val();
+        }).get();
+
+        // update map
+        $('#map').data('lotmap').filterByBoroughs(boroughs);
+
+        // update legend
+        $.getJSON('/lot/counts?boroughs=' + boroughs.join(','), function(data) {
+            $.each(data, function(lot_type, count) {
+                $('.map-legend .' + lot_type + ' .count').text(count);
+            });
         });
-        $('#map').data('lotmap').filterByBoroughs(boroughs.get());
     });
 
     $('#searchbar input[name="current_location"]').click(function() {

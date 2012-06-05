@@ -12,4 +12,5 @@ urlpatterns = patterns('',
     url(r'^(?P<bbl>\d+)/pictures/add/$', 'organize.views.add_picture'),
     url(r'^(?P<bbl>\d+)/organizers/(?P<id>\d+)/edit/$', 'organize.views.edit_organizer'),
     url(r'^(?P<bbl>\d+)/organizers/(?P<id>\d+)/delete/$', 'organize.views.delete_organizer'),
+    url(r'^counts$', 'lots.views.counts'),
 )

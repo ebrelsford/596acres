@@ -343,6 +343,19 @@ def add_review(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+def counts(request):
+    """
+    Get counts of each lot type for the given boroughs.
+    """
+    boroughs = request.GET.get('boroughs', '').split(',')
+    lot_types = ('vacant', 'organizing', 'accessed', 'garden',
+                 'private_accessed', 'gutterspace',)
+    c = {}
+    for lot_type in lot_types:
+        c[lot_type] = LOT_QUERIES[lot_type].filter(borough__in=boroughs).count()
+        
+    return HttpResponse(json.dumps(c), mimetype='application/json')
+
 def _is_base_geojson_request(GET):
     non_base_params = ('owner_code', 'owner_id', 'bbls', 'min_area',
                        'max_area', 'source')

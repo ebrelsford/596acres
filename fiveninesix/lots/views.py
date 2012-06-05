@@ -285,7 +285,7 @@ def tabs(request, bbl=None):
 
 def random(request):
     bbls = Lot.objects.filter(is_vacant=True, centroid_source__in=('OASIS', 'Google', 'Nominatim'), owner__type__name='city').values_list('bbl', flat=True)
-    return redirect(details, bbl=bbls[randint(0, bbls.count() - 1)])
+    return redirect('lots.views.details', bbl=bbls[randint(0, bbls.count() - 1)])
 
 def organizing(request):
     lots = Lot.objects.filter(is_vacant=True).exclude(organizer=None)

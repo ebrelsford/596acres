@@ -39,8 +39,6 @@ var Help = {
         var pWidth = this.parent_div.outerWidth();
         var pHeight = this.parent_div.outerHeight();
 
-        console.log($(this.modal));
-
         this.modal
             .width(pWidth)
             .height(pHeight)

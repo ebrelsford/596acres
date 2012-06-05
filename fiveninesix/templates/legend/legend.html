@@ -1,3 +1,6 @@
+{% load sekizai_tags %}
+
+{% addtoblock "js" %}
 <script>
     $(document).ready(function() {
         $('.map-legend input[type="checkbox"]').change(function() {
@@ -6,6 +9,7 @@
         });
     });
 </script>
+{% endaddtoblock %}
 
 <div class="map-legend">
     <ul>

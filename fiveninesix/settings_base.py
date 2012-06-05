@@ -156,7 +156,14 @@ OASIS_BASE_URL = 'http://www.oasisnyc.net/map.aspx?etabs=1&zoomto=lot:'
 
 TEST_RUNNER = 'ignoretests.DjangoIgnoreTestSuiteRunner'
 IGNORE_TESTS = (
+    'cmsplugin_blog',
+    'django.contrib.auth',
+    'django.contrib.messages',
+    'django.contrib.sessions',
     'djangocms_utils',
+    'easy_thumbnails',
+    'sekizai',
+    'simple_translation',
     'south',
 )
 

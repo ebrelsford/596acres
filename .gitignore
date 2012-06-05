@@ -17,7 +17,7 @@ bin
 build
 data
 include
-lib
+/lib
 /media
 noncode
 scripts

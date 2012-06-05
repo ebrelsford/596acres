@@ -348,6 +348,5 @@ def _is_base_geojson_request(GET):
                        'max_area', 'source')
     if any([GET.get(x, False) for x in non_base_params]):
         return False
-    return (GET.get('owner_type', '') == 'city,private' and 
-            GET.get('lot_type', '') == 'vacant,organizing,accessed,private_accessed' and
+    return (GET.get('lot_type', '') == 'vacant,organizing,accessed,private_accessed' and
             GET.get('boroughs', '') == 'Brooklyn')

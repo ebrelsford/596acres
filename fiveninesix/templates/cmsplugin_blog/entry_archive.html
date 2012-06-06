@@ -3,8 +3,9 @@
 
 {% block left-col %}
 <h1>{% trans "News" %}</h1>
+{% include "cmsplugin_blog/pagination_snippet.html" %}
 {% include "cmsplugin_blog/entry_list_snippet.html" with entries=latest %}
-
+{% include "cmsplugin_blog/pagination_snippet.html" %}
 {% endblock %}
 
 {% block right-col %}

@@ -3,8 +3,15 @@
 
 {% block left-col %}
 <h1>{% trans "News" %}</h1>
+
 {% include "cmsplugin_blog/pagination_snippet.html" %}
+
+{% if perms.cmsplugin_blog.add_entry %}
+<a href="{% url admin:cmsplugin_blog_entry_add  %}">add new entry</a>
+{% endif %}
+
 {% include "cmsplugin_blog/entry_list_snippet.html" with entries=latest %}
+
 {% include "cmsplugin_blog/pagination_snippet.html" %}
 {% endblock %}
 

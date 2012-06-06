@@ -17,6 +17,10 @@
             {% endfor %}
         </div>
         {% endif %}
+
+        {% if perms.cmsplugin_blog.change_entry %}
+        <a href="{% url admin:cmsplugin_blog_entry_change entry.pk %}">edit this entry</a>
+        {% endif %}
     </div>
 
     <div class="text">

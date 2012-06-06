@@ -15,7 +15,13 @@
 {% if paginator %}
 {% include "cmsplugin_blog/pagination_snippet.html" %}
 {% endif %}
+
+{% if perms.cmsplugin_blog.add_entry %}
+<a href="{% url admin:cmsplugin_blog_entry_add  %}">add new entry</a>
+{% endif %}
+
 {% include "cmsplugin_blog/entry_list_snippet.html" with entries=object_list %}
+
 {% if paginator %}
 {% include "cmsplugin_blog/pagination_snippet.html" %}
 {% endif %}

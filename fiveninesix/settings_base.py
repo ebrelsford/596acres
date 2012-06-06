@@ -74,6 +74,8 @@ CMS_TEMPLATES = (
     ('cms/breadcrumbless_template.html', 'Breadcrumbless Template'),
 )
 
+CMSPLUGIN_BLOG_PLACEHOLDERS = ('main',)
+
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (

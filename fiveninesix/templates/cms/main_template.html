@@ -9,5 +9,10 @@
 {% endblock %}
 
 {% block content_main %}
-    {% placeholder "main" %}
+    
+{% if perms.cms.change_page %}
+<a href="{% url admin:cms_page_change request.current_page.pk %}">edit this page</a>
+{% endif %}
+
+{% placeholder "main" %}
 {% endblock %}

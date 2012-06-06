@@ -2,6 +2,8 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.conf import settings
 
+from news.views import EntriesTaggedArchiveView
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -27,6 +29,12 @@ urlpatterns = patterns('',
     url(r'^watchers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_watcher'),
 
     url(r'^sessions/hide_map_overlay/$', 'sessions.views.hide_map_overlay'),
+
+    # TODO extend BlogApphook, point to paginated views by default?
+    url(r'^news/tag/(?P<tag>[^/]+)/$', 
+        EntriesTaggedArchiveView.as_view(),
+        name='blog_archive_tagged_paginated'
+    ),
 
     # auth
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),

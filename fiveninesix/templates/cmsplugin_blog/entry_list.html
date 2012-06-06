@@ -12,7 +12,13 @@
 {% block left-col %}
 <h1>{{ tag|capfirst }}</h1>
 
+{% if paginator %}
+{% include "cmsplugin_blog/pagination_snippet.html" %}
+{% endif %}
 {% include "cmsplugin_blog/entry_list_snippet.html" with entries=object_list %}
+{% if paginator %}
+{% include "cmsplugin_blog/pagination_snippet.html" %}
+{% endif %}
 
 {% endblock %}
 

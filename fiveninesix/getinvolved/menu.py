@@ -15,7 +15,7 @@ class GetInvolvedMenu(CMSAttachMenu):
             NavigationNode(_('Come to an Upcoming Event'),
                            reverse('events_event_list'), 3),
             NavigationNode(_('Work With Us'),
-                           reverse('blog_archive_tagged', 
+                           reverse('blog_archive_tagged_paginated', 
                                    kwargs={ 'tag': 'opportunities'}), 4),
         ]
         return nodes

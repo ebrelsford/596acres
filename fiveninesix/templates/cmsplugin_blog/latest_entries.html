@@ -14,7 +14,7 @@
                 <span class="tags">
                     in 
                     {% for tag in entry.entry_tags %}
-                    <a href="{% url blog_archive_tagged tag=tag.name %}">{{ tag.name }}</a>
+                    <a href="{% url blog_archive_tagged_paginated tag=tag.name %}">{{ tag.name }}</a>
                     {% endfor %}
                 </span>
                 {% endif %}

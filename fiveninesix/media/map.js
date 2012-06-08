@@ -66,12 +66,12 @@ var LotMap = {
     },
 
     privateStyle: {
-        fillColor: 'blue',
+        fillColor: '#509EF2',
         strokeWidth: 0,
     },
 
     privateAccessedStyle: {
-        fillColor: '#0000FF',
+        fillColor: '#3C8FE8',
         pointRadius: 7,
         strokeColor: '#FF0DFF',
         strokeWidth: 2,

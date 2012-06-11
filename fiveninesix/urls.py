@@ -2,6 +2,8 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.conf import settings
 
+from news.views import EntriesTaggedArchiveView
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -28,6 +30,12 @@ urlpatterns = patterns('',
 
     url(r'^sessions/hide_map_overlay/$', 'sessions.views.hide_map_overlay'),
 
+    # TODO extend BlogApphook, point to paginated views by default?
+    url(r'^news/tag/(?P<tag>[^/]+)/$', 
+        EntriesTaggedArchiveView.as_view(),
+        name='blog_archive_tagged_paginated'
+    ),
+
     # auth
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
@@ -45,6 +53,7 @@ urlpatterns = patterns('',
 if settings.DEBUG:
     urlpatterns = patterns('',
         (r'^' + settings.MEDIA_URL.lstrip('/'), include('appmedia.urls')),
+        (r'^admin/doc/', include('django.contrib.admindocs.urls')),
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
         url(r'', include('django.contrib.staticfiles.urls')),

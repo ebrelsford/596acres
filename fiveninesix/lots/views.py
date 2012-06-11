@@ -13,6 +13,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
+from django.views.decorators.cache import cache_page
 
 from django_xhtml2pdf.utils import render_to_pdf_response
 
@@ -192,6 +193,7 @@ def details_json(request, bbl=None):
     }
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
+@cache_page(12 * 60 * 60)
 def owners_json(request):
     # TODO cache this
     owners = {

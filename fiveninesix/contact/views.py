@@ -11,7 +11,7 @@ def lot_info(request):
         form = LotInformationRequestForm(request.POST)    
         if form.is_valid():
             request = form.save()
-            return redirect(lot_info_thanks)
+            return redirect('en:contact.views.lot_info_thanks')
     else:
         form = LotInformationRequestForm()
 

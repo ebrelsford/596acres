@@ -9,7 +9,7 @@ class NewsMenu(CMSAttachMenu):
     name = _("news menu")
 
     def _get_tag_url(self, tag):
-        return reverse('blog_archive_tagged', kwargs={ 'tag': tag })
+        return reverse('blog_archive_tagged_paginated', kwargs={ 'tag': tag })
 
     def get_nodes(self, request):
         nodes = []

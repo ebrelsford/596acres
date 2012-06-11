@@ -14,6 +14,10 @@
 <h1>{{ title }}</h1>
 {% endwith %}
 
+{% if perms.cmsplugin_blog.change_entry %}
+<a href="{% url admin:cmsplugin_blog_entry_change object.pk %}">edit this entry</a>
+{% endif %}
+
 <p class="date"><span>{{ object.pub_date|date:"F d, Y" }}</span></p>
 
 {% with object.placeholders|choose_placeholder:"main" as main %}

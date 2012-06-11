@@ -9,15 +9,15 @@
 {% endblock %}
 
 {% block media %}
-    {{ block.super }}
-    {% addtoblock "js" %}
-    <script src="{{ MEDIA_URL }}jquery-lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>
-    {% endaddtoblock %}
+{{ block.super }}
+{% addtoblock "js" %}
+<script src="{{ MEDIA_URL }}jquery-lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>
+{% endaddtoblock %}
 {% endblock %}
 
 {% block scripts %}
-    {{ block.super }}
-    {% addtoblock "js" %}
+{{ block.super }}
+{% addtoblock "js" %}
 <script type="text/javascript">
     $(document).ready(function() {
         $('.pictures a').lightBox({
@@ -29,7 +29,7 @@
         });
     });
 </script>
-    {% endaddtoblock %}
+{% endaddtoblock %}
 {% endblock %}
 
 {% block title %}{{ block.super }}: Details{% endblock %}

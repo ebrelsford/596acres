@@ -30,7 +30,7 @@ def lot_geojson(request):
         geojson_response = cache.get(cache_key)
 
     if not geojson_response:
-        lots = _filter_lots(request).distinct().annotate(Count('organizer'))
+        lots = _filter_lots(request).distinct().select_related('owner', 'owner__type').annotate(Count('organizer'))
         recent_changes = _recent_changes()
         lots_geojson = _lot_collection(lots, recent_changes)
         geojson_response = geojson.dumps(lots_geojson)

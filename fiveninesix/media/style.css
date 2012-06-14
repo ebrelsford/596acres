@@ -646,3 +646,12 @@ ul.events {
 #side .section {
     border-bottom: 1px solid black;
 }
+
+.collaborators {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.collaborators li {
+    float: left;
+}

@@ -655,3 +655,24 @@ ul.events {
 .collaborators li {
     float: left;
 }
+
+.press .column:first-child {
+    margin-left: 0;
+}
+.press .column {
+    float: left;
+    margin-left: 30px;
+    width: 175px;
+}
+.press .article {
+    margin: 20px 0;
+}
+.press .article .publication {
+    font-weight: bold;
+}
+.press .article .title {
+
+}
+.press .article .date {
+
+}

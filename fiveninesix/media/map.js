@@ -245,13 +245,13 @@ var LotMap = {
         if (f['lot_types']) {
             this.lot_types = f['lot_types'].split(',');
         }
-        if (f['maxArea']) {
+        if (f['max_area']) {
             this.maxArea = f['maxArea'];
         }
-        if (f['minArea']) {
+        if (f['min_area']) {
             this.minArea = f['minArea'];
         }
-        if (f['owner']) {
+        if (f['owner_id']) {
             this.selectedAgency = f['owner'];
         }
         if (f['lat'] && f['lon']) {
@@ -275,9 +275,9 @@ var LotMap = {
             'lon': Math.round(center.lon * 10000) / 10000.0,
             'z': this.olMap.getZoom(),
         };
-        if (this.maxArea) filters['maxArea'] = this.maxArea;
-        if (this.minArea) filters['minArea'] = this.minArea;
-        if (this.selectedAgency) filters['owner'] = this.selectedAgency;
+        if (this.maxArea) filters['max_area'] = this.maxArea;
+        if (this.minArea) filters['min_area'] = this.minArea;
+        if (this.selectedAgency) filters['owner_id'] = this.selectedAgency;
         return filters;
     },
 
@@ -643,7 +643,7 @@ var LotMap = {
             extraParameters += '&max_area=' + this.maxArea;
         }
         if (this.lot_types) {
-            extraParameters += '&lot_type=' + this.lot_types.join(',');
+            extraParameters += '&lot_types=' + this.lot_types.join(',');
         }
         return this.options.queryString + extraParameters;
     },

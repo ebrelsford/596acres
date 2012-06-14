@@ -18,7 +18,7 @@ from django.views.decorators.cache import cache_page
 from django_xhtml2pdf.utils import render_to_pdf_response
 
 from forms import ReviewForm
-from models import Lot, Owner, Review, LOT_QUERIES
+from models import Lot, Owner, Review, LOT_QUERIES, LOT_QS
 from organize.models import Note, Organizer, Watcher
 from settings import BASE_URL, OASIS_BASE_URL
 
@@ -125,7 +125,7 @@ def _filter_lots(request):
     lots = mapped_lots
 
     try:
-        lot_types = request.GET['lot_type'].split(',')
+        lot_types = request.GET['lot_types'].split(',')
     except:
         lot_types = ['vacant','organizing','accessed','private_accessed']
 
@@ -349,12 +349,12 @@ def counts(request):
     """
     Get counts of each lot type for the given boroughs.
     """
-    boroughs = request.GET.get('boroughs', '').split(',')
+    lots = _filter_lots(request)
     lot_types = ('vacant', 'organizing', 'accessed', 'garden',
                  'private_accessed', 'gutterspace',)
     c = {}
     for lot_type in lot_types:
-        c[lot_type] = LOT_QUERIES[lot_type].filter(borough__in=boroughs).count()
+        c[lot_type] = (lots & Lot.objects.filter(LOT_QS[lot_type]).distinct()).count()
         
     return HttpResponse(json.dumps(c), mimetype='application/json')
 

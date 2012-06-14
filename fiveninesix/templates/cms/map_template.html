@@ -167,12 +167,38 @@
                 </ul>
             </div>
 
-            <div class="download">
-                Download current lots as <a href="" class="kml">KML</a>, <a href="" class="geojson">GeoJSON</a>, or <a href="" class="csv">a spreadsheet</a>
+            <div>
+                <span class="download">
+                    Download current lots as <a href="" class="kml">KML</a>, <a href="" class="geojson">GeoJSON</a>, <a href="" class="csv">a spreadsheet</a>,
+                </span> or 
+                <span class="permalink">
+                    <a href="#">link to exactly what you're looking at.</a>
+                </span>
             </div>
 
-            <div class="permalink">
-                <a href="">Link to exactly what you're looking at right now</a>
+
+            <div class="map-legend">
+                You are looking at:
+                <ul>
+                    <li class="vacant">
+                        <span class="count">{{ counts.vacant }}</span> public vacant lots
+                    </li>
+                    <li class="organizing">
+                        <span class="count">{{ counts.organizing }}</span> public vacant sites being organized around
+                    </li>
+                    <li class="accessed">
+                        <span class="count">{{ counts.accessed }}</span> public vacant sites where groups have access
+                    </li>
+                    <li class="private_accessed">
+                        <span class="count">{{ counts.private_accessed }}</span> private vacant sites being used by community
+                    </li>
+                    <li class="garden">
+                        <span class="count">{{ counts.garden }}</span> community gardens on public land
+                    </li>
+                    <li class="gutterspace">
+                        <span class="count">{{ counts.gutterspace }}</span> <a href="/about#gutterspace">gutterspaces</a>
+                    </li>
+                </ul>
             </div>
 
             <div class="social">

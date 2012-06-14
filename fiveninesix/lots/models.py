@@ -236,11 +236,48 @@ class Review(models.Model):
     imported = models.BooleanField(blank=False, null=False, default=False, help_text="data has been added to the respective lot")
 
 LOT_QUERIES = {
-    'vacant': Lot.objects.filter(Q(accessible=True, is_vacant=True, group_has_access=False, organizer=None, owner__type__name='city') & ~Q(actual_use='gutterspace')),
-    'garden': Lot.objects.filter(actual_use__startswith='Garden', owner__type__name='city'),
-    'private_accessed': Lot.objects.filter(owner__type__name='private', group_has_access=True),
+    'vacant': Lot.objects.filter(
+        Q(
+            accessible=True,
+            is_vacant=True,
+            group_has_access=False,
+            organizer=None,
+            owner__type__name='city'
+        ) & ~Q(actual_use='gutterspace')
+    ),
+    'garden': Lot.objects.filter(
+        actual_use__startswith='Garden',
+        owner__type__name='city'
+    ),
+    'private_accessed': Lot.objects.filter(
+        owner__type__name='private',
+        group_has_access=True
+    ),
     'organizing': Lot.objects.exclude(organizer=None, owner__type__name='city'),
     'accessed': Lot.objects.filter(group_has_access=True, owner__type__name='city'),
     'inaccessible': Lot.objects.filter(accessible=False, owner__type__name='city'),
     'gutterspace': Lot.objects.filter(Q(accessible=False) | Q(actual_use='gutterspace')),
+}
+
+LOT_QS = {
+    'vacant': 
+        Q(
+            accessible=True,
+            is_vacant=True,
+            group_has_access=False,
+            organizer=None,
+            owner__type__name='city'
+        ) & ~Q(actual_use='gutterspace'),
+    'garden': Q(
+        actual_use__startswith='Garden',
+        owner__type__name='city'
+    ),
+    'private_accessed': Q(
+        owner__type__name='private',
+        group_has_access=True
+    ),
+    'organizing': ~Q(organizer=None, owner__type__name='city'),
+    'accessed': Q(group_has_access=True, owner__type__name='city'),
+    'inaccessible': Q(accessible=False, owner__type__name='city'),
+    'gutterspace': Q(accessible=False) | Q(actual_use='gutterspace'),
 }

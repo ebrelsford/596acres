@@ -74,10 +74,11 @@ function get_selected_boroughs() {
 /*
  * Update the legend to show the correct counts for the selected boroughs.
  */
-function update_legend() {
+function update_counts() {
     var boroughs = get_selected_boroughs();
 
-    $.getJSON('/lot/counts?boroughs=' + boroughs.join(','), function(data) {
+    uri = URI('/lot/counts?').query($('#map').data('lotmap').exportFilters());
+    $.getJSON(uri, function(data) {
         $.each(data, function(lot_type, count) {
             $('.map-legend .' + lot_type + ' .count').text(count);
         });
@@ -88,9 +89,6 @@ $(document).ready(function() {
     // get filters, make UI match
     var filters = URI().query(true);
     set_initial_filters(filters);
-
-    // update legend to match given filters
-    update_legend();
 
     $('#map').lotmap({
         mobile: $('#map').hasClass('mobile'),
@@ -160,6 +158,9 @@ $(document).ready(function() {
         },
     });
 
+    // update legend/tally to match given filters
+    update_counts();
+
     $('#searchbar').search({
         map: $('#map').data('lotmap'),
         bounds: map_bounds,
@@ -182,6 +183,7 @@ $(document).ready(function() {
         },
         change: function(event, ui) {
             $('#map').data('lotmap').filterByArea(ui.values[0], ui.values[1]);
+            update_counts();
         },
     });
     update_area_display(initial_min_area, initial_max_area);
@@ -201,6 +203,7 @@ $(document).ready(function() {
     $('.filters .agency select').change(function() {
         var agency_id = $(this).find('option:selected').attr('value');
         $('#map').data('lotmap').filterByAgency(agency_id);
+        update_counts();
     });
 
     $('.filters .boroughs :input').change(function() {
@@ -208,9 +211,7 @@ $(document).ready(function() {
 
         // update map
         $('#map').data('lotmap').filterByBoroughs(boroughs);
-
-        // update legend
-        update_legend();
+        update_counts();
     });
 
     $('#searchbar input[name="current_location"]').click(function() {

@@ -9,7 +9,7 @@ var LotMap = {
     //
     // filters
     //
-    boroughs: ['Brooklyn',],
+    boroughs: ['Brooklyn', 'Manhattan', 'Queens',],
     minArea: null,
     maxArea: null,
     selectedAgency: null,

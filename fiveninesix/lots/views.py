@@ -144,7 +144,7 @@ def _filter_lots(request):
                 raise Exception('Only logged-in users can view all boroughs.')
         lots = lots.filter(borough__in=boroughs)
     except:
-        lots = lots.filter(borough='Brooklyn')
+        lots = lots.filter(borough__in=settings.PUBLIC_BOROUGHS)
         
     if 'source' in request.GET:
         if request.GET['source'] != 'all':
@@ -195,7 +195,6 @@ def details_json(request, bbl=None):
 
 @cache_page(12 * 60 * 60)
 def owners_json(request):
-    # TODO cache this
     owners = {
         'owners': list(Owner.objects.filter(type__name='city').values_list('id', 'name').order_by('name')),
     }
@@ -286,7 +285,14 @@ def tabs(request, bbl=None):
     }, context_instance=RequestContext(request))
 
 def random(request):
-    bbls = Lot.objects.filter(is_vacant=True, centroid_source__in=('OASIS', 'Google', 'Nominatim'), owner__type__name='city').values_list('bbl', flat=True)
+    bbls = Lot.objects.filter(
+        accessible=True,
+        actual_use=None,
+        centroid__isnull=False,
+        is_vacant=True,
+        owner__type__name='city',
+        borough__in=settings.PUBLIC_BOROUGHS,
+    ).values_list('bbl', flat=True)
     return redirect('lots.views.details', bbl=bbls[randint(0, bbls.count() - 1)])
 
 def organizing(request):
@@ -363,5 +369,5 @@ def _is_base_geojson_request(GET):
                        'max_area', 'source')
     if any([GET.get(x, False) for x in non_base_params]):
         return False
-    return (GET.get('lot_type', '') == 'vacant,organizing,accessed,private_accessed' and
-            GET.get('boroughs', '') == 'Brooklyn')
+    return (GET.get('lot_types', '') == 'vacant,organizing,accessed,private_accessed' and
+            GET.get('boroughs', '') == 'Brooklyn,Manhattan,Queens')

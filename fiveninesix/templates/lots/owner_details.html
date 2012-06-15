@@ -5,6 +5,7 @@
             <span>{{ owner.name|default:'' }}</span>
         </td>
     </tr>
+    {% if lot.borough == 'Brooklyn' %}
     <tr>
         <th>contact</th>
         <td>
@@ -43,6 +44,7 @@
             {% endif %}
         </td>
     </tr>
+    {% endif %}
     <tr>
         <th>site</th>
         <td class="site">
@@ -51,10 +53,12 @@
             {% endif %}
         </td>
     </tr>
+    {% if lot.borough == 'Brooklyn' %}
     <tr>
         <th>notes</th>
         <td>
             {{ owner.notes|urlize|linebreaks|default:"" }}
         </td>
     </tr>
+    {% endif %}
 </table>

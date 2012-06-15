@@ -35,7 +35,6 @@
     $(document).ready(function() {
         function hide_unused_placeholders() {
             $('.plugin-holder').each(function() {
-                console.log($(this).find('h2'));
                 if ($(this).find('h2').text() !== 'Main') {
                     $(this).hide();
                 }

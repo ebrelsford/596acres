@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'cms.plugins.picture',
     'cms.plugins.snippet',
     'cms.plugins.text',
+    'cms.plugins.video',
     'tinymce',
     'compressor',
 

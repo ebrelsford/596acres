@@ -170,8 +170,8 @@ $(document).ready(function() {
         $map: $('#map'),
     });
 
-    var initial_min_area = filters['minArea'] || 0;
-    var initial_max_area = filters['maxArea'] || max_area_range;
+    var initial_min_area = filters['min_area'] || 0;
+    var initial_max_area = filters['max_area'] || max_area_range;
     $('#area_slider').slider({
         range: true,
         max: max_area_range,

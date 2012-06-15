@@ -10,8 +10,8 @@ var LotMap = {
     // filters
     //
     boroughs: ['Brooklyn', 'Manhattan', 'Queens',],
-    minArea: null,
-    maxArea: null,
+    min_area: null,
+    max_area: null,
     selectedAgency: null,
     lot_types: ['vacant','organizing','accessed','private_accessed'],
 
@@ -246,10 +246,10 @@ var LotMap = {
             this.lot_types = f['lot_types'].split(',');
         }
         if (f['max_area']) {
-            this.maxArea = f['maxArea'];
+            this.max_area = f['max_area'];
         }
         if (f['min_area']) {
-            this.minArea = f['minArea'];
+            this.min_area = f['min_area'];
         }
         if (f['owner_id']) {
             this.selectedAgency = f['owner'];
@@ -275,8 +275,8 @@ var LotMap = {
             'lon': Math.round(center.lon * 10000) / 10000.0,
             'z': this.olMap.getZoom(),
         };
-        if (this.maxArea) filters['max_area'] = this.maxArea;
-        if (this.minArea) filters['min_area'] = this.minArea;
+        if (this.max_area) filters['max_area'] = this.max_area;
+        if (this.min_area) filters['min_area'] = this.min_area;
         if (this.selectedAgency) filters['owner_id'] = this.selectedAgency;
         return filters;
     },
@@ -636,11 +636,11 @@ var LotMap = {
         if (this.selectedAgency !== null) {
             extraParameters += '&owner_id=' + this.selectedAgency;
         }
-        if (this.minArea !== null) {
-            extraParameters += '&min_area=' + this.minArea;
+        if (this.min_area !== null) {
+            extraParameters += '&min_area=' + this.min_area;
         }
-        if (this.maxArea !== null) {
-            extraParameters += '&max_area=' + this.maxArea;
+        if (this.max_area !== null) {
+            extraParameters += '&max_area=' + this.max_area;
         }
         if (this.lot_types) {
             extraParameters += '&lot_types=' + this.lot_types.join(',');
@@ -690,8 +690,8 @@ var LotMap = {
     // ensures that the map is updated accordingly
     //
     filterByArea: function(min, max) {
-        this.minArea = min;
-        this.maxArea = max;
+        this.min_area = min;
+        this.max_area = max;
         this.reloadLotLayer();
     },
 

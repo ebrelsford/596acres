@@ -608,6 +608,11 @@ ul.albums li {
     vertical-align: bottom;
 }
 
+.tally ul {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
 ul.events {
     list-style: none;
     margin: 0;

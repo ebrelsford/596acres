@@ -197,7 +197,7 @@ $(document).ready(function() {
         $('.filters .agency select').removeAttr('disabled');
         
         // select initial owner
-        $('.filters .agency option[value=' + filters['owner'] + ']').attr('selected', 'yes');
+        $('.filters .agency option[value=' + filters['owner_id'] + ']').attr('selected', 'yes');
     });
 
     $('.filters .agency select').change(function() {

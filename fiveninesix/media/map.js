@@ -252,7 +252,7 @@ var LotMap = {
             this.min_area = f['min_area'];
         }
         if (f['owner_id']) {
-            this.selectedAgency = f['owner'];
+            this.selectedAgency = f['owner_id'];
         }
         if (f['lat'] && f['lon']) {
             this.options.center = this.getTransformedLonLat(f['lon'], f['lat']);

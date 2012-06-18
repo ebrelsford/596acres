@@ -1,5 +1,5 @@
 {% extends "cms/main_template.html" %}
-{% load cms_tags sekizai_tags %}
+{% load cache cms_tags sekizai_tags %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -213,7 +213,9 @@
         </div>
 
         <div id="side">
-        {% placeholder "main" %}
+            {% cache 21600 map_main %}
+            {% placeholder "main" %}
+            {% endcache %}
         </div>
         <div style="clear: both;"></div>
     </div>

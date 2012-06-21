@@ -10,6 +10,10 @@ body {
     font-size: 12px;
 }
 
+.clear {
+    clear: both;
+}
+
 a:link, a:visited {
     color: #2C8020;
     text-decoration: none;
@@ -96,6 +100,7 @@ ul.nav ul {
     width: 400px; 
     height: 100px; 
     display: block;
+    float: left;
 }
 #top a#logo div {
     background-image: url(/media/img/logo.png); 
@@ -680,4 +685,9 @@ ul.events {
 }
 .press .article .date {
 
+}
+
+.newsletter {
+    float: right;
+    width: 300px;
 }

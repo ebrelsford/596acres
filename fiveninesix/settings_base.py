@@ -185,3 +185,4 @@ PUBLIC_BOROUGHS = [
     'Manhattan',
     'Queens',
 ]
+NEWSLETTER_TAG = 'news from the acres'

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.views.generic.list import ListView
 
 from cmsplugin_blog.models import Entry
@@ -19,5 +20,14 @@ class EntriesTaggedArchiveView(ListView):
             tag = self.kwargs['tag']
         except KeyError:
             raise AttributeError(_('tagged_object_list must be called with a tag.'))
+        tag_instance = get_tag(tag)
+        return TaggedItem.objects.get_by_model(Entry, tag_instance)
+
+class NewsletterArchiveView(ListView):
+    paginate_by = 15
+    template_name = 'news/newsletter_archive.html'
+
+    def get_queryset(self):
+        tag = settings.NEWSLETTER_TAG
         tag_instance = get_tag(tag)
         return TaggedItem.objects.get_by_model(Entry, tag_instance)

@@ -1,0 +1,39 @@
+{% extends "cmsplugin_blog/cmsplugin_blog_base.html" %}
+{% load i18n placeholder_tags cmsplugin_blog_tags simple_translation_tags %}
+
+{% block left-col %}
+<h1>{% trans "News from the Acres" %}</h1>
+
+{% include "cmsplugin_blog/pagination_snippet.html" %}
+
+{% if perms.cmsplugin_blog.add_entry %}
+<a href="{% url admin:cmsplugin_blog_entry_add  %}">add new entry</a>
+{% endif %}
+
+{% for entry in object_list|annotate_with_translations %}
+<div class="entry{% if forloop.last %} last{% endif %}">
+    {% with entry|get_preferred_translation_from_request:request as title %}
+    <h2 class="title">
+        <a href="{{ title.get_absolute_url }}">{{ title|cut:"News From The Acres" }}</a>
+        <span class="date" style="font-size: 12px; padding-left: 20px;">
+            {{ entry.pub_date|date:"d F Y" }}
+        </span>
+    </h2>
+	{% endwith %}
+
+    {% with entry.placeholders|choose_placeholder:"main" as main %}
+        {{ main.get_plugins.0.text.body|striptags|truncatewords:"50"|cut:"GREEN WARRIORS UNITED"|cut:"Is this email not displaying correctly?View it in your browser."|safe }}
+        <a href="{{ title.get_absolute_url }}">read the rest</a>
+    {% endwith %}
+
+</div>
+{% empty %}
+	<p>{% trans "No news" %}<p>
+{% endfor %}
+
+{% include "cmsplugin_blog/pagination_snippet.html" %}
+{% endblock %}
+
+{% block right-col %}
+{% include "cmsplugin_blog/right_col_snippet.html" %}
+{% endblock %}

@@ -69,6 +69,12 @@
                 <li>
                     <a href="https://ioby.org/project/all-city-acres"><img src="{{ MEDIA_URL }}img/donate.png" alt="donate!" /></a>
                 </li>
+                <li>
+                    <a href="/about/"><img src="{{ MEDIA_URL }}img/about.png" alt="about" /></a>
+                    <ul class="children">
+                        {% show_menu_below_id "about" 0 100 100 100 "cms/menu.html" %}
+                    </ul>
+                </li>
                 <li style="float: right; padding-top: 2px; padding-bottom: 2px; padding-right: 0;">
                     <a href="/frequently-asked-questions/"><img src="{{ MEDIA_URL }}img/faq.png" alt="frequently asked questions" /></a>
                 </li>

@@ -35,4 +35,3 @@ admin.site.register(OrganizerType, OrganizerTypeAdmin)
 admin.site.register(Watcher, WatcherAdmin)
 admin.site.register(Picture, PictureAdmin)
 admin.site.register(Note, NoteAdmin)
-

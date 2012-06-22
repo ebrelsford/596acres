@@ -351,6 +351,7 @@ def add_review(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+@cache_page(12 * 60 * 60)
 def counts(request):
     """
     Get counts of each lot type for the given boroughs.

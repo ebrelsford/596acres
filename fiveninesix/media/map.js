@@ -191,7 +191,7 @@ var LotMap = {
          */
 
         // the center of the map, in web mercator
-        center: new OpenLayers.LonLat(-8234102.434993, 4960767.039686),
+        center: new OpenLayers.LonLat(-8232243.3222529, 4970015.5128625),
 
         // map will focus on one BBL, eg for the lot's page
         detailView: false,
@@ -200,7 +200,7 @@ var LotMap = {
         fullScreen: false,
 
         // the zoom for the map
-        initialZoom: 11,
+        initialZoom: 10,
 
         // map will be displayed on a mobile device
         mobile: false,

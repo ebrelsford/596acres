@@ -11,8 +11,6 @@ class LotAdmin(admin.ModelAdmin):
     search_fields = ('address', 'bbl')
     list_display = (
         'address', 'borough', 'bbl', 'zipcode', 'owner', 'area',
-        'jurisdiction_code', 'jurisdiction_description', 'agency_codes',
-        'current_uses', 'primary_use', 'rpad_description',
         'is_vacant',
         'view_in_oasis',
     )
@@ -44,26 +42,6 @@ class LotAdmin(admin.ModelAdmin):
         }),
     )
     inlines = (ExtendedDetailsInline,)
-
-    def jurisdiction_description(self, obj):
-        return obj.extendeddetails.jurisdiction_description
-    jurisdiction_description.admin_order_field = 'extendeddetails__jurisdiction_description'
-
-    def jurisdiction_code(self, obj):
-        return obj.extendeddetails.jurisdiction_code
-    jurisdiction_code.admin_order_field = 'extendeddetails__jurisdiction_code'
-
-    def agency_codes(self, obj):
-        return obj.extendeddetails.agency_codes
-    agency_codes.admin_order_field = 'extendeddetails__agency_codes'
-
-    def rpad_description(self, obj):
-        return obj.extendeddetails.rpad_description
-    rpad_description.admin_order_field = 'extendeddetails__rpad_description'
-
-    def primary_use(self, obj):
-        return obj.extendeddetails.primary_use
-    primary_use.admin_order_field = 'extendeddetails__primary_use'
 
     def current_uses(self, obj):
         return obj.extendeddetails.current_uses

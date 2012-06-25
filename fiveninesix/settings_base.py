@@ -11,6 +11,7 @@ TEMPLATE_DEBUG = DEBUG
 gettext = lambda s: s
 LANGUAGES = [
     ('en', gettext('English')),
+    ('es', gettext('Spanish')),
 ]
 DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = 'en'
@@ -73,6 +74,7 @@ CMS_TEMPLATES = (
     ('cms/map_template.html', 'Map Template'),
     ('cms/breadcrumbless_template.html', 'Breadcrumbless Template'),
 )
+CMS_HIDE_UNTRANSLATED = False
 
 CMSPLUGIN_BLOG_PLACEHOLDERS = ('main',)
 

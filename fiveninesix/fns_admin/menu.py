@@ -17,7 +17,7 @@ class FNSAdminMenu(CMSAttachMenu):
             nodes.append(
                 NavigationNode(
                     'Review %s Lots' % borough,
-                    reverse('fns_admin.views.review_lots', kwargs={ 'borough': borough }),
+                    reverse('en:fns_admin.views.review_lots', kwargs={ 'borough': borough }),
                     3
                 )
             )

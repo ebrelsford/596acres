@@ -34,6 +34,8 @@ STATIC_URL = "/static/"
 
 ADMIN_MEDIA_PREFIX = "/static/admin/"
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',

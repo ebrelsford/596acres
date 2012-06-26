@@ -17,7 +17,7 @@ LANGUAGE_CODE = 'en'
 
 EMAIL_SUBJECT_PREFIX = '[596 Acres] '
 SERVER_EMAIL = 'admin@596acres.org'
-ORGANIZERS_EMAIL = 'organizers@gmail.com'
+ORGANIZERS_EMAIL = 'organizers@596acres.org'
 
 TIME_ZONE = 'America/New_York'
 

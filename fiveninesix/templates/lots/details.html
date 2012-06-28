@@ -44,6 +44,11 @@
 {{ block.super }}
 <div id="lot-details">
     <h1>{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</h1>
+
+    {% if perms.lot.change_lot %}
+    <a href="{% url admin:lots_lot_change lot.pk %}">edit this lot</a>
+    {% endif %}
+
     {% if lot.is_vacant %}
     <div>
         <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> watch</a>

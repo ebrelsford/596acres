@@ -3,6 +3,26 @@
 <div id="pictures" class="section">
     <h2><a name="pictures">pictures</a></h2>
     <ul class="pictures">
+
+    {% comment %}
+    Albums imported and attached to this lot.
+    {% endcomment %}
+    {% for album in photo_albums %}
+        {% for photo in album.photos %}
+        <li class="picture">
+            <a 
+                title="{{ photo.name|default:"" }} {{ photo.description|default:"" }} (<a href='{{ photo.get_absolute_url }}'>permalink</a>)" 
+                href="{% thumbnail photo.picture 700x700 %}" 
+                rel="album-photos">
+                <img src="{% thumbnail photo.picture 200x200 crop %}" />
+            </a>
+        </li>
+        {% endfor %}
+    {% endfor %}
+
+    {% comment %}
+    Pictures attached directly to this lot.
+    {% endcomment %}
     {% for picture in pictures %}
         <li class="picture {% cycle "odd" "even" %}">
             <a title="{{ picture.description }}" href="{% thumbnail picture.picture 700x700 %}">

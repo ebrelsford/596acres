@@ -55,9 +55,11 @@
     {% endif %}
 
     {% if lot.group_has_access %}
+    {% if photo_albums %}
     <div>
-        <img src="{% thumbnail photo_album.get_cover_photo.picture 375x375 crop %}" />
+        <img src="{% thumbnail photo_albums.0.get_cover_photo.picture 375x375 crop %}" />
     </div>
+    {% endif %}
     <h2>A group has access to this lot!</h2>
     <div>
         <p>Learn more about the group and get involved through

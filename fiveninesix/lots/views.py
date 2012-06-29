@@ -214,10 +214,10 @@ def details(request, bbl=None):
         'organizers': lot.organizer_set.all(),
         'watchers_count': lot.watcher_set.all().count(),
         'notes': lot.note_set.all().order_by('added'),
-        'photo_album': PhotoAlbum.objects.filter(
+        'photo_albums': PhotoAlbum.objects.filter(
             content_type=ContentType.objects.get_for_model(lot),
             object_id=lot.pk,
-        ).all()[0],
+        ).all(),
         'pictures': lot.picture_set.all().order_by('added'),
         'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))

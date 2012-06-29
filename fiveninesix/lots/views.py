@@ -286,6 +286,11 @@ def tabs(request, bbl=None):
     return render_to_response('lots/tabs.html', {
         'lot': lot,
         'organizers': lot.organizer_set.all(),
+        'photo': PhotoAlbum.objects.filter(
+            content_type=ContentType.objects.get_for_model(lot),
+            object_id=lot.pk,
+        ).all()[0].get_cover_photo(),
+        'pictures': lot.picture_set.all().order_by('added'),
         'watchers_count': lot.watcher_set.all().count(),
         'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))

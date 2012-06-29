@@ -1,4 +1,10 @@
+{% load thumbnail %}
+
 <h1>{{ lot.borough }}: block {{ lot.block }}, lot {{ lot.lot }}</h1>
+
+<div>
+    <img src="{% thumbnail photo.picture 150x150 crop %}" />
+</div>
 
 <h2>A group has access to this lot!</h2>
 

@@ -52,7 +52,11 @@ def lot_kml(request):
     for lot in _filter_lots(request):
         kml.newpoint(
             name=lot.bbl, 
-            description="bbl: %s<br/>agency: %s<br/>area: %f acres" % (lot.bbl, lot.owner.name, lot.area_acres), 
+            description="bbl: %s<br/>agency: %s<br/>area: %f acres" % (
+                lot.bbl,
+                lot.owner.name,
+                lot.area_acres or 0
+            ), 
             coords=[(lot.centroid.x, lot.centroid.y)]
         )
 

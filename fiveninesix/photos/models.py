@@ -1,8 +1,8 @@
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from sorl.thumbnail import ImageField
-
-from lots.models import Lot
 
 class ExternalPhotoSet(models.Model):
     """A set of photos hosted outside of our site"""
@@ -40,7 +40,10 @@ class PhotoAlbum(models.Model):
 
     created_time = models.DateTimeField(blank=True, null=True)
     updated_time = models.DateTimeField(blank=True, null=True)
-    lot = models.ForeignKey(Lot, blank=True, null=True)
+
+    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
     parent_album = models.ForeignKey('self', related_name='children',
                                      blank=True, null=True)
@@ -85,7 +88,9 @@ class Photo(models.Model):
     updated_time = models.DateTimeField(blank=True, null=True)
     position = models.PositiveIntegerField(blank=True, null=True)
 
-    lot = models.ForeignKey(Lot, blank=True, null=True)
+    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
     def __unicode__(self):
         return 'photo: ' + (self.name or 'unnamed')

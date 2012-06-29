@@ -413,8 +413,11 @@ form > table td input[type=text] {
     color: red;
 }
 
+#lot-details {
+    margin-right: 217px;
+    padding-right: 10px;
+}
 #lot-details .section {
-    width: 65%;
 }
 #lot-details .section table,
 #lot-details .section tr {

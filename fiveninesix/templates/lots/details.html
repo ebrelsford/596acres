@@ -1,5 +1,5 @@
 {% extends "lots/base.html" %}
-{% load sekizai_tags %}
+{% load sekizai_tags thumbnail %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -55,6 +55,9 @@
     {% endif %}
 
     {% if lot.group_has_access %}
+    <div>
+        <img src="{% thumbnail photo_album.get_cover_photo.picture 375x375 crop %}" />
+    </div>
     <h2>A group has access to this lot!</h2>
     <div>
         <p>Learn more about the group and get involved through

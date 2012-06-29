@@ -8,6 +8,7 @@ import simplekml
 from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
 from django.http import HttpResponse
@@ -20,6 +21,7 @@ from django_xhtml2pdf.utils import render_to_pdf_response
 from forms import ReviewForm
 from models import Lot, Owner, Review, LOT_QUERIES, LOT_QS
 from organize.models import Note, Organizer, Watcher
+from photos.models import PhotoAlbum
 from settings import BASE_URL, OASIS_BASE_URL
 
 def lot_geojson(request):
@@ -212,6 +214,10 @@ def details(request, bbl=None):
         'organizers': lot.organizer_set.all(),
         'watchers_count': lot.watcher_set.all().count(),
         'notes': lot.note_set.all().order_by('added'),
+        'photo_album': PhotoAlbum.objects.filter(
+            content_type=ContentType.objects.get_for_model(lot),
+            object_id=lot.pk,
+        ).all()[0],
         'pictures': lot.picture_set.all().order_by('added'),
         'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))

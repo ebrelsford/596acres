@@ -5,6 +5,7 @@
             <span>{{ owner.name|default:'' }}</span>
         </td>
     </tr>
+    {% if not lot.group_has_access %}
     <tr>
         <th>contact</th>
         <td>
@@ -61,4 +62,5 @@
             {% endif %}
         </td>
     </tr>
+    {% endif %}
 </table>

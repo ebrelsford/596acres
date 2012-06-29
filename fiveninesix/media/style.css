@@ -691,3 +691,19 @@ ul.events {
     float: right;
     width: 300px;
 }
+
+.expander {
+    cursor: pointer;
+}
+.expander .icon {
+    background: url(/media/img/sq_plus.png);
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+.expander.expanded .icon {
+    background: url(/media/img/sq_minus.png);
+}
+.expandee {
+    display: none;
+}

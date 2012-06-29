@@ -24,7 +24,7 @@ class LotAdmin(admin.ModelAdmin):
                 ('area', 'area_acres',),
                 ('owner', 'owner_contact',),
                 ('is_vacant', 'actual_use', 'accessible',),
-                'group_has_access',
+                ('group_has_access', 'group_with_access',),
             ),
         }),
         ('Advanced Details', {

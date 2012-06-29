@@ -46,6 +46,14 @@ class Lot(models.Model):
     group_has_access = models.BooleanField(default=False)
     accessible = models.BooleanField(default=True, help_text="there is access to the lot from the street or from an adjacent lot with access to the street")
 
+    group_with_access = models.ForeignKey(
+        'organize.Organizer',
+        help_text='The organizer who has access to the site.',
+        related_name='+',
+        null=True,
+        blank=True,
+    )
+
     centroid = models.PointField(null=True)
     centroid_source = models.CharField(max_length=32, null=True, blank=True)
     polygon = models.MultiPolygonField(null=True, blank=True)

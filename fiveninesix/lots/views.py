@@ -282,14 +282,19 @@ def _recent_changes(maximum=5):
 
 def tabs(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
+    photo = None
+    try:
+        photo = PhotoAlbum.objects.filter(
+            content_type=ContentType.objects.get_for_model(lot),
+            object_id=lot.pk,
+        ).all()[0].get_cover_photo()
+    except Exception:
+        pass
 
     return render_to_response('lots/tabs.html', {
         'lot': lot,
         'organizers': lot.organizer_set.all(),
-        'photo': PhotoAlbum.objects.filter(
-            content_type=ContentType.objects.get_for_model(lot),
-            object_id=lot.pk,
-        ).all()[0].get_cover_photo(),
+        'photo': photo,
         'pictures': lot.picture_set.all().order_by('added'),
         'watchers_count': lot.watcher_set.all().count(),
         'OASIS_BASE_URL': OASIS_BASE_URL,

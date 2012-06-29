@@ -133,12 +133,12 @@ var LotMap = {
                 new OpenLayers.Control.LoadingPanel(),
                 new OpenLayers.Control.ZoomPanel(),
             ],
-            restrictedExtent: this.createBBox(-74.319, 40.948, -73.584, 40.476), 
+            restrictedExtent: this.createBBox(-74.889, 41.442, -73.025, 39.966), 
             zoomToMaxExtent: function() {
                 this.setCenter(t.options.center, t.options.initialZoom);
             },
             isValidZoomLevel: function(zoomLevel) {
-                return (zoomLevel > 9 && zoomLevel < this.getNumZoomLevels());
+                return (zoomLevel > 8 && zoomLevel < this.getNumZoomLevels());
             }
         });
 

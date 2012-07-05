@@ -110,15 +110,16 @@ class Picture(models.Model):
 #
 # Handle signals.
 #
-from notify import notify_watchers, new_note_notify_managers
+from notify import notify_organizers, notify_watchers, new_note_notify_managers
 
 @receiver(post_save, sender=Note)
 @receiver(post_save, sender=Picture)
-def send_watcher_update(sender, created=False, instance=None, **kwargs):
+def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs):
     """
-    Send watchers of a given lot updates.
+    Send organizers and watchers of a given lot updates.
     """
     if instance and created:
+        notify_organizers(instance)
         notify_watchers(instance)
 
         if isinstance(instance, Note):

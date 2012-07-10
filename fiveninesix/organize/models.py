@@ -1,13 +1,16 @@
 from hashlib import sha1
+import logging
 
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from sorl.thumbnail import ImageField
+import mailchimp
+from mailchimp.chimpy.chimpy import ChimpyException
 
 from lots.models import Lot
-from settings import WATCHER_SALT
 
 class Organizer(models.Model):
     """
@@ -51,7 +54,7 @@ class Watcher(models.Model):
 
     def save(self, *args, **kwargs):
         if self.email:
-            self.email_hash = sha1(WATCHER_SALT + self.email).hexdigest()
+            self.email_hash = sha1(settings.WATCHER_SALT + self.email).hexdigest()
         super(Watcher, self).save(*args, **kwargs)
 
     def recent_change_label(self):
@@ -124,3 +127,20 @@ def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs
 
         if isinstance(instance, Note):
             new_note_notify_managers(instance)
+
+@receiver(post_save, sender=Organizer)
+@receiver(post_save, sender=Watcher)
+def subscribe_organizer_watcher(sender, created=False, instance=None, **kwargs):
+    if not instance or not instance.email:
+        return
+
+    if settings.DEBUG:
+        logging.debug('Would be subscribing %s to the mailing list' % instance.email)
+        return
+
+    try:
+        list = mailchimp.utils.get_connection().get_list_by_id(settings.MAILCHIMP_LIST_ID)
+        list.subscribe(instance.email, { 'EMAIL': instance.email, })
+    except ChimpyException:
+        # thrown if user already subscribed--ignore
+        return

@@ -243,30 +243,6 @@ class Review(models.Model):
     should_be_imported = models.NullBooleanField(blank=True, null=True, help_text="data should be added to the respective lot")
     imported = models.BooleanField(blank=False, null=False, default=False, help_text="data has been added to the respective lot")
 
-LOT_QUERIES = {
-    'vacant': Lot.objects.filter(
-        Q(
-            accessible=True,
-            is_vacant=True,
-            group_has_access=False,
-            organizer=None,
-            owner__type__name='city'
-        ) & ~Q(actual_use='gutterspace')
-    ),
-    'garden': Lot.objects.filter(
-        actual_use__startswith='Garden',
-        owner__type__name='city'
-    ),
-    'private_accessed': Lot.objects.filter(
-        owner__type__name='private',
-        group_has_access=True
-    ),
-    'organizing': Lot.objects.exclude(organizer=None, owner__type__name='city'),
-    'accessed': Lot.objects.filter(group_has_access=True, owner__type__name='city'),
-    'inaccessible': Lot.objects.filter(accessible=False, owner__type__name='city'),
-    'gutterspace': Lot.objects.filter(Q(accessible=False) | Q(actual_use='gutterspace')),
-}
-
 LOT_QS = {
     'vacant': 
         Q(

@@ -19,7 +19,7 @@ from django.views.decorators.cache import cache_page
 from django_xhtml2pdf.utils import render_to_pdf_response
 
 from forms import ReviewForm
-from models import Lot, Owner, Review, LOT_QUERIES, LOT_QS
+from models import Lot, Owner, Review, LOT_QS
 from organize.models import Note, Organizer, Watcher
 from photos.models import PhotoAlbum
 from settings import BASE_URL, OASIS_BASE_URL
@@ -179,8 +179,8 @@ def _filter_lots(request):
     if len(lot_types) > 0:
         lots_by_lot_type = Lot.objects.none()
         for lot_type in lot_types:
-            if lot_type in LOT_QUERIES:
-                lots_by_lot_type = lots_by_lot_type | LOT_QUERIES[lot_type]
+            if lot_type in LOT_QS:
+                lots_by_lot_type = lots_by_lot_type | Lot.objects.filter(LOT_QS[lot_type])
         lots = lots & lots_by_lot_type
 
     return lots.distinct()

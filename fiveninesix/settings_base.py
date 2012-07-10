@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'djangocms_utils',
     'simple_translation',
     'tagging',
+    'mailchimp',
     'missing',
 
     'about',

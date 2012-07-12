@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'getinvolved',
     'legend',
     'lots',
+    'mailings',
     'news',
     'newsletter',
     'organize',

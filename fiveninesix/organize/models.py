@@ -115,8 +115,8 @@ class Picture(models.Model):
 #
 from notify import notify_organizers, notify_watchers, new_note_notify_managers
 
-@receiver(post_save, sender=Note)
-@receiver(post_save, sender=Picture)
+@receiver(post_save, sender=Note, dispatch_uid='note_send_organizer_watcher_update')
+@receiver(post_save, sender=Picture, dispatch_uid='picture_send_organizer_watcher_update')
 def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs):
     """
     Send organizers and watchers of a given lot updates.
@@ -128,8 +128,8 @@ def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs
         if isinstance(instance, Note):
             new_note_notify_managers(instance)
 
-@receiver(post_save, sender=Organizer)
-@receiver(post_save, sender=Watcher)
+@receiver(post_save, sender=Organizer, dispatch_uid='organizer_subscribe_organizer_watcher')
+@receiver(post_save, sender=Watcher, dispatch_uid='watcher_subscribe_organizer_watcher')
 def subscribe_organizer_watcher(sender, created=False, instance=None, **kwargs):
     if not instance or not instance.email:
         return

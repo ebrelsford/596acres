@@ -65,7 +65,7 @@ class Lot(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('lots.views.details', (), { 'bbl': self.bbl })
+        return ('en:lots.views.details', (), { 'bbl': self.bbl })
 
     def generate_qrcode(self, force=False):
         if self.qrcode and not force:

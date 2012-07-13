@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from itertools import groupby
 
 from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
@@ -6,32 +7,81 @@ from django.template.loader import render_to_string
 
 from mailings.models import DeliveryRecord
 
+_registry = {}
+
+def register_mailer(mailing_class, mailer_class):
+    _registry[mailing_class.__name__] = mailer_class
+
+def get_mailer_class(mailing):
+    return _registry[mailing.__class__.__name__]
+
 class Mailer(object):
 
     def __init__(self, mailing):
         self.mailing = mailing
+        self.last_checked = self.mailing.last_checked
+        self.time_started = datetime.now()
+
+        self.mailing.last_checked = self.time_started
+        self.mailing.save()
 
     def get_recipients(self):
         return ()
 
-    def build_subject(self, recipient):
+    def get_context(self, recipients):
+        return {
+            'mailing': self.mailing,
+            'recipients': recipients,
+        }
+
+    def build_subject(self, recipients):
         return render_to_string(
             self.mailing.subject_template_name, 
-            { 'recipient': recipient, }
+            self.get_context(recipients)
         )
 
-    def build_message(self, recipient):
+    def build_message(self, recipients):
         return render_to_string(
             self.mailing.text_template_name, 
-            { 'recipient': recipient, }
+            self.get_context(recipients)
         )
 
+    def add_delivery_records(self, recipients, sent=True):
+        drs = []
+        for recipient in recipients:
+            dr = DeliveryRecord(
+                sent=sent,
+                mailing=self.mailing,
+                receiver_object=recipient
+            )
+            dr.save()
+            drs.append(dr)
+        return drs
+
     def mail(self):
+        """
+        Get intended recipients, prepare message, send it.
+        """
         recipients = self.get_recipients()
-        for r in recipients:
-            subject = self.build_subject(r)
-            message = self.build_message(r)
-            self._send(subject, message, r.email)
+
+        duplicate_handling = self.mailing.duplicate_handling
+        if duplicate_handling in ('merge', 'send first'):
+            # group by email address to handle duplicates
+            for email, recipient_group in groupby(recipients, lambda r: r.email):
+                if duplicate_handling == 'send first':
+                    recipient_group = [recipient_group[0]]
+                self._prepare_and_send_message(list(recipient_group), email)
+        else:
+            # don't bother grouping--every recipient gets every message
+            for r in recipients:
+                self._prepare_and_send_message([r], r.email)
+        return recipients
+
+    def _prepare_and_send_message(self, recipients, email):
+        subject = self.build_subject(recipients)
+        message = self.build_message(recipients)
+        self._send(subject, message, email)
+        return self.add_delivery_records(recipients)
 
     def _send(self, subject, message, email_address, 
               from_email=settings.SERVER_EMAIL, bcc=settings.MANAGERS, 
@@ -47,17 +97,42 @@ class Mailer(object):
         )          
         mail.send(fail_silently=fail_silently)
 
-    def _get_target_models(self):
-        return [ct.model_class() for ct in self.mailing.target_types]
-
 class DaysAfterAddedMailer(Mailer):
 
-    def get_recipients(self):
-        recipients = []
-        # TODO calculate date with self.mailing.days_after_added
-        threshold_date = datetime.now() - timedelta(days=self.mailing.days_after_added)
-        for m in self._get_target_models():
-            recipients += m.objects.filter(added__lte=threshold_date)
+    def _get_ctype_recipients(self, ctype, delta):
+        # get entities that should receive the mailing
+        type_recipients = ctype.model_class().objects.filter(
+            added__lte=self.time_started - delta,
+            added__gt=self.last_checked - delta,
+        )
 
-        # TODO account for duplicates / allow_duplicates
-        return recipients
+        # find entities that already received the mailing
+        drs = DeliveryRecord.objects.filter(
+            sent=True, 
+            mailing=self.mailing,
+            receiver_type=ctype,
+        )
+        received = [r.receiver_object for r in drs]
+
+        return list(set(type_recipients) - set(received))
+
+    def get_recipients(self):
+        delta = timedelta(days=self.mailing.days_after_added)
+
+        recipient_lists = [self._get_ctype_recipients(ct, delta) for ct in self.mailing.target_types.all()]
+        return reduce(lambda x,y: x+y, recipient_lists)
+
+
+class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
+    """
+    DaysAfterAddedMailer customized for 596.
+    """
+    def get_context(self, recipients):
+        context = super(DaysAfterWatcherOrganizerAddedMailer, self).get_context(recipients)
+        context['BASE_URL'] = settings.BASE_URL
+        context['lots'] = [r.lot for r in recipients]
+        return context
+
+class WatcherThresholdMailer(Mailer):
+    # TODO implement
+    pass

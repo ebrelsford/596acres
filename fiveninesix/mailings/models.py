@@ -4,14 +4,22 @@ from django.db import models
 
 class Mailing(models.Model):
     """
-    An email that should be sent to an entity.
+    An email that should be sent to an entity. The email can be sent 
+    automatically by polling over the entities that should receive it.
     """
     name = models.CharField(max_length=100)
 
-    allow_duplicates = models.BooleanField(
-        default=False,
-        help_text=('This mailing should be sent to the same email address '
-                   'multiple times.'),
+    HANDLING_CHOICES = (
+        ('each', 'send each'),
+        ('first', 'send first'),
+        ('merge', 'merge'),
+    )
+    duplicate_handling = models.CharField(
+        max_length=32,
+        choices=HANDLING_CHOICES,
+        default='each',
+        help_text=('How should we handle mailings that are going to go to the '
+                   'same email address multiple times?'),
     )
 
     subject_template_name = models.CharField(max_length=256)
@@ -19,16 +27,32 @@ class Mailing(models.Model):
 
     target_types = models.ManyToManyField(ContentType)
 
+    last_checked = models.DateTimeField()
+
     def __unicode__(self):
         return self.name
 
 class DaysAfterAddedMailing(Mailing):
     """
-    An email that should be sent to an entity X days after being added.
+    An email that should be sent to an entity a certain number of days after 
+    the entity is added.
+
+    Entities should have two fields:
+        'email'
+        'added'
     """
     days_after_added = models.IntegerField(
         help_text=('The number of days after an entity is added that they '
                    'should receive an email.'),
+    )
+
+class DaysAfterWatcherOrganizerAddedMailing(DaysAfterAddedMailing):
+    pass
+
+class WatcherThresholdMailing(Mailing):
+    number_of_watchers = models.PositiveIntegerField(
+        help_text=('The number of watchers on a lot required before the '
+                   'mailing is sent to all of them.'),
     )
 
 class DeliveryRecord(models.Model):

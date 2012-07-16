@@ -8,27 +8,28 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'WatcherThresholdMailing'
-        db.create_table('mailings_watcherthresholdmailing', (
-            ('mailing_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['mailings.Mailing'], unique=True, primary_key=True)),
-            ('number_of_watchers', self.gf('django.db.models.fields.PositiveIntegerField')()),
-        ))
-        db.send_create_signal('mailings', ['WatcherThresholdMailing'])
+        # Deleting model 'FNSDaysAfterAddedMailing'
+        db.delete_table('mailings_fnsdaysafteraddedmailing')
 
-        # Adding model 'DaysAfterWatcherOrganizerAddedMailing'
-        db.create_table('mailings_daysafterwatcherorganizeraddedmailing', (
-            ('daysafteraddedmailing_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['mailings.DaysAfterAddedMailing'], unique=True, primary_key=True)),
+        # Adding model 'DaysAfterAddedMailing'
+        db.create_table('mailings_daysafteraddedmailing', (
+            ('mailing_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['mailings.Mailing'], unique=True, primary_key=True)),
+            ('days_after_added', self.gf('django.db.models.fields.IntegerField')()),
         ))
-        db.send_create_signal('mailings', ['DaysAfterWatcherOrganizerAddedMailing'])
+        db.send_create_signal('mailings', ['DaysAfterAddedMailing'])
 
 
     def backwards(self, orm):
         
-        # Deleting model 'WatcherThresholdMailing'
-        db.delete_table('mailings_watcherthresholdmailing')
+        # Adding model 'FNSDaysAfterAddedMailing'
+        db.create_table('mailings_fnsdaysafteraddedmailing', (
+            ('days_after_added', self.gf('django.db.models.fields.IntegerField')()),
+            ('mailing_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['mailings.Mailing'], unique=True, primary_key=True)),
+        ))
+        db.send_create_signal('mailings', ['FNSDaysAfterAddedMailing'])
 
-        # Deleting model 'DaysAfterWatcherOrganizerAddedMailing'
-        db.delete_table('mailings_daysafterwatcherorganizeraddedmailing')
+        # Deleting model 'DaysAfterAddedMailing'
+        db.delete_table('mailings_daysafteraddedmailing')
 
 
     models = {
@@ -44,10 +45,6 @@ class Migration(SchemaMigration):
             'days_after_added': ('django.db.models.fields.IntegerField', [], {}),
             'mailing_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['mailings.Mailing']", 'unique': 'True', 'primary_key': 'True'})
         },
-        'mailings.daysafterwatcherorganizeraddedmailing': {
-            'Meta': {'object_name': 'DaysAfterWatcherOrganizerAddedMailing', '_ormbases': ['mailings.DaysAfterAddedMailing']},
-            'daysafteraddedmailing_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['mailings.DaysAfterAddedMailing']", 'unique': 'True', 'primary_key': 'True'})
-        },
         'mailings.deliveryrecord': {
             'Meta': {'object_name': 'DeliveryRecord'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -59,7 +56,7 @@ class Migration(SchemaMigration):
         },
         'mailings.mailing': {
             'Meta': {'object_name': 'Mailing'},
-            'allow_duplicates': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'duplicate_handling': ('django.db.models.fields.CharField', [], {'default': "'each'", 'max_length': '32'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_checked': ('django.db.models.fields.DateTimeField', [], {}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

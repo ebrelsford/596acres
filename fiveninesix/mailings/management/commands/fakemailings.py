@@ -3,11 +3,7 @@ import traceback
 
 from django.core.management.base import BaseCommand, CommandError
 
-from mailings.models import DaysAfterWatcherOrganizerAddedMailing
-
-from mailings.mailers import send_all, register_mailer, DaysAfterWatcherOrganizerAddedMailer
-
-register_mailer(DaysAfterWatcherOrganizerAddedMailing, DaysAfterWatcherOrganizerAddedMailer)
+from mailings.util import send_all
 
 class Command(BaseCommand):
     help = 'Fake all applicable mailings'

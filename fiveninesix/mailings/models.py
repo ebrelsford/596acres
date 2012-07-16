@@ -2,11 +2,19 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from model_utils.managers import InheritanceManager
+
 class Mailing(models.Model):
     """
     An email that should be sent to an entity. The email can be sent 
     automatically by polling over the entities that should receive it.
+
+    Subclass Mailing and specify a Mailer to create a mailing. Use mixins 
+    rather than complex inheritance hierarchies since polymorphic methods only
+    work on direct descendants of this using InheritanceManager.
     """
+    objects = InheritanceManager()
+
     name = models.CharField(max_length=100)
 
     HANDLING_CHOICES = (
@@ -32,7 +40,10 @@ class Mailing(models.Model):
     def __unicode__(self):
         return self.name
 
-class DaysAfterAddedMailing(Mailing):
+    def get_mailer(self):
+        raise Exception('Subclasses of Mailing must define get_mailer()')
+
+class DaysAfterAddedMixin(models.Model):
     """
     An email that should be sent to an entity a certain number of days after 
     the entity is added.
@@ -46,14 +57,8 @@ class DaysAfterAddedMailing(Mailing):
                    'should receive an email.'),
     )
 
-class DaysAfterWatcherOrganizerAddedMailing(DaysAfterAddedMailing):
-    pass
-
-class WatcherThresholdMailing(Mailing):
-    number_of_watchers = models.PositiveIntegerField(
-        help_text=('The number of watchers on a lot required before the '
-                   'mailing is sent to all of them.'),
-    )
+    class Meta:
+        abstract = True
 
 class DeliveryRecord(models.Model):
     """
@@ -77,3 +82,18 @@ class DeliveryRecord(models.Model):
     receiver_type = models.ForeignKey(ContentType, null=True, blank=True)
     receiver_object_id = models.PositiveIntegerField(null=True, blank=True)
     receiver_object = generic.GenericForeignKey('receiver_type', 'receiver_object_id')
+
+from mailings.mailers import DaysAfterWatcherOrganizerAddedMailer, WatcherThresholdMailer
+
+class DaysAfterAddedMailing(Mailing, DaysAfterAddedMixin):
+    def get_mailer(self):
+        return DaysAfterWatcherOrganizerAddedMailer(self)
+
+class WatcherThresholdMailing(Mailing):
+    number_of_watchers = models.PositiveIntegerField(
+        help_text=('The number of watchers on a lot required before the '
+                   'mailing is sent to all of them.'),
+    )
+
+    def get_mailer(self):
+        return WatcherThresholdMailer(self)

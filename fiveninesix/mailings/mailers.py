@@ -1,20 +1,15 @@
 from datetime import datetime, timedelta
 from itertools import groupby
+import logging
 
 from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
+from django.db.models import Count
 from django.template.loader import render_to_string
 
-from mailings.models import DeliveryRecord, DaysAfterWatcherOrganizerAddedMailing
+from lots.models import Lot
+from mailings.models import DeliveryRecord
 from organize.models import Watcher
-
-_registry = {}
-
-def register_mailer(mailing_class, mailer_class):
-    _registry[mailing_class.__name__] = mailer_class
-
-def get_mailer_class(mailing):
-    return _registry[mailing.__class__.__name__]
 
 class Mailer(object):
 
@@ -35,17 +30,11 @@ class Mailer(object):
             'recipients': recipients,
         }
 
-    def build_subject(self, recipients):
-        return render_to_string(
-            self.mailing.subject_template_name, 
-            self.get_context(recipients)
-        )
+    def build_subject(self, recipients, context):
+        return render_to_string(self.mailing.subject_template_name, context)
 
-    def build_message(self, recipients):
-        return render_to_string(
-            self.mailing.text_template_name, 
-            self.get_context(recipients)
-        )
+    def build_message(self, recipients, context):
+        return render_to_string(self.mailing.text_template_name, context)
 
     def add_delivery_records(self, recipients, sent=True):
         drs = []
@@ -84,14 +73,18 @@ class Mailer(object):
         return recipients
 
     def _prepare_and_send_message(self, recipients, email):
-        subject = self.build_subject(recipients)
-        message = self.build_message(recipients)
+        context = self.get_context(recipients)
+        subject = self.build_subject(recipients, context)
+        message = self.build_message(recipients, context)
         self._send(subject, message, email)
         return self.add_delivery_records(recipients)
 
     def _send(self, subject, message, email_address, 
               from_email=settings.SERVER_EMAIL, bcc=settings.MANAGERS, 
               connection=None, fail_silently=True):
+
+        logging.debug('sending mail "%s" to %s' % (subject, email_address))
+        logging.debug('message: "%s"' % message)
 
         mail = EmailMultiAlternatives(
             u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject),
@@ -111,6 +104,8 @@ class Mailer(object):
         )
         if receiver_type:
             drs = drs.filter(receiver_type=receiver_type)
+
+        # XXX this is not very efficient
         return [r.receiver_object for r in drs]
 
 class DaysAfterAddedMailer(Mailer):
@@ -147,12 +142,24 @@ class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
         return context
 
 class WatcherThresholdMailer(Mailer):
-    # TODO implement
-    pass
+    def get_recipients(self):
+        lots = Lot.objects.annotate(watcher_count=Count('watcher')).filter(
+            organizer=None,
+            watcher_count__gte=self.mailing.number_of_watchers
+        )
+        watchers = Watcher.objects.filter(lot__in=lots)
+        
+        received = self.get_already_received()
 
-def send_all(fake=False):
-    recipients = []
-    for mailing in DaysAfterWatcherOrganizerAddedMailing.objects.all():
-        mailer_class = get_mailer_class(mailing)
-        recipients.extend(mailer_class(mailing).mail(fake=fake))
-    return recipients
+        return list(set(watchers) - set(received))
+
+    def _get_watcher_count(self, recipients):
+        return Lot.objects.filter(id=recipients[0].lot.id).annotate(watcher_count=Count('watcher')).values('watcher_count')[0]['watcher_count']
+
+    def get_context(self, recipients):
+        context = super(WatcherThresholdMailer, self).get_context(recipients)
+        context['BASE_URL'] = settings.BASE_URL
+        context['lots'] = [r.lot for r in recipients]
+        context['edit_url'] = recipients[0].get_edit_url()
+        context['watcher_count'] = self._get_watcher_count(recipients)
+        return context

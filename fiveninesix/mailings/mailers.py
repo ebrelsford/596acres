@@ -5,7 +5,8 @@ from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
-from mailings.models import DeliveryRecord
+from mailings.models import DeliveryRecord, DaysAfterWatcherOrganizerAddedMailing
+from organize.models import Watcher
 
 _registry = {}
 
@@ -58,11 +59,16 @@ class Mailer(object):
             drs.append(dr)
         return drs
 
-    def mail(self):
+    def mail(self, fake=False):
         """
         Get intended recipients, prepare message, send it.
         """
         recipients = self.get_recipients()
+
+        # just add delivery records for recipients and jump out
+        if fake:
+            self.add_delivery_records(recipients)
+            return recipients
 
         duplicate_handling = self.mailing.duplicate_handling
         if duplicate_handling in ('merge', 'send first'):
@@ -97,6 +103,16 @@ class Mailer(object):
         )          
         mail.send(fail_silently=fail_silently)
 
+    def get_already_received(self, receiver_type=None):
+        """Find entities that already received the mailing"""
+        drs = DeliveryRecord.objects.filter(
+            sent=True, 
+            mailing=self.mailing,
+        )
+        if receiver_type:
+            drs = drs.filter(receiver_type=receiver_type)
+        return [r.receiver_object for r in drs]
+
 class DaysAfterAddedMailer(Mailer):
 
     def _get_ctype_recipients(self, ctype, delta):
@@ -104,15 +120,10 @@ class DaysAfterAddedMailer(Mailer):
         type_recipients = ctype.model_class().objects.filter(
             added__lte=self.time_started - delta,
             added__gt=self.last_checked - delta,
-        )
+            email__isnull=False,
+        ).exclude(email='')
 
-        # find entities that already received the mailing
-        drs = DeliveryRecord.objects.filter(
-            sent=True, 
-            mailing=self.mailing,
-            receiver_type=ctype,
-        )
-        received = [r.receiver_object for r in drs]
+        received = self.get_already_received(receiver_type=ctype)
 
         return list(set(type_recipients) - set(received))
 
@@ -122,7 +133,6 @@ class DaysAfterAddedMailer(Mailer):
         recipient_lists = [self._get_ctype_recipients(ct, delta) for ct in self.mailing.target_types.all()]
         return reduce(lambda x,y: x+y, recipient_lists)
 
-
 class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
     """
     DaysAfterAddedMailer customized for 596.
@@ -131,8 +141,18 @@ class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
         context = super(DaysAfterWatcherOrganizerAddedMailer, self).get_context(recipients)
         context['BASE_URL'] = settings.BASE_URL
         context['lots'] = [r.lot for r in recipients]
+
+        if recipients[0].__class__ == Watcher:
+            context['edit_url'] = recipients[0].get_edit_url()
         return context
 
 class WatcherThresholdMailer(Mailer):
     # TODO implement
     pass
+
+def send_all(fake=False):
+    recipients = []
+    for mailing in DaysAfterWatcherOrganizerAddedMailing.objects.all():
+        mailer_class = get_mailer_class(mailing)
+        recipients.extend(mailer_class(mailing).mail(fake=fake))
+    return recipients

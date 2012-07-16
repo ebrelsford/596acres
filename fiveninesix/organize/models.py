@@ -60,6 +60,10 @@ class Watcher(models.Model):
     def recent_change_label(self):
         return 'new watcher'
 
+    @models.permalink
+    def get_edit_url(self):
+        return ('organize.views.edit_watcher', (), { 'hash': self.email_hash[:9] })
+
 class OrganizerType(models.Model):
     """
     A type of organizer (eg, individual, non-profit, governmental agency, ...)

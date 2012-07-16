@@ -10,13 +10,17 @@ from mailings.mailers import send_all, register_mailer, DaysAfterWatcherOrganize
 register_mailer(DaysAfterWatcherOrganizerAddedMailing, DaysAfterWatcherOrganizerAddedMailer)
 
 class Command(BaseCommand):
-    help = 'Send all applicable mailings'
+    help = 'Fake all applicable mailings'
 
     def handle(self, *args, **options):
-        """Send all applicable mailings"""
+        """
+        Add delivery records for all applicable mailings, to keep them from 
+        being sent to entities. Useful when adding mailings to an existing
+        project and avoiding flooding users with emails that might be outdated.
+        """
         try:
-            recipients = send_all()
-            self.stdout.write('sent to %d recipients.\n' % len(recipients))
+            recipients = send_all(fake=True)
+            self.stdout.write('faked to %d recipients.\n' % len(recipients))
         except Exception:
             traceback.print_exc(file=sys.stdout)
-            raise CommandError('There was an exception while sending mailings')
+            raise CommandError('There was an exception while faking mailings')

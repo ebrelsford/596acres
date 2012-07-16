@@ -31,10 +31,7 @@ def mail_watchers(lot, subject, message, **kwargs):
     watchers = Watcher.objects.filter(lot=lot, email__isnull=False)
     messages = {}
     for watcher in watchers:
-        edit_url = settings.BASE_URL + reverse('organize.views.edit_watcher',
-                                               kwargs={
-                                                   'hash': watcher.email_hash[:9], 
-                                               })
+        edit_url = settings.BASE_URL + watcher.get_edit_url()
         messages[watcher.email] = message + """
 
 You are receiving this email because you are watching lot %s on 596acres.org. Please go here if you would like to change this: %s

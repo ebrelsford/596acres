@@ -113,6 +113,8 @@ class Mailer(object):
               from_email=settings.ORGANIZERS_EMAIL, bcc=settings.MANAGERS, 
               connection=None, fail_silently=True):
 
+        subject = subject.replace('\n', '').strip() # subject cannot contain newlines
+
         logging.debug('mailings: sending mail with subject "%s" to %s' % (subject, email_address))
         logging.debug('mailings: full text: "%s"' % message)
 

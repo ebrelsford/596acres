@@ -22,9 +22,30 @@ class Mailer(object):
         self.mailing.save()
 
     def get_recipients(self):
+        """
+        Get the recipients to which this mailing should be sent.
+        """
         return ()
 
+    def get_already_received(self, receiver_type=None):
+        """
+        Find entities [of a particular type] that already received the mailing.
+        """
+        drs = DeliveryRecord.objects.filter(
+            sent=True, 
+            mailing=self.mailing,
+        )
+        if receiver_type:
+            drs = drs.filter(receiver_type=receiver_type)
+
+        # XXX this is not very efficient
+        return [r.receiver_object for r in drs]
+
     def get_context(self, recipients):
+        """
+        Get the context to be used when constructing the subject and text of 
+        the mailing.
+        """
         return {
             'mailing': self.mailing,
             'recipients': recipients,
@@ -37,6 +58,9 @@ class Mailer(object):
         return render_to_string(self.mailing.text_template_name, context)
 
     def add_delivery_records(self, recipients, sent=True):
+        """
+        Add a DeliveryRecord to each recipient.
+        """
         drs = []
         for recipient in recipients:
             dr = DeliveryRecord(
@@ -50,11 +74,11 @@ class Mailer(object):
 
     def mail(self, fake=False):
         """
-        Get intended recipients, prepare message, send it.
+        Get intended recipients, prepare the message, send it.
         """
         recipients = self.get_recipients()
 
-        # just add delivery records for recipients and jump out
+        # faking it--just add delivery records for recipients and jump out
         if fake:
             self.add_delivery_records(recipients)
             return recipients
@@ -73,18 +97,24 @@ class Mailer(object):
         return recipients
 
     def _prepare_and_send_message(self, recipients, email):
+        """
+        Build the subject and text of the message, email it to the given 
+        email address.
+        """
         context = self.get_context(recipients)
-        subject = self.build_subject(recipients, context)
-        message = self.build_message(recipients, context)
-        self._send(subject, message, email)
+        self._send(
+            self.build_subject(recipients, context), 
+            self.build_message(recipients, context),
+            email
+        )
         return self.add_delivery_records(recipients)
 
     def _send(self, subject, message, email_address, 
               from_email=settings.SERVER_EMAIL, bcc=settings.MANAGERS, 
               connection=None, fail_silently=True):
 
-        logging.debug('sending mail "%s" to %s' % (subject, email_address))
-        logging.debug('message: "%s"' % message)
+        logging.debug('mailings: sending mail with subject "%s" to %s' % (subject, email_address))
+        logging.debug('mailings: full text: "%s"' % message)
 
         mail = EmailMultiAlternatives(
             u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject),
@@ -96,25 +126,21 @@ class Mailer(object):
         )          
         mail.send(fail_silently=fail_silently)
 
-    def get_already_received(self, receiver_type=None):
-        """Find entities that already received the mailing"""
-        drs = DeliveryRecord.objects.filter(
-            sent=True, 
-            mailing=self.mailing,
-        )
-        if receiver_type:
-            drs = drs.filter(receiver_type=receiver_type)
-
-        # XXX this is not very efficient
-        return [r.receiver_object for r in drs]
-
 class DaysAfterAddedMailer(Mailer):
 
     def _get_ctype_recipients(self, ctype, delta):
-        # get entities that should receive the mailing
+        """
+        Get entities of type ctype that should receive the mailing.
+        """
+
+        #
+        # Check for entities added in the time between the mailing was last 
+        # sent and now, shifting backward in time for the number of days after
+        # an entity is added that we want to send them the mailing.
+        #
         type_recipients = ctype.model_class().objects.filter(
-            added__lte=self.time_started - delta,
             added__gt=self.last_checked - delta,
+            added__lte=self.time_started - delta,
             email__isnull=False,
         ).exclude(email='')
 
@@ -134,19 +160,27 @@ class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
     """
     def get_context(self, recipients):
         context = super(DaysAfterWatcherOrganizerAddedMailer, self).get_context(recipients)
+
+        # add BASE_URL for full-path links back to the site
         context['BASE_URL'] = settings.BASE_URL
+
+        # consolidate lots (handy when merging mailings)
         context['lots'] = [r.lot for r in recipients]
 
-        if recipients[0].__class__ == Watcher:
+        # add url for watchers to edit their watchiness
+        if isinstance(recipients[0], Watcher):
             context['edit_url'] = recipients[0].get_edit_url()
         return context
 
 class WatcherThresholdMailer(Mailer):
     def get_recipients(self):
+        # get lots without Organizers and with a certain number of Watchers
         lots = Lot.objects.annotate(watcher_count=Count('watcher')).filter(
             organizer=None,
             watcher_count__gte=self.mailing.number_of_watchers
         )
+
+        # get the Watchers of those lots
         watchers = Watcher.objects.filter(lot__in=lots)
         
         received = self.get_already_received()
@@ -158,8 +192,14 @@ class WatcherThresholdMailer(Mailer):
 
     def get_context(self, recipients):
         context = super(WatcherThresholdMailer, self).get_context(recipients)
+
+        # add BASE_URL for full-path links back to the site
         context['BASE_URL'] = settings.BASE_URL
+
+        # consolidate lots (handy when merging mailings)
         context['lots'] = [r.lot for r in recipients]
+
+        # add url for watchers to edit their watchiness
         context['edit_url'] = recipients[0].get_edit_url()
         context['watcher_count'] = self._get_watcher_count(recipients)
         return context

@@ -10,7 +10,7 @@ class Mailing(models.Model):
     automatically by polling over the entities that should receive it.
 
     Subclass Mailing and specify a Mailer to create a mailing. Use mixins 
-    rather than complex inheritance hierarchies since polymorphic methods only
+    rather than deep inheritance hierarchies since polymorphic methods only
     work on direct descendants of this using InheritanceManager.
     """
     objects = InheritanceManager()
@@ -30,12 +30,25 @@ class Mailing(models.Model):
                    'same email address multiple times?'),
     )
 
-    subject_template_name = models.CharField(max_length=256)
-    text_template_name = models.CharField(max_length=256)
+    subject_template_name = models.CharField(
+        max_length=256,
+        help_text=('The path to the template to use when building the mailing '
+                   'subject line'),
+    )
+    text_template_name = models.CharField(
+        max_length=256,
+        help_text=('The path to the template to use when building the mailing '
+                   'text line'),
+    )
 
-    target_types = models.ManyToManyField(ContentType)
+    target_types = models.ManyToManyField(
+        ContentType,
+        help_text='The types this mailing will be sent to.',
+    )
 
-    last_checked = models.DateTimeField()
+    last_checked = models.DateTimeField(
+        help_text='The last time this mailing was sent.'
+    )
 
     def __unicode__(self):
         return self.name

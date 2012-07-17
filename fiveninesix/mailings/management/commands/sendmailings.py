@@ -12,7 +12,7 @@ class Command(BaseCommand):
         """Send all applicable mailings"""
         try:
             recipients = send_all()
-            self.stdout.write('sent to %d recipients.\n' % len(recipients))
+            self.stdout.write('mailings: sent to %d recipients.\n' % len(recipients))
         except Exception:
             traceback.print_exc(file=sys.stdout)
-            raise CommandError('There was an exception while sending mailings')
+            raise CommandError('mailings: There was an exception while sending mailings')

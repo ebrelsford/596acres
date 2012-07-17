@@ -16,7 +16,7 @@ class Command(BaseCommand):
         """
         try:
             recipients = send_all(fake=True)
-            self.stdout.write('faked to %d recipients.\n' % len(recipients))
+            self.stdout.write('mailings: faked to %d recipients.\n' % len(recipients))
         except Exception:
             traceback.print_exc(file=sys.stdout)
-            raise CommandError('There was an exception while faking mailings')
+            raise CommandError('mailings: There was an exception while faking mailings')

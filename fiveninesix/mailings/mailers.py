@@ -110,7 +110,7 @@ class Mailer(object):
         return self.add_delivery_records(recipients)
 
     def _send(self, subject, message, email_address, 
-              from_email=settings.SERVER_EMAIL, bcc=settings.MANAGERS, 
+              from_email=settings.ORGANIZERS_EMAIL, bcc=settings.MANAGERS, 
               connection=None, fail_silently=True):
 
         logging.debug('mailings: sending mail with subject "%s" to %s' % (subject, email_address))

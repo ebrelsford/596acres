@@ -44,7 +44,7 @@ def _mail_multiple_personalized(subject, messages, bcc=[], **kwargs):
         _mail_multiple(subject, message, [email], bcc=bcc, **kwargs)
 
 def _mail_multiple(subject, message, email_addresses, 
-                   from_email=settings.SERVER_EMAIL, bcc=settings.MANAGERS, 
+                   from_email=settings.ORGANIZERS_EMAIL, bcc=settings.MANAGERS, 
                    html_message=None, connection=None, fail_silently=True):
     """
     Sends a message to multiple email addresses. Based on 

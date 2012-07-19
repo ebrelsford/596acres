@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <script>
     $(document).ready(function() {
         $('.map-legend input[type="checkbox"]').change(function() {
@@ -13,34 +15,39 @@
         <li class="vacant">
             <input type="checkbox" name="vacant" id="vacant" checked="checked" />
             <label for="vacant">
-                <img src="{{ MEDIA_URL }}img/vacant.png" alt="vacant lot (point)" /> public vacant lots
+                <img src="{{ MEDIA_URL }}img/vacant.png" alt="vacant lot (point)" /> 
+                {% trans "public vacant lots" %}
             </label>
         </li>
         <li class="organizing">
             <input type="checkbox" name="organizing" id="organizing" checked="checked" />
             <label for="organizing">
-                <img src="{{ MEDIA_URL }}img/organizing.png" alt="public vacant lot with organizers (point)" /> public vacant sites being organized around
+                <img src="{{ MEDIA_URL }}img/organizing.png" alt="public vacant lot with organizers (point)" /> 
+                {% trans "public vacant sites being organized around" %}
             </label>
             (<span class="count">{{ counts.organizing }}</span>)
         </li>
         <li class="accessed">
             <input type="checkbox" name="accessed" id="accessed" checked="checked" />
             <label for="accessed">
-                <img src="{{ MEDIA_URL }}img/accessed.png" alt="public vacant lot where groups have access (point)" /> public vacant sites where groups have access
+                <img src="{{ MEDIA_URL }}img/accessed.png" alt="public vacant lot where groups have access (point)" />
+                {% trans "public vacant sites where groups have access" %}
             </label>
             (<span class="count">{{ counts.accessed }}</span>)
         </li>
         <li class="private_accessed">
             <input type="checkbox" name="private_accessed" id="private_accessed" checked="checked" />
             <label for="private_accessed">
-                <img src="{{ MEDIA_URL }}img/private_accessed.png" alt="privately owned lot (point)" /> private vacant sites being used by community
+                <img src="{{ MEDIA_URL }}img/private_accessed.png" alt="privately owned lot (point)" />
+                {% trans "private vacant sites being used by community" %}
             </label>
             (<span class="count">{{ counts.private_accessed }}</span>)
         </li>
         <li class="garden">
             <input type="checkbox" name="garden" id="garden" />
             <label for="garden">
-                <img src="{{ MEDIA_URL }}img/gardened.png" alt="community garden (point)" /> community gardens on public land
+                <img src="{{ MEDIA_URL }}img/gardened.png" alt="community garden (point)" />
+                {% trans "community gardens on public land" %}
             </label>
         </li>
         <li class="gutterspace">
@@ -48,7 +55,7 @@
             <label for="gutterspace">
                 <img src="{{ MEDIA_URL }}img/inaccessible.png" alt="gutterspaces" />
             </label> 
-            <a href="/news/2012/04/02/gutterspaces/">gutterspaces</a>
+            <a href="/news/2012/04/02/gutterspaces/">{% trans "gutterspaces" %}</a>
         </li>
     </ul>
 </div>

@@ -1,5 +1,5 @@
 {% extends "cms/main_template.html" %}
-{% load cache cms_tags sekizai_tags %}
+{% load cache cms_tags i18n sekizai_tags %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -114,7 +114,7 @@
 
             <div id="searchbar">
                 <div class="warning errorlist" style="display: none;"></div>
-                <span>Search for lots near an address:</span>
+                <span>{% trans "Search for lots near an address" %}:</span>
                 <form>
                     <input name="address" type="text" /><input type="submit" value="search" />
                 </form>

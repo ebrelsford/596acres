@@ -107,31 +107,31 @@
     <div id="basics" class="section">
         <table>
             <tr>
-                <th>address</th>
+                <th>{% trans "address" %}</th>
                 <td>
                     <span>{{ lot.address|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>zipcode</th>
+                <th>{% trans "zipcode" %}</th>
                 <td>
                     <span>{{ lot.zipcode|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>block</th>
+                <th>{% trans "block" %}</th>
                 <td>
                     <span>{{ lot.block|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>lot</th>
+                <th>{% trans "lot" %}</th>
                 <td>
                     <span>{{ lot.lot|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>area</th>
+                <th>{% trans "area" %}</th>
                 <td>
                     <span>
                         {% if lot.area_acres %}
@@ -143,7 +143,7 @@
                 </td>
             </tr>
             <tr>
-                <th>elsewhere</th>
+                <th>{% trans "elsewhere" %}</th>
                 <td class="links">
                     <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ lot.bbl }}">See this lot on OASIS</a>, a map that combines block and lot level information from a variety of government and community sources.
                 </td>
@@ -156,18 +156,18 @@
     {% endif %}
 
     <div id="owner" class="section">
-        <h2><a name="agency">agency</a></h2>
+        <h2><a name="agency">{% trans "agency" %}</a></h2>
         {% if lot.owner %}
             {% with owner=lot.owner owner_contact=lot.owner_contact %}
             {% include "lots/owner_details.html" %}
             {% endwith %}
         {% else %}
-        We don't know who owns this lot.
+        {% trans "We don't know who owns this lot." %}
         {% endif %}
     </div>
 
     <div id="government" class="section">
-        <h2><a name="government">government</a></h2>
+        <h2><a name="government">{% trans "government" %}</a></h2>
         <p>Check out <a id="democracymap-link" target="_blank" href="http://beta.democracymap.org/map/?t=0&a={{ lot.centroid.y }}%2C{{ lot.centroid.x }}">democracy map</a>, which can help you find the elected officials for the area around this lot and when the next community board meeting will happen.</p>
     </div>
 
@@ -178,9 +178,9 @@
             {% endif %}
             <a name="organize">
                 {% if not lot.group_has_access %}
-                organize
+                {% trans "organize" %}
                 {% else %}
-                organizing history
+                {% trans "organizing history" %}
                 {% endif %}
             </a>
         </h2>
@@ -196,9 +196,9 @@
             {% else %}
             <div>
                 {% if not lot.group_has_access %}
-                Currently organizing here:
+                {% trans "Currently organizing here" %}:
                 {% else %}
-                Organizers:
+                {% trans "Organizers" %}:
                 {% endif %}
                 <ul>
                 {% for organizer in organizers %}
@@ -210,19 +210,19 @@
                         </div>
                         <table>
                             <tr>
-                                <th>name</th>
+                                <th>{% trans "name" %}</th>
                                 <td>
                                     <span>{{ organizer.name }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>type</th>
+                                <th>{% trans "type" %}</th>
                                 <td>
                                     <span>{{ organizer.type }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>site</th>
+                                <th>{% trans "site" %}</th>
                                 <td>
                                     <span>
                                     {% if organizer.url %}
@@ -232,13 +232,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>phone</th>
+                                <th>{% trans "phone" %}</th>
                                 <td>
                                     <span>{{ organizer.phone|default:"" }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>email</th>
+                                <th>{% trans "email" %}</th>
                                 <td>
                                     <span>
                                     {% if organizer.email %}
@@ -248,7 +248,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>notes</th>
+                                <th>{% trans "notes" %}</th>
                                 <td>
                                     <span>{{ organizer.notes|urlize|linebreaks }}</span>
                                 </td>
@@ -259,13 +259,15 @@
                         {% endif %}
                     </li>
                 {% empty %}
-                No one yet.
+                {% trans "No one yet" %}.
                 {% endfor %}
                 </ul>
             </div>
                 {% if not lot.group_has_access %}
                 <div>
-                    <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/users.png" /> &nbsp;organize in this lot</a>
+                    <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/users.png" />
+                        &nbsp;{% trans "organize in this lot" %}
+                    </a>
                 </div>
                 {% endif %}
             {% endif %}
@@ -276,7 +278,7 @@
             {% if lot.group_has_access %}
             <span class="icon"></span>
             {% endif %}
-            <a name="notes">notes</a>
+            <a name="notes">{% trans "notes" %}</a>
         </h2>
         <div class="{% if lot.group_has_access %}expandee{% endif %}">
             <ul class="notes">

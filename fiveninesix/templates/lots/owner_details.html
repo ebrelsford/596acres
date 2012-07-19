@@ -1,13 +1,13 @@
 <table>
     <tr>
-        <th>name</th>
+        <th>{% trans "name" %}</th>
         <td>
             <span>{{ owner.name|default:'' }}</span>
         </td>
     </tr>
     {% if not lot.group_has_access %}
     <tr>
-        <th>contact</th>
+        <th>{% trans "contact" %}</th>
         <td>
             <span>
                 {% if owner_contact %}
@@ -19,7 +19,7 @@
         </td>
     </tr>
     <tr>
-        <th>phone</th>
+        <th>{% trans "phone" %}</th>
         <td>
             <span>
                 {% if owner_contact %}
@@ -31,7 +31,7 @@
         </td>
     </tr>
     <tr>
-        <th>email</th>
+        <th>{% trans "email" %}</th>
         <td>
             {% if owner_contact %}
                 {% if owner_contact.email %}
@@ -45,7 +45,7 @@
         </td>
     </tr>
     <tr>
-        <th>site</th>
+        <th>{% trans "site" %}</th>
         <td class="site">
             {% if owner.site %}
             <a target="_blank" href="{{ owner.site }}">{{ owner.site }}</a>
@@ -53,7 +53,7 @@
         </td>
     </tr>
     <tr>
-        <th>notes</th>
+        <th>{% trans "notes" %}</th>
         <td>
             <p>
             {% if owner_contact %}

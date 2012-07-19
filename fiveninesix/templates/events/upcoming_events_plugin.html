@@ -1,5 +1,6 @@
+{% load i18n %}
 <div class="section">
-    <h2>Upcoming Events</h2>
+    <h2>{% trans "Upcoming Events" %}</h2>
     {% include "events/event_list_snippet.html" %}
     <a href="{% url events_event_list %}">view all upcoming events</a> | <a href="{% url events_event_list_past %}">view past events</a>
 </div>

@@ -1,12 +1,29 @@
+from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
-from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from organize.models import Organizer, Watcher
-import settings
 
-def mail_organizers(subject, message, **kwargs):
-    """Sends a message to all organizers."""
+def mail_organizers(subject, message, public_no_access=False, 
+                    public_access=False, private_access=False, **kwargs):
+    """
+    Sends a message to organizers. Can filter by the type of land and the 
+    status of the organizing.
+    """
     organizers = Organizer.objects.filter(email__isnull=False).exclude(email='')
+
+    if not all((public_no_access, public_access, private_access)):
+        f = Q()
+
+        if public_no_access:
+            f = f | Q(lot__group_has_access=False, lot__owner__type__name='city')
+        if public_access:
+            f = f | Q(lot__group_has_access=True, lot__owner__type__name='city')
+        if private_access:
+            f = f | Q(lot__group_has_access=True, lot__owner__type__name='private')
+
+        organizers = organizers.filter(f)
+
     _mail_multiple(
         subject,
         message,

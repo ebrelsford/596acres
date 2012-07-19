@@ -12,7 +12,14 @@ def mail_organizers(request):
     if request.method == 'POST':    
         form = MailOrganizersForm(request.POST)
         if form.is_valid():
-            mail.mail_organizers(form.data['subject'], form.data['message'])
+            send_to = form.cleaned_data['send_to']
+            mail.mail_organizers(
+                form.cleaned_data['subject'],
+                form.cleaned_data['message'],
+                public_no_access='public land' in send_to,
+                public_access='public with access' in send_to,
+                private_access='private with access' in send_to,
+            )
             return redirect('fns_admin.views.mail_organizers_done')
     else:
         form = MailOrganizersForm()

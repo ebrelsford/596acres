@@ -147,6 +147,10 @@ class DaysAfterAddedMailer(Mailer):
             email__isnull=False,
         ).exclude(email='')
 
+        # only get already received if there are potential recipients
+        if not type_recipients:
+            return []
+
         received = self.get_already_received(receiver_type=ctype)
 
         return list(set(type_recipients) - set(received))

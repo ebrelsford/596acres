@@ -10,8 +10,15 @@ class FNSAdminMenu(CMSAttachMenu):
 
     def get_nodes(self, request):
         nodes = []
-        nodes.append(NavigationNode(_('Email All Organizers'), '/fnsadmin/organizers/mail/', 1))
-        nodes.append(NavigationNode(_('Add News'), '/admin/cmsplugin_blog/entry/add/', 2))
+
+        nodes.append(NavigationNode(_('Backend'), 
+                                    reverse('admin:index'), 1))
+
+        nodes.append(NavigationNode(_('Email All Organizers'),
+                                    '/fnsadmin/organizers/mail/', 1))
+
+        nodes.append(NavigationNode(_('Add News'),
+                                    '/admin/cmsplugin_blog/entry/add/', 2))
 
         for borough in ['Manhattan', 'Queens', 'Bronx', 'Staten Island']:
             nodes.append(
@@ -21,6 +28,7 @@ class FNSAdminMenu(CMSAttachMenu):
                     3
                 )
             )
+
         return nodes
 
 menu_pool.register_menu(FNSAdminMenu)

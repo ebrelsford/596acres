@@ -5,6 +5,7 @@
             <span>{{ owner.name|default:'' }}</span>
         </td>
     </tr>
+    {% if not lot.group_has_access %}
     <tr>
         <th>contact</th>
         <td>
@@ -54,11 +55,19 @@
     <tr>
         <th>notes</th>
         <td>
+            <p>
             {% if owner_contact %}
                 {{ owner_contact.notes|urlize|linebreaks|default:"" }}
             {% else %}
                 {{ owner.notes|urlize|linebreaks|default:"" }}
             {% endif %}
+            </p>
+            {% if owner.name == "Housing Preservation and Development" %}
+            <p>
+            You can <a href="http://a810-bisweb.nyc.gov/bisweb/my_community.jsp" target="_blank">check online</a> to see if there are any open Requests for Proposals (RFPs) for this lot.
+            </p>
+            {% endif %}
         </td>
     </tr>
+    {% endif %}
 </table>

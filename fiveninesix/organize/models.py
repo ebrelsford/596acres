@@ -1,13 +1,16 @@
 from hashlib import sha1
+import logging
 
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from sorl.thumbnail import ImageField
+import mailchimp
+from mailchimp.chimpy.chimpy import ChimpyException
 
 from lots.models import Lot
-from settings import WATCHER_SALT
 
 class Organizer(models.Model):
     """
@@ -19,7 +22,13 @@ class Organizer(models.Model):
     email = models.EmailField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
-    facebook_page = models.CharField(max_length=256, null=True, blank=True)
+    facebook_page = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text=('The Facebook page for your organization. Please do not '
+                   'enter your personal Facebook page.'),
+    )
 
     lot = models.ForeignKey(Lot, null=True)
     added = models.DateTimeField(auto_now_add=True)
@@ -51,11 +60,15 @@ class Watcher(models.Model):
 
     def save(self, *args, **kwargs):
         if self.email:
-            self.email_hash = sha1(WATCHER_SALT + self.email).hexdigest()
+            self.email_hash = sha1(settings.WATCHER_SALT + self.email).hexdigest()
         super(Watcher, self).save(*args, **kwargs)
 
     def recent_change_label(self):
         return 'new watcher'
+
+    @models.permalink
+    def get_edit_url(self):
+        return ('organize.views.edit_watcher', (), { 'hash': self.email_hash[:9] })
 
 class OrganizerType(models.Model):
     """
@@ -110,16 +123,34 @@ class Picture(models.Model):
 #
 # Handle signals.
 #
-from notify import notify_watchers, new_note_notify_managers
+from notify import notify_organizers, notify_watchers, new_note_notify_managers
 
-@receiver(post_save, sender=Note)
-@receiver(post_save, sender=Picture)
-def send_watcher_update(sender, created=False, instance=None, **kwargs):
+@receiver(post_save, sender=Note, dispatch_uid='note_send_organizer_watcher_update')
+@receiver(post_save, sender=Picture, dispatch_uid='picture_send_organizer_watcher_update')
+def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs):
     """
-    Send watchers of a given lot updates.
+    Send organizers and watchers of a given lot updates.
     """
     if instance and created:
+        notify_organizers(instance)
         notify_watchers(instance)
 
         if isinstance(instance, Note):
             new_note_notify_managers(instance)
+
+@receiver(post_save, sender=Organizer, dispatch_uid='organizer_subscribe_organizer_watcher')
+@receiver(post_save, sender=Watcher, dispatch_uid='watcher_subscribe_organizer_watcher')
+def subscribe_organizer_watcher(sender, created=False, instance=None, **kwargs):
+    if not instance or not instance.email:
+        return
+
+    if settings.DEBUG:
+        logging.debug('Would be subscribing %s to the mailing list' % instance.email)
+        return
+
+    try:
+        list = mailchimp.utils.get_connection().get_list_by_id(settings.MAILCHIMP_LIST_ID)
+        list.subscribe(instance.email, { 'EMAIL': instance.email, })
+    except ChimpyException:
+        # thrown if user already subscribed--ignore
+        return

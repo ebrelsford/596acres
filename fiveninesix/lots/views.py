@@ -8,6 +8,7 @@ import simplekml
 from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
 from django.http import HttpResponse
@@ -18,8 +19,9 @@ from django.views.decorators.cache import cache_page
 from django_xhtml2pdf.utils import render_to_pdf_response
 
 from forms import ReviewForm
-from models import Lot, Owner, Review, LOT_QUERIES, LOT_QS
+from models import Lot, Owner, Review, LOT_QS
 from organize.models import Note, Organizer, Watcher
+from photos.models import PhotoAlbum
 from settings import BASE_URL, OASIS_BASE_URL
 
 def lot_geojson(request):
@@ -50,7 +52,11 @@ def lot_kml(request):
     for lot in _filter_lots(request):
         kml.newpoint(
             name=lot.bbl, 
-            description="bbl: %s<br/>agency: %s<br/>area: %f acres" % (lot.bbl, lot.owner.name, lot.area_acres), 
+            description="bbl: %s<br/>agency: %s<br/>area: %f acres" % (
+                lot.bbl,
+                lot.owner.name,
+                lot.area_acres or 0
+            ), 
             coords=[(lot.centroid.x, lot.centroid.y)]
         )
 
@@ -173,8 +179,8 @@ def _filter_lots(request):
     if len(lot_types) > 0:
         lots_by_lot_type = Lot.objects.none()
         for lot_type in lot_types:
-            if lot_type in LOT_QUERIES:
-                lots_by_lot_type = lots_by_lot_type | LOT_QUERIES[lot_type]
+            if lot_type in LOT_QS:
+                lots_by_lot_type = lots_by_lot_type | Lot.objects.filter(LOT_QS[lot_type])
         lots = lots & lots_by_lot_type
 
     return lots.distinct()
@@ -212,6 +218,10 @@ def details(request, bbl=None):
         'organizers': lot.organizer_set.all(),
         'watchers_count': lot.watcher_set.all().count(),
         'notes': lot.note_set.all().order_by('added'),
+        'photo_albums': PhotoAlbum.objects.filter(
+            content_type=ContentType.objects.get_for_model(lot),
+            object_id=lot.pk,
+        ).all(),
         'pictures': lot.picture_set.all().order_by('added'),
         'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))
@@ -276,10 +286,20 @@ def _recent_changes(maximum=5):
 
 def tabs(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
+    photo = None
+    try:
+        photo = PhotoAlbum.objects.filter(
+            content_type=ContentType.objects.get_for_model(lot),
+            object_id=lot.pk,
+        ).all()[0].get_cover_photo()
+    except Exception:
+        pass
 
     return render_to_response('lots/tabs.html', {
         'lot': lot,
         'organizers': lot.organizer_set.all(),
+        'photo': photo,
+        'pictures': lot.picture_set.all().order_by('added'),
         'watchers_count': lot.watcher_set.all().count(),
         'OASIS_BASE_URL': OASIS_BASE_URL,
     }, context_instance=RequestContext(request))
@@ -351,6 +371,7 @@ def add_review(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+@cache_page(12 * 60 * 60)
 def counts(request):
     """
     Get counts of each lot type for the given boroughs.

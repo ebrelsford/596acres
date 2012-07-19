@@ -17,8 +17,8 @@ DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = 'en'
 
 EMAIL_SUBJECT_PREFIX = '[596 Acres] '
-SERVER_EMAIL = 'admin@596acres.org'
-ORGANIZERS_EMAIL = 'organizers@gmail.com'
+SERVER_EMAIL = '"596 Acres" <admin@596acres.org>'
+ORGANIZERS_EMAIL = '"596 Acres" <organizers@596acres.org>'
 
 TIME_ZONE = 'America/New_York'
 
@@ -34,6 +34,8 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATIC_URL = "/static/"
 
 ADMIN_MEDIA_PREFIX = "/static/admin/"
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -124,6 +126,7 @@ INSTALLED_APPS = (
     'djangocms_utils',
     'simple_translation',
     'tagging',
+    'mailchimp',
     'missing',
 
     'about',
@@ -135,6 +138,7 @@ INSTALLED_APPS = (
     'getinvolved',
     'legend',
     'lots',
+    'mailings',
     'news',
     'newsletter',
     'organize',

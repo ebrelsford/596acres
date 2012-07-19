@@ -24,7 +24,8 @@ img {
 }
 
 ul.nav,
-ul.nav ul {
+ul.nav ul,
+form ul {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -165,6 +166,7 @@ ul.nav ul {
     border-radius: 10px;
     -moz-border-radius: 10px;
     border: 1px solid black !important;
+    z-index: 1040 !important;
 }
 .olPopupContent {
     overflow: hidden !important;
@@ -413,8 +415,11 @@ form > table td input[type=text] {
     color: red;
 }
 
+#lot-details {
+    margin-right: 217px;
+    padding-right: 10px;
+}
 #lot-details .section {
-    width: 65%;
 }
 #lot-details .section table,
 #lot-details .section tr {
@@ -690,4 +695,20 @@ ul.events {
 .newsletter {
     float: right;
     width: 300px;
+}
+
+.expander {
+    cursor: pointer;
+}
+.expander .icon {
+    background: url(/media/img/sq_plus.png);
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+.expander.expanded .icon {
+    background: url(/media/img/sq_minus.png);
+}
+.expandee {
+    display: none;
 }

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import Http404
 from django.views.generic.list import ListView
 
 from cmsplugin_blog.models import Entry
@@ -20,8 +21,12 @@ class EntriesTaggedArchiveView(ListView):
             tag = self.kwargs['tag']
         except KeyError:
             raise AttributeError(_('tagged_object_list must be called with a tag.'))
-        tag_instance = get_tag(tag)
-        return TaggedItem.objects.get_by_model(Entry, tag_instance)
+
+        try:
+            tag_instance = get_tag(tag)
+            return TaggedItem.objects.get_by_model(Entry, tag_instance)
+        except ValueError:
+            raise Http404
 
 class NewsletterArchiveView(ListView):
     paginate_by = 15

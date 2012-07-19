@@ -1,0 +1,35 @@
+{% load thumbnail %}
+
+<div id="pictures" class="section">
+    <h2><a name="pictures">pictures</a></h2>
+    <ul class="pictures">
+
+    {% comment %}
+    Albums imported and attached to this lot.
+    {% endcomment %}
+    {% for album in photo_albums %}
+        {% for photo in album.photos %}
+        <li class="picture">
+            <a 
+                title="{{ photo.name|default:"" }} {{ photo.description|default:"" }} (<a href='{{ photo.get_absolute_url }}'>permalink</a>)" 
+                href="{% thumbnail photo.picture 700x700 %}" 
+                rel="album-photos">
+                <img src="{% thumbnail photo.picture 200x200 crop %}" />
+            </a>
+        </li>
+        {% endfor %}
+    {% endfor %}
+
+    {% comment %}
+    Pictures attached directly to this lot.
+    {% endcomment %}
+    {% for picture in pictures %}
+        <li class="picture {% cycle "odd" "even" %}">
+            <a title="{{ picture.description }}" href="{% thumbnail picture.picture 700x700 %}">
+                <img src="{% thumbnail picture.picture 200x200 crop %}" />
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+    <a class="fns-button" href="{% url organize.views.add_picture bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/photo.png" /> &nbsp;add a picture</a>
+</div>

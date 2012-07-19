@@ -1,0 +1,15 @@
+Welcome the Acres organizing community!
+
+You are now an organizer on 
+{% include "organize/mailings/lot_info_snippet.txt" %}
+This means that any time someone adds information to the lot's page, you'll get an email like this. And it means that other folks who are interested in this lot can see your contact information on its page and may reach out to you directly.
+
+STEP 1: Call the city agency listed above and on the lot's page to ask them about it. Here are some tips for your phone call: http://596acres.org/en/resources/advocacy-resources/
+
+It would be great if you would add a note to the lot's page describing what you learned about the city's plans and what you know about the community's plans so that others can build on your knowledge.
+
+You also should have received a separate email asking you to confirm that you want to be added to our mailing list - the News from the Acres. It's a weekly mailing that shares information about projects on the Acres and resources that are available to support those projects, as well as current news about the organization. We are looking forward to sharing with you!
+
+{% include "organize/mailings/mailinglist_snippet.txt" %}
+
+{% include "organize/mailings/automated_snippet.txt" %}

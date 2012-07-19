@@ -27,7 +27,7 @@ def mail_organizers(subject, message, public_no_access=False,
     _mail_multiple(
         subject,
         message,
-        [o.email for o in organizers],
+        list(set([o.email for o in organizers])),
         **kwargs
     )
 

@@ -22,7 +22,13 @@ class Organizer(models.Model):
     email = models.EmailField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
-    facebook_page = models.CharField(max_length=256, null=True, blank=True)
+    facebook_page = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
+        help_text=('The Facebook page for your organization. Please do not '
+                   'enter your personal Facebook page.'),
+    )
 
     lot = models.ForeignKey(Lot, null=True)
     added = models.DateTimeField(auto_now_add=True)

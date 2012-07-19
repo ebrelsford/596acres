@@ -1,9 +1,5 @@
 Thank you for getting involved in your community.
 
-Here's a review - STEP 1: Call the city agency listed on the lot's page to ask them about it. Here are some tips for your phone call: http://596acres.org/en/resources/advocacy-resources/
-
-And you are an organizer on
-{% include "organize/mailings/lot_info_snippet.txt" %}
 By now, you know what the city's plans are for the lot you are organizing. Sharing what you know is key to getting your community together. If you haven't yet, write a note on the lot's page describing what you have learned.
 
 Now it's time for STEPS 2 & 3!
@@ -11,6 +7,10 @@ Now it's time for STEPS 2 & 3!
 STEP 2: Make some signs describing what you know and what you want and post them on the fence of the lot.
 STEP 3: Schedule a meeting to talk with the neighbors. Make a flier for that, post it on the fence and get it into the hands of people in the neighborhood.
 
+Here's a review from earlier - STEP 1: Call the city agency listed below and on the lot's page to ask them about it. Here are some tips for your phone call: http://596acres.org/en/resources/advocacy-resources/
+
+And you are an organizer on
+{% include "organize/mailings/lot_info_snippet.txt" %}
 We'd love to hear how it goes, so stay in touch!
 
 {% include "organize/mailings/automated_snippet.txt" %}

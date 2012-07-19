@@ -3,7 +3,7 @@ from itertools import groupby
 import logging
 
 from django.conf import settings
-from django.core.mail.message import EmailMultiAlternatives
+from django.core.mail.message import EmailMessage
 from django.db.models import Count
 from django.template.loader import render_to_string
 
@@ -110,15 +110,16 @@ class Mailer(object):
         return self.add_delivery_records(recipients)
 
     def _send(self, subject, message, email_address, 
-              from_email=settings.ORGANIZERS_EMAIL, bcc=settings.MANAGERS, 
-              connection=None, fail_silently=True):
+              from_email=settings.ORGANIZERS_EMAIL, 
+              bcc=[settings.ORGANIZERS_EMAIL], connection=None, 
+              fail_silently=True):
 
         subject = subject.replace('\n', '').strip() # subject cannot contain newlines
 
         logging.debug('mailings: sending mail with subject "%s" to %s' % (subject, email_address))
         logging.debug('mailings: full text: "%s"' % message)
 
-        mail = EmailMultiAlternatives(
+        mail = EmailMessage(
             u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject),
             message,
             from_email=from_email,

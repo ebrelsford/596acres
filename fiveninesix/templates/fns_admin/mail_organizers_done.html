@@ -1,13 +1,16 @@
 {% extends "base_with_sidebar.html" %}
+{% load i18n %}
 
-{% block title %}{{ block.super }}: Email All Organizers{% endblock %}
+{% block title %}{{ block.super }}{% trans "Email All Organizers" %}{% endblock %}
 
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>Email All Organizers</h1>
+    <h1>{% trans "Email All Organizers" %}</h1>
     <div>
-        <span>Success! Email sent to all organizers. You should receive a copy of this email.</span>
+        <span>
+            {% trans "Success! Email sent to all organizers. You should receive a copy of this email." %}
+        </span>
     </div>
 </div>
 {% endblock %}

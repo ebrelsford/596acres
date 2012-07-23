@@ -1,14 +1,15 @@
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 from sorl.thumbnail import ImageField
 
 class ExternalPhotoSet(models.Model):
     """A set of photos hosted outside of our site"""
-    external_id = models.CharField(max_length=256)
-    name = models.CharField(max_length=256)
-    last_checked = models.DateTimeField()
+    external_id = models.CharField(_('external id'), max_length=256)
+    name = models.CharField(_('name'), max_length=256)
+    last_checked = models.DateTimeField(_('last checked'))
 
     class Meta:
         abstract = True
@@ -29,8 +30,8 @@ class FacebookPhotoAlbum(ExternalPhotoSet):
         return self.name
 
 class PhotoAlbum(models.Model):
-    name = models.CharField(max_length=256, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(_('name'), max_length=256, blank=True, null=True)
+    description = models.TextField(_('description'), blank=True, null=True)
 
     external_source = models.CharField(max_length=32, blank=True, null=True)
     external_id = models.CharField(max_length=256, blank=True, null=True)
@@ -38,8 +39,10 @@ class PhotoAlbum(models.Model):
 
     cover = models.ForeignKey('Photo', blank=True, null=True)
 
-    created_time = models.DateTimeField(blank=True, null=True)
-    updated_time = models.DateTimeField(blank=True, null=True)
+    created_time = models.DateTimeField(_('created time'), blank=True, 
+                                        null=True)
+    updated_time = models.DateTimeField(_('updated time'), blank=True, 
+                                        null=True)
 
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)
@@ -76,17 +79,20 @@ class PhotoAlbum(models.Model):
 
 class Photo(models.Model):
     album = models.ForeignKey(PhotoAlbum, blank=True, null=True)
-    name = models.TextField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.TextField(_('name'), blank=True, null=True)
+    description = models.TextField(_('description'), blank=True, null=True)
 
     external_source = models.CharField(max_length=32, blank=True, null=True)
     external_id = models.CharField(max_length=256, blank=True, null=True)
     external_url = models.CharField(max_length=512, blank=True, null=True)
 
-    picture = ImageField(upload_to='mirrored_pictures')
-    created_time = models.DateTimeField(blank=True, null=True)
-    updated_time = models.DateTimeField(blank=True, null=True)
-    position = models.PositiveIntegerField(blank=True, null=True)
+    picture = ImageField(_('picture'), upload_to='mirrored_pictures')
+    created_time = models.DateTimeField(_('created time'), blank=True, 
+                                        null=True)
+    updated_time = models.DateTimeField(_('updated time'), blank=True, 
+                                        null=True)
+    position = models.PositiveIntegerField(_('position'), blank=True, 
+                                           null=True)
 
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)

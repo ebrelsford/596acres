@@ -1,15 +1,18 @@
 {% extends "base_with_sidebar.html" %}
+{% load i18n %}
 
-{% block title %}Tell Us About the Lot in Your Life{% endblock %}
+{% block title %}{% trans "Tell Us About the Lot in Your Life" %}{% endblock %}
 
 {% block content_main %}
-<p>Is there an empty lot in your life that you'd like to know more about? Tell us by filling out this form and we'll look into it!</p>
+<p>
+    {% trans "Is there an empty lot in your life that you'd like to know more about? Tell us by filling out this form and we'll look into it!" %}
+</p>
 <form method="post" action=".">
     {% csrf_token %}
     <table>
     {{ form.as_table }}
     </table>
-    <input type="submit" value="submit" />
+    <input type="submit" value="{% trans "submit" %}" />
 </form>
 {% endblock %}
 

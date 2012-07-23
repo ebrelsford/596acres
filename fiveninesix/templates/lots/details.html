@@ -1,5 +1,5 @@
 {% extends "lots/base.html" %}
-{% load sekizai_tags thumbnail %}
+{% load i18n sekizai_tags thumbnail %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -63,23 +63,34 @@
         <img src="{% thumbnail photo_albums.0.get_cover_photo.picture 375x375 crop %}" />
     </div>
     {% endif %}
-    <h2>A group has access to this lot!</h2>
+    <h2>
+        {% trans "A group has access to this lot!" %}
+    </h2>
     <div>
-        <p>Learn more about the group and get involved through
+        <p>{% trans "Learn more about the group and get involved through" %}
             {% if lot.group_with_access.url %}
-            <a href="{{ lot.group_with_access.url }}">their homepage</a>,
+            <a href="{{ lot.group_with_access.url }}">
+                {% trans "their homepage" %}
+            </a>,
             {% endif %}
             {% if lot.group_with_access.facebook_page %}
-            <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">their Facebook page</a>,
+            <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">
+                {% trans "their Facebook page" %}
+            </a>,
             {% endif %}
             {% if lot.group_with_access.email %}
-            by <a href="mailto:{{ lot.group_with_access.email }}">emailing them</a>,
+            {% trans "by" %} 
+            <a href="mailto:{{ lot.group_with_access.email }}">
+                {% trans "emailing them" %}
+            </a>,
             {% endif %}
-            or walk by and say hi!
+            {% trans "or walk by and say hi" %}!
         </p>
 
-        <p>In their words:
-            <blockquote>{{ lot.group_with_access.notes|urlize|linebreaks }}</blockquote>
+        <p>{% trans "In their words" %}:
+            <blockquote>
+                {{ lot.group_with_access.notes|urlize|linebreaks }}
+            </blockquote>
         </p>
 
         {% if lot.group_with_access.facebook_page %}
@@ -90,19 +101,29 @@
 
     {% if lot.is_vacant and not lot.group_has_access %}
     <div>
-        <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> watch</a>
-        <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;"><img src="{{ MEDIA_URL }}img/users.png" /> organize</a>
-        <div>There {{ watchers_count|pluralize:"is,are" }} <span style="font-weight: bold;">{{ watchers_count }}</span> neighbor{{ watchers_count|pluralize }} watching this lot.</div>
+        <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}">
+            <img src="{{ MEDIA_URL }}img/star_fav_empty.png" />
+            {% trans "watch" %}
+        </a>
+        <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;">
+            <img src="{{ MEDIA_URL }}img/users.png" />
+            {% trans "organize" %}
+        </a>
+        <div>
+            There {{ watchers_count|pluralize:"is,are" }} 
+            <span style="font-weight: bold;">{{ watchers_count }}</span>
+            neighbor{{ watchers_count|pluralize }} watching this lot.
+        </div>
     </div>
     {% endif %}
 
     {% if not lot.is_vacant %}
     <p style="font-weight: bold;">
-        This lot isn't vacant.
+        {% trans "This lot isn't vacant." %}
         {% if 'Garden' in lot.actual_use %}
-        It is part of a community garden.
+        {% trans "It is part of a community garden." %}
         {% else %}
-        According to our research it is being used as a {{ lot.actual_use }}. Know anything more about it? <a href="{% url organize.views.add_note bbl=lot.bbl %}">Leave a note!</a>
+        {% trans "According to our research it is being used as a" %} {{ lot.actual_use }}. {% trans "Know anything more about it?" %} <a href="{% url organize.views.add_note bbl=lot.bbl %}">{% trans "Leave a note!" %}</a>
         {% endif %}
     </p>
     {% endif %}
@@ -119,45 +140,45 @@
     <div id="basics" class="section">
         <table>
             <tr>
-                <th>address</th>
+                <th>{% trans "address" %}</th>
                 <td>
                     <span>{{ l.address|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>zipcode</th>
+                <th>{% trans "zipcode" %}</th>
                 <td>
                     <span>{{ l.zipcode|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>block</th>
+                <th>{% trans "block" %}</th>
                 <td>
                     <span>{{ l.block|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>lot</th>
+                <th>{% trans "lot" %}</th>
                 <td>
                     <span>{{ l.lot|default:'' }}</span>
                 </td>
             </tr>
             <tr>
-                <th>area</th>
+                <th>{% trans "area" %}</th>
                 <td>
                     <span>
                         {% if l.area_acres %}
-                            {{ l.area_acres|floatformat:"-3" }} acres
+                        {{ l.area_acres|floatformat:"-3" }} {% trans "acres" %}
                         {% else %}
-                            unknown
+                        {% trans "unknown" %}
                         {% endif %}
                     </span>
                 </td>
             </tr>
             <tr>
-                <th>elsewhere</th>
+                <th>{% trans "elsewhere" %}</th>
                 <td class="links">
-                    <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ l.bbl }}">See this lot on OASIS</a>, a map that combines block and lot level information from a variety of government and community sources.
+                    <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ l.bbl }}">{% trans "See this lot on OASIS" %}</a>, {% trans "a map that combines block and lot level information from a variety of government and community sources." %}
                 </td>
             </tr>
         </table>
@@ -169,7 +190,7 @@
     {% endif %}
 
     <div id="owner" class="section">
-        <h2><a name="agency">agency</a></h2>
+        <h2><a name="agency">{% trans "agency" %}</a></h2>
         {% for l in lot.lots %}
         <h3>{{ l.bbl }}</h3>
 
@@ -178,15 +199,18 @@
             {% include "lots/owner_details.html" %}
             {% endwith %}
         {% else %}
-        We don't know who owns this lot.
+        {% trans "We don't know who owns this lot." %}
         {% endif %}
 
         {% endfor %}
     </div>
 
     <div id="government" class="section">
-        <h2><a name="government">government</a></h2>
-        <p>Check out <a id="democracymap-link" target="_blank" href="http://beta.democracymap.org/map/?t=0&a={{ lot.centroid.y }}%2C{{ lot.centroid.x }}">democracy map</a>, which can help you find the elected officials for the area around this lot and when the next community board meeting will happen.</p>
+        <h2><a name="government">{% trans "government" %}</a></h2>
+        <p>
+            {% trans "Check out" %} 
+            <a id="democracymap-link" target="_blank" href="http://beta.democracymap.org/map/?t=0&a={{ lot.centroid.y }}%2C{{ lot.centroid.x }}">{% trans "democracy map" %}</a>,
+            {% trans "which can help you find the elected officials for the area around this lot and when the next community board meeting will happen." %}</p>
     </div>
 
     <div id="organize" class="section">
@@ -196,9 +220,9 @@
             {% endif %}
             <a name="organize">
                 {% if not lot.group_has_access %}
-                organize
+                {% trans "organize" %}
                 {% else %}
-                organizing history
+                {% trans "organizing history" %}
                 {% endif %}
             </a>
         </h2>
@@ -206,17 +230,23 @@
             {% if not lot.is_vacant %}
             {% comment %}TODO and actual_use starts with Garden!{% endcomment %}
                 {% if 'Garden' in lot.actual_use %}
-                <p>This lot is part of a community garden! It's already organized.</p>
-                <p>If you would like to become a part of the garden, please drop by and introduce yourself.</p>
+                <p>
+                    {% trans "This lot is part of a community garden! It's already organized." %}
+                </p>
+                <p>
+                    {% trans "If you would like to become a part of the garden, please drop by and introduce yourself." %}
+                </p>
                 {% else %}
-                <p>This lot is in use, so there probably isn't much use in organizing here.</p>
+                <p>
+                    {% trans "This lot is in use, so there probably isn't much use in organizing here." %}
+                </p>
                 {% endif %}
             {% else %}
             <div>
                 {% if not lot.group_has_access %}
-                Currently organizing here:
+                {% trans "Currently organizing here" %}:
                 {% else %}
-                Organizers:
+                {% trans "Organizers" %}:
                 {% endif %}
                 <ul>
                 {% for organizer in organizers %}
@@ -228,19 +258,19 @@
                         </div>
                         <table>
                             <tr>
-                                <th>name</th>
+                                <th>{% trans "name" %}</th>
                                 <td>
                                     <span>{{ organizer.name }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>type</th>
+                                <th>{% trans "type" %}</th>
                                 <td>
                                     <span>{{ organizer.type }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>site</th>
+                                <th>{% trans "site" %}</th>
                                 <td>
                                     <span>
                                     {% if organizer.url %}
@@ -250,13 +280,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>phone</th>
+                                <th>{% trans "phone" %}</th>
                                 <td>
                                     <span>{{ organizer.phone|default:"" }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>email</th>
+                                <th>{% trans "email" %}</th>
                                 <td>
                                     <span>
                                     {% if organizer.email %}
@@ -266,7 +296,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>notes</th>
+                                <th>{% trans "notes" %}</th>
                                 <td>
                                     <span>{{ organizer.notes|urlize|linebreaks }}</span>
                                 </td>
@@ -277,13 +307,15 @@
                         {% endif %}
                     </li>
                 {% empty %}
-                No one yet.
+                {% trans "No one yet" %}.
                 {% endfor %}
                 </ul>
             </div>
                 {% if not lot.group_has_access %}
                 <div>
-                    <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/users.png" /> &nbsp;organize in this lot</a>
+                    <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/users.png" />
+                        &nbsp;{% trans "organize in this lot" %}
+                    </a>
                 </div>
                 {% endif %}
             {% endif %}
@@ -294,18 +326,24 @@
             {% if lot.group_has_access %}
             <span class="icon"></span>
             {% endif %}
-            <a name="notes">notes</a>
+            <a name="notes">{% trans "notes" %}</a>
         </h2>
         <div class="{% if lot.group_has_access %}expandee{% endif %}">
             <ul class="notes">
             {% for note in notes %}
                 <li class="note {% cycle "odd" "even" %}">
-                <span class="head">On {{ note.added|date:"F d, Y" }}, at {{ note.added|time:"g:ia" }}, {{ note.noter }} said:</span>
+                <span class="head">
+                    {% blocktrans with day=note.added|date:"F d, Y" timeofday=note.added|time:"g:ia" noter=note.noter %}
+                    On {{ day }}, at {{ timeofday }}, {{ noter }} said:
+                    {% endblocktrans %}
+                </span>
                 {{ note.text|urlize|linebreaks }}
                 </li>
             {% endfor %}
             </ul>
-            <a class="fns-button" href="{% url organize.views.add_note bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/spechbubble_16.png" /> &nbsp;add a note</a>
+            <a class="fns-button" href="{% url organize.views.add_note bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/spechbubble_16.png" />
+                &nbsp;{% trans "add a note" %}
+            </a>
         </div>
     </div>
 

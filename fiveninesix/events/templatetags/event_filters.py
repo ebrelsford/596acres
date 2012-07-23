@@ -3,6 +3,7 @@ from datetime import timedelta
 from django import template
 from django.utils.dateformat import format
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 register = template.Library()
 
@@ -20,7 +21,13 @@ def eventdate(value, arg=None):
 
     # most common case
     if not all_day:
-        out = '%s from %s to %s' % (_html_format_day(start, full=full), _html_format_time(start, 'start'), _html_format_time(end, 'end'))
+        out = '%s %s %s %s %s' % (
+            _html_format_day(start, full=full),
+            _('from'),
+            _html_format_time(start, 'start'),
+            _('to'),
+            _html_format_time(end, 'end'),
+        )
     else:
         out = ''
         if start == end:
@@ -28,7 +35,11 @@ def eventdate(value, arg=None):
             out = _html_format_day(start, full=full)
         else:
             # all day for a series of days, just show endpoints
-            out = '%s through %s' % (_html_format_day(start, full=full), _html_format_day(end, full=full))
+            out = '%s %s %s' % (
+                _html_format_day(start, full=full),
+                _('through'),
+                _html_format_day(end, full=full),
+            )
     return mark_safe(out)
 
 def _html_format_time(dt, type='start'):

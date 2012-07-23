@@ -1,0 +1,285 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-25 16:50-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: dashboard.py:49
+msgid "Applications"
+msgstr ""
+
+#: dashboard.py:55
+msgid "Administration"
+msgstr ""
+
+#: dashboard.py:60
+msgid "Recent Actions"
+msgstr ""
+
+#: settings_base.py:13
+msgid "English"
+msgstr ""
+
+#: settings_base.py:14
+msgid "Spanish"
+msgstr ""
+
+#: about/menu.py:9
+msgid "about menu"
+msgstr ""
+
+#: about/menu.py:13
+msgid "Previous Events"
+msgstr ""
+
+#: about/menu.py:15
+msgid "Acres in Pictures"
+msgstr ""
+
+#: accounts/forms.py:35
+#, python-format
+msgid "Password reset on %s"
+msgstr ""
+
+#: contact/cms_app.py:6
+msgid "Contact Apphook"
+msgstr ""
+
+#: events/cms_app.py:6
+msgid "Events Apphook"
+msgstr ""
+
+#: events/cms_plugins.py:12
+msgid "Upcoming Events"
+msgstr ""
+
+#: facebook/cms_plugins.py:10
+msgid "Facebook Photos"
+msgstr ""
+
+#: facebook/cms_plugins.py:24
+msgid "Facebook Likebox"
+msgstr ""
+
+#: fns_admin/cms_app.py:6
+msgid "596 Admin Apphook"
+msgstr ""
+
+#: fns_admin/menu.py:9
+msgid "fns_admin menu"
+msgstr ""
+
+#: fns_admin/menu.py:13
+msgid "Email All Organizers"
+msgstr ""
+
+#: fns_admin/menu.py:14
+msgid "Add News"
+msgstr ""
+
+#: getinvolved/menu.py:9
+msgid "get involved menu"
+msgstr ""
+
+#: getinvolved/menu.py:13
+msgid "Tell Us About the Lot in Your Life"
+msgstr ""
+
+#: getinvolved/menu.py:15
+msgid "Come to an Upcoming Event"
+msgstr ""
+
+#: getinvolved/menu.py:17
+msgid "Work With Us"
+msgstr ""
+
+#: legend/cms_plugins.py:9
+msgid "Map Legend"
+msgstr ""
+
+#: lots/cms_app.py:6
+msgid "Lots Apphook"
+msgstr ""
+
+#: news/cms_app.py:6
+msgid "News Apphook"
+msgstr ""
+
+#: news/menu.py:9
+msgid "news menu"
+msgstr ""
+
+#: news/menu.py:16
+msgid "New Tools"
+msgstr ""
+
+#: news/menu.py:17
+msgid "Announcements"
+msgstr ""
+
+#: news/menu.py:18 templates/news/newsletter_archive.html:5
+msgid "News from the Acres"
+msgstr ""
+
+#: news/menu.py:20
+msgid "Archive"
+msgstr ""
+
+#: news/views.py:22
+msgid "tagged_object_list must be called with a tag."
+msgstr ""
+
+#: newsletter/cms_plugins.py:10
+msgid "Mailchimp Signup"
+msgstr ""
+
+#: organize/cms_plugins.py:9
+msgid "Organizing Tally"
+msgstr ""
+
+#: photos/cms_app.py:6
+msgid "Photos Apphook"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:3
+msgid "Change a page"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:82
+msgid "Home"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:85
+msgid "Add"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:91
+msgid "Approve page deletion"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:97
+#, python-format
+msgid "(requires approvement at %(moderation_level)s level)"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:98
+msgid "(you can perform actions on this page directly)"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:111
+msgid "Remove delete request"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:113
+msgid "Approve delete"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:113
+msgid "Approve"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:113
+#: templates/admin/cms/page/change_form.html:114
+msgid "draft"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:114
+msgid "Preview"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:117
+msgid "History"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:118
+msgid "View on site"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:148
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/cms/page/change_form.html:168
+msgid "All permissions"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:169
+#: templates/admin/cms/page/change_form.html:181
+msgid "Loading..."
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:180
+msgid "Page states"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:203
+#, python-format
+msgid ""
+"This page must be moderated at level %(moderation_level)s, post a message "
+"for moderator."
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:205
+msgid "Request approvemet"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:292
+msgid "Save"
+msgstr ""
+
+#: templates/admin/cms/page/change_form.html:293
+msgid "Save and continue editing"
+msgstr ""
+
+#: templates/cmsplugin_blog/entry_archive.html:5
+#: templates/cmsplugin_blog/entry_detail.html:7
+#: templates/cmsplugin_blog/entry_list.html:10
+msgid "News"
+msgstr ""
+
+#: templates/cmsplugin_blog/entry_archive_day.html:4
+#: templates/cmsplugin_blog/entry_archive_day.html:8
+#: templates/cmsplugin_blog/entry_archive_month.html:4
+#: templates/cmsplugin_blog/entry_archive_month.html:8
+#: templates/cmsplugin_blog/entry_archive_year.html:5
+#: templates/cmsplugin_blog/entry_archive_year.html:9
+msgid "News for"
+msgstr ""
+
+#: templates/cmsplugin_blog/entry_list_snippet.html:33
+#: templates/cmsplugin_blog/latest_entries.html:26
+#: templates/news/newsletter_archive.html:31
+msgid "No news"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:15
+msgid "You're receiving this e-mail because you requested a password reset"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:16
+#, python-format
+msgid "for your user account at %(site_name)s"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:19
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:25
+msgid "Your username:"
+msgstr ""

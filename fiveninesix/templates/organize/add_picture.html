@@ -1,24 +1,18 @@
 {% extends "lots/base.html" %}
+{% load i18n %}
 
-{% block title %}{{ block.super }}: Add picture{% endblock %}
+{% block title %}{{ block.super }}: {% trans "Add picture" %}{% endblock %}
 
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>Add picture</h1>
-    <h2><a href="{% url lots.views.details bbl=lot.bbl %}">{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</a></h2>
+    <h1>{% trans "Add picture" %}</h1>
+    <h2>
+        {% include "organize/block_link_snippet.html" %}
+    </h2>
     <div>
-        <span>Please enter your picture below.</span>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
-            <input type="submit" value="submit" />
-        </form>
+        <span>{% trans "Please enter your picture below." %}</span>
+        {% include "organize/form_snippet.html" %}
     </div>
 </div>
 {% endblock %}
-
-
-

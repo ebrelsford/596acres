@@ -1,12 +1,17 @@
 {% extends "base_with_sidebar.html" %}
+{% load i18n %}
 
-{% block title %}{{ block.super }}Events: {% endblock %}
+{% block title %}{{ block.super }}{% trans "Events" %}: {% endblock %}
 
 {% block breadcrumbs %}
 <div id="breadcrumbs">
     <ul>
-        <li><a href="/">Home</a> &raquo;</li>
-        <li><a href="{% url events_event_list %}">Events</a> &raquo;</li>
+        <li>
+            <a href="/">{% trans "Home" %}</a> &raquo;
+        </li>
+        <li>
+            <a href="{% url events_event_list %}">{% trans "Events" %}</a> &raquo;
+        </li>
         {% block page_breadcrumb %}{% endblock %}
     </ul>
 </div>

@@ -1,10 +1,10 @@
 {% extends "photos/base.html" %}
-{% load thumbnail %}
+{% load i18n thumbnail %}
 
-{% block title %}{{ block.super }} Albums{% endblock %}
+{% block title %}{{ block.super }} {% trans "Albums" %}{% endblock %}
 
 {% block page_breadcrumb %}
-<li>Albums</li>
+<li>{% trans "Albums" %}</li>
 {% endblock %}
 
 {% block content_main %}

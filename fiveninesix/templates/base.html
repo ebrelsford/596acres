@@ -1,9 +1,9 @@
-{% load cache cms_tags menu_tags sekizai_tags %}
+{% load cache cms_tags i18n menu_tags sekizai_tags %}
 
 <!doctype html>
 <head>
     <title>
-        596 Acres: {% block title %}{% endblock %}
+        {% trans "596 Acres" %}: {% block title %}{% endblock %}
     </title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js" type="text/javascript"></script>

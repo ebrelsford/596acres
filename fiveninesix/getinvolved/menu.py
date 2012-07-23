@@ -11,9 +11,9 @@ class GetInvolvedMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = [
             NavigationNode(_('Tell Us About the Lot in Your Life'),
-                           reverse('contact.views.lot_info'), 2),
+                           reverse('en:contact.views.lot_info'), 2),
             NavigationNode(_('Come to an Upcoming Event'),
-                           reverse('events_event_list'), 3),
+                           reverse('en:events_event_list'), 3),
             NavigationNode(_('Work With Us'),
                            reverse('blog_archive_tagged_paginated', 
                                    kwargs={ 'tag': 'opportunities'}), 4),

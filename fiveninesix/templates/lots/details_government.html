@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<div id="government" class="section">
+    <h2><a name="government">{% trans "government" %}</a></h2>
+    <p>
+        {% trans "Check out" %} 
+        <a id="democracymap-link" target="_blank" href="http://beta.democracymap.org/map/?t=0&a={{ lot.centroid.y }}%2C{{ lot.centroid.x }}">{% trans "democracy map" %}</a>,
+        {% trans "which can help you find the elected officials for the area around this lot and when the next community board meeting will happen." %}</p>
+</div>

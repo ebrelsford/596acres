@@ -1,0 +1,41 @@
+{% load i18n thumbnail %}
+
+{% if photo_albums %}
+<div>
+    <img src="{% thumbnail photo_albums.0.get_cover_photo.picture 375x375 crop %}" />
+</div>
+{% endif %}
+<h2>
+    {% trans "A group has access to this lot!" %}
+</h2>
+<div>
+    <p>{% trans "Learn more about the group and get involved through" %}
+        {% if lot.group_with_access.url %}
+        <a href="{{ lot.group_with_access.url }}">
+            {% trans "their homepage" %}
+        </a>,
+        {% endif %}
+        {% if lot.group_with_access.facebook_page %}
+        <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">
+            {% trans "their Facebook page" %}
+        </a>,
+        {% endif %}
+        {% if lot.group_with_access.email %}
+        {% trans "by" %} 
+        <a href="mailto:{{ lot.group_with_access.email }}">
+            {% trans "emailing them" %}
+        </a>,
+        {% endif %}
+        {% trans "or walk by and say hi" %}!
+    </p>
+
+    <p>{% trans "In their words" %}:
+        <blockquote>
+            {{ lot.group_with_access.notes|urlize|linebreaks }}
+        </blockquote>
+    </p>
+
+    {% if lot.group_with_access.facebook_page %}
+    <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border: none; overflow: hidden; width: 399px; height: 395px; padding-top: 10px;" src="http://www.facebook.com/plugins/likebox.php?href={{ "http://facebook.com/"|add:lot.group_with_access.facebook_page|urlencode:"" }}&amp;width=398&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=395"></iframe>
+    {% endif %}
+</div>

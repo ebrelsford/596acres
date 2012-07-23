@@ -1,0 +1,48 @@
+{% load i18n %}
+
+<div id="basics" class="section">
+    <table>
+        <tr>
+            <th>{% trans "address" %}</th>
+            <td>
+                <span>{{ lot.address|default:'' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <th>{% trans "zipcode" %}</th>
+            <td>
+                <span>{{ lot.zipcode|default:'' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <th>{% trans "block" %}</th>
+            <td>
+                <span>{{ lot.block|default:'' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <th>{% trans "lot" %}</th>
+            <td>
+                <span>{{ lot.lot|default:'' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <th>{% trans "area" %}</th>
+            <td>
+                <span>
+                    {% if lot.area_acres %}
+                    {{ lot.area_acres|floatformat:"-3" }} {% trans "acres" %}
+                    {% else %}
+                    {% trans "unknown" %}
+                    {% endif %}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>{% trans "elsewhere" %}</th>
+            <td class="links">
+                <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ lot.bbl }}">{% trans "See this lot on OASIS" %}</a>, {% trans "a map that combines block and lot level information from a variety of government and community sources." %}
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,110 @@
+{% load i18n %}
+
+<div id="organize" class="section">
+    <h2 class="{% if lot.group_has_access %}expander{% endif %}">
+        {% if lot.group_has_access %}
+        <span class="icon"></span>
+        {% endif %}
+        <a name="organize">
+            {% if not lot.group_has_access %}
+            {% trans "organize" %}
+            {% else %}
+            {% trans "organizing history" %}
+            {% endif %}
+        </a>
+    </h2>
+    <div class="{% if lot.group_has_access %}expandee{% endif %}">
+        {% if not lot.is_vacant %}
+        {% comment %}TODO and actual_use starts with Garden!{% endcomment %}
+            {% if 'Garden' in lot.actual_use %}
+            <p>
+                {% trans "This lot is part of a community garden! It's already organized." %}
+            </p>
+            <p>
+                {% trans "If you would like to become a part of the garden, please drop by and introduce yourself." %}
+            </p>
+            {% else %}
+            <p>
+                {% trans "This lot is in use, so there probably isn't much use in organizing here." %}
+            </p>
+            {% endif %}
+        {% else %}
+        <div>
+            {% if not lot.group_has_access %}
+            {% trans "Currently organizing here" %}:
+            {% else %}
+            {% trans "Organizers" %}:
+            {% endif %}
+            <ul>
+            {% for organizer in organizers %}
+                <li class="organizer{% if forloop.last %} last{% endif %}">
+                    <div class="actions">
+                        <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}">
+                            <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />
+                        </a>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>{% trans "name" %}</th>
+                            <td>
+                                <span>{{ organizer.name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "type" %}</th>
+                            <td>
+                                <span>{{ organizer.type }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "site" %}</th>
+                            <td>
+                                <span>
+                                {% if organizer.url %}
+                                <a href="{{ organizer.url }}" target="_blank">{{ organizer.url }}</a>
+                                {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "phone" %}</th>
+                            <td>
+                                <span>{{ organizer.phone|default:"" }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "email" %}</th>
+                            <td>
+                                <span>
+                                {% if organizer.email %}
+                                <a href="mailto:{{ organizer.email }}" target="_blank">{{ organizer.email }}</a>
+                                {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "notes" %}</th>
+                            <td>
+                                <span>{{ organizer.notes|urlize|linebreaks }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                    {% if organizer.facebook_page %}
+                        <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border: none; overflow: hidden; width: 299px; height: 395px; padding-left: 50px; padding-top: 10px;" src="http://www.facebook.com/plugins/likebox.php?href={{ "http://facebook.com/"|add:organizer.facebook_page|urlencode:"" }}&amp;width=298&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=395"></iframe>
+                    {% endif %}
+                </li>
+            {% empty %}
+            {% trans "No one yet" %}.
+            {% endfor %}
+            </ul>
+        </div>
+            {% if not lot.group_has_access %}
+            <div>
+                <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/users.png" />
+                    &nbsp;{% trans "organize in this lot" %}
+                </a>
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

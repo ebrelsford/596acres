@@ -1,0 +1,9 @@
+{% load i18n %}
+
+{% if lot.owner %}
+    {% with owner=lot.owner owner_contact=lot.owner_contact %}
+    {% include "lots/owner_details.html" %}
+    {% endwith %}
+{% else %}
+{% trans "We don't know who owns this lot." %}
+{% endif %}

@@ -35,6 +35,8 @@ lot: %s
 
 def _get_watcher_message(lot, obj_msg, obj_url_suffix=''):
     details_url = BASE_URL + reverse('lots.views.details', kwargs={ 'bbl': lot.bbl }) + obj_url_suffix
+
+    # TODO render from templates
     return """Greetings from 596 Acres. There has been a change to a lot you are watching.
 
 %s
@@ -45,6 +47,8 @@ def _get_organizer_message(lot, obj_msg, obj_url_suffix=''):
     details_url = (BASE_URL + 
                    reverse('lots.views.details', kwargs={ 'bbl': lot.bbl }) + 
                    obj_url_suffix)
+
+    # TODO render from templates
     return """Greetings from 596 Acres. There has been a change to a lot you are organizing.
 
 %s

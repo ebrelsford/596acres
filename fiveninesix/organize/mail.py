@@ -33,9 +33,9 @@ def mail_organizers(subject, message, public_no_access=False,
 
 def mail_lot_organizers(lot, subject, message, exclude=[], **kwargs):
     """
-    Sends a message to organizers of a given lot.
+    Sends a message to organizers of a given lot or group of lots.
     """
-    organizers = Organizer.objects.filter(lot=lot, email__isnull=False)
+    organizers = Organizer.objects.filter(lot__in=lot.lots, email__isnull=False)
     _mail_multiple(
         subject,
         message,
@@ -44,8 +44,10 @@ def mail_lot_organizers(lot, subject, message, exclude=[], **kwargs):
     )
 
 def mail_watchers(lot, subject, message, **kwargs):             
-    """Sends a message to watchers of a given lot."""
-    watchers = Watcher.objects.filter(lot=lot, email__isnull=False)
+    """
+    Sends a message to watchers of a given lot or group of lots.
+    """
+    watchers = Watcher.objects.filter(lot__in=lot.lots, email__isnull=False)
     messages = {}
     for watcher in watchers:
         edit_url = settings.BASE_URL + watcher.get_edit_url()

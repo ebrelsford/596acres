@@ -130,6 +130,9 @@ def _filter_lots(request):
     mapped_lots = Lot.objects.filter(centroid__isnull=False)
     lots = mapped_lots
 
+    # TODO option to just get parents:
+    #  parent_lot__isnull=True
+
     try:
         lot_types = request.GET['lot_types'].split(',')
     except:

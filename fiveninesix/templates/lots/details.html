@@ -48,7 +48,10 @@
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}</h1>
+    <h1>
+        {{ lot.lots|length }} lots near
+        {{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}
+    </h1>
 
     {% if perms.lot.change_lot %}
     <a href="{% url admin:lots_lot_change lot.pk %}">edit this lot</a>
@@ -104,38 +107,47 @@
     </p>
     {% endif %}
 
+    {% if lot.children.count > 0 %}
+    <p>
+    There are {{ lot.lots|length }} lots at this site. Anything you add to
+    this site will apply to the lots as a whole. Here are the details for each:
+    </p>
+    {% endif %}
+
+    {% for l in lot.lots %}
+    <h2>{{ l.borough }}, block {{ l.block }}, lot {{ l.lot }}</h2>
     <div id="basics" class="section">
         <table>
             <tr>
                 <th>address</th>
                 <td>
-                    <span>{{ lot.address|default:'' }}</span>
+                    <span>{{ l.address|default:'' }}</span>
                 </td>
             </tr>
             <tr>
                 <th>zipcode</th>
                 <td>
-                    <span>{{ lot.zipcode|default:'' }}</span>
+                    <span>{{ l.zipcode|default:'' }}</span>
                 </td>
             </tr>
             <tr>
                 <th>block</th>
                 <td>
-                    <span>{{ lot.block|default:'' }}</span>
+                    <span>{{ l.block|default:'' }}</span>
                 </td>
             </tr>
             <tr>
                 <th>lot</th>
                 <td>
-                    <span>{{ lot.lot|default:'' }}</span>
+                    <span>{{ l.lot|default:'' }}</span>
                 </td>
             </tr>
             <tr>
                 <th>area</th>
                 <td>
                     <span>
-                        {% if lot.area_acres %}
-                            {{ lot.area_acres|floatformat:"-3" }} acres
+                        {% if l.area_acres %}
+                            {{ l.area_acres|floatformat:"-3" }} acres
                         {% else %}
                             unknown
                         {% endif %}
@@ -145,11 +157,12 @@
             <tr>
                 <th>elsewhere</th>
                 <td class="links">
-                    <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ lot.bbl }}">See this lot on OASIS</a>, a map that combines block and lot level information from a variety of government and community sources.
+                    <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ l.bbl }}">See this lot on OASIS</a>, a map that combines block and lot level information from a variety of government and community sources.
                 </td>
             </tr>
         </table>
     </div>
+    {% endfor %}
 
     {% if lot.group_has_access %}
     {% include "lots/pictures_details.html" %}
@@ -157,13 +170,18 @@
 
     <div id="owner" class="section">
         <h2><a name="agency">agency</a></h2>
-        {% if lot.owner %}
-            {% with owner=lot.owner owner_contact=lot.owner_contact %}
+        {% for l in lot.lots %}
+        <h3>{{ l.bbl }}</h3>
+
+        {% if l.owner %}
+            {% with owner=l.owner owner_contact=l.owner_contact %}
             {% include "lots/owner_details.html" %}
             {% endwith %}
         {% else %}
         We don't know who owns this lot.
         {% endif %}
+
+        {% endfor %}
     </div>
 
     <div id="government" class="section">

@@ -11,6 +11,8 @@ from settings import FILE_UPLOAD_TEMP_DIR, BASE_URL
 
 class Lot(models.Model):
     objects = models.GeoManager()
+    parent_lot = models.ForeignKey('self', related_name='children', blank=True,
+                                   null=True)
 
     address = models.CharField(max_length=256, null=True, blank=True)
     borough = models.CharField(max_length=32, null=True, blank=True)
@@ -66,6 +68,17 @@ class Lot(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('en:lots.views.details', (), { 'bbl': self.bbl })
+
+    def _get_lots(self):
+        """
+        Get the lots at this lot that make up a site. This includes this lot
+        and the child lots of this lot (and the child lots of those lots...).
+        """
+        lots = [self]
+        for child in self.children.all():
+            lots += child.lots
+        return lots
+    lots = property(_get_lots)
 
     def generate_qrcode(self, force=False):
         if self.qrcode and not force:
@@ -217,10 +230,6 @@ class Alias(models.Model):
 
     def __unicode__(self):
         return '%s -> %s' % (self.name, self.lot.bbl)
-
-class LotGroup(models.Model):
-    name = models.CharField(max_length=256)
-    lots = models.ManyToManyField(Lot)
 
 class Review(models.Model):
     """

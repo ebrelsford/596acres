@@ -30,6 +30,7 @@ class LotAdmin(admin.ModelAdmin):
         ('Advanced Details', {
             'classes': ('collapse',),
             'fields': (
+                'parent_lot',
                 ('block', 'lot',),
                 ('school_district', 'fire_comp', 'health_area', 'health_ctr'),
                 'police_precinct',

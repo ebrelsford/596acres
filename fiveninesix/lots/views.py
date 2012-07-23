@@ -210,6 +210,12 @@ def owners_json(request):
 
 def details(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
+
+    # if lot has a parent (and on...), redirect to that
+    l = lot.get_oldest_ancestor()
+    if l != lot:
+        return redirect('lots.views.details', bbl=l.bbl)
+
     review = Review.objects.filter(lot=lot).order_by('-added')
     if review:
         review = review[0]

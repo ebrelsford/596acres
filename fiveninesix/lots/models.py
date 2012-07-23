@@ -88,6 +88,16 @@ class Lot(models.Model):
         return lots
     lots = property(_get_lots)
 
+    def get_oldest_ancestor(self):
+        """
+        Get the oldest (top-most) ancestor of this lot. Returns this lot if 
+        the lot has no parents. Assumes that each lot has one or zero parents.
+        """
+        ancestor = self
+        while ancestor.parent_lot:
+            ancestor = ancestor.parent_lot
+        return ancestor
+
     def generate_qrcode(self, force=False):
         if self.qrcode and not force:
             return

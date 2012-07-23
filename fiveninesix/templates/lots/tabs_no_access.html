@@ -82,7 +82,7 @@
 
 <div class="lot-link-container">
     <h1>
-        {{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}
+        {{ lot.borough }} {% trans "block" %} {{ lot.block }}, {% trans "lot" %} {{ lot.lot }}
         <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" />
             {% trans "watch" %}
         </a>

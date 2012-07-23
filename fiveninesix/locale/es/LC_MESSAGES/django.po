@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-20 11:40-0400\n"
+"POT-Creation-Date: 2012-07-23 11:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,13 +198,17 @@ msgid "bbl"
 msgstr ""
 
 #: lots/models.py:21 templates/lots/details.html:143
-#: templates/lots/tabs_no_access.html:7 templates/lots/tabs_no_access.html:133
+#: templates/lots/tabs_group_has_access.html:5
+#: templates/lots/tabs_no_access.html:7 templates/lots/tabs_no_access.html:85
+#: templates/lots/tabs_no_access.html:133
 #: templates/organize/block_link_snippet.html:5
 msgid "block"
 msgstr "bloque"
 
 #: lots/models.py:22 templates/lots/details.html:149
-#: templates/lots/tabs_no_access.html:7 templates/lots/tabs_no_access.html:139
+#: templates/lots/tabs_group_has_access.html:5
+#: templates/lots/tabs_no_access.html:7 templates/lots/tabs_no_access.html:85
+#: templates/lots/tabs_no_access.html:139
 #: templates/organize/block_link_snippet.html:6
 msgid "lot"
 msgstr "lote"
@@ -598,7 +602,7 @@ msgid "thanks, now let me look at the map"
 msgstr ""
 
 #: templates/cmsplugin_blog/entry_archive.html:5
-#: templates/cmsplugin_blog/entry_detail.html:7
+#: templates/cmsplugin_blog/entry_detail.html:6
 #: templates/cmsplugin_blog/entry_list.html:10
 msgid "News"
 msgstr ""
@@ -607,8 +611,8 @@ msgstr ""
 #: templates/cmsplugin_blog/entry_archive_day.html:8
 #: templates/cmsplugin_blog/entry_archive_month.html:4
 #: templates/cmsplugin_blog/entry_archive_month.html:8
-#: templates/cmsplugin_blog/entry_archive_year.html:5
-#: templates/cmsplugin_blog/entry_archive_year.html:9
+#: templates/cmsplugin_blog/entry_archive_year.html:4
+#: templates/cmsplugin_blog/entry_archive_year.html:8
 msgid "News for"
 msgstr ""
 
@@ -618,11 +622,11 @@ msgstr ""
 msgid "No news"
 msgstr ""
 
-#: templates/cmsplugin_blog/pagination_snippet.html:6
+#: templates/cmsplugin_blog/pagination_snippet.html:8
 msgid "Page"
 msgstr ""
 
-#: templates/cmsplugin_blog/pagination_snippet.html:6
+#: templates/cmsplugin_blog/pagination_snippet.html:8
 msgid "of"
 msgstr ""
 
@@ -713,15 +717,15 @@ msgstr ""
 msgid "A group has access to this lot!"
 msgstr ""
 
-#: templates/lots/details.html:67 templates/lots/tabs_group_has_access.html:11
+#: templates/lots/details.html:67 templates/lots/tabs_group_has_access.html:14
 msgid "Learn more about the group and get involved through"
 msgstr ""
 
-#: templates/lots/details.html:70 templates/lots/tabs_group_has_access.html:13
+#: templates/lots/details.html:70 templates/lots/tabs_group_has_access.html:16
 msgid "their homepage"
 msgstr ""
 
-#: templates/lots/details.html:75 templates/lots/tabs_group_has_access.html:18
+#: templates/lots/details.html:75 templates/lots/tabs_group_has_access.html:21
 msgid "their Facebook page"
 msgstr ""
 
@@ -733,7 +737,7 @@ msgstr ""
 msgid "emailing them"
 msgstr ""
 
-#: templates/lots/details.html:84 templates/lots/tabs_group_has_access.html:28
+#: templates/lots/details.html:84 templates/lots/tabs_group_has_access.html:31
 msgid "or walk by and say hi"
 msgstr ""
 
@@ -881,19 +885,19 @@ msgstr ""
 msgid "contact"
 msgstr "contacto"
 
-#: templates/lots/tabs_group_has_access.html:9
+#: templates/lots/tabs_group_has_access.html:12
 msgid "A group has access to this lot"
 msgstr ""
 
-#: templates/lots/tabs_group_has_access.html:24
+#: templates/lots/tabs_group_has_access.html:27
 msgid "by emailing them"
 msgstr ""
 
-#: templates/lots/tabs_group_has_access.html:32
+#: templates/lots/tabs_group_has_access.html:35
 msgid "There is also more information about this lot on"
 msgstr ""
 
-#: templates/lots/tabs_group_has_access.html:34
+#: templates/lots/tabs_group_has_access.html:37
 msgid "its page"
 msgstr ""
 

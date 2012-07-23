@@ -1,6 +1,9 @@
 {% load i18n thumbnail %}
 
-<h1>{{ lot.borough }}: block {{ lot.block }}, lot {{ lot.lot }}</h1>
+<h1>
+    {{ lot.borough }}
+    {% trans "block" %} {{ lot.block }}, {% trans "lot" %} {{ lot.lot }}
+</h1>
 
 <div>
     <img src="{% thumbnail photo.picture 150x150 crop %}" />

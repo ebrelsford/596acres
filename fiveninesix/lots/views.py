@@ -130,9 +130,6 @@ def _filter_lots(request):
     mapped_lots = Lot.objects.filter(centroid__isnull=False)
     lots = mapped_lots
 
-    # TODO option to just get parents:
-    #  parent_lot__isnull=True
-
     try:
         lot_types = request.GET['lot_types'].split(',')
     except:
@@ -173,6 +170,8 @@ def _filter_lots(request):
                 lots = Lot.objects.none()
         else:
             lots = lots.filter(bbl__in=bbls)
+    if request.GET.get('parents_only', 'false') == 'true':
+        lots = lots.filter(parent_lot__isnull=True)
     if 'min_area' in request.GET:
         lots = lots.filter(area_acres__gte=request.GET['min_area'])
     if 'max_area' in request.GET:
@@ -394,4 +393,5 @@ def _is_base_geojson_request(GET):
     if any([GET.get(x, False) for x in non_base_params]):
         return False
     return (GET.get('lot_types', '') == 'vacant,organizing,accessed,private_accessed' and
-            GET.get('boroughs', '') == 'Brooklyn,Manhattan,Queens')
+            GET.get('boroughs', '') == 'Brooklyn,Manhattan,Queens' and
+            GET.get('parents_only', 'false') == 'true')

@@ -14,6 +14,7 @@ var LotMap = {
     max_area: null,
     selectedAgency: null,
     lot_types: ['vacant','organizing','accessed','private_accessed'],
+    parents_only: true,
 
     //
     // styles
@@ -271,6 +272,7 @@ var LotMap = {
         filters = {
             'boroughs': this.boroughs.join(','),
             'lot_types': this.lot_types.join(','),
+            'parents_only': this.parents_only,
             'lat': Math.round(center.lat * 10000) / 10000.0,
             'lon': Math.round(center.lon * 10000) / 10000.0,
             'z': this.olMap.getZoom(),
@@ -644,6 +646,9 @@ var LotMap = {
         }
         if (this.lot_types) {
             extraParameters += '&lot_types=' + this.lot_types.join(',');
+        }
+        if (this.parents_only) {
+            extraParameters += '&parents_only=' + this.parents_only;
         }
         return this.options.queryString + extraParameters;
     },

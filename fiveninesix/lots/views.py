@@ -251,7 +251,7 @@ def _lot_feature(lot, recent_changes):
         change = recent_changes[lot.id].recent_change_label()
 
     try:
-        area = round(float(lot.area_acres), 3)
+        area = round(float(lot.lots_area_acres), 3)
     except:
         area = 0
     properties={

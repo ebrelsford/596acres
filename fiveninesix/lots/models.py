@@ -88,6 +88,14 @@ class Lot(models.Model):
         return lots
     lots = property(_get_lots)
 
+    def _get_lots_acreage(self):
+        """
+        Get the total acreage for the lots in this lot's group, defaulting
+        to the acreage of this lot if there is no group.
+        """
+        return sum([l.area_acres for l in self.lots])
+    lots_area_acres = property(_get_lots_acreage)
+
     def get_oldest_ancestor(self):
         """
         Get the oldest (top-most) ancestor of this lot. Returns this lot if 

@@ -80,6 +80,18 @@ CMS_HIDE_UNTRANSLATED = False
 
 CMSPLUGIN_BLOG_PLACEHOLDERS = ('main',)
 
+CMS_PLACEHOLDER_CONF = {
+    'main': {
+        'language_fallback': 'en',
+    },
+    'sidebar': {
+        'language_fallback': 'en',
+    },
+    'footer': {
+        'language_fallback': 'en',
+    },
+}
+
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (

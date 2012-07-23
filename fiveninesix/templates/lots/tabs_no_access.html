@@ -2,9 +2,16 @@
 
 {% if is_mobile %}
 <div class="lot-link-container">
-    <h1>{{ lot.borough }}:<br />block {{ lot.block }}, lot {{ lot.lot }}</h1>
+    <h1>
+        {{ lot.borough }}:<br />
+        {% trans "block" %} {{ lot.block }}, {% trans "lot" %} {{ lot.lot }}
+    </h1>
 
-    <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">This lot's page</a> has more information.
+    <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">
+        {% trans "This lot's page" %}
+    </a>
+    {% trans "has more information" %}.
+
     {% if organizers %}
     {% trans "Neighbors are working on turning this lot into a community-determined green space" %}. 
     <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">
@@ -52,9 +59,9 @@
             <td>
                 <span>
                     {% if lot.area_acres %}
-                        {{ lot.area_acres|floatformat:"-3" }} acres
+                    {{ lot.area_acres|floatformat:"-3" }} {% trans "acres" %}
                     {% else %}
-                        unknown
+                    {% trans "unknown" %}
                     {% endif %}
                 </span>
             </td>
@@ -81,10 +88,16 @@
         </a>
     </h1>
 
-    <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">This lot's page</a> has more information.
+    <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">
+        {% trans "This lot's page" %}
+    </a>
+    {% trans "has more information" %}.
 
     {% if organizers %}
-    Neighbors are working on turning this lot into a community-determined green space. <a href="#" style="font-weight: bold;" class="organize-link">Learn more and get involved.</a>
+        {% trans "Neighbors are working on turning this lot into a community-determined green space." %} 
+        <a href="#" style="font-weight: bold;" class="organize-link">
+            {% trans "Learn more and get involved." %}
+        </a>
     {% endif %}
 </div>
 
@@ -155,10 +168,16 @@
             <tr>
                 <th>{% trans "elsewhere" %}</th>
                 <td class="links">
-                    <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ lot.bbl }}">See this lot on OASIS</a>, a map that combines block and lot level information from a variety of government and community sources.
+                    <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ lot.bbl }}">
+                        {% trans "See this lot on OASIS" %}
+                    </a>, 
+                    {% trans "a map that combines block and lot level information from a variety of government and community sources" %}.
 
                     {% if 'Garden' in lot.actual_use %}
-                    <br /> <br />Check out <a id="gardenmapslink" target="_blank" href="http://www.gardenmaps.org">Garden Maps</a> for more detailed maps of New York City's community gardens.
+                    <br /> <br />
+                    {% trans "Check out" %} 
+                    <a id="gardenmapslink" target="_blank" href="http://www.gardenmaps.org">Garden Maps</a>
+                    {% trans "for more detailed maps of New York City's community gardens" %}.
                     {% endif %}
                 </td>
             </tr>

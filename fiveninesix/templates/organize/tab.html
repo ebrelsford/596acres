@@ -1,23 +1,25 @@
+{% load i18n %}
+
 <div>
-    Currently organizing here:
+    {% trans "Currently organizing here" %}:
     <ul>
     {% for organizer in organizers %}
         {% if forloop.last %}<li class="last">{% else %}<li>{% endif %}
             <table>
                 <tr>
-                    <th>name</th>
+                    <th>{% trans "name" %}</th>
                     <td>
                         <span>{{ organizer.name }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <th>type</th>
+                    <th>{% trans "type" %}</th>
                     <td>
                         <span>{{ organizer.type }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <th>site</th>
+                    <th>{% trans "site" %}</th>
                     <td>
                         <span>
                         {% if organizer.url %}
@@ -27,13 +29,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>phone</th>
+                    <th>{% trans "phone" %}</th>
                     <td>
                         <span>{{ organizer.phone|default:"" }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <th>email</th>
+                    <th>{% trans "email" %}</th>
                     <td>
                         <span>
                         {% if organizer.email %}
@@ -43,7 +45,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>notes</th>
+                    <th>{% trans "notes" %}</th>
                     <td>
                         <span>{{ organizer.notes }}</span>
                     </td>
@@ -56,5 +58,5 @@
     </ul>
 </div>
 <div>
-    <a class="add_organizer" href="#">I'm organizing here!</a>
+    <a class="add_organizer" href="#">{% trans "I'm organizing here!" %}</a>
 </div>

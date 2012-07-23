@@ -1,17 +1,18 @@
 from django.core.mail import mail_managers
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from settings import BASE_URL
 
 class AbstractContactRequest(models.Model):
-    name = models.CharField(max_length=128)
-    email = models.EmailField()
-    phone = models.CharField(max_length=32, null=True, blank=True)
+    name = models.CharField(_('name'), max_length=128)
+    email = models.EmailField(_('email'))
+    phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
 
-    handled = models.BooleanField(default=False)
+    handled = models.BooleanField(_('handled'), default=False)
     
     class Meta:
         abstract = True
@@ -24,9 +25,10 @@ phone: %s
 
 class LotInformationRequest(AbstractContactRequest):
     """A request for more information about a lot, or to give a story about a lot."""
-    location = models.TextField('location of the lot')
-    story = models.TextField('a story about the lot')
-    notes = models.TextField('anything else we should know about the lot', null=True, blank=True)
+    location = models.TextField(_('location of the lot'))
+    story = models.TextField(_('a story about the lot'))
+    notes = models.TextField(_('anything else we should know about the lot'),
+                             null=True, blank=True)
 
     def get_text_for_mail(self):
         return super(self.__class__, self).get_text_for_mail() + """location: %s
@@ -43,8 +45,10 @@ class JoinUsRequest(AbstractContactRequest):
         ('DIST', 'help distribute maps'),
         ('SUGGEST', 'suggest location'),
     )
-    reason = models.CharField("how I can help", max_length=16, choices=REASON_CHOICES)
-    address = models.CharField('where we should put a map?', max_length=128, null=True, blank=True)
+    reason = models.CharField(_('how I can help'), max_length=16,
+                              choices=REASON_CHOICES)
+    address = models.CharField(_('where we should put a map?'), max_length=128,
+                               null=True, blank=True)
 
     def get_text_for_mail(self):
         return super(self.__class__, self).get_text_for_mail() + """reason: %s
@@ -56,7 +60,7 @@ address: %s
 
 class ContactRequest(AbstractContactRequest):
     """A generic message to the team."""
-    message = models.TextField()
+    message = models.TextField(_('message'))
 
     def get_text_for_mail(self):
         return super(self.__class__, self).get_text_for_mail() + """message: %s

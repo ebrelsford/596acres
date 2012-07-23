@@ -8,22 +8,29 @@
 
 <h2>{% trans "A group has access to this lot" %}!</h2>
 
-<p>Learn more about the group and get involved through
+<p>{% trans "Learn more about the group and get involved through" %}
     {% if lot.group_with_access.url %}
-    <a href="{{ lot.group_with_access.url }}">their homepage</a>,
+    <a href="{{ lot.group_with_access.url }}">{% trans "their homepage" %}</a>,
     {% endif %}
 
     {% if lot.group_with_access.facebook_page %}
-    <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">their Facebook page</a>,
+    <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">
+        {% trans "their Facebook page" %}
+    </a>,
     {% endif %}
 
     {% if lot.group_with_access.email %}
-    by <a href="mailto:{{ lot.group_with_access.email }}">emailing them</a>,
+    <a href="mailto:{{ lot.group_with_access.email }}">
+        {% trans "by emailing them" %}
+    </a>,
     {% endif %}
 
-    or walk by and say hi!
+    {% trans "or walk by and say hi" %}!
 </p>
 
 <p>
-    There is also more information about this lot on <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">its page</a>.
+    {% trans "There is also more information about this lot on" %} 
+    <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank">
+        {% trans "its page" %}
+    </a>.
 </p>

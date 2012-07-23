@@ -84,25 +84,54 @@
                 <ul>
                     <li id="area" style="margin-bottom: 5px;">
                         <span class="label">
-                            Lot size: <span class="range min"></span> to <span class="range max"></span> acres
+                            {% trans "Lot size" %}: 
+                            <span class="range min"></span> {% trans "to" %} 
+                            <span class="range max"></span> {% trans "acres" %}
                         </span>
                         <div id="area_slider"></div>
                     </li>
                 </ul>
             </div>
 
-            <div style="text-align: center; font-weight: bold;">Streetview is below the map when a lot is selected.</div>
+            <div style="text-align: center; font-weight: bold;">
+                {% trans "Streetview is below the map when a lot is selected." %}
+            </div>
             <div id="map_inner">
                 <div id="map_buttons">
                     <div id="political_borders" class="map_button dropdownable">
-                        <span class="label">Political Borders</span>
+                        <span class="label">{% trans "Political Borders" %}</span>
                         <div id="political_borders_selector" class="dropdown">
                             <ul>
-                                <li id="labels" style="border-bottom: 1px solid gray; margin-bottom: 5px;"><input type="checkbox" id="labels_checkbox" /><label for="labels_checkbox">labels</label></li>
-                                <li id="none"><input type="radio" id="none_radio" name="political_borders" checked="checked" /><label for="none_radio">none</label></li>
-                                <li id="boroughs"><input type="radio" id="boroughs_radio" name="political_borders" /><label for="boroughs_radio">Boroughs</label></li>
-                                <li id="city_councils"><input type="radio" id="city_councils_radio" name="political_borders" /><label for="city_councils_radio">City Council Districts</label></li>
-                                <li id="community_districts"><input type="radio" id="community_districts_radio" name="political_borders" /><label for="community_districts_radio">Community Districts</label></li>
+                                <li id="labels" style="border-bottom: 1px solid gray; margin-bottom: 5px;">
+                                    <input type="checkbox" id="labels_checkbox" />
+                                    <label for="labels_checkbox">
+                                        {% trans "labels" %}
+                                    </label>
+                                </li>
+                                <li id="none">
+                                    <input type="radio" id="none_radio" name="political_borders" checked="checked" />
+                                    <label for="none_radio">
+                                        {% trans "none" %}
+                                    </label>
+                                </li>
+                                <li id="boroughs">
+                                    <input type="radio" id="boroughs_radio" name="political_borders" />
+                                    <label for="boroughs_radio">
+                                        {% trans "Boroughs" %}
+                                    </label>
+                                </li>
+                                <li id="city_councils">
+                                    <input type="radio" id="city_councils_radio" name="political_borders" />
+                                    <label for="city_councils_radio">
+                                        {% trans "City Council Districts" %}
+                                    </label>
+                                </li>
+                                <li id="community_districts">
+                                    <input type="radio" id="community_districts_radio" name="political_borders" />
+                                    <label for="community_districts_radio">
+                                        {% trans "Community Districts" %}
+                                    </label>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -110,28 +139,33 @@
                 <div id="map" {% if is_mobile %}class="mobile"{% endif %}></div>
             </div>
             <div id="streetview" class="streetview"></div>
-            <div id="streetview-error" class="streetview">Sorry, we couldn't find streetview imagery for this lot.</div>
+            <div id="streetview-error" class="streetview">
+                {% trans "Sorry, we couldn't find streetview imagery for this lot." %}
+            </div>
 
             <div id="searchbar">
                 <div class="warning errorlist" style="display: none;"></div>
                 <span>{% trans "Search for lots near an address" %}:</span>
                 <form>
-                    <input name="address" type="text" /><input type="submit" value="search" />
+                    <input name="address" type="text" />
+                    <input type="submit" value="{% trans "search" %}" />
                 </form>
                 <img class="loading" src="{{ MEDIA_URL }}img/loading_small.gif" alt="loading..." />
-                <input name="current_location" type="submit" value="use my current location" />
+                <input name="current_location" type="submit" value="{% trans "use my current location" %}" />
             </div>
 
             <div class="filters bottom">
                 <ul>
                     <li class="agency">
-                        <span class="label">Agency:</span>
+                        <span class="label">{% trans "Agency" %}:</span>
                         <select disabled="disabled">
-                            <option value="all">all</option>
+                            <option value="all">{% trans "all" %}</option>
                         </select>
                     </li>
                     <li class="boroughs">
-                        <span class="label" style="vertical-align: top;">Boroughs:</span>
+                        <span class="label" style="vertical-align: top;">
+                            {% trans "Boroughs" %}:
+                        </span>
                         <ul style="display: inline-block; width: 35%;">
                             {% if not user.is_authenticated %}
                             {% for borough in public_boroughs %}
@@ -168,35 +202,44 @@
             </div>
 
             <div class="map-legend tally">
-                You are currently looking at:
+                {% trans "You are currently looking at" %}:
                 <ul>
                     <li class="vacant">
-                        <span class="count">{{ counts.vacant }}</span> public vacant lots
+                        <span class="count">{{ counts.vacant }}</span> 
+                        {% trans "public vacant lots" %}
                     </li>
                     <li class="organizing">
-                        <span class="count">{{ counts.organizing }}</span> public vacant sites being organized around
+                        <span class="count">{{ counts.organizing }}</span> 
+                        {% trans "public vacant sites being organized around" %}
                     </li>
                     <li class="accessed">
-                        <span class="count">{{ counts.accessed }}</span> public vacant sites where groups have access
+                        <span class="count">{{ counts.accessed }}</span> 
+                        {% trans "public vacant sites where groups have access" %}
                     </li>
                     <li class="private_accessed">
-                        <span class="count">{{ counts.private_accessed }}</span> private vacant sites being used by community
+                        <span class="count">{{ counts.private_accessed }}</span> 
+                        {% trans "private vacant sites being used by community" %}
                     </li>
                     <li class="garden">
-                        <span class="count">{{ counts.garden }}</span> community gardens on public land
+                        <span class="count">{{ counts.garden }}</span> 
+                        {% trans "community gardens on public land" %}
                     </li>
                     <li class="gutterspace">
-                        <span class="count">{{ counts.gutterspace }}</span> <a href="/news/2012/04/02/gutterspaces/">gutterspaces</a>
+                        <span class="count">{{ counts.gutterspace }}</span> 
+                        <a href="/news/2012/04/02/gutterspaces/">{% trans "gutterspaces" %}</a>
                     </li>
                 </ul>
             </div>
 
             <div>
                 <span class="download">
-                    Download current lots as <a href="" class="kml">KML</a>, <a href="" class="geojson">GeoJSON</a>, <a href="" class="csv">a spreadsheet</a>,
+                    {% trans "Download current lots as" %} 
+                    <a href="" class="kml">KML</a>, 
+                    <a href="" class="geojson">GeoJSON</a>, 
+                    <a href="" class="csv">{% trans "a spreadsheet" %}</a>,
                 </span> or 
                 <span class="permalink">
-                    <a href="#">link to the current view.</a>
+                    <a href="#">{% trans "link to the current view" %}.</a>
                 </span>
             </div>
 
@@ -226,12 +269,36 @@
 
 {% if not request.session.hide_map_overlay and not is_mobile %}
 <div id="map_overlay">
-    <a class="close close-graphic" href="#"><img src="{{ MEDIA_URL }}img/close.gif" /></a> 
-    <div>Under this text is a map of <span style="font-weight: bold;">New York City's publicly owned vacant land</span>.</div>
-    <p>Please look at the legend to the right. It describes the dots on the map you're about to see.</p>
-    <p>Below the map, you can search for an address, filter the lots displayed, and download the lots you're looking at.</p>
-    <p>Please <a href="/get-involved/contact-us" target="_blank">let us know</a> if you have any questions, and if you like what you see here please <a href="https://ioby.org/project/all-city-acres">donate</a>.</p>
-    <p style="padding-top: 10px; text-align: center;"><a class="close fns-button" style="font-size: 20px;" href="#">thanks, now let me look at the map</a></p>
+    <a class="close close-graphic" href="#">
+        <img src="{{ MEDIA_URL }}img/close.gif" />
+    </a> 
+    <div>
+        {% trans "Under this text is a map of" %}
+        <span style="font-weight: bold;">
+            {% trans "New York City's publicly owned vacant land" %}
+        </span>.
+    </div>
+    <p>
+        {% trans "Please look at the legend to the right. It describes the dots on the map you're about to see." %}
+    </p>
+    <p>
+        {% trans "Below the map, you can search for an address, filter the lots displayed, and download the lots you're looking at." %}
+    </p>
+    <p>
+        {% trans "Please" %}
+        <a href="/get-involved/contact-us" target="_blank">
+            {% trans "let us know" %}
+        </a>
+        {% trans "if you have any questions, and if you like what you see here please" %}
+        <a href="https://ioby.org/project/all-city-acres">
+            {% trans "donate" %}
+        </a>.
+    </p>
+    <p style="padding-top: 10px; text-align: center;">
+        <a class="close fns-button" style="font-size: 20px;" href="#">
+            {% trans "thanks, now let me look at the map" %}
+        </a>
+    </p>
 </div>
 {% endif %}
 {% endblock %}

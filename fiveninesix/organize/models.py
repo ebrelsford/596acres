@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.translation import ugettext_lazy as _
 
 from sorl.thumbnail import ImageField
 import mailchimp
@@ -16,13 +17,14 @@ class Organizer(models.Model):
     """
     Someone organizing around a lot or lots.
     """
-    name = models.CharField(max_length=256)
+    name = models.CharField(_('name'), max_length=256)
     type = models.ForeignKey('OrganizerType')
-    phone = models.CharField(max_length=32, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
-    url = models.URLField(null=True, blank=True)
-    notes = models.TextField(null=True, blank=True)
+    phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
+    email = models.EmailField(_('email'), null=True, blank=True)
+    url = models.URLField(_('url'), null=True, blank=True)
+    notes = models.TextField(_('notes'), null=True, blank=True)
     facebook_page = models.CharField(
+        _('facebook page'),
         max_length=256,
         null=True,
         blank=True,
@@ -48,9 +50,9 @@ class Watcher(models.Model):
     """
     Someone who is watching a lot.
     """
-    name = models.CharField(max_length=256)
-    phone = models.CharField(max_length=32, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    name = models.CharField(_('name'), max_length=256)
+    phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
+    email = models.EmailField(_('email'), null=True, blank=True)
     email_hash = models.CharField(max_length=40, null=True, blank=True)
     lot = models.ForeignKey(Lot)
     added = models.DateTimeField(auto_now_add=True)
@@ -99,8 +101,8 @@ class Note(models.Model):
     """
     A note about a lot.
     """
-    noter = models.CharField(max_length=256, verbose_name='your name')
-    text = models.TextField(verbose_name='note')
+    noter = models.CharField(_('your name'), max_length=256)
+    text = models.TextField(_('note'))
     added = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot)
 
@@ -114,8 +116,8 @@ class Picture(models.Model):
     """
     A picture of a lot.
     """
-    picture = ImageField(upload_to='pictures')
-    description = models.TextField(null=True, blank=True)
+    picture = ImageField(_('picture'), upload_to='pictures')
+    description = models.TextField(_('description'), null=True, blank=True)
     added = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot)
 

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.core.files import File
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 
 from elaphe import barcode
 
@@ -12,22 +13,29 @@ from settings import FILE_UPLOAD_TEMP_DIR, BASE_URL
 class Lot(models.Model):
     objects = models.GeoManager()
 
-    address = models.CharField(max_length=256, null=True, blank=True)
-    borough = models.CharField(max_length=32, null=True, blank=True)
-    bbl = models.CharField(max_length=32, db_index=True)
-    block = models.CharField(max_length=32)
-    lot = models.CharField(max_length=32)
-    zipcode = models.CharField(max_length=16, null=True, blank=True)
+    address = models.CharField(_('address'), max_length=256, null=True, 
+                               blank=True)
+    borough = models.CharField(_('borough'), max_length=32, null=True, 
+                               blank=True)
+    bbl = models.CharField(_('bbl'), max_length=32, db_index=True)
+    block = models.CharField(_('block'), max_length=32)
+    lot = models.CharField(_('lot'), max_length=32)
+    zipcode = models.CharField(_('zipcode'), max_length=16, null=True, 
+                               blank=True)
 
-    owner = models.ForeignKey('Owner', null=True, blank=True)
+    owner = models.ForeignKey('Owner', null=True, blank=True, 
+                              verbose_name=_('owner'))
     owner_contact = models.ForeignKey(
         'OwnerContact', null=True, blank=True,
         help_text=("The person representing the lot's owner who should be "
-                   "contacted about this lot.")
+                   "contacted about this lot."),
+        verbose_name=_('owner contact'),
     )
 
-    area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    area_acres = models.DecimalField(max_digits=10, decimal_places=6, null=True, blank=True)
+    area = models.DecimalField(_('area'), max_digits=10, decimal_places=2, 
+                               null=True, blank=True)
+    area_acres = models.DecimalField(_('area acres'), max_digits=10, 
+                                     decimal_places=6, null=True, blank=True)
 
     school_district = models.CharField(max_length=16, null=True, blank=True)
     community_district = models.CharField(max_length=16, null=True, blank=True)

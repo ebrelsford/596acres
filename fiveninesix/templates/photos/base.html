@@ -1,13 +1,17 @@
 {% extends "base_with_sidebar.html" %}
-{% load sekizai_tags %}
+{% load i18n sekizai_tags %}
 
-{% block title %}{{ block.super }}Photos: {% endblock %}
+{% block title %}{{ block.super }}{% trans "Photos" %}: {% endblock %}
 
 {% block breadcrumbs %}
 <div id="breadcrumbs">
     <ul>
-        <li><a href="/">Home</a> &raquo;</li>
-        <li><a href="{% url photos_photoalbum_list %}">Photos</a> &raquo;</li>
+        <li>
+            <a href="/">{% trans "Home" %}</a> &raquo;
+        </li>
+        <li>
+            <a href="{% url photos_photoalbum_list %}">{% trans "Photos" %}</a> &raquo;
+        </li>
         {% block page_breadcrumb %}{% endblock %}
     </ul>
 </div>

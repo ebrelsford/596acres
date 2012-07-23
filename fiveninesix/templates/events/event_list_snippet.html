@@ -1,8 +1,10 @@
-{% load event_filters %}
+{% load event_filters i18n %}
 <ul class="events">
     {% for event in events %}
     <li class="event">
-        <h3 class="title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h3>
+        <h3 class="title">
+            <a href="{{ event.get_absolute_url }}">{{ event.title }}</a>
+        </h3>
         {% if not past %}
         {{ event|eventdate }}
         {% else %}
@@ -10,6 +12,6 @@
         {% endif %}
     </li>
     {% empty %}
-    <li>None.</li>
+    <li>{% trans "None" %}.</li>
     {% endfor %}
 </ul>

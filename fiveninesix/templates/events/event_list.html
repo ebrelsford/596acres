@@ -1,22 +1,30 @@
 {% extends "events/base.html" %}
+{% load i18n %}
 
-{% block title %}{{ block.super }}{% if past %}Past{% else %}Upcoming{% endif %}{% endblock %}
+{% block title %}{{ block.super }}{% if past %}{% trans "Past" %}{% else %}{% trans "Upcoming" %}{% endif %}{% endblock %}
 
 {% block page_breadcrumb %}
-<li>{% if past %}Past{% else %}Upcoming{% endif %} Events</li>
+<li>{% if past %}{% trans "Past" %}{% else %}{% trans "Upcoming" %}{% endif %} {% trans "Events" %}</li>
 {% endblock %}
 
 {% block content_main %}
 {{ block.super }}
 <div id="event-list">
-    <h1>{% if past %}Past{% else %}Upcoming{% endif %} Events</h1>
+    <h1>
+        {% if past %}
+        {% trans "Past" %}
+        {% else %}
+        {% trans "Upcoming" %}
+        {% endif %} 
+        {% trans "Events" %}
+    </h1>
     {% with events=object_list %}
     {% include "events/event_list_snippet.html" %}
     {% endwith %}
 </div>
 {% if not past %}
-<a href="{% url events_event_list_past %}">view past events</a>
+<a href="{% url events_event_list_past %}">{% trans "view past events" %}</a>
 {% else %}
-<a href="{% url events_event_list %}">view upcoming events</a>
+<a href="{% url events_event_list %}">{% trans "view upcoming events" %}</a>
 {% endif %}
 {% endblock %}

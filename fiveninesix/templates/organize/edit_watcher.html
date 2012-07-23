@@ -1,27 +1,42 @@
 {% extends "base_with_sidebar.html" %}
+{% load i18n %}
 
-{% block title %}{{ block.super }}Change watched lots{% endblock %}
+{% block title %}{{ block.super }}{% trans "Change watched lots" %}{% endblock %}
 
 {% block content_main %}
 {{ block.super }}
 <div>
-    <h1>Change watched lots</h1>
+    <h1>{% trans "Change watched lots" %}</h1>
     <div>
         {% if watchers %}
-        <p>Hi <strong>{{ email }}</strong>! You're watching the following lots:
-        <ul>
-            {% for watcher in watchers %}
-            <li>
-                <a href="{% url lots.views.details bbl=watcher.lot.bbl %}">{{ watcher.lot.bbl }}</a>
-                (<a href="{% url organize.views.delete_watcher id=watcher.id hash=hash %}">stop watching</a>)
-            </li>
-            {% endfor %}
-        </ul>
+        <p>
+            {% trans "Hi" %} <strong>{{ email }}</strong>! 
+            {% trans "You're watching the following lots" %}:
+            <ul>
+                {% for watcher in watchers %}
+                <li>
+                    <a href="{% url lots.views.details bbl=watcher.lot.bbl %}">
+                        {{ watcher.lot.bbl }}
+                    </a>
+                    (<a href="{% url organize.views.delete_watcher id=watcher.id hash=hash %}">
+                        {% trans "stop watching" %}
+                    </a>)
+                </li>
+                {% endfor %}
+            </ul>
         </p>
         {% else %}
-        <p>Looks like you're not watching any lots. Check out our <a href="/">map</a> and find a lot near you to watch!</p>
+        <p>
+            {% trans "Looks like you're not watching any lots. Check out our" %} 
+            <a href="/">{% trans "map" %}</a>
+            {% trans "and find a lot near you to watch" %}!
+        </p>
         {% endif %}
-        <p>If you think this information is incorrect, please <a href="/get-involved/contact-us/">contact us</a> and let us know.
+        <p>
+            {% trans "If you think this information is incorrect, please" %}
+            <a href="/get-involved/contact-us/">{% trans "contact us" %}</a>
+            {% trans"and let us know" %}.
+        </p>
     </div>
 </div>
 {% endblock %}

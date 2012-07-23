@@ -1,6 +1,7 @@
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 from model_utils.managers import InheritanceManager
 
@@ -15,7 +16,7 @@ class Mailing(models.Model):
     """
     objects = InheritanceManager()
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(_('name'), max_length=100)
 
     HANDLING_CHOICES = (
         ('each', 'send each'),
@@ -23,6 +24,7 @@ class Mailing(models.Model):
         ('merge', 'merge'),
     )
     duplicate_handling = models.CharField(
+        _('duplicate handling'),
         max_length=32,
         choices=HANDLING_CHOICES,
         default='each',
@@ -31,11 +33,13 @@ class Mailing(models.Model):
     )
 
     subject_template_name = models.CharField(
+        _('subject template name'),
         max_length=256,
         help_text=('The path to the template to use when building the mailing '
                    'subject line'),
     )
     text_template_name = models.CharField(
+        _('text template name'),
         max_length=256,
         help_text=('The path to the template to use when building the mailing '
                    'text line'),
@@ -44,9 +48,11 @@ class Mailing(models.Model):
     target_types = models.ManyToManyField(
         ContentType,
         help_text='The types this mailing will be sent to.',
+        verbose_name=_('target types'),
     )
 
     last_checked = models.DateTimeField(
+        _('last checked'),
         help_text='The last time this mailing was sent.'
     )
 
@@ -66,6 +72,7 @@ class DaysAfterAddedMixin(models.Model):
         'added'
     """
     days_after_added = models.IntegerField(
+        _('days after added'),
         help_text=('The number of days after an entity is added that they '
                    'should receive an email.'),
     )
@@ -78,11 +85,13 @@ class DeliveryRecord(models.Model):
     The record of a mailing being sent.
     """
     sent = models.BooleanField(
+        _('sent'),
         default=False,
         help_text='The mailing was sent.',                      
     )
 
     recorded = models.DateTimeField(
+        _('recorded'),
         auto_now_add=True,
         help_text='When this mailing was recorded.',
     )

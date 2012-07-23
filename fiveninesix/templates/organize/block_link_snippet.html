@@ -1,0 +1,7 @@
+{% load i18n %}
+
+<a href="{% url lots.views.details bbl=lot.bbl %}">
+    {{ lot.borough }},
+    {% trans "block" %} {{ lot.block }},
+    {% trans "lot" %} {{ lot.lot }}
+</a>

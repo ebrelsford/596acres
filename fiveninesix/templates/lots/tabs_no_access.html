@@ -88,6 +88,12 @@
         </a>
     </h1>
 
+    {% if lot.children.count > 0 %}
+    {% blocktrans with lots_count=lot.lots|length %}
+    This is a group of {{ lots_count }} lots.
+    {% endblocktrans %}
+    {% endif %}
+ 
     <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">
         {% trans "This lot's page" %}
     </a>

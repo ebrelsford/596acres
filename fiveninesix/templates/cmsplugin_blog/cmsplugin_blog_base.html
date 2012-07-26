@@ -14,12 +14,12 @@
 
 {% block sidebar %}
 <div id="sidebar">
-{% cache 21600 sidebar %}
+{% cache 21600 sidebar LANGUAGE_CODE %}
     {% placeholder "sidebar" or %}
     {% show_placeholder "sidebar" "base_sidebar" %}
     {% endplaceholder %}
 {% endcache %}
-{% cache 21600 blog_sidebar %}
+{% cache 21600 blog_sidebar LANGUAGE_CODE %}
     <div class="blog sidebar">
         {% block right-col%}{% endblock %}
     </div>

@@ -23,7 +23,7 @@
 
 {% block sidebar %}
 <div id="sidebar">
-{% cache 21600 sidebar %}
+{% cache 21600 sidebar LANGUAGE_CODE %}
     {% placeholder "sidebar" or %}
     {% show_placeholder "sidebar" "base_sidebar" %}
     {% endplaceholder %}

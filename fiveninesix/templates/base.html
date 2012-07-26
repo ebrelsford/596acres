@@ -93,7 +93,7 @@
 
         {% block footer %}
         <div id="footer">
-        {% cache 600 footer %}
+        {% cache 600 footer LANGUAGE_CODE %}
             <ul class="nav">
                 {% show_menu 0 100 100 100 "cms/inline_menu.html" %}
             </ul>

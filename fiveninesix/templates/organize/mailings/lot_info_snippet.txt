@@ -1,5 +1,5 @@
 {% for lot in lots %}
-* {{ lot.borough }} block {{ lot.block }}, lot {{ lot.lot }}
+* {% load lot_filters %}{{ lot|lotname:"group" }}
     view online: {{ BASE_URL }}{{ lot.get_absolute_url }}
     agency: {{ lot.owner.name }}
     contact: {% if lot.owner_contact %}{{ lot.owner_contact.name }} ({{ lot.owner_contact.phone }}){% else %}{{ lot.owner.person }} ({{ lot.owner.phone }}){% endif %}{% endfor %}

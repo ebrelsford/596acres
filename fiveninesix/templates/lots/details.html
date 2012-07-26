@@ -1,5 +1,5 @@
 {% extends "lots/base.html" %}
-{% load i18n sekizai_tags thumbnail %}
+{% load i18n lot_filters sekizai_tags thumbnail %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -40,7 +40,7 @@
 {% block title %}{{ block.super }}: Details{% endblock %}
 
 {% block inner_right %}
-{% with title=lot.borough|add:", block "|add:lot.block|add:", lot "|add:lot.lot %}
+{% with title=lot|lotname:"group" %}
 {% include "share_box_snippet.html" %}
 {% endwith %}
 {% endblock %}
@@ -48,12 +48,7 @@
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>
-        {% if lot.children.count > 0 %}
-        {{ lot.lots|length }} lots near
-        {% endif %}
-        {{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}
-    </h1>
+    <h1>{{ lot|lotname:"group" }}</h1>
 
     {% if perms.lot.change_lot %}
     <a href="{% url admin:lots_lot_change lot.pk %}">edit this lot</a>
@@ -87,15 +82,18 @@
         {% if 'Garden' in lot.actual_use %}
         {% trans "It is part of a community garden." %}
         {% else %}
-        {% trans "According to our research it is being used as a" %} {{ lot.actual_use }}. {% trans "Know anything more about it?" %} <a href="{% url organize.views.add_note bbl=lot.bbl %}">{% trans "Leave a note!" %}</a>
+        {% trans "According to our research it is being used as a" %} {{ lot.actual_use }}. 
+        {% trans "Know anything more about it?" %} 
+        <a href="{% url organize.views.add_note bbl=lot.bbl %}">{% trans "Leave a note!" %}</a>
         {% endif %}
     </p>
     {% endif %}
 
     {% if lot.children.count > 0 %}
     <p>
-    There are {{ lot.lots|length }} lots at this site. Anything you add to
-    this site will apply to the lots as a whole. Here are the details for each:
+    {% blocktrans with lots_count=lot.lots|length %}
+    There are {{ lots_count }} lots at this site. Anything you add to this site will apply to the lots as a whole. Here are the details for each:
+    {% endblocktrans %}
     </p>
     {% endif %}
 
@@ -103,7 +101,7 @@
     Show the basic details (address, OASIS, ...) for each lot in this group.
     {% endcomment %}
     {% for l in lot.lots %}
-        <h2>{{ l.borough }}, block {{ l.block }}, lot {{ l.lot }}</h2>
+    <h2>{{ l|lotname }}</h2>
         {% with lot=l %}
         {% include "lots/details_basics.html" %}
         {% endwith %}

@@ -1,7 +1,7 @@
 {% extends "base_with_sidebar.html" %}
-{% load sekizai_tags %}
+{% load lot_filters sekizai_tags %}
 
-{% block title %}{{ lot.borough }}, block {{ lot.block }}, lot {{ lot.lot }}{% endblock %}
+{% block title %}{{ lot|lotname:"group" }}{% endblock %}
 
 {% block media %}
 {{ block.super }}

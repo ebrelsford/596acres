@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-23 11:43-0400\n"
+"POT-Creation-Date: 2012-07-26 16:55-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -286,19 +286,19 @@ msgstr ""
 msgid "New Tools"
 msgstr ""
 
-#: news/menu.py:17
+#: news/menu.py:18
 msgid "Announcements"
 msgstr ""
 
-#: news/menu.py:18 templates/news/newsletter_archive.html:5
+#: news/menu.py:20 templates/news/newsletter_archive.html:5
 msgid "News from the Acres"
 msgstr ""
 
-#: news/menu.py:20
+#: news/menu.py:22
 msgid "Archive"
 msgstr ""
 
-#: news/views.py:23
+#: news/views.py:28
 msgid "tagged_object_list must be called with a tag."
 msgstr ""
 
@@ -365,6 +365,22 @@ msgstr ""
 #: templates/base.html:6
 msgid "596 Acres"
 msgstr ""
+
+#: templates/base.html:70 templates/lots/owner_details.html:11
+msgid "contact"
+msgstr "contacto"
+
+#: templates/base.html:75 templates/cms/map_template.html:294
+msgid "donate"
+msgstr "dona"
+
+#: templates/base.html:80
+msgid "about"
+msgstr "quienes somos"
+
+#: templates/base.html:88
+msgid "frequently asked questions"
+msgstr "preguntas más frecuentes"
 
 #: templates/admin/cms/page/change_form.html:3
 msgid "Change a page"
@@ -591,10 +607,6 @@ msgstr ""
 
 #: templates/cms/map_template.html:292
 msgid "if you have any questions, and if you like what you see here please"
-msgstr ""
-
-#: templates/cms/map_template.html:294
-msgid "donate"
 msgstr ""
 
 #: templates/cms/map_template.html:299
@@ -881,10 +893,6 @@ msgstr ""
 msgid "add a note"
 msgstr ""
 
-#: templates/lots/owner_details.html:11
-msgid "contact"
-msgstr "contacto"
-
 #: templates/lots/tabs_group_has_access.html:12
 msgid "A group has access to this lot"
 msgstr ""
@@ -1045,6 +1053,10 @@ msgstr ""
 #, fuzzy
 msgid "contact us"
 msgstr "contacto"
+
+#: templates/organize/edit_watcher.html:38
+msgid "and let us know"
+msgstr ""
 
 #: templates/organize/tab.html:61
 msgid "I'm organizing here!"

@@ -67,20 +67,26 @@
                 {% show_menu 0 100 100 100 "cms/menu.html" %}
                 <li>
                     <a href="{% url contact.views.contact_us %}">
-                        <img src="{{ MEDIA_URL }}img/contact.png" alt="contact" />
+                        <img src="{{ MEDIA_URL }}img/{% trans "contact" %}.png" alt="{% trans "contact" %}" />
                     </a>
                 </li>
                 <li>
-                    <a href="https://ioby.org/project/all-city-acres"><img src="{{ MEDIA_URL }}img/donate.png" alt="donate!" /></a>
+                    <a href="https://ioby.org/project/all-city-acres">
+                        <img src="{{ MEDIA_URL }}img/{% trans "donate" %}.png" alt="{% trans "donate" %}" />
+                    </a>
                 </li>
                 <li>
-                    <a href="/about/"><img src="{{ MEDIA_URL }}img/about.png" alt="about" /></a>
+                    <a href="/about/">
+                        <img src="{{ MEDIA_URL }}img/{% trans "about" %}.png" alt="about" />
+                    </a>
                     <ul class="children">
                         {% show_menu_below_id "about" 0 100 100 100 %}
                     </ul>
                 </li>
                 <li style="float: right; padding-top: 2px; padding-bottom: 2px; padding-right: 0;">
-                    <a href="/frequently-asked-questions/"><img src="{{ MEDIA_URL }}img/faq.png" alt="frequently asked questions" /></a>
+                    <a href="/frequently-asked-questions/">
+                        <img src="{{ MEDIA_URL }}img/{% trans "frequently asked questions" %}.png" alt="{% trans "frequently asked questions" %}" />
+                    </a>
                 </li>
             </ul>
             <div style="clear: both;"></div>

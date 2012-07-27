@@ -149,6 +149,7 @@ INSTALLED_APPS = (
     'events',
     'facebook',
     'getinvolved',
+    'fiveninesix.i18n',
     'legend',
     'lots',
     'mailings',

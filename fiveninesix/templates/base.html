@@ -1,4 +1,4 @@
-{% load cache cms_tags i18n menu_tags sekizai_tags %}
+{% load cache cms_tags i18n i18n_utils menu_tags sekizai_tags %}
 
 <!doctype html>
 <head>
@@ -85,7 +85,7 @@
                 </li>
                 <li style="float: right; padding-top: 2px; padding-bottom: 2px; padding-right: 0;">
                     <a href="/frequently-asked-questions/">
-                        <img src="{{ MEDIA_URL }}img/{% trans "frequently asked questions" %}.png" alt="{% trans "frequently asked questions" %}" />
+                        <img src="{{ MEDIA_URL }}img/{% ascii_trans "frequently asked questions" %}.png" alt="{% trans "frequently asked questions" %}" />
                     </a>
                 </li>
             </ul>

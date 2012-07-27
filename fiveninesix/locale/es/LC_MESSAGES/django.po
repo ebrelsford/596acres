@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-26 16:55-0400\n"
+"POT-Creation-Date: 2012-07-26 17:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -613,11 +613,12 @@ msgstr ""
 msgid "thanks, now let me look at the map"
 msgstr ""
 
+#: templates/cmsplugin_blog/cmsplugin_blog_base.html:4
 #: templates/cmsplugin_blog/entry_archive.html:5
 #: templates/cmsplugin_blog/entry_detail.html:6
 #: templates/cmsplugin_blog/entry_list.html:10
 msgid "News"
-msgstr ""
+msgstr "Noticias"
 
 #: templates/cmsplugin_blog/entry_archive_day.html:4
 #: templates/cmsplugin_blog/entry_archive_day.html:8

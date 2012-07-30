@@ -39,7 +39,9 @@
             <input type="checkbox" name="private_accessed" id="private_accessed" checked="checked" />
             <label for="private_accessed">
                 <img src="{{ MEDIA_URL }}img/private_accessed.png" alt="privately owned lot (point)" />
-                {% trans "private vacant sites being used by community" %}
+                <a href="/news/2012/07/27/update-on-working-with-private-landowners/">
+                    {% trans "private vacant sites being used by community" %}
+                </a>
             </label>
             (<span class="count">{{ counts.private_accessed }}</span>)
         </li>

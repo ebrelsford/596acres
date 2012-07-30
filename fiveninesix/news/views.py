@@ -57,7 +57,7 @@ class LanguageFallbackEntryDateDetailView(EntryDateDetailView):
                 try:
                     queryset = self.get_unfiltered_queryset()
                     obj = super(LanguageFallbackEntryDateDetailView, self).get_object(queryset=queryset)
-                except Entry.MultipleObjectsReturned, s:
+                except (TypeError, Entry.MultipleObjectsReturned):
                     # Could find multiple entries, in this way we cannot decide 
                     # which one is the right one, so we let exception be 
                     # propagated.

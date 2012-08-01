@@ -162,6 +162,36 @@ class DaysAfterAddedMailer(Mailer):
         recipient_lists = [self._get_ctype_recipients(ct) for ct in self.mailing.target_types.all()]
         return reduce(lambda x,y: x+y, recipient_lists)
 
+class SuccessfulOrganizerMailer(Mailer):
+    def get_recipient_queryset(self, ctype, already_received):
+        # successful organizers / watchers
+        qs = ctype.model_class().objects.filter(lot__group_has_access=True)
+
+        # remove lots where anyone else on this lot has received this mailing.
+        # these people are latecomers and congratulating them would be a bit 
+        # weird. 
+        #
+        # NB: if a person is the first of a type (eg, Watcher) and the lot
+        # already had access, they will get this message anyway. this will be
+        # such a rare case that we will let it happen.
+        lots_already_recevieved = list(set([r.lot for r in already_received]))
+        qs = qs.exclude(lot__in=lots_already_recevieved)
+
+        return qs
+
+    def _get_ctype_recipients(self, ctype):
+        """
+        Get entities of type ctype that should receive the mailing.
+        """
+        received = self.get_already_received(receiver_type=ctype)
+        type_recipients = self.get_recipient_queryset(ctype, received)
+
+        return list(set(type_recipients) - set(received))
+
+    def get_recipients(self):
+        recipient_lists = [self._get_ctype_recipients(ct) for ct in self.mailing.target_types.all()]
+        return reduce(lambda x,y: x+y, recipient_lists)
+
 class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
     """
     DaysAfterAddedMailer customized for 596.

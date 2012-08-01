@@ -105,11 +105,16 @@ class DeliveryRecord(models.Model):
     receiver_object_id = models.PositiveIntegerField(null=True, blank=True)
     receiver_object = generic.GenericForeignKey('receiver_type', 'receiver_object_id')
 
-from mailings.mailers import DaysAfterWatcherOrganizerAddedMailer, WatcherThresholdMailer
+from mailings.mailers import DaysAfterWatcherOrganizerAddedMailer,\
+        SuccessfulOrganizerMailer, WatcherThresholdMailer
 
 class DaysAfterAddedMailing(Mailing, DaysAfterAddedMixin):
     def get_mailer(self):
         return DaysAfterWatcherOrganizerAddedMailer(self)
+
+class SuccessfulOrganizerMailing(Mailing):
+    def get_mailer(self):
+        return SuccessfulOrganizerMailer(self)
 
 class WatcherThresholdMailing(Mailing):
     number_of_watchers = models.PositiveIntegerField(

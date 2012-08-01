@@ -85,6 +85,10 @@ def notify_watchers(obj):
     if not lot:
         return
 
+    # don't notify of new organizers when a group has access
+    if lot.group_has_access and isinstance(obj, Organizer):
+        return
+
     obj_msg = _get_object_message(obj)
     url_suffix = _get_object_url_suffix(obj)
 
@@ -95,8 +99,15 @@ def notify_organizers(obj):
     """
     Send organizers of a given lot updates.
     """
+
+    # TODO refactor, make more like Mailer? too similar to notify_watchers()
+
     lot = obj.lot
     if not lot:
+        return
+
+    # don't notify of new organizers when a group has access
+    if lot.group_has_access and isinstance(obj, Organizer):
         return
 
     obj_msg = _get_object_message(obj)

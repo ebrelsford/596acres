@@ -1,17 +1,61 @@
 {% extends "lots/base.html" %}
-{% load i18n %}
+{% load i18n sekizai_tags %}
 
-{% block title %}{{ block.super }}: {% trans "Add organizer" %}{% endblock %}
+{% block title %}{{ block.super }}: {% trans "Become an organizer" %}{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+{% addtoblock "js" %}
+<script>
+    function toggle_cbo_fields(show) {
+        var $cbo_fields = $(':input[name="facebook_page"],:input[name="url"]').parents('tr');
+        if (show) {
+            $cbo_fields.show();
+        }
+        else {
+            $cbo_fields.hide();
+        }
+    }
+
+    function is_cbo() {
+        return ($(':input[name="type"] :selected').text() 
+            === 'community based organization');
+    }
+
+    $(document).ready(function() {
+        toggle_cbo_fields(is_cbo());
+
+        $(':input[name="type"]').change(function() {
+            toggle_cbo_fields(is_cbo());
+        });
+    });
+</script>
+{% endaddtoblock %}
+{% endblock %}
 
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>{% trans "Add organizer" %}</h1>
+    <h1>{% trans "Become an organizer" %}</h1>
     <h2>
         {% include "organize/block_link_snippet.html" %}
     </h2>
     <div>
-        <span>{% trans "Awesome! Tell us a little about yourself." %}</span>
+        <p>
+            {% blocktrans %}
+            Awesome! Tell us a little about yourself.
+            {% endblocktrans %}
+        </p>
+        <p> 
+            {% blocktrans %}
+            You can be an individual person or an organization. We think it's great if you form an organization with your neighbors or friends to work on getting access to this lot. We also think it's great when existing community organizations take on organizing for control of Brooklyn's vacant acres.
+            {% endblocktrans %}
+        </p>
+        <p> 
+            {% blocktrans %}
+            If you select "community based organization" from the dropdown below, you will be able to add your organization's webpage, which will automatically become a link, and facebook link, a feed from which will appear directly on this page. 
+            {% endblocktrans %}
+        </p>
         {% include "organize/form_snippet.html" %}
     </div>
 </div>

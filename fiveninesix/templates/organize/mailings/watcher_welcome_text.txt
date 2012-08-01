@@ -1,3 +1,4 @@
+{% autoescape off %}
 Welcome the Acres organizing community! 
 
 You are now watching
@@ -8,3 +9,4 @@ It would be great if you would add a note describing what you know about the cit
 
 {% include "organize/mailings/mailinglist_snippet.txt" %}
 {% include "organize/mailings/watcher_edit_url_snippet.txt" %}
+{% endautoescape %}

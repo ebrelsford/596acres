@@ -1,3 +1,4 @@
+{% autoescape off %}
 Hurray! You've got permission to use your space!
 
 By now, your group has probably outgrown the 596 Acres platform and has its own blog, webpage, google group, tumblr, facebook page, etc. Your lot's page on our site will link to those.
@@ -15,3 +16,4 @@ This will subscribe them to the list. You can have as many organizers as you nee
 So -- in sum! Hurray! And pass this on to your people who are proud organizers and want to stay connected!
 
 Onwards! 
+{% endautoescape %}

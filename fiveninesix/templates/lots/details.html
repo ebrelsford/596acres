@@ -64,22 +64,31 @@
         {% trans "A group has access to this lot!" %}
     </h2>
     <div>
+        <p>
+        {% blocktrans %}
+            If you are part of the group and would like to receive updates from
+            596 Acres (about things like free beehives, how to get mulch from 
+            the city, and calls for support for existing community sites 
+            throughout the network), please 
+        {% endblocktrans %}
+            <a href="{% url add_organizer bbl=lot.bbl %}">{% trans "become an organizer" %}</a>.
+        </p>
+        <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;">
+            <img src="{{ MEDIA_URL }}img/users.png" />
+            {% trans "organize" %}
+        </a>
+    </div>
+    <div>
         <p>{% trans "Learn more about the group and get involved through" %}
             {% if lot.group_with_access.url %}
-            <a href="{{ lot.group_with_access.url }}">
-                {% trans "their homepage" %}
-            </a>,
+            <a href="{{ lot.group_with_access.url }}">{% trans "their homepage" %}</a>,
             {% endif %}
             {% if lot.group_with_access.facebook_page %}
-            <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">
-                {% trans "their Facebook page" %}
-            </a>,
+            <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">{% trans "their Facebook page" %}</a>,
             {% endif %}
             {% if lot.group_with_access.email %}
             {% trans "by" %} 
-            <a href="mailto:{{ lot.group_with_access.email }}">
-                {% trans "emailing them" %}
-            </a>,
+            <a href="mailto:{{ lot.group_with_access.email }}">{% trans "emailing them" %}</a>,
             {% endif %}
             {% trans "or walk by and say hi" %}!
         </p>

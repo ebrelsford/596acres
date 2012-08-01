@@ -175,7 +175,12 @@
             <tr>
                 <th>{% trans "elsewhere" %}</th>
                 <td class="links">
-                    <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ lot.bbl }}">{% trans "See this lot on OASIS" %}</a>, {% trans "a map that combines block and lot level information from a variety of government and community sources." %}
+                    <p>
+                        <a id="oasislink" target="_blank" href="{{ OASIS_BASE_URL }}{{ lot.bbl }}">{% trans "See this lot on OASIS" %}</a>, {% trans "a map that combines block and lot level information from a variety of government and community sources." %} 
+                    </p>
+                    <p>
+                        For a tutorial on how to access information about this particular lot on OASIS, go <a href="http://www.oasisnyc.net/tutorial.aspx">here</a> and click on "How do I access information about locations on the map?"
+                    </p>
                 </td>
             </tr>
         </table>

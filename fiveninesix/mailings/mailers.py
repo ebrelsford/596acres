@@ -129,6 +129,11 @@ class Mailer(object):
         )          
         mail.send(fail_silently=fail_silently)
 
+class LotMailer(Mailer):
+    """
+    A Mailer sending Mailings associated with Lots.
+    """
+
 class DaysAfterAddedMailer(Mailer):
 
     def get_recipient_queryset(self, model):
@@ -187,6 +192,15 @@ class SuccessfulOrganizerMailer(Mailer):
         type_recipients = self.get_recipient_queryset(ctype, received)
 
         return list(set(type_recipients) - set(received))
+
+    def get_context(self, recipients):
+        context = super(SuccessfulOrganizerMailer, self).get_context(recipients)
+
+        # add BASE_URL for full-path links back to the site
+        context['BASE_URL'] = settings.BASE_URL
+
+        context['lot'] = recipients[0].lot
+        return context
 
     def get_recipients(self):
         recipient_lists = [self._get_ctype_recipients(ct) for ct in self.mailing.target_types.all()]

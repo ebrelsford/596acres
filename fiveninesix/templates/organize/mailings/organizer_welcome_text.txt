@@ -11,5 +11,3 @@ It would be great if you would add a note to the lot's page describing what you 
 You also should have received a separate email asking you to confirm that you want to be added to our mailing list - the News from the Acres. It's a weekly mailing that shares information about projects on the Acres and resources that are available to support those projects, as well as current news about the organization. We are looking forward to sharing with you!
 
 {% include "organize/mailings/mailinglist_snippet.txt" %}
-
-{% include "organize/mailings/automated_snippet.txt" %}

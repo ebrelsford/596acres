@@ -129,11 +129,6 @@ class Mailer(object):
         )          
         mail.send(fail_silently=fail_silently)
 
-class LotMailer(Mailer):
-    """
-    A Mailer sending Mailings associated with Lots.
-    """
-
 class DaysAfterAddedMailer(Mailer):
 
     def get_recipient_queryset(self, model):

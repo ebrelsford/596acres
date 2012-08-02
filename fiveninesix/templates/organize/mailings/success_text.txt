@@ -1,0 +1,19 @@
+{% autoescape off %}
+Hurray! You've got permission to use your space!
+
+By now, your group has probably outgrown the 596 Acres platform and has its own blog, webpage, google group, tumblr, facebook page, etc. Your lot's page on our site will link to those.
+
+But there is one crucial thing that we want to make sure you are still connected to on the 596 Acres network:
+
+Our map supports your organizing by creating a citywide network of organizers who are working to reclaim vacant land and can support one another. A 596 Acres administrator who is logged in can send a message to everyone in the network who is an organizer, regardless of where they are organizing. These messages are about things like free beehives, how to get mulch from the city, groups who are trying to volunteer on 596 Acres sites, and calls for help and support and protection for existing community sites throughout the network.
+
+We want to make sure that all the key stakeholders for your site are getting these. Here's how: have everyone who is a key stakeholder or becomes one go to your lot's page on our map and become an organizer:
+
+{{ BASE_URL }}{{ lot.get_absolute_url }}
+
+This will subscribe them to the list. You can have as many organizers as you need. Having many organizers visible on your lot's page also means that, in years to come, there will be lots of potential points of contact for new folks to plug into when they are looking for your group.
+
+So -- in sum! Hurray! And pass this on to your people who are proud organizers and want to stay connected!
+
+Onwards! 
+{% endautoescape %}

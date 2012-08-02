@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 
 from lots.models import Lot
 from mailings.models import DeliveryRecord
-from organize.models import Watcher
+from organize.models import Organizer, Watcher
 
 class Mailer(object):
 
@@ -131,21 +131,24 @@ class Mailer(object):
 
 class DaysAfterAddedMailer(Mailer):
 
-    def _get_ctype_recipients(self, ctype, delta):
+    def get_recipient_queryset(self, model):
         """
-        Get entities of type ctype that should receive the mailing.
+        Check for entities added in the time between the last time the mailing 
+        was sent and now, shifting backward in time for the number of days 
+        after an entity is added that we want to send them the mailing.
         """
-
-        #
-        # Check for entities added in the time between the mailing was last 
-        # sent and now, shifting backward in time for the number of days after
-        # an entity is added that we want to send them the mailing.
-        #
-        type_recipients = ctype.model_class().objects.filter(
+        delta = timedelta(days=self.mailing.days_after_added)
+        return model.objects.filter(
             added__gt=self.last_checked - delta,
             added__lte=self.time_started - delta,
             email__isnull=False,
         ).exclude(email='')
+
+    def _get_ctype_recipients(self, ctype):
+        """
+        Get entities of type ctype that should receive the mailing.
+        """
+        type_recipients = self.get_recipient_queryset(ctype.model_class())
 
         # only get already received if there are potential recipients
         if not type_recipients:
@@ -156,15 +159,60 @@ class DaysAfterAddedMailer(Mailer):
         return list(set(type_recipients) - set(received))
 
     def get_recipients(self):
-        delta = timedelta(days=self.mailing.days_after_added)
+        recipient_lists = [self._get_ctype_recipients(ct) for ct in self.mailing.target_types.all()]
+        return reduce(lambda x,y: x+y, recipient_lists)
 
-        recipient_lists = [self._get_ctype_recipients(ct, delta) for ct in self.mailing.target_types.all()]
+class SuccessfulOrganizerMailer(Mailer):
+    def get_recipient_queryset(self, ctype, already_received):
+        # successful organizers / watchers
+        qs = ctype.model_class().objects.filter(lot__group_has_access=True)
+
+        # remove lots where anyone else on this lot has received this mailing.
+        # these people are latecomers and congratulating them would be a bit 
+        # weird. 
+        #
+        # NB: if a person is the first of a type (eg, Watcher) and the lot
+        # already had access, they will get this message anyway. this will be
+        # such a rare case that we will let it happen.
+        lots_already_recevieved = list(set([r.lot for r in already_received]))
+        qs = qs.exclude(lot__in=lots_already_recevieved)
+
+        return qs
+
+    def _get_ctype_recipients(self, ctype):
+        """
+        Get entities of type ctype that should receive the mailing.
+        """
+        received = self.get_already_received(receiver_type=ctype)
+        type_recipients = self.get_recipient_queryset(ctype, received)
+
+        return list(set(type_recipients) - set(received))
+
+    def get_context(self, recipients):
+        context = super(SuccessfulOrganizerMailer, self).get_context(recipients)
+
+        # add BASE_URL for full-path links back to the site
+        context['BASE_URL'] = settings.BASE_URL
+
+        context['lot'] = recipients[0].lot
+        return context
+
+    def get_recipients(self):
+        recipient_lists = [self._get_ctype_recipients(ct) for ct in self.mailing.target_types.all()]
         return reduce(lambda x,y: x+y, recipient_lists)
 
 class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
     """
     DaysAfterAddedMailer customized for 596.
     """
+    def get_recipient_queryset(self, model):
+        qs = super(DaysAfterWatcherOrganizerAddedMailer, self).get_recipient_queryset(model)
+        if model == Organizer:
+            # don't email welcome / two-week followup to Organizers of lots 
+            #  that have been accessed
+            qs = qs.filter(lot__group_has_access=False)
+        return qs
+
     def get_context(self, recipients):
         context = super(DaysAfterWatcherOrganizerAddedMailer, self).get_context(recipients)
 

@@ -12,7 +12,9 @@
     </h2>
     <div>
         <span>{% trans "Please enter your picture below." %}</span>
+        {% with is_upload="true" %}
         {% include "organize/form_snippet.html" %}
+        {% endwith %}
     </div>
 </div>
 {% endblock %}

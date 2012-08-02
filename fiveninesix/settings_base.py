@@ -44,16 +44,21 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'johnny.middleware.LocalStoreClearMiddleware',
+    'johnny.middleware.QueryCacheMiddleware',
+
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
     'cms.middleware.multilingual.MultilingualURLMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
+    'cmsplugin_blog.middleware.MultilingualBlogEntriesMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -148,6 +153,7 @@ INSTALLED_APPS = (
     'events',
     'facebook',
     'getinvolved',
+    'fiveninesix.i18n',
     'legend',
     'lots',
     'mailings',

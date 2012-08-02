@@ -1,3 +1,4 @@
+{% autoescape off %}
 There are {{ watcher_count }} of people watching a lot you're watching! Neat! 
 
 Lot details:
@@ -5,5 +6,5 @@ Lot details:
 It would be great if everyone who knows anything about the city's or the community's plans for it would write a note on the lot's page. You don't have to reveal your name but a note is a great way to share information with the rest of the folks who are engaged here. When you write your note, everyone will get an email - just like you just got! If you want to know more about this lot, you can call the city agency listed on the lot's page to ask them about it. Here are some tips for your phone call: http://596acres.org/en/resources/advocacy-resources/
 
 {% include "organize/mailings/mailinglist_snippet.txt" %}
-{% include "organize/mailings/automated_snippet.txt" %}
 {% include "organize/mailings/watcher_edit_url_snippet.txt" %}
+{% endautoescape %}

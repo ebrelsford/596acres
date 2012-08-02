@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form method="post">
+<form method="post" {% ifequal is_upload "true" %}enctype="multipart/form-data"{% endifequal %}>
     {% csrf_token %}
     <table>
         {{ form.as_table }}

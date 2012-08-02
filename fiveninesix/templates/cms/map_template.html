@@ -1,5 +1,5 @@
 {% extends "cms/main_template.html" %}
-{% load cache cms_tags i18n sekizai_tags %}
+{% load cms_tags i18n sekizai_tags %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -218,7 +218,9 @@
                     </li>
                     <li class="private_accessed">
                         <span class="count">{{ counts.private_accessed }}</span> 
-                        {% trans "private vacant sites being used by community" %}
+                        <a href="/news/2012/07/27/update-on-working-with-private-landowners/">
+                            {% trans "private vacant sites being used by community" %}
+                        </a>
                     </li>
                     <li class="garden">
                         <span class="count">{{ counts.garden }}</span> 
@@ -256,9 +258,7 @@
         </div>
 
         <div id="side">
-            {% cache 21600 map_main %}
             {% placeholder "main" %}
-            {% endcache %}
         </div>
         <div style="clear: both;"></div>
     </div>

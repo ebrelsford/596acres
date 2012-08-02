@@ -1,7 +1,7 @@
 {% extends "base_with_sidebar.html" %}
-{% load cache cms_tags %}
+{% load cms_tags i18n %}
 
-{% block title %}News{% endblock %}
+{% block title %}{% trans "News" %}{% endblock %}
 
 {% block content_main %}
     <div class="blog">
@@ -14,15 +14,11 @@
 
 {% block sidebar %}
 <div id="sidebar">
-{% cache 21600 sidebar %}
     {% placeholder "sidebar" or %}
     {% show_placeholder "sidebar" "base_sidebar" %}
     {% endplaceholder %}
-{% endcache %}
-{% cache 21600 blog_sidebar %}
     <div class="blog sidebar">
         {% block right-col%}{% endblock %}
     </div>
-{% endcache %}
 </div>
 {% endblock %}

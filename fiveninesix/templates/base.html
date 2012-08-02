@@ -1,4 +1,4 @@
-{% load cache cms_tags i18n i18n_utils menu_tags sekizai_tags %}
+{% load cms_tags i18n i18n_utils menu_tags sekizai_tags %}
 
 <!doctype html>
 <head>
@@ -99,14 +99,12 @@
 
         {% block footer %}
         <div id="footer">
-        {% cache 600 footer LANGUAGE_CODE %}
             <ul class="nav">
                 {% show_menu 0 100 100 100 "cms/inline_menu.html" %}
             </ul>
             {% placeholder "footer" or %}
             {% show_placeholder "footer" "base_footer" %}
             {% endplaceholder %}
-        {% endcache %}
         </div>
         {% endblock %}
     </div>

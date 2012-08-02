@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load cache cms_tags menu_tags %}
+{% load cms_tags menu_tags %}
 
 {% block content %}
 <div id="content" class="with-sidebar">
@@ -23,11 +23,9 @@
 
 {% block sidebar %}
 <div id="sidebar">
-{% cache 21600 sidebar LANGUAGE_CODE %}
     {% placeholder "sidebar" or %}
     {% show_placeholder "sidebar" "base_sidebar" %}
     {% endplaceholder %}
-{% endcache %}
 </div>
 {% endblock %}
 

@@ -4,7 +4,7 @@ from fiveninesix.admin import LotRelatedModelAdmin
 from models import Note, Organizer, OrganizerType, Watcher, Picture
 
 class OrganizerAdmin(LotRelatedModelAdmin):
-    search_fields = ('name', 'email',)
+    search_fields = ('name', 'email', 'lot__bbl',)
     list_display = ('name', 'email', 'phone', 'url', 'lot_owner', 'view_lot', 'view_in_oasis',)
     list_filter = ('added',)
 
@@ -17,12 +17,12 @@ class OrganizerTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'is_group',)
 
 class WatcherAdmin(LotRelatedModelAdmin):
-    search_fields = ('name', 'email')
+    search_fields = ('name', 'email', 'lot__bbl',)
     list_display = ('name', 'email', 'phone', 'lot', 'added', 'view_lot', 'view_in_oasis',)
     list_filter = ('added',)
 
 class NoteAdmin(LotRelatedModelAdmin):
-    search_fields = ('noter', 'text')
+    search_fields = ('noter', 'text', 'lot__bbl',)
     list_display = ('noter', 'text', 'added', 'view_lot', 'view_in_oasis',)
     list_filter = ('added',)
 

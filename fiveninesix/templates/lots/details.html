@@ -93,8 +93,8 @@
 
     {% if lot.children.count > 0 %}
         <p>
-        {% blocktrans with lots_count=lot.lots|length %}
-        There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots on this page. Anything you add to this page will apply to the lots as a whole. Here are the details for each:
+        {% blocktrans with lots_count=lot.lots|length area=lot|lot_acres_sum|floatformat:"3" %}
+        There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots with a total area of <span style="font-weight: bold;">{{ area }} acres</span> on this page. Anything you add to this page will apply to the lots as a whole. Here are the details for each:
         {% endblocktrans %}
         </p>
     {% endif %}

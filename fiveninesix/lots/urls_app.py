@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
-    url(r'^(?P<bbl>\d+)/$', 'lots.views.details'),
+    url(r'^(?P<bbl>\d+)/$', 'lots.views.details', name='lots_lot_details'),
     url(r'^(?P<bbl>\d+)/pdf/$', 'lots.views.pdf'),
     url(r'^(?P<bbl>\d+)/qrcode/$', 'lots.views.qrcode'),
     url(r'^random/$', 'lots.views.random'),

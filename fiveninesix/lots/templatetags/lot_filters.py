@@ -9,6 +9,10 @@ def lot_ownercount(lot, arg=None):
     return len(set([l.owner for l in lot.lots]))
 
 @register.filter
+def lot_acres_sum(lot):
+    return mark_safe(sum([l.area_acres for l in lot.lots]))
+
+@register.filter
 def lotname(lot, arg=None):
     """
     Get a display name for the given lot or lot group.

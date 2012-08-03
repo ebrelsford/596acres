@@ -75,7 +75,8 @@ class Lot(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('en:lots.views.details', (), { 'bbl': self.bbl })
+        # TODO add current language as namespace to make it work?
+        return ('lots_lot_details', (), { 'bbl': self.bbl })
 
     def _get_lots(self):
         """

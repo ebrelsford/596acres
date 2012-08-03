@@ -1,5 +1,6 @@
 {% load i18n lot_filters %}
 
+{% url lots_lot_details bbl=lot.bbl as lot_details_link %}
 {% if is_mobile %}
 <div class="lot-link-container">
     <h1>
@@ -120,7 +121,7 @@
         {% if lot.children.count > 0 %}
         <p>
             {% blocktrans with lots_count=lot.lots|length %}
-            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point. Please go to <a href="{{ lot.get_absolute_url }}" target="_blank">their page</a> to learn the details for each.
+            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point. Please go to <a href="{{ lot_details_link }}" target="_blank">their page</a> to learn the details for each.
             {% endblocktrans %}
         </p>
         {% else %}
@@ -197,7 +198,7 @@
         {% if lot.children.count > 0 %}
         <p>
             {% blocktrans with lots_count=lot.lots|length %}
-            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point. Please go to <a href="{{ lot.get_absolute_url }}" target="_blank">their page</a> to learn the city agency with control for each.
+            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point. Please go to <a href="{{ lot_details_link }}" target="_blank">their page</a> to learn the city agency with control for each.
             {% endblocktrans %}
         </p>
         {% else %}

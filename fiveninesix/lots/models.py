@@ -89,6 +89,13 @@ class Lot(models.Model):
         return lots
     lots = property(_get_lots)
 
+    def _get_group(self):
+        """
+        Get the entire group of lots this lot belongs to.
+        """
+        return self.get_oldest_ancestor().lots
+    group = property(_get_group)
+
     def _get_lots_acreage(self):
         """
         Get the total acreage for the lots in this lot's group, defaulting

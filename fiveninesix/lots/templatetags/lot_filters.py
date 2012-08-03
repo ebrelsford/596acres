@@ -13,6 +13,15 @@ def lot_acres_sum(lot):
     return mark_safe(sum([l.area_acres for l in lot.lots]))
 
 @register.filter
+def lot_tab_label(lot):
+    if len(lot.group) <= 3:
+        return lot.bbl
+    elif len(lot.group) <= 5:
+        return 'lot %s' % lot.lot
+    else:
+        return lot.lot
+
+@register.filter
 def lotname(lot, arg=None):
     """
     Get a display name for the given lot or lot group.

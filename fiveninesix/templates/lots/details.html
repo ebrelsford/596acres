@@ -107,7 +107,7 @@
         {% if lot.children.count > 0 %}
         <ul>
             {% for l in lot.lots %}
-            <li><a href="#{{ l.bbl }}">{{ l.bbl }}</a></li>
+            <li><a href="#{{ l.bbl }}">{{ l|lot_tab_label }}</a></li>
             {% endfor %}
         </ul>
         {% endif %}

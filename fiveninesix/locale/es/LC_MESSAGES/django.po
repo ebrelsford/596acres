@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-02 10:55-0400\n"
+"POT-Creation-Date: 2012-08-03 11:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,21 +62,21 @@ msgstr ""
 #: contact/models.py:11 mailings/models.py:19 organize/models.py:20
 #: organize/models.py:53 photos/models.py:11 photos/models.py:33
 #: photos/models.py:82 templates/lots/details_organize.html:49
-#: templates/lots/owner_details.html:4 templates/lots/tabs_no_access.html:229
+#: templates/lots/owner_details.html:4 templates/lots/tabs_no_access.html:247
 #: templates/organize/tab.html:10
 msgid "name"
 msgstr "nombre"
 
 #: contact/models.py:12 organize/models.py:23 organize/models.py:55
 #: templates/lots/details_organize.html:77
-#: templates/lots/owner_details.html:35 templates/lots/tabs_no_access.html:257
+#: templates/lots/owner_details.html:35 templates/lots/tabs_no_access.html:275
 #: templates/organize/tab.html:38
 msgid "email"
 msgstr "email"
 
 #: contact/models.py:13 organize/models.py:22 organize/models.py:54
 #: templates/lots/details_organize.html:71
-#: templates/lots/owner_details.html:23 templates/lots/tabs_no_access.html:251
+#: templates/lots/owner_details.html:23 templates/lots/tabs_no_access.html:269
 #: templates/organize/tab.html:32
 msgid "phone"
 msgstr "telefono"
@@ -186,8 +186,8 @@ msgid "Lots Apphook"
 msgstr ""
 
 #: lots/models.py:18 templates/lots/details_basics.html:6
-#: templates/lots/tabs_no_access.html:34
-#: templates/lots/tabs_no_access.html:121
+#: templates/lots/tabs_no_access.html:35
+#: templates/lots/tabs_no_access.html:130
 msgid "address"
 msgstr "dirección"
 
@@ -199,25 +199,23 @@ msgstr ""
 msgid "bbl"
 msgstr ""
 
-#: lots/models.py:23 lots/templatetags/lot_filters.py:23
+#: lots/models.py:23 lots/templatetags/lot_filters.py:31
 #: templates/lots/details_basics.html:18
 #: templates/lots/tabs_group_has_access.html:5
-#: templates/lots/tabs_no_access.html:7 templates/lots/tabs_no_access.html:133
-#: templates/organize/block_link_snippet.html:5
+#: templates/lots/tabs_no_access.html:8 templates/lots/tabs_no_access.html:142
 msgid "block"
 msgstr "bloque"
 
-#: lots/models.py:24 lots/templatetags/lot_filters.py:25
+#: lots/models.py:24 lots/templatetags/lot_filters.py:33
 #: templates/lots/details_basics.html:24
 #: templates/lots/tabs_group_has_access.html:5
-#: templates/lots/tabs_no_access.html:7 templates/lots/tabs_no_access.html:139
-#: templates/organize/block_link_snippet.html:6
+#: templates/lots/tabs_no_access.html:8 templates/lots/tabs_no_access.html:148
 msgid "lot"
 msgstr "lote"
 
 #: lots/models.py:25 templates/lots/details_basics.html:12
-#: templates/lots/tabs_no_access.html:40
-#: templates/lots/tabs_no_access.html:127
+#: templates/lots/tabs_no_access.html:41
+#: templates/lots/tabs_no_access.html:136
 msgid "zipcode"
 msgstr "código postal"
 
@@ -231,8 +229,8 @@ msgid "owner contact"
 msgstr "contacto"
 
 #: lots/models.py:37 templates/lots/details_basics.html:30
-#: templates/lots/tabs_no_access.html:58
-#: templates/lots/tabs_no_access.html:157
+#: templates/lots/tabs_no_access.html:59
+#: templates/lots/tabs_no_access.html:166
 msgid "area"
 msgstr "área"
 
@@ -318,7 +316,7 @@ msgstr ""
 
 #: organize/models.py:25 templates/lots/details_notes.html:8
 #: templates/lots/details_organize.html:87
-#: templates/lots/owner_details.html:57 templates/lots/tabs_no_access.html:267
+#: templates/lots/owner_details.html:57 templates/lots/tabs_no_access.html:285
 #: templates/organize/tab.html:48
 msgid "notes"
 msgstr "notas"
@@ -483,8 +481,8 @@ msgid "Lot size"
 msgstr ""
 
 #: templates/cms/map_template.html:89 templates/lots/details_basics.html:34
-#: templates/lots/tabs_no_access.html:62
-#: templates/lots/tabs_no_access.html:161
+#: templates/lots/tabs_no_access.html:63
+#: templates/lots/tabs_no_access.html:170
 msgid "acres"
 msgstr ""
 
@@ -729,66 +727,68 @@ msgstr ""
 msgid "Review Lots"
 msgstr ""
 
-#: templates/lots/details.html:65 templates/lots/tabs_no_access.html:73
-#: templates/lots/tabs_no_access.html:87
-#: templates/lots/tabs_no_access.html:209
+#: templates/lots/details.html:67 templates/lots/tabs_no_access.html:74
+#: templates/lots/tabs_no_access.html:88
+#: templates/lots/tabs_no_access.html:227
 msgid "watch"
 msgstr "vigila"
 
-#: templates/lots/details.html:69
+#: templates/lots/details.html:71
 #: templates/lots/details_group_has_access.html:23
 #: templates/lots/details_organize.html:10
-#: templates/lots/tabs_no_access.html:76
-#: templates/lots/tabs_no_access.html:213
+#: templates/lots/tabs_no_access.html:77
+#: templates/lots/tabs_no_access.html:231
 msgid "organize"
 msgstr "organiza"
 
-#: templates/lots/details.html:81
+#: templates/lots/details.html:83
 msgid "This lot isn't vacant."
 msgstr ""
 
-#: templates/lots/details.html:83
+#: templates/lots/details.html:85
 msgid "It is part of a community garden."
 msgstr ""
 
-#: templates/lots/details.html:85
+#: templates/lots/details.html:87
 msgid "According to our research it is being used as a"
 msgstr ""
 
-#: templates/lots/details.html:86
+#: templates/lots/details.html:88
 msgid "Know anything more about it?"
 msgstr ""
 
-#: templates/lots/details.html:87
+#: templates/lots/details.html:89
 msgid "Leave a note!"
 msgstr ""
 
-#: templates/lots/details.html:94
+#: templates/lots/details.html:96
 #, python-format
 msgid ""
 "\n"
-"    There are %(lots_count)s lots at this site. Anything you add to this "
-"site will apply to the lots as a whole. Here are the details for each:\n"
-"    "
+"        There are <span style=\"font-weight: bold;\">%(lots_count)s</span> "
+"adjacent lots with a total area of <span style=\"font-weight: bold;\">"
+"%(area)s acres</span> on this page. Anything you add to this page will apply "
+"to the lots as a whole. Here are the details for each:\n"
+"        "
 msgstr ""
 
-#: templates/lots/details.html:131 templates/lots/tabs_no_access.html:46
-#: templates/lots/tabs_no_access.html:145
+#: templates/lots/details.html:158 templates/lots/tabs_no_access.html:47
+#: templates/lots/tabs_no_access.html:154
 msgid "agency"
 msgstr "agencia"
 
-#: templates/lots/details_basics.html:36 templates/lots/tabs_no_access.html:64
-#: templates/lots/tabs_no_access.html:163
+#: templates/lots/details_basics.html:36 templates/lots/tabs_no_access.html:65
+#: templates/lots/tabs_no_access.html:172
 msgid "unknown"
 msgstr ""
 
 #: templates/lots/details_basics.html:42
-#: templates/lots/tabs_no_access.html:169
+#: templates/lots/tabs_no_access.html:178
 msgid "elsewhere"
 msgstr "otra parte"
 
 #: templates/lots/details_basics.html:45
-#: templates/lots/tabs_no_access.html:172
+#: templates/lots/tabs_no_access.html:181
 msgid "See this lot on OASIS"
 msgstr ""
 
@@ -803,7 +803,7 @@ msgid "government"
 msgstr ""
 
 #: templates/lots/details_government.html:6
-#: templates/lots/tabs_no_access.html:178
+#: templates/lots/tabs_no_access.html:187
 msgid "Check out"
 msgstr ""
 
@@ -885,12 +885,12 @@ msgid "organizing history"
 msgstr ""
 
 #: templates/lots/details_organize.html:22
-#: templates/lots/tabs_no_access.html:200
+#: templates/lots/tabs_no_access.html:218
 msgid "This lot is part of a community garden! It's already organized."
 msgstr ""
 
 #: templates/lots/details_organize.html:25
-#: templates/lots/tabs_no_access.html:203
+#: templates/lots/tabs_no_access.html:221
 msgid ""
 "If you would like to become a part of the garden, please drop by and "
 "introduce yourself."
@@ -902,7 +902,7 @@ msgid ""
 msgstr ""
 
 #: templates/lots/details_organize.html:35
-#: templates/lots/tabs_no_access.html:218 templates/organize/tab.html:4
+#: templates/lots/tabs_no_access.html:236 templates/organize/tab.html:4
 msgid "Currently organizing here"
 msgstr ""
 
@@ -911,18 +911,18 @@ msgid "Organizers"
 msgstr ""
 
 #: templates/lots/details_organize.html:55
-#: templates/lots/tabs_no_access.html:235 templates/organize/tab.html:16
+#: templates/lots/tabs_no_access.html:253 templates/organize/tab.html:16
 msgid "type"
 msgstr ""
 
 #: templates/lots/details_organize.html:61
-#: templates/lots/owner_details.html:49 templates/lots/tabs_no_access.html:241
+#: templates/lots/owner_details.html:49 templates/lots/tabs_no_access.html:259
 #: templates/organize/tab.html:22
 msgid "site"
 msgstr "sitio"
 
 #: templates/lots/details_organize.html:98
-#: templates/lots/tabs_no_access.html:275
+#: templates/lots/tabs_no_access.html:293
 msgid "No one yet"
 msgstr ""
 
@@ -961,59 +961,81 @@ msgstr ""
 msgid "its page"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:11 templates/lots/tabs_no_access.html:92
+#: templates/lots/tabs_no_access.html:12 templates/lots/tabs_no_access.html:93
 msgid "This lot's page"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:13 templates/lots/tabs_no_access.html:94
+#: templates/lots/tabs_no_access.html:14 templates/lots/tabs_no_access.html:95
 msgid "has more information"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:16
+#: templates/lots/tabs_no_access.html:17
 msgid ""
 "Neighbors are working on turning this lot into a community-determined green "
 "space"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:18
+#: templates/lots/tabs_no_access.html:19
 msgid "Learn more and get involved"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:26
-#: templates/lots/tabs_no_access.html:113
+#: templates/lots/tabs_no_access.html:27
+#: templates/lots/tabs_no_access.html:114
 msgid "This lot isn't vacant"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:28
-#: templates/lots/tabs_no_access.html:115
+#: templates/lots/tabs_no_access.html:29
+#: templates/lots/tabs_no_access.html:116
 msgid "It is part of a community garden"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:97
+#: templates/lots/tabs_no_access.html:98
 msgid ""
 "Neighbors are working on turning this lot into a community-determined green "
 "space."
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:99
+#: templates/lots/tabs_no_access.html:100
 msgid "Learn more and get involved."
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:151
+#: templates/lots/tabs_no_access.html:123
+#, python-format
+msgid ""
+"\n"
+"            There are <span style=\"font-weight: bold;\">%(lots_count)s</"
+"span> adjacent lots at this point. Please go to <a href="
+"\"%(lot_details_link)s\" target=\"_blank\">their page</a> to learn the "
+"details for each.\n"
+"            "
+msgstr ""
+
+#: templates/lots/tabs_no_access.html:160
 msgid "we don't know"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:174
+#: templates/lots/tabs_no_access.html:183
 msgid ""
 "a map that combines block and lot level information from a variety of "
 "government and community sources"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:180
+#: templates/lots/tabs_no_access.html:189
 msgid "for more detailed maps of New York City's community gardens"
 msgstr ""
 
-#: templates/lots/tabs_no_access.html:193
+#: templates/lots/tabs_no_access.html:200
+#, python-format
+msgid ""
+"\n"
+"            There are <span style=\"font-weight: bold;\">%(lots_count)s</"
+"span> adjacent lots at this point. Please go to <a href="
+"\"%(lot_details_link)s\" target=\"_blank\">their page</a> to learn the city "
+"agency with control for each.\n"
+"            "
+msgstr ""
+
+#: templates/lots/tabs_no_access.html:210
 msgid "We don't know who owns this lot"
 msgstr ""
 

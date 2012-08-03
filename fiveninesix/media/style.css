@@ -367,17 +367,28 @@ div.tabs #organize ul li.last {
     height: 55px;
 }
 
-.lot-popup .ui-tabs {
+.minimal-tabs.ui-tabs {
     border: 0;
 }
-.lot-popup .ui-tabs .ui-tabs-nav {
+#lot-group-details.ui-tabs {
+    border: 1px solid black;
+}
+.minimal-tabs.ui-tabs .ui-tabs-nav {
     border: 0;
     border-bottom: 1px solid black;
     background: white;
+}
+.minimal-tabs.ui-tabs .ui-tabs-nav li a {
+    padding-bottom: 0;
+}
+#lot-group-details.ui-tabs .ui-tabs-nav li a {
+    padding-bottom: 3px;
+}
+.lot-popup .ui-tabs .ui-tabs-nav {
     height: 30px;
 }
-.lot-popup .ui-tabs .ui-tabs-nav li a {
-    padding-bottom: 0;
+#lot-group-details.ui-tabs .ui-tabs-nav {
+    height: 18px;
 }
 .lot-popup .ui-tabs-panel {
     padding: 0;
@@ -436,6 +447,7 @@ form > table td input[type=text] {
 }
 #lot-details h2 {
     margin-bottom: 0;
+    margin-top: 5px;
 }
 #lot-details #organize ul {
     list-style: none;

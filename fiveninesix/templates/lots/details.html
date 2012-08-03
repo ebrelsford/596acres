@@ -20,6 +20,8 @@
 {% addtoblock "js" %}
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#lot-group-details.tabbed').tabs();
+
         $('.pictures a').lightBox({
             imageLoading: '{{ MEDIA_URL }}jquery-lightbox/images/lightbox-ico-loading.gif',   
             imageBtnClose: '{{ MEDIA_URL }}jquery-lightbox/images/lightbox-btn-close.gif',   
@@ -90,32 +92,57 @@
     {% endif %}
 
     {% if lot.children.count > 0 %}
-    <p>
-    {% blocktrans with lots_count=lot.lots|length %}
-    There are {{ lots_count }} lots at this site. Anything you add to this site will apply to the lots as a whole. Here are the details for each:
-    {% endblocktrans %}
-    </p>
+        <p>
+        {% blocktrans with lots_count=lot.lots|length %}
+        There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots on this page. Anything you add to this page will apply to the lots as a whole. Here are the details for each:
+        {% endblocktrans %}
+        </p>
     {% endif %}
 
     {% comment %}
     Show the basic details (address, OASIS, ...) for each lot in this group.
     {% endcomment %}
-    {% for l in lot.lots %}
-    <h2>{{ l|lotname }}</h2>
-        {% with lot=l %}
-        {% include "lots/details_basics.html" %}
-        {% endwith %}
 
+    <div id="lot-group-details" class="minimal-tabs {% if lot.children.count > 0 %}tabbed{% endif %}">
         {% if lot.children.count > 0 %}
-        <div id="owner" class="section">
-            <h3>agency</h3>
-            {% with lot=l %}
-            {% include "lots/details_owner.html" %}
-            {% endwith %}
-        </div>
+        <ul>
+            {% for l in lot.lots %}
+            <li><a href="#{{ l.bbl }}">{{ l.bbl }}</a></li>
+            {% endfor %}
+        </ul>
         {% endif %}
 
-    {% endfor %}
+        {% for l in lot.lots %}
+        <div id="{{ l.bbl }}">
+            <h2>{{ l|lotname }}</h2>
+
+            {% with lot=l %}
+            {% include "lots/details_basics.html" %}
+            {% endwith %}
+
+            {% if lot.children.count > 0 and lot|lot_ownercount != 1 %}
+            <div id="owner" class="section">
+                <h3>agency</h3>
+                {% with lot=l %}
+                {% include "lots/details_owner.html" %}
+                {% endwith %}
+            </div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+    {% if lot.children.count > 0 %}
+        <p>
+        {% ifequal lot|lot_ownercount 1 %}
+            <span style="font-weight: bold;">{{ lot.owner.name }}</span> has control of all of the lots on this page:
+            <div id="owner" class="section">
+                <h3>agency</h3>
+                {% include "lots/details_owner.html" %}
+            </div>
+        {% endifequal %}
+        </p>
+    {% endif %}
 
     {% if lot.group_has_access %}
     {% include "lots/pictures_details.html" %}

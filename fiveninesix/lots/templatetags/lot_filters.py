@@ -5,6 +5,10 @@ from django.utils.translation import ugettext as _
 register = template.Library()
 
 @register.filter
+def lot_ownercount(lot, arg=None):
+    return len(set([l.owner for l in lot.lots]))
+
+@register.filter
 def lotname(lot, arg=None):
     """
     Get a display name for the given lot or lot group.

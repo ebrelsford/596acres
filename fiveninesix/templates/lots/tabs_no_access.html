@@ -116,6 +116,14 @@
             {% endif %}
         </p>
         {% endif %}
+
+        {% if lot.children.count > 0 %}
+        <p>
+            {% blocktrans with lots_count=lot.lots|length %}
+            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point. Please go to <a href="{{ lot.get_absolute_url }}" target="_blank">their page</a> to learn the details for each.
+            {% endblocktrans %}
+        </p>
+        {% else %}
         <table>
             <tr>
                 <th>{% trans "address" %}</th>
@@ -182,15 +190,24 @@
                 </td>
             </tr>
         </table>
+        {% endif %}
     </div>
 
     <div id="owner">
-        {% if lot.owner %}
-            {% with owner=lot.owner owner_contact=lot.owner_contact %}
-            {% include "lots/owner_details.html" %}
-            {% endwith %}
+        {% if lot.children.count > 0 %}
+        <p>
+            {% blocktrans with lots_count=lot.lots|length %}
+            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point. Please go to <a href="{{ lot.get_absolute_url }}" target="_blank">their page</a> to learn the city agency with control for each.
+            {% endblocktrans %}
+        </p>
         {% else %}
-        {% trans "We don't know who owns this lot" %}.
+            {% if lot.owner %}
+                {% with owner=lot.owner owner_contact=lot.owner_contact %}
+                {% include "lots/owner_details.html" %}
+                {% endwith %}
+            {% else %}
+            {% trans "We don't know who owns this lot" %}.
+            {% endif %}
         {% endif %}
     </div>
 

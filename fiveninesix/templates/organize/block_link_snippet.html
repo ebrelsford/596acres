@@ -1,7 +1,5 @@
-{% load i18n %}
+{% load i18n lot_filters %}
 
 <a href="{% url lots.views.details bbl=lot.bbl %}">
-    {{ lot.borough }},
-    {% trans "block" %} {{ lot.block }},
-    {% trans "lot" %} {{ lot.lot }}
+    {{ lot|lotname:"group" }}
 </a>

@@ -7,11 +7,27 @@ from notify import new_organizer_notify_managers, notify_organizers, notify_watc
 from models import Organizer, Watcher, Note, Picture
 from widgets import PrefixLabelTextInput
 
-class OrganizerForm(ModelForm):
-    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
+class CaptchaForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        try:
+            user = kwargs.pop('user')
+        except Exception:
+            user = None
 
-    recaptcha = RecaptchaField(label="Prove you're human")
+        super(CaptchaForm, self).__init__(*args, **kwargs)
 
+        # if not logged in, add recaptcha. else, do nothing.
+        if not user or user.is_anonymous():
+            self.fields['recaptcha'] = RecaptchaField(label="Prove you're human")
+
+class OrganizeForm(CaptchaForm):
+    lot = ModelChoiceField(
+        label='lot',
+        queryset=Lot.objects.all(),
+        widget=HiddenInput()
+    )
+
+class OrganizerForm(OrganizeForm):
     class Meta:
         model = Organizer
         widgets = {
@@ -29,29 +45,17 @@ class OrganizerForm(ModelForm):
             notify_organizers(organizer)
             notify_watchers(organizer)
         
-class WatcherForm(ModelForm):
-    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
-
-    recaptcha = RecaptchaField(label="Prove you're human")
-
+class WatcherForm(OrganizeForm):
     class Meta:
         model = Watcher
         exclude = ('added', 'email_hash')
         
-class NoteForm(ModelForm):
-    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
-
-    recaptcha = RecaptchaField(label="Prove you're human")
-
+class NoteForm(OrganizeForm):
     class Meta:
         model = Note
         exclude = ('added',)
         
-class PictureForm(ModelForm):
-    lot = ModelChoiceField(label='lot', queryset=Lot.objects.all(), widget=HiddenInput())
-
-    recaptcha = RecaptchaField(label="Prove you're human")
-
+class PictureForm(OrganizeForm):
     class Meta:
         model = Picture
         exclude = ('added',)

@@ -37,14 +37,14 @@ def details_tab(request, bbl=None):
 def add_organizer(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     if request.method == 'POST':    
-        form = OrganizerForm(request.POST)
+        form = OrganizerForm(request.POST, user=request.user)
         if form.is_valid():
             organizer = form.save()
             return redirect('lots.views.details', bbl=bbl)
     else:
         form = OrganizerForm(initial={
             'lot': lot,
-        })
+        }, user=request.user)
 
     template = 'organize/add_organizer.html'
 
@@ -57,14 +57,14 @@ def add_organizer(request, bbl=None):
 def add_watcher(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     if request.method == 'POST':    
-        form = WatcherForm(request.POST)
+        form = WatcherForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('lots.views.details', bbl=bbl)
     else:
         form = WatcherForm(initial={
             'lot': lot,
-        })
+        }, user=request.user)
 
     template = 'organize/add_watcher.html'
 
@@ -77,14 +77,14 @@ def add_watcher(request, bbl=None):
 def add_note(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     if request.method == 'POST':    
-        form = NoteForm(request.POST)
+        form = NoteForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('lots.views.details', bbl=bbl)
     else:
         form = NoteForm(initial={
             'lot': lot,
-        })
+        }, user=request.user)
 
     template = 'organize/add_note.html'
 
@@ -97,14 +97,14 @@ def add_note(request, bbl=None):
 def add_picture(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     if request.method == 'POST':    
-        form = PictureForm(request.POST, request.FILES)
+        form = PictureForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('lots.views.details', bbl=bbl)
     else:
         form = PictureForm(initial={
             'lot': lot,
-        })
+        }, user=request.user)
 
     template = 'organize/add_picture.html'
 

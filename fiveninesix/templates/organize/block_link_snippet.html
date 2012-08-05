@@ -1,5 +1,5 @@
-{% load i18n lot_filters %}
+{% load lot_filters %}
 
-<a href="{% url lots.views.details bbl=lot.bbl %}">
+<a href="{{ lot.get_absolute_url }}">
     {{ lot|lotname:"group" }}
 </a>

@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from elaphe import barcode
 
+from i18n.utils import language_namespaced_view_name
 from settings import FILE_UPLOAD_TEMP_DIR, BASE_URL
 
 class Lot(models.Model):
@@ -75,8 +76,12 @@ class Lot(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        # TODO add current language as namespace to make it work?
-        return ('lots_lot_details', (), { 'bbl': self.bbl })
+        # add current language as namespace
+        return (
+            language_namespaced_view_name('lots_lot_details'),
+            (),
+            { 'bbl': self.bbl }
+        )
 
     def _get_lots(self):
         """

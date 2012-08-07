@@ -9,6 +9,9 @@
 {% endblock %}
 
 {% block content_main %}
+<h2>
+    {{ request.current_page.get_title }}
+</h2>
     
 {% if perms.cms.change_page %}
 <a href="{% url admin:cms_page_change request.current_page.pk %}">edit this page</a>

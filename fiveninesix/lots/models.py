@@ -234,6 +234,9 @@ class Owner(models.Model):
     type = models.ForeignKey('OwnerType', null=True, blank=True)
     code = models.CharField(max_length=8, null=True, blank=True)
 
+    class Meta:
+        ordering = ('name',)
+
     def __unicode__(self):
         return self.name
 
@@ -253,6 +256,9 @@ class OwnerContact(models.Model):
                    "northern Brooklyn).")
     )
     notes = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ('name',)
 
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.owner.name)

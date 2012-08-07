@@ -52,6 +52,13 @@ class LotAdmin(admin.ModelAdmin):
         return view_in_oasis(obj)
     view_in_oasis.allow_tags = True
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'parent_lot':
+            kwargs['queryset'] = Lot.objects.all().order_by('bbl')
+            return db_field.formfield(**kwargs)
+        return super(LotAdmin, self).formfield_for_foreignkey(db_field,
+                                                              request, **kwargs)
+
 class OwnerAdmin(admin.ModelAdmin):
     search_fields = ('name', 'person')
     list_display = ('name', 'code', 'person', 'phone', 'site', 'type',)

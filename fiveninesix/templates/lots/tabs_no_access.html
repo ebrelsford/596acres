@@ -119,8 +119,8 @@
 
         {% if lot.children.count > 0 %}
         <p>
-            {% blocktrans with lots_count=lot.lots|length lot_link=lot.get_absolute_url %}
-            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point. Please go to <a href="{{ lot_link }}" target="_blank">their page</a> to learn the details for each.
+            {% blocktrans with lots_count=lot.lots|length lot_link=lot.get_absolute_url area=lot|lot_acres_sum|floatformat:"3" %}
+            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots at this point with a total area of <span style="font-weight: bold;">{{ area }} acres</span>. Please go to <a href="{{ lot_link }}" target="_blank">their page</a> to learn the details for each.
             {% endblocktrans %}
         </p>
         {% else %}

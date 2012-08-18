@@ -4,7 +4,8 @@
     $(document).ready(function() {
         $('.map-legend input[type="checkbox"]').change(function() {
             var lot_types = $.map($('.map-legend input[type="checkbox"]:checked'), function(e, i) { return $(e).attr('name'); });
-            $('#map').data('lotmap').filterByLotType(lot_types); // Obviously only going to work on map_template pages
+            // Obviously only going to work on map_template pages
+            $('#map').data('lotmap').filterByLotType(lot_types);
             update_counts();
         });
     });
@@ -25,7 +26,7 @@
                 <img src="{{ MEDIA_URL }}img/organizing.png" alt="public vacant lot with organizers (point)" /> 
                 {% trans "public vacant sites being organized around" %}
             </label>
-            (<span class="count">{{ counts.organizing }}</span>)
+            (<span class="organizing_sites count">{{ counts.organizing_sites }}</span>)
         </li>
         <li class="accessed">
             <input type="checkbox" name="accessed" id="accessed" checked="checked" />
@@ -33,7 +34,7 @@
                 <img src="{{ MEDIA_URL }}img/accessed.png" alt="public vacant lot where groups have access (point)" />
                 {% trans "public vacant sites where groups have access" %}
             </label>
-            (<span class="count">{{ counts.accessed }}</span>)
+            (<span class="accessed_sites count">{{ counts.accessed_sites }}</span>)
         </li>
         <li class="private_accessed">
             <input type="checkbox" name="private_accessed" id="private_accessed" checked="checked" />
@@ -43,7 +44,7 @@
                     {% trans "private vacant sites being used by community" %}
                 </a>
             </label>
-            (<span class="count">{{ counts.private_accessed }}</span>)
+            (<span class="private_accessed_sites count">{{ counts.private_accessed_sites }}</span>)
         </li>
         <li class="garden">
             <input type="checkbox" name="garden" id="garden" />

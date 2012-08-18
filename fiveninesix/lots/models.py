@@ -106,6 +106,8 @@ class Lot(models.Model):
         Get the total acreage for the lots in this lot's group, defaulting
         to the acreage of this lot if there is no group.
         """
+        # XXX this will fetch from database, probably not suitable for large
+        # sets of lots
         return sum([l.area_acres for l in self.lots])
     lots_area_acres = property(_get_lots_acreage)
 
@@ -298,24 +300,113 @@ class Review(models.Model):
     imported = models.BooleanField(blank=False, null=False, default=False, help_text="data has been added to the respective lot")
 
 LOT_QS = {
-    'vacant': 
+
+    # more efficient query for getting sites when lots with parent lots are 
+    # filtered out elsewhere (eg, when parents_only=true)
+    'accessed': Q(
+        group_has_access=True,
+        owner__type__name='city',
+    ),
+    'accessed_lots': Q(
+        Q(
+            Q(group_has_access=True) |
+            Q(parent_lot__group_has_access=True)
+        ),
+        owner__type__name='city'
+    ),
+    'accessed_sites': Q(
+        group_has_access=True,
+        owner__type__name='city',
+        parent_lot=None,
+    ),
+
+    'garden': Q(
+        actual_use__startswith='Garden',
+    ),
+    'garden_lots': Q(
+        Q(actual_use__startswith='Garden') |
+        Q(parent_lot__actual_use__startswith='Garden')
+    ),
+    'garden_sites': Q(
+        actual_use__startswith='Garden',
+        parent_lot=None,
+    ),
+
+    # these are not going to be combined
+    'gutterspace': Q(accessible=False) | Q(actual_use='gutterspace'),
+    'inaccessible': Q(accessible=False, owner__type__name='city'),
+
+    # get lots that are children of lots with organizers, too
+    'organizing': Q(
+        ~Q(organizer=None),
+        group_has_access=False,
+        owner__type__name='city',
+    ),
+
+    'organizing_lots': Q(
+        ~Q(organizer=None) | 
+        Q(
+            ~Q(parent_lot=None), 
+            ~Q(parent_lot__organizer=None),
+            parent_lot__group_has_access=False,
+        ),
+        group_has_access=False,
+        owner__type__name='city'
+    ),
+    'organizing_sites': Q(
+        ~Q(organizer=None),
+        group_has_access=False,
+        owner__type__name='city',
+        parent_lot=None,
+    ),
+
+    'private_accessed': Q(
+        group_has_access=True,
+        owner__type__name='private',
+    ),
+    'private_accessed_lots': Q(
+        Q(
+            Q(group_has_access=True) |
+            Q(parent_lot__group_has_access=True)
+        ),
+        owner__type__name='private',
+    ),
+    'private_accessed_sites': Q(
+        owner__type__name='private',
+        group_has_access=True,
+        parent_lot=None,
+    ),
+
+    # NB: default case, not adding check for parent
+    'vacant': Q(
         Q(
             accessible=True,
             is_vacant=True,
             group_has_access=False,
             organizer=None,
             owner__type__name='city'
-        ) & ~Q(actual_use='gutterspace'),
-    'garden': Q(
-        actual_use__startswith='Garden',
-        owner__type__name='city'
+        ),
+        ~Q(actual_use='gutterspace'),
     ),
-    'private_accessed': Q(
-        owner__type__name='private',
-        group_has_access=True
+    'vacant_lots': Q(
+        Q(
+            accessible=True,
+            is_vacant=True,
+            group_has_access=False,
+            organizer=None,
+            owner__type__name='city'
+        ),
+        ~Q(actual_use='gutterspace'),
     ),
-    'organizing': ~Q(organizer=None, owner__type__name='city'),
-    'accessed': Q(group_has_access=True, owner__type__name='city'),
-    'inaccessible': Q(accessible=False, owner__type__name='city'),
-    'gutterspace': Q(accessible=False) | Q(actual_use='gutterspace'),
+    'vacant_sites': Q(
+        Q(
+            accessible=True,
+            is_vacant=True,
+            group_has_access=False,
+            organizer=None,
+            owner__type__name='city',
+            parent_lot=None,
+        ),
+        ~Q(actual_use='gutterspace'),
+    ),
 }

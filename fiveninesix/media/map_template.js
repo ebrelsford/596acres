@@ -80,7 +80,7 @@ function update_counts() {
     uri = URI('/lot/counts?').query($('#map').data('lotmap').exportFilters());
     $.getJSON(uri, function(data) {
         $.each(data, function(lot_type, count) {
-            $('.map-legend .' + lot_type + ' .count').text(count);
+            $('.map-legend .count.' + lot_type).text(count);
         });
     });
 }

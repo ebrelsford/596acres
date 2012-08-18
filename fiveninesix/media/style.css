@@ -634,6 +634,9 @@ ul.albums li {
     margin-top: 5px;
     margin-left: 5px;
 }
+.tally .count {
+    font-weight: bold;
+}
 
 ul.events {
     list-style: none;

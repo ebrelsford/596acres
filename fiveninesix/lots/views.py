@@ -126,17 +126,23 @@ def _get_filter_description(request):
         description += ' owned by ' + owner.name
     return description
 
-def _filter_lots(request):
+def _filter_lots(request, override={}):
+    """
+    Filter lots with the given request, optionally overriding some parameters.
+    """
+    params = request.GET.copy()
+    params.update(override)
+
     mapped_lots = Lot.objects.filter(centroid__isnull=False)
     lots = mapped_lots
 
     try:
-        lot_types = request.GET['lot_types'].split(',')
+        lot_types = params['lot_types'].split(',')
     except:
         lot_types = ['vacant','organizing','accessed','private_accessed']
 
     try:
-        owner_types = request.GET['owner_type'].split(',')
+        owner_types = params['owner_type'].split(',')
     except:
         owner_types = ['city', 'private']
     if 'private_accessed' not in lot_types and 'private' in owner_types:
@@ -144,7 +150,7 @@ def _filter_lots(request):
     lots = lots.filter(owner__type__name__in=owner_types)
 
     try:
-        boroughs = [b.title() for b in request.GET['boroughs'].split(',')]
+        boroughs = [b.title() for b in params['boroughs'].split(',')]
         if not request.user.is_authenticated():
             if any(map(lambda b: b not in settings.PUBLIC_BOROUGHS, boroughs)):
                 raise Exception('Only logged-in users can view all boroughs.')
@@ -152,17 +158,17 @@ def _filter_lots(request):
     except:
         lots = lots.filter(borough__in=settings.PUBLIC_BOROUGHS)
         
-    if 'source' in request.GET:
-        if request.GET['source'] != 'all':
-            sources = request.GET['source'].split(',')
+    if 'source' in params:
+        if params['source'] != 'all':
+            sources = params['source'].split(',')
             lots = lots.filter(centroid_source__in=sources)
-    if 'owner_code' in request.GET:
-        lots = lots.filter(owner__code=request.GET['owner_code'])
-    if 'owner_id' in request.GET:
-        lots = lots.filter(owner__id=request.GET['owner_id'])
-    if 'bbls' in request.GET:
-        bbls = request.GET['bbls'].split(',')
-        if len(bbls) == 1 and request.GET.get('with_nearby_lots', 'no') == 'yes':
+    if 'owner_code' in params:
+        lots = lots.filter(owner__code=params['owner_code'])
+    if 'owner_id' in params:
+        lots = lots.filter(owner__id=params['owner_id'])
+    if 'bbls' in params:
+        bbls = params['bbls'].split(',')
+        if len(bbls) == 1 and params.get('with_nearby_lots', 'no') == 'yes':
             target_lots = Lot.objects.filter(centroid__isnull=False, bbl=bbls[0])
             if target_lots:
                 lots = lots.filter(centroid__distance_lte=(target_lots[0].centroid, Distance(mi=.25)))
@@ -170,12 +176,12 @@ def _filter_lots(request):
                 lots = Lot.objects.none()
         else:
             lots = lots.filter(bbl__in=bbls)
-    if request.GET.get('parents_only', 'false') == 'true':
+    if params.get('parents_only', 'false') == 'true':
         lots = lots.filter(parent_lot__isnull=True)
-    if 'min_area' in request.GET:
-        lots = lots.filter(area_acres__gte=request.GET['min_area'])
-    if 'max_area' in request.GET:
-        max_area = request.GET['max_area']
+    if 'min_area' in params:
+        lots = lots.filter(area_acres__gte=params['min_area'])
+    if 'max_area' in params:
+        max_area = params['max_area']
         if max_area < 3:
             lots = lots.filter(area_acres__lte=max_area)
     if len(lot_types) > 0:
@@ -251,9 +257,11 @@ def _lot_feature(lot, recent_changes):
         change = recent_changes[lot.id].recent_change_label()
 
     try:
+        # XXX lot.lots_area_acres makes extra DB queries
         area = round(float(lot.lots_area_acres), 3)
-    except:
+    except Exception:
         area = 0
+
     properties={
         'area': area,
         'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
@@ -379,14 +387,25 @@ def add_review(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
-@cache_page(12 * 60 * 60)
 def counts(request):
     """
     Get counts of each lot type for the given boroughs.
     """
-    lots = _filter_lots(request)
-    lot_types = ('vacant', 'organizing', 'accessed', 'garden',
-                 'private_accessed', 'gutterspace',)
+    # unset parents_only as counts use parents and children
+    lots = _filter_lots(request, { 'parents_only': 'false' })
+    lot_types = (
+        'accessed_lots',
+        'accessed_sites',
+        'garden_lots',
+        'garden_sites',
+        'gutterspace',
+        'organizing_lots',
+        'organizing_sites',
+        'private_accessed_lots',
+        'private_accessed_sites',
+        'vacant_lots',
+        'vacant_sites',
+    )
     c = {}
     for lot_type in lot_types:
         c[lot_type] = (lots & Lot.objects.filter(LOT_QS[lot_type]).distinct()).count()

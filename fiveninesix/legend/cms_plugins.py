@@ -14,9 +14,9 @@ class CMSLegendPlugin(CMSPluginBase):
             'object': instance,
             'placeholder': placeholder,
             'counts': {
-                'organizing': Lot.objects.filter(LOT_QS['organizing']).count(),
-                'accessed': Lot.objects.filter(LOT_QS['accessed']).count(),
-                'private_accessed': Lot.objects.filter(LOT_QS['private_accessed']).count(),
+                'organizing_sites': Lot.objects.filter(LOT_QS['organizing_sites']).count(),
+                'accessed_sites': Lot.objects.filter(LOT_QS['accessed_sites']).count(),
+                'private_accessed_sites': Lot.objects.filter(LOT_QS['private_accessed_sites']).count(),
             },
         })
         return context

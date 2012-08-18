@@ -205,29 +205,44 @@
                 {% trans "You are currently looking at" %}:
                 <ul>
                     <li class="vacant">
-                        <span class="count">{{ counts.vacant }}</span> 
-                        {% trans "public vacant lots" %}
+                        <span class="vacant_sites count">{{ counts.vacant_sites }}</span> 
+                        {% trans "public vacant sites" %}
+                        {% trans "on" %}
+                        <span class="vacant_lots count">{{ counts.vacant_lots }}</span> 
+                        {% trans "lots" %}
                     </li>
                     <li class="organizing">
-                        <span class="count">{{ counts.organizing }}</span> 
+                        <span class="organizing_sites count">{{ counts.organizing_sites }}</span> 
                         {% trans "public vacant sites being organized around" %}
+                        {% trans "on" %}
+                        <span class="organizing_lots count">{{ counts.organizing_lots }}</span> 
+                        {% trans "lots" %}
                     </li>
                     <li class="accessed">
-                        <span class="count">{{ counts.accessed }}</span> 
+                        <span class="accessed_sites count">{{ counts.accessed_sites }}</span> 
                         {% trans "public vacant sites where groups have access" %}
+                        {% trans "on" %}
+                        <span class="accessed_lots count">{{ counts.accessed_lots }}</span> 
+                        {% trans "lots" %}
                     </li>
                     <li class="private_accessed">
-                        <span class="count">{{ counts.private_accessed }}</span> 
+                        <span class="private_accessed_sites count">{{ counts.private_accessed_sites }}</span> 
                         <a href="/news/2012/07/27/update-on-working-with-private-landowners/">
                             {% trans "private vacant sites being used by community" %}
                         </a>
+                        {% trans "on" %}
+                        <span class="private_accessed_lots count">{{ counts.private_accessed_lots }}</span> 
+                        {% trans "lots" %}
                     </li>
                     <li class="garden">
-                        <span class="count">{{ counts.garden }}</span> 
+                        <span class="garden_sites count">{{ counts.garden_sites }}</span> 
                         {% trans "community gardens on public land" %}
+                        {% trans "on" %}
+                        <span class="garden_lots count">{{ counts.garden_lots }}</span> 
+                        {% trans "lots" %}
                     </li>
                     <li class="gutterspace">
-                        <span class="count">{{ counts.gutterspace }}</span> 
+                        <span class="gutterspace count">{{ counts.gutterspace }}</span> 
                         <a href="/news/2012/04/02/gutterspaces/">{% trans "gutterspaces" %}</a>
                     </li>
                 </ul>

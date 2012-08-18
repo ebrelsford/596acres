@@ -243,7 +243,7 @@ var LotMap = {
         if (f['boroughs']) {
             this.boroughs = f['boroughs'].split(',');
         }
-        if (f['lot_types']) {
+        if (f['lot_types'] !== undefined) {
             this.lot_types = f['lot_types'].split(',');
         }
         if (f['max_area']) {

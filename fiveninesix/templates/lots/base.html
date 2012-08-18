@@ -47,6 +47,11 @@ $(document).ready(function() {
         queryString: 'owner_type=city,private&bbls={{ lot.bbl }}&with_nearby_lots=yes',   
         detailView: true,
         detailFid: {{ lot.bbl }},
+        filters: {
+            // allow any lot types
+            lot_types: 'accessed,garden,gutterspace,organizing,private_accessed,vacant',
+        },
+
         onLoad: function() {
             var lotmap = $('#map').data('lotmap');
 

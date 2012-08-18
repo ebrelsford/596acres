@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
 from django.db.models import Q
+from django.template.loader import render_to_string
 
 from organize.models import Organizer, Watcher
 
@@ -24,12 +25,19 @@ def mail_organizers(subject, message, public_no_access=False,
 
         organizers = organizers.filter(f)
 
-    _mail_multiple(
-        subject,
-        message,
-        list(set([o.email for o in organizers])),
-        **kwargs
-    )
+    messages = {}
+    for organizer in organizers:
+        messages[organizer.email] = render_to_string(
+            'organize/notifications/mass_organizer_text.txt', 
+            {
+                'BASE_URL': settings.BASE_URL,
+                'lot': organizer.lot,
+                'message': message,
+                'organizer': organizer,
+            }
+        )
+
+    _mail_multiple_personalized(subject, messages, bcc=[], **kwargs)
 
 def mail_lot_organizers(lot, subject, message, exclude=[], **kwargs):
     """

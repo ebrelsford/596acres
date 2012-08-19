@@ -9,6 +9,7 @@ from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.gis.geos import Polygon
 from django.contrib.gis.measure import Distance
 from django.db.models import Count
 from django.http import HttpResponse
@@ -184,6 +185,9 @@ def _filter_lots(request, override={}):
         max_area = params['max_area']
         if max_area < 3:
             lots = lots.filter(area_acres__lte=max_area)
+    if 'bbox' in params:
+        polygon = Polygon.from_bbox(params['bbox'].split(','))
+        lots = lots.filter(centroid__within=polygon)
     if len(lot_types) > 0:
         lots_by_lot_type = Lot.objects.none()
         for lot_type in lot_types:

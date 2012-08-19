@@ -183,6 +183,15 @@ var LotMap = {
         });
         this.olMap.addLayer(this.search_layer);
 
+        this.olMap.events.on({
+            'moveend': function() {
+                t.options.onViewportChange();
+            },
+            'zoomend': function() {
+                t.options.onViewportChange();
+            },
+        });
+
         return this;
     },
 
@@ -237,6 +246,7 @@ var LotMap = {
         onFeatureHighlight: function(feature) {},
         onFeatureUnhighlight: function(feature) {},
         onLoad: function() {},
+        onViewportChange: function() {},
     },
 
     readFilters: function(f) {
@@ -268,6 +278,9 @@ var LotMap = {
     exportFilters: function() {
         var center = this.olMap.getCenter();
         center = this.getInverseLonLat(center.lon, center.lat);
+        var bbox = this.olMap.getExtent()
+            .transform(this.epsg900913, this.epsg4326)
+            .toBBOX();
 
         filters = {
             'boroughs': this.boroughs.join(','),
@@ -276,6 +289,7 @@ var LotMap = {
             'lat': Math.round(center.lat * 10000) / 10000.0,
             'lon': Math.round(center.lon * 10000) / 10000.0,
             'z': this.olMap.getZoom(),
+            'bbox': bbox,
         };
         if (this.max_area) filters['max_area'] = this.max_area;
         if (this.min_area) filters['min_area'] = this.min_area;

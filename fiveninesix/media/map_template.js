@@ -156,6 +156,10 @@ $(document).ready(function() {
         onFeatureUnhighlight: function(event) {
             $('.highlight_box').hide();
         },
+
+        onViewportChange: function() {
+            update_counts();
+        },
     });
 
     // update legend/tally to match given filters

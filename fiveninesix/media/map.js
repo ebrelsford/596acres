@@ -187,9 +187,6 @@ var LotMap = {
             'moveend': function() {
                 t.options.onViewportChange();
             },
-            'zoomend': function() {
-                t.options.onViewportChange();
-            },
         });
 
         return this;

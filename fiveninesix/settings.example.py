@@ -33,6 +33,16 @@ DATABASES = {
 EMAIL_SUBJECT_PREFIX = '[596 Acres]'
 SERVER_EMAIL = 'admin@596acres.org'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.emailhost.com' # TODO set to your host
+EMAIL_HOST_USER = 'email_user' # TODO set to your username
+EMAIL_HOST_PASSWORD = 'email_password' # TODO set to your pasword
+DEFAULT_FROM_EMAIL = '"596 Acres" <admin@596acres.org>'
+
+MAILREADER_HOST = 'imap.emailhost.com' # TODO set to your host
+MAILREADER_HOST_USER = 'email_user' # TODO set to your username
+MAILREADER_HOST_PASSWORD = 'email_password' # TODO set to your pasword
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.

@@ -157,6 +157,7 @@ INSTALLED_APPS = (
     'legend',
     'lots',
     'mailings',
+    'mailreader',
     'news',
     'newsletter',
     'organize',

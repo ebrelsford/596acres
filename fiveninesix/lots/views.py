@@ -48,6 +48,7 @@ def lot_geojson(request):
 
 def lot_kml(request):
     """Download lots as KML, filtered using the given request"""
+    # TODO use export.to_kml()
     kml = simplekml.Kml()
     
     for lot in _filter_lots(request):

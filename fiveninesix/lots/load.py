@@ -42,7 +42,7 @@ def get_coordinates_from_response(oasis_response):
         (x, y) = approximate_coordinates(oasis_response['Extent'])
     return [c * METERS_PER_FOOT for c in (x, y)]
 
-def load_from_oasis(bbl):
+def load_from_oasis(bbl, owner_name=None):
     # ensure bbl does not exist
     if Lot.objects.filter(bbl=bbl).count() > 0:
         print 'Lot with bbl %s already exists!' % bbl
@@ -54,6 +54,13 @@ def load_from_oasis(bbl):
     (x, y) = get_coordinates_from_response(obj)
     (lon, lat) = convert_coordinates_to_lon_lat(x, y)
 
+    if not owner_name:
+        owner_name = obj['OwnerName']
+    try:
+        owner = Owner.objects.get(name=owner_name)
+    except Exception:
+        owner = Owner.objects.get(oasis_name=owner_name)
+
     lot = Lot(
         address=obj['Address'],
         area=obj['Area'],
@@ -64,7 +71,7 @@ def load_from_oasis(bbl):
         centroid=Point(float(lon), float(lat)),
         city_council_district=obj['CityCouncilDistrict'],
         lot=obj['Lot'],
-        owner=Owner.objects.get(oasis_name=obj['OwnerName']), # TODO fail better
+        owner=owner,
         police_precinct=obj['PolicePrecinct'],
         zipcode=obj['ZipCode']
     )

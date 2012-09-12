@@ -236,6 +236,8 @@ class Owner(models.Model):
     type = models.ForeignKey('OwnerType', null=True, blank=True)
     code = models.CharField(max_length=8, null=True, blank=True)
 
+    oasis_name = models.CharField(max_length=256, null=True, blank=True)
+
     class Meta:
         ordering = ('name',)
 

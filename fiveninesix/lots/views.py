@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.geos import Polygon
 from django.contrib.gis.measure import Distance
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
@@ -414,7 +414,22 @@ def counts(request):
     c = {}
     for lot_type in lot_types:
         c[lot_type] = (lots & Lot.objects.filter(LOT_QS[lot_type]).distinct()).count()
-        
+
+    acres_lot_types = (
+        'accessed_sites',
+        'garden_sites',
+        'gutterspace',
+        'organizing_sites',
+        'private_accessed_sites',
+        'vacant_sites',
+    )
+    for lot_type in acres_lot_types:
+        ls = (lots & Lot.objects.filter(LOT_QS[lot_type]).distinct())
+        acres = ls.aggregate(acres=Sum('area_acres'))['acres']
+        if not acres:
+            acres = 0
+        c[lot_type + '_acres'] = str(round(acres, 1))
+  
     return HttpResponse(json.dumps(c), mimetype='application/json')
 
 def _is_base_geojson_request(GET):

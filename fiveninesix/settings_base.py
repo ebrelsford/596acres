@@ -181,7 +181,9 @@ STATICFILES_DIRS = [
 ]
 ADMIN_TOOLS_INDEX_DASHBOARD = 'fiveninesix.dashboard.CustomIndexDashboard'
 
-OASIS_BASE_URL = 'http://www.oasisnyc.net/map.aspx?etabs=1&zoomto=lot:'
+OASIS_BASE_URL = 'http://oasisnyc.net/map.aspx?etabs=1&zoomto=lot:'
+OASIS_DATA_URL = 'http://oasisnyc.net/service.svc/lot/%s?layerstoselect=154,150,151,149,102,56,45,44,114,115,55,48,47,120,62,60,57&_dc=1291598291582'
+
 
 TEST_RUNNER = 'ignoretests.DjangoIgnoreTestSuiteRunner'
 IGNORE_TESTS = (

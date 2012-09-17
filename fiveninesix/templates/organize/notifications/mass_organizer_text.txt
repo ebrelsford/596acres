@@ -2,7 +2,7 @@
 
 --
 
-You are receiving this email because you are organizing lot %s on 596acres.org. Please let us know if you would like to change this.
+You are receiving this email because you are organizing lot {{ lot.bbl }} on 596acres.org. Please let us know if you would like to change this.
 {% if lot.group_has_access %}
 If you know of someone else who is part of the project at this lot who would like to receive these updates from 596 Acres (about things like free beehives, how to get mulch from the city, and calls for support for existing community sites throughout the network), please ask them to become an organizer here: {{ BASE_URL }}{% url add_organizer bbl=lot.bbl %}
 {% endif %}{% endautoescape %}

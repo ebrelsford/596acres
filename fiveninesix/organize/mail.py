@@ -37,7 +37,13 @@ def mail_organizers(subject, message, public_no_access=False,
             }
         )
 
-    _mail_multiple_personalized(subject, messages, bcc=[], **kwargs)
+    _mail_multiple_personalized(
+        subject, 
+        messages, 
+        from_email=settings.ORGANIZERS_EMAIL, 
+        bcc=settings.MANAGERS,
+        **kwargs
+    )
 
 def mail_lot_organizers(lot, subject, message, exclude=[], **kwargs):
     """

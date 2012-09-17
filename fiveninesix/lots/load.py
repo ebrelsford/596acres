@@ -31,10 +31,18 @@ def halfway(max_a, min_a):
 def approximate_coordinates(obj):
     return (halfway(obj['MaxX'], obj['MinX']), halfway(obj['MaxY'], obj['MinY']))
 
-def get_coordinates(bbl):
+def get_oasis_data(bbl):
     response = urllib2.urlopen(settings.OASIS_DATA_URL % bbl)
-    obj = json.loads(response.read())[0][0]
-    return get_coordinates_from_response(obj)
+    return json.loads(response.read())[0][0]
+
+def get_coordinates(bbl):
+    return get_coordinates_from_response(get_oasis_data(bbl))
+
+def get_lon_lat_for_bbl(bbl):
+    oasis_data = get_oasis_data(bbl)
+    (x, y) = get_coordinates_from_response(oasis_data)
+    (lon, lat) = convert_coordinates_to_lon_lat(x, y)
+    return (lon, lat)
 
 def get_coordinates_from_response(oasis_response):
     (x, y) = (oasis_response['XCoord'], oasis_response['YCoord'])
@@ -42,38 +50,41 @@ def get_coordinates_from_response(oasis_response):
         (x, y) = approximate_coordinates(oasis_response['Extent'])
     return [c * METERS_PER_FOOT for c in (x, y)]
 
+def add_centroid(lot):
+    (lon, lat) = get_lon_lat_for_bbl(lot.bbl)
+    lot.centroid = Point(float(lon), float(lat))
+    lot.save()
+
 def load_from_oasis(bbl, owner_name=None):
     # ensure bbl does not exist
     if Lot.objects.filter(bbl=bbl).count() > 0:
         print 'Lot with bbl %s already exists!' % bbl
         return
 
-    response = urllib2.urlopen(settings.OASIS_DATA_URL % bbl)
-    obj = json.loads(response.read())[0][0]
-
-    (x, y) = get_coordinates_from_response(obj)
+    oasis_data = get_oasis_data(bbl)
+    (x, y) = get_coordinates_from_response(oasis_data)
     (lon, lat) = convert_coordinates_to_lon_lat(x, y)
 
     if not owner_name:
-        owner_name = obj['OwnerName']
+        owner_name = oasis_data['OwnerName']
     try:
         owner = Owner.objects.get(name=owner_name)
     except Exception:
         owner = Owner.objects.get(oasis_name=owner_name)
 
     lot = Lot(
-        address=obj['Address'],
-        area=obj['Area'],
-        area_acres=str(convert_sq_ft_to_acres(obj['Area'])),
+        address=oasis_data['Address'],
+        area=oasis_data['Area'],
+        area_acres=str(convert_sq_ft_to_acres(oasis_data['Area'])),
         bbl=bbl,
-        block=obj['Block'],
-        borough=obj['BoroughName'],
+        block=oasis_data['Block'],
+        borough=oasis_data['BoroughName'],
         centroid=Point(float(lon), float(lat)),
-        city_council_district=obj['CityCouncilDistrict'],
-        lot=obj['Lot'],
+        city_council_district=oasis_data['CityCouncilDistrict'],
+        lot=oasis_data['Lot'],
         owner=owner,
-        police_precinct=obj['PolicePrecinct'],
-        zipcode=obj['ZipCode']
+        police_precinct=oasis_data['PolicePrecinct'],
+        zipcode=oasis_data['ZipCode']
     )
     lot.save()
     print 'Successfully added lot %s.' % bbl

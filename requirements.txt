@@ -1,4 +1,5 @@
 Django==1.3
+IMAPClient==0.9
 PIL==1.1.7
 South==0.7.3
 Unidecode==0.04.9

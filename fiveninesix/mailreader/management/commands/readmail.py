@@ -1,31 +1,31 @@
-from email.parser import Parser
-from imapclient import IMAPClient
+import sys
+import traceback
 
-from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
 
-imap = IMAPClient(settings.MAILREADER_HOST, use_uid=True)
-imap.login(settings.MAILREADER_HOST_USER, settings.MAILREADER_HOST_PASSWORD)
-# TODO MAILREADER_FOLDER? or store on reader model
+from mailreader.readers import NotesMailReader
+from mailreader.util import get_mail
 
-imap = IMAPClient('mail.webfaction.com', use_uid=True)
-imap.login('ebrelsford_596_rcv', 'D1oqsNRJaDKfRNd6QkFb')
-imap.select_folder('INBOX')
+class Command(BaseCommand):
+    help = 'Read mail and perform actions as specified by readers'
 
-messages = imap.search(['NOT DELETED'])
-response = imap.fetch(messages, ['RFC822'])
+    readers = (
+        NotesMailReader(),
+    )
 
-parser = Parser()
+    def handle(self, *args, **options):
+        """
+        Read mail and perform actions as specified by readers.
+        """
+        self.stdout.write('mailreader: Running readmail')
 
-for uid, message in response:
-    parsed = parser.parsestr(message['RFC822'])
-    from_address = parsed['From']
-    to_address = parsed['To']
+        try:
+            for mail in get_mail():
+                for reader in self.readers:
+                    if reader.should_read(**mail):
+                        reader.read(verbose=True, **mail)
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
+            raise CommandError('mailreader: There was an exception while reading mail')
 
-    for payload in parsed.get_payload():
-        if not payload.is_multipart() and payload.get_content_type() == 'text/plain':
-            print payload.get_payload().strip()
-
-    # TODO then mark as deleted?
-
-imap.close_folder()
-imap.logout()
+        self.stdout.write('mailreader: Done running readmail')

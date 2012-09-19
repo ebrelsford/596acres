@@ -6,7 +6,7 @@ from models import Note, Organizer, Picture
 from settings import BASE_URL
 
 def new_note_notify_managers(note):
-    lot_url = BASE_URL + reverse('lots.views.details', args=(note.lot.bbl,))
+    lot_url = BASE_URL + reverse('en:lots.views.details', args=(note.lot.bbl,))
 
     # TODO render from templates
     message = """A new note was added on 596acres.org.
@@ -20,7 +20,7 @@ lot: %s
     mail_managers('A new note was created on 596acres.org', message)
 
 def new_organizer_notify_managers(organizer):
-    lot_url = BASE_URL + reverse('lots.views.details', args=(organizer.lot.bbl,))
+    lot_url = BASE_URL + reverse('en:lots.views.details', args=(organizer.lot.bbl,))
 
     # TODO render from templates
     message = """Neat! A new organizer was created on 596acres.org.
@@ -38,7 +38,7 @@ lot: %s
     mail_managers('A new organizer was created on 596acres.org', message)
 
 def _get_watcher_message(lot, obj_msg, obj_url_suffix=''):
-    details_url = BASE_URL + reverse('lots.views.details', kwargs={ 'bbl': lot.bbl }) + obj_url_suffix
+    details_url = BASE_URL + reverse('en:lots.views.details', kwargs={ 'bbl': lot.bbl }) + obj_url_suffix
 
     # TODO render from templates
     return """Greetings from 596 Acres. There has been a change to a lot you are watching.
@@ -49,7 +49,7 @@ View details here: %s """ % (obj_msg, details_url)
 
 def _get_organizer_message(lot, obj_msg, obj_url_suffix=''):
     details_url = (BASE_URL + 
-                   reverse('lots.views.details', kwargs={ 'bbl': lot.bbl }) + 
+                   reverse('en:lots.views.details', kwargs={ 'bbl': lot.bbl }) + 
                    obj_url_suffix)
 
     # TODO render from templates

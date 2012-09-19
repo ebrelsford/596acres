@@ -4,7 +4,7 @@ from lots.models import Lot
 from organize.models import Note
 
 class MailReader(object):
-    from_name_regex = '"(.+)"\s.+'
+    from_name_regex = '(.+?)\s.+'
     from_name_pattern = re.compile(from_name_regex)
 
     def get_name(self, address):

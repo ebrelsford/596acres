@@ -1,5 +1,7 @@
 import re
 
+from django.conf import settings
+
 from lots.models import Lot
 from organize.models import Note
 
@@ -36,7 +38,7 @@ class NotesMailReader(MailReader):
     bbl_regex = '(?:".*"\s+)?(?:<)?notes\+(\d+)@.+(?:>)?'
     bbl_pattern = re.compile(bbl_regex)
 
-    cutoff_line_pattern = '.*\*\*\*PUT YOUR REPLY ABOVE THIS LINE\*\*\*.*'
+    cutoff_line_pattern = '.*%s.*' % settings.MAILREADER_REPLY_PREFIX
 
     gmail_prefix = re.compile('.*On .+ wrote:.*')
 

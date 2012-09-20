@@ -213,3 +213,5 @@ PUBLIC_BOROUGHS = [
     'Queens',
 ]
 NEWSLETTER_TAG = 'news from the acres'
+
+MAILREADER_REPLY_PREFIX = 'Reply with text above this line to post a public note.'

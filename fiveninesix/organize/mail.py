@@ -65,11 +65,16 @@ def mail_watchers(lot, subject, message, **kwargs):
     messages = {}
     for watcher in watchers:
         edit_url = settings.BASE_URL + watcher.get_edit_url()
+
+        # TODO as a template
+        # TODO with settings.MAILREADER_REPLY_PREFIX
         messages[watcher.email] = message + """
 
 You are receiving this email because you are watching lot %s on 596acres.org. Please go here if you would like to change this: %s
 """ % (lot.bbl, edit_url)
         pass
+
+    # TODO eg, from_email='"596 Acres Lot {{ lot.bbl }}" <notes+{{ lot.bbl }}@596acres.org>'
     _mail_multiple_personalized(subject, messages, bcc=[], **kwargs)
 
 def _mail_multiple_personalized(subject, messages, bcc=[], **kwargs):

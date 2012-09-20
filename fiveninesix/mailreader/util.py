@@ -17,7 +17,9 @@ def get_mail():
         parsed = message_from_string(message['RFC822'])
         payloads = []
         for payload in parsed.get_payload():
-            if not payload.is_multipart() and payload.get_content_type() == 'text/plain':
+            if isinstance(payload, str):
+                payloads.append(payload)
+            elif not payload.is_multipart() and payload.get_content_type() == 'text/plain':
                 payloads.append(payload.get_payload().strip())
         mail.append({
             'from_address': parsed['From'],

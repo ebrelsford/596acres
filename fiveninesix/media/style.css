@@ -638,6 +638,21 @@ ul.albums li {
     font-weight: bold;
 }
 
+.tally .loader {
+    background: url(/media/img/loading_large.gif);
+    display: none;
+    float: right;
+    height: 64px;
+    width: 64px;
+}
+
+.tally.loading ul {
+    opacity: .5;
+}
+.tally.loading .loader {
+    display: block;
+}
+
 ul.events {
     list-style: none;
     margin: 0;

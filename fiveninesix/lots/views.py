@@ -33,7 +33,8 @@ def lot_geojson(request):
         geojson_response = cache.get(cache_key)
 
     if not geojson_response:
-        lots = _filter_lots(request).distinct().select_related('owner', 'owner__type').annotate(Count('organizer'))
+        filters = _request_to_filters(request)
+        lots = _filter_lots(filters).distinct().select_related('owner', 'owner__type').annotate(Count('organizer'))
         recent_changes = _recent_changes()
         lots_geojson = _lot_collection(lots, recent_changes)
         geojson_response = geojson.dumps(lots_geojson)
@@ -51,7 +52,8 @@ def lot_kml(request):
     # TODO use export.to_kml()
     kml = simplekml.Kml()
     
-    for lot in _filter_lots(request):
+    filters = _request_to_filters(request)
+    for lot in _filter_lots(filters):
         kml.newpoint(
             name=lot.bbl, 
             description="bbl: %s<br/>agency: %s<br/>area: %f acres" % (
@@ -93,7 +95,9 @@ def lot_csv(request):
 
     response.write(','.join(["%s" % field for field in fields]))
     response.write('\n')
-    for lot in _filter_lots(request):
+
+    filters = _request_to_filters(request)
+    for lot in _filter_lots(filters):
         try:
             csv_file.writerow({
                 'address': lot.address,
@@ -128,49 +132,71 @@ def _get_filter_description(request):
         description += ' owned by ' + owner.name
     return description
 
-def _filter_lots(request, override={}):
+def _request_to_filters(request, override={}):
     """
-    Filter lots with the given request, optionally overriding some parameters.
+    Pre-process a request to be lot filters.
     """
     params = request.GET.copy()
     params.update(override)
 
-    mapped_lots = Lot.objects.filter(centroid__isnull=False)
-    lots = mapped_lots
+    try:
+        params['lot_types'] = params['lot_types'].split(',')
+    except:
+        params['lot_types'] = ['vacant','organizing','accessed','private_accessed']
 
     try:
-        lot_types = params['lot_types'].split(',')
+        params['owner_types'] = params['owner_type'].split(',')
     except:
-        lot_types = ['vacant','organizing','accessed','private_accessed']
-
-    try:
-        owner_types = params['owner_type'].split(',')
-    except:
-        owner_types = ['city', 'private']
-    if 'private_accessed' not in lot_types and 'private' in owner_types:
-        owner_types.remove('private')
-    lots = lots.filter(owner__type__name__in=owner_types)
+        params['owner_types'] = ['city', 'private']
+    if 'private_accessed' not in params['lot_types'] and 'private' in params['owner_types']:
+        params['owner_types'].remove('private')
 
     try:
         boroughs = [b.title() for b in params['boroughs'].split(',')]
         if not request.user.is_authenticated():
             if any(map(lambda b: b not in settings.PUBLIC_BOROUGHS, boroughs)):
                 raise Exception('Only logged-in users can view all boroughs.')
-        lots = lots.filter(borough__in=boroughs)
+        params['boroughs'] = boroughs
     except:
-        lots = lots.filter(borough__in=settings.PUBLIC_BOROUGHS)
-        
+        params['boroughs'] = settings.PUBLIC_BOROUGHS
+
     if 'source' in params:
         if params['source'] != 'all':
-            sources = params['source'].split(',')
-            lots = lots.filter(centroid_source__in=sources)
-    if 'owner_code' in params:
-        lots = lots.filter(owner__code=params['owner_code'])
-    if 'owner_id' in params:
-        lots = lots.filter(owner__id=params['owner_id'])
+            params['source'] = params['source'].split(',')
+
     if 'bbls' in params:
-        bbls = params['bbls'].split(',')
-        if len(bbls) == 1 and params.get('with_nearby_lots', 'no') == 'yes':
+        params['bbls'] = params['bbls'].split(',')
+
+    params['parents_only'] = params.get('parents_only', 'false') == 'true'
+
+    if 'max_area' in params:
+        max_area = params['max_area']
+        if max_area < 3:
+            params['max_area'] = 3
+
+    if 'bbox' in params:
+        params['bbox'] = Polygon.from_bbox(params['bbox'].split(','))
+
+    return params
+
+def _filter_lots(filters):
+    """
+    Filter lots with the given dict of filters.
+    """
+    mapped_lots = Lot.objects.filter(centroid__isnull=False)
+    lots = mapped_lots
+
+    if 'boroughs' in filters:
+        lots = lots.filter(borough__in=filters['boroughs'])
+    if 'source' in filters:
+        lots = lots.filter(centroid_source__in=filters['source'])
+    if 'owner_code' in filters:
+        lots = lots.filter(owner__code=filters['owner_code'])
+    if 'owner_id' in filters:
+        lots = lots.filter(owner__id=filters['owner_id'])
+    if 'bbls' in filters:
+        bbls = filters['bbls']
+        if len(bbls) == 1 and filters.get('with_nearby_lots', 'no') == 'yes':
             target_lots = Lot.objects.filter(centroid__isnull=False, bbl=bbls[0])
             if target_lots:
                 lots = lots.filter(centroid__distance_lte=(target_lots[0].centroid, Distance(mi=.25)))
@@ -178,17 +204,16 @@ def _filter_lots(request, override={}):
                 lots = Lot.objects.none()
         else:
             lots = lots.filter(bbl__in=bbls)
-    if params.get('parents_only', 'false') == 'true':
+    if 'parents_only' in filters and filters['parents_only']:
         lots = lots.filter(parent_lot__isnull=True)
-    if 'min_area' in params:
-        lots = lots.filter(area_acres__gte=params['min_area'])
-    if 'max_area' in params:
-        max_area = params['max_area']
-        if max_area < 3:
-            lots = lots.filter(area_acres__lte=max_area)
-    if 'bbox' in params:
-        polygon = Polygon.from_bbox(params['bbox'].split(','))
-        lots = lots.filter(centroid__within=polygon)
+    if 'min_area' in filters:
+        lots = lots.filter(area_acres__gte=filters['min_area'])
+    if 'max_area' in filters:
+        lots = lots.filter(area_acres__lte=filters['max_area'])
+    if 'bbox' in filters:
+        lots = lots.filter(centroid__within=filters['bbox'])
+
+    lot_types = filters['lot_types']
     if len(lot_types) > 0:
         lots_by_lot_type = Lot.objects.none()
         for lot_type in lot_types:
@@ -397,7 +422,8 @@ def counts(request):
     Get counts of each lot type for the given boroughs.
     """
     # unset parents_only as counts use parents and children
-    lots = _filter_lots(request, { 'parents_only': 'false' })
+    filters = _request_to_filters(request, { 'parents_only': 'false' })
+    lots = _filter_lots(filters)
     lot_types = (
         'accessed_lots',
         'accessed_sites',
@@ -416,20 +442,23 @@ def counts(request):
         c[lot_type] = (lots & Lot.objects.filter(LOT_QS[lot_type]).distinct()).count()
 
     acres_lot_types = (
-        'accessed_sites',
-        'garden_sites',
+        'accessed_lots',
+        'garden_lots',
         'gutterspace',
-        'organizing_sites',
-        'private_accessed_sites',
-        'vacant_sites',
+        'organizing_lots',
+        'private_accessed_lots',
+        'vacant_lots',
     )
     for lot_type in acres_lot_types:
-        ls = (lots & Lot.objects.filter(LOT_QS[lot_type]).distinct())
-        acres = ls.aggregate(acres=Sum('area_acres'))['acres']
+        ls = lots & Lot.objects.filter(LOT_QS[lot_type]).distinct()
+
+        # XXX NB: A little ugly, to sum over distinct lots. All of these 
+        # queries could be optimized.
+        acres = Lot.objects.filter(pk__in=ls).aggregate(acres=Sum('area_acres'))['acres']
         if not acres:
             acres = 0
-        c[lot_type + '_acres'] = str(round(acres, 1))
-  
+        c[lot_type + '_acres'] = str(round(acres, 3))
+
     return HttpResponse(json.dumps(c), mimetype='application/json')
 
 def _is_base_geojson_request(GET):

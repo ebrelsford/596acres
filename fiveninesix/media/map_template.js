@@ -75,13 +75,13 @@ function get_selected_boroughs() {
  * Update the legend to show the correct counts for the selected boroughs.
  */
 function update_counts() {
-    var boroughs = get_selected_boroughs();
-
+    $('.tally').addClass('loading');
     uri = URI('/lot/counts?').query($('#map').data('lotmap').exportFilters());
     $.getJSON(uri, function(data) {
         $.each(data, function(lot_type, count) {
             $('.map-legend .count.' + lot_type).text(count);
         });
+        $('.tally').removeClass('loading');
     });
 }
 

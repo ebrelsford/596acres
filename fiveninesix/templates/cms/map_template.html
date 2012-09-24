@@ -202,6 +202,7 @@
             </div>
 
             <div class="map-legend tally">
+                <div class="loader"></div>
                 {% trans "You are currently looking at" %}:
                 <ul>
                     <li class="vacant">
@@ -211,7 +212,7 @@
                         <span class="vacant_lots count">{{ counts.vacant_lots }}</span> 
                         {% trans "lots" %}
                         {% trans "on" %}
-                        <span class="vacant_sites_acres count">{{ counts.vacant_sites_acres }}</span> 
+                        <span class="vacant_lots_acres count">{{ counts.vacant_lots_acres }}</span> 
                         {% trans "acres" %}
                     </li>
                     <li class="organizing">
@@ -221,7 +222,7 @@
                         <span class="organizing_lots count">{{ counts.organizing_lots }}</span> 
                         {% trans "lots" %}
                         {% trans "on" %}
-                        <span class="organizing_sites_acres count">{{ counts.organizing_sites_acres }}</span> 
+                        <span class="organizing_lots_acres count">{{ counts.organizing_lots_acres }}</span> 
                         {% trans "acres" %}
                     </li>
                     <li class="accessed">
@@ -231,7 +232,7 @@
                         <span class="accessed_lots count">{{ counts.accessed_lots }}</span> 
                         {% trans "lots" %}
                         {% trans "on" %}
-                        <span class="accessed_sites_acres count">{{ counts.accessed_sites_acres }}</span> 
+                        <span class="accessed_lots_acres count">{{ counts.accessed_lots_acres }}</span> 
                         {% trans "acres" %}
                     </li>
                     <li class="private_accessed">
@@ -243,7 +244,7 @@
                         <span class="private_accessed_lots count">{{ counts.private_accessed_lots }}</span> 
                         {% trans "lots" %}
                         {% trans "on" %}
-                        <span class="private_accessed_sites_acres count">{{ counts.private_accessed_sites_acres }}</span> 
+                        <span class="private_accessed_lots_acres count">{{ counts.private_accessed_lots_acres }}</span> 
                         {% trans "acres" %}
                     </li>
                     <li class="garden">
@@ -253,7 +254,7 @@
                         <span class="garden_lots count">{{ counts.garden_lots }}</span> 
                         {% trans "lots" %}
                         {% trans "on" %}
-                        <span class="garden_sites_acres count">{{ counts.garden_sites_acres }}</span> 
+                        <span class="garden_lots_acres count">{{ counts.garden_lots_acres }}</span> 
                         {% trans "acres" %}
                     </li>
                     <li class="gutterspace">

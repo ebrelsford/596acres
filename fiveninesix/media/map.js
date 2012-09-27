@@ -13,7 +13,12 @@ var LotMap = {
     min_area: null,
     max_area: null,
     selectedAgency: null,
-    lot_types: ['vacant','organizing','accessed','private_accessed'],
+    lot_types: [
+        'organizing_sites',
+        'private_accessed_sites',
+        'public_accessed_sites',
+        'vacant_sites',
+    ],
     parents_only: true,
 
     //
@@ -49,38 +54,33 @@ var LotMap = {
         },
     }),
 
-    gardenStyle: {
-        strokeColor: 'black',
-        strokeWidth: 2,
-    },
-
-    organizedStyle: {
-        strokeColor: '#DFCB00',
-        strokeWidth: 2,
-    },
-
-    groupHasAccessStyle: {
-        fillColor: '#FF0DFF',
-        strokeColor: '#DFCB00',
-        strokeWidth: 2,
-        pointRadius: 7,
-    },
-
-    privateStyle: {
-        fillColor: '#509EF2',
-        strokeWidth: 0,
-    },
-
-    privateAccessedStyle: {
-        fillColor: '#3C8FE8',
-        pointRadius: 7,
-        strokeColor: '#FF0DFF',
-        strokeWidth: 2,
-    },
-
-    gutterspaceStyle: {
-        pointRadius: 2,
-        fillColor: '#F00',
+    lotLayerStyles: {
+        'garden_sites': {
+            strokeColor: 'black',
+            strokeWidth: 2,
+        },
+        'gutterspace': {
+            pointRadius: 2,
+            fillColor: '#F00',
+        },
+        'organizing_sites': {
+            strokeColor: '#DFCB00',
+            strokeWidth: 2,
+        },
+        'private_accessed_sites': {
+            fillColor: '#3C8FE8',
+            pointRadius: 7,
+            strokeColor: '#FF0DFF',
+            strokeWidth: 2,
+        },
+        'public_accessed_sites': {
+            fillColor: '#FF0DFF',
+            strokeColor: '#DFCB00',
+            strokeWidth: 2,
+            pointRadius: 7,
+        },
+        'vacant_sites': {
+        },
     },
 
     recentChangesStyle: {
@@ -306,80 +306,21 @@ var LotMap = {
     //
     addRulesToStyle: function(style) {
         var rules = [];
+        var t = this;
 
-        rules.push(new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: 'is_garden',
-                value: true,
-            }),
-            symbolizer: this.gardenStyle,
-        }));
+        // Lot layer styles
+        for (var layer_name in t.lotLayerStyles) {
+            if (!t.lotLayerStyles.hasOwnProperty(layer_name)) continue;
 
-        rules.push(new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: 'has_organizers',
-                value: true,
-            }),
-            symbolizer: this.organizedStyle,
-        }));
-
-        rules.push(new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: 'group_has_access',
-                value: true,
-            }),
-            symbolizer: this.groupHasAccessStyle,
-        }));
-
-        rules.push(new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.OR,
-                filters: [
-                    new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                        property: 'accessible',
-                        value: false,
-                    }),
-                    new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                        property: 'actual_use',
-                        value: 'gutterspace',
-                    }),
-                ],
-            }),
-            symbolizer: this.gutterspaceStyle,
-        }));
-
-        rules.push(new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Comparison({
-                type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                property: 'owner_type',
-                value: 'private',
-            }),
-            symbolizer: this.privateStyle,
-        }));
-
-        rules.push(new OpenLayers.Rule({
-            filter: new OpenLayers.Filter.Logical({
-                type: OpenLayers.Filter.Logical.AND,
-                filters: [
-                    new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                        property: 'owner_type',
-                        value: 'private',
-                    }),
-                    new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                        property: 'group_has_access',
-                        value: true,
-                    }),
-                ],
-            }),
-            symbolizer: this.privateAccessedStyle,
-        }));
+            rules.push(new OpenLayers.Rule({
+                filter: new OpenLayers.Filter.Comparison({
+                    type: OpenLayers.Filter.Comparison.EQUAL_TO,
+                    property: layer_name,
+                    value: true,
+                }),
+                symbolizer: t.lotLayerStyles[layer_name],
+            }));
+        }
 
         rules.push(new OpenLayers.Rule({
             filter: new OpenLayers.Filter.Comparison({

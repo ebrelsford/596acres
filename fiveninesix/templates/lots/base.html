@@ -49,7 +49,8 @@ $(document).ready(function() {
         detailFid: {{ lot.bbl }},
         filters: {
             // allow any lot types
-            lot_types: 'accessed,garden,gutterspace,organizing,private_accessed,vacant',
+            lot_types: 'public_accessed_sites,garden_sites,gutterspace,' +
+                'organizing_sites,private_accessed_sites,vacant_sites',
         },
 
         onLoad: function() {

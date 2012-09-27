@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.core.files import File
 from django.db.models import Q
+from django.db.models.signals import post_delete, post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from elaphe import barcode
@@ -226,6 +228,10 @@ class ExtendedDetails(models.Model):
         help_text='From Local Law 48 data'
     )
 
+class LotLayer(models.Model):
+    name = models.CharField(max_length=128)
+    lots = models.ManyToManyField('Lot')
+
 class Owner(models.Model):
     name = models.CharField(max_length=256)
     person = models.CharField(max_length=128, null=True, blank=True)
@@ -288,64 +294,87 @@ class Review(models.Model):
     reviewer = models.ForeignKey(User, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     
-    in_use = models.BooleanField(blank=False, null=False, default=False, help_text="the lot is not fenced, is being used")
-    actual_use = models.CharField(blank=True, null=True, max_length=128, help_text="eg, 'garden' or 'parking'")
-    accessible = models.BooleanField(blank=False, null=False, default=True, help_text="there is access to the lot from the street or from an adjacent lot (or community garden) with access to the street")
-    needs_further_review = models.BooleanField(blank=False, null=False, default=False, help_text="should be visited on foot or double-checked by someone else (please state why in notes)")
+    in_use = models.BooleanField(
+        blank=False,
+        null=False,
+        default=False,
+        help_text="the lot is not fenced, is being used"
+    )
+    actual_use = models.CharField(
+        blank=True,
+        null=True,
+        max_length=128,
+        help_text="eg, 'garden' or 'parking'"
+    )
+    accessible = models.BooleanField(
+        blank=False,
+        null=False,
+        default=True,
+        help_text=("there is access to the lot from the street or from an "
+                   "adjacent lot (or community garden) with access to the street")
+    )
+    needs_further_review = models.BooleanField(
+        blank=False,
+        null=False,
+        default=False,
+        help_text=("should be visited on foot or double-checked by someone "
+                   "else (please state why in notes)")
+    )
 
-    nearby_lots = models.TextField(blank=True, null=True, help_text="BBLs of nearby/adjacent vacant lots that might be used in coordination with this lot")
+    nearby_lots = models.TextField(
+        blank=True,
+        null=True,
+        help_text=("BBLs of nearby/adjacent vacant lots that might be used in "
+                   "coordination with this lot")
+    )
 
-    hpd_plans = models.NullBooleanField('HPD plans', blank=True, null=True, help_text="does HPD have open RFPs or other development plans for this lot?")
-    hpd_plans_details = models.TextField('HPD plans details', blank=True, null=True, help_text="details about HPD's plans for this lot, if any")
+    hpd_plans = models.NullBooleanField(
+        'HPD plans',
+        blank=True,
+        null=True,
+        help_text="does HPD have open RFPs or other development plans for this lot?"
+    )
+    hpd_plans_details = models.TextField(
+        'HPD plans details',
+        blank=True,
+        null=True,
+        help_text="details about HPD's plans for this lot, if any"
+    )
 
-    should_be_imported = models.NullBooleanField(blank=True, null=True, help_text="data should be added to the respective lot")
-    imported = models.BooleanField(blank=False, null=False, default=False, help_text="data has been added to the respective lot")
+    should_be_imported = models.NullBooleanField(
+        blank=True,
+        null=True,
+        help_text="data should be added to the respective lot"
+    )
+    imported = models.BooleanField(
+        blank=False,
+        null=False,
+        default=False,
+        help_text="data has been added to the respective lot"
+    )
 
-LOT_QS = {
-
-    # more efficient query for getting sites when lots with parent lots are 
-    # filtered out elsewhere (eg, when parents_only=true)
-    'accessed': Q(
-        group_has_access=True,
-        owner__type__name='city',
-    ),
-    'accessed_lots': Q(
-        Q(
-            Q(group_has_access=True) |
-            Q(parent_lot__group_has_access=True)
-        ),
-        owner__type__name='city'
-    ),
-    'accessed_sites': Q(
-        group_has_access=True,
-        owner__type__name='city',
-        parent_lot=None,
-    ),
-
-    'garden': Q(
-        actual_use__startswith='Garden',
-    ),
+layer_filters = {
     'garden_lots': Q(
         Q(actual_use__startswith='Garden') |
         Q(parent_lot__actual_use__startswith='Garden')
     ),
+
     'garden_sites': Q(
         actual_use__startswith='Garden',
         parent_lot=None,
     ),
 
-    # these are not going to be combined
-    'gutterspace': Q(accessible=False) | Q(actual_use='gutterspace'),
-    'inaccessible': Q(accessible=False, owner__type__name='city'),
-
-    # get lots that are children of lots with organizers, too
-    'organizing': Q(
-        ~Q(organizer=None),
-        group_has_access=False,
-        owner__type__name='city',
+    'gutterspace': Q(
+        Q(accessible=False) | 
+        Q(actual_use='gutterspace'),
     ),
 
+    # TODO only makes sense if parent does not have access. might need to 
+    #  indicate hierarchy / places where the layers are mutually exclusive.
     'organizing_lots': Q(
+        ~Q(
+            parent_lot__group_has_access=True,
+        ),
         ~Q(organizer=None) | 
         Q(
             ~Q(parent_lot=None), 
@@ -353,8 +382,9 @@ LOT_QS = {
             parent_lot__group_has_access=False,
         ),
         group_has_access=False,
-        owner__type__name='city'
+        owner__type__name='city',
     ),
+
     'organizing_sites': Q(
         ~Q(organizer=None),
         group_has_access=False,
@@ -362,34 +392,33 @@ LOT_QS = {
         parent_lot=None,
     ),
 
-    'private_accessed': Q(
+    'private_accessed_lots': Q(
         group_has_access=True,
         owner__type__name='private',
     ),
-    'private_accessed_lots': Q(
+
+    'private_accessed_sites': Q(
         Q(
             Q(group_has_access=True) |
             Q(parent_lot__group_has_access=True)
         ),
         owner__type__name='private',
     ),
-    'private_accessed_sites': Q(
-        owner__type__name='private',
+
+    'public_accessed_lots': Q(
+        Q(
+            Q(group_has_access=True) |
+            Q(parent_lot__group_has_access=True)
+        ),
+        owner__type__name='city'
+    ),
+
+    'public_accessed_sites': Q(
         group_has_access=True,
+        owner__type__name='city',
         parent_lot=None,
     ),
 
-    # NB: default case, not adding check for parent
-    'vacant': Q(
-        Q(
-            accessible=True,
-            is_vacant=True,
-            group_has_access=False,
-            organizer=None,
-            owner__type__name='city'
-        ),
-        ~Q(actual_use='gutterspace'),
-    ),
     'vacant_lots': Q(
         Q(
             accessible=True,
@@ -400,6 +429,7 @@ LOT_QS = {
         ),
         ~Q(actual_use='gutterspace'),
     ),
+
     'vacant_sites': Q(
         Q(
             accessible=True,
@@ -412,3 +442,39 @@ LOT_QS = {
         ~Q(actual_use='gutterspace'),
     ),
 }
+
+def check_layers(lot):
+    """
+    Add a lot to each lotlayer it should be part of, remove it from the ones
+    it should not be part of.
+    """
+    # clear lot's layers
+    lot.lotlayer_set.clear()
+
+    # check each layer to see if the lot is part of it
+    for l in lot.lots:
+        for layer in LotLayer.objects.all():
+            # if lot should be in layer, add it
+            try:
+                if Lot.objects.filter(layer_filters[layer.name], pk=l.pk).count() > 0:
+                    l.lotlayer_set.add(layer)
+            except Exception:
+                pass
+
+@receiver(post_save, sender=Lot)
+def lot_save(sender, instance=None, **kwargs):
+    """
+    Whenever a lot is saved or edited, check its layers.
+    """
+    if not instance: return
+    check_layers(instance)
+
+from organize.models import Organizer
+@receiver(post_delete, sender=Organizer)
+@receiver(post_save, sender=Organizer)
+def organizer_save(sender, instance=None, **kwargs):
+    """
+    Whenever an organizer is deleted or saved or edited, check its lot's layers.
+    """
+    if not instance: return
+    check_layers(instance.lot)

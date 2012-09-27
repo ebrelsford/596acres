@@ -4,7 +4,7 @@
     $(document).ready(function() {
         $('.map-legend input[type="checkbox"]').change(function() {
             var lot_types = $.map($('.map-legend input[type="checkbox"]:checked'), function(e, i) { return $(e).attr('name'); });
-            // Obviously only going to work on map_template pages
+            // NB: only going to work on map_template pages!
             $('#map').data('lotmap').filterByLotType(lot_types);
             update_counts();
         });
@@ -14,41 +14,41 @@
 <div class="map-legend">
     <ul>
         <li class="vacant">
-            <input type="checkbox" name="vacant" id="vacant" checked="checked" />
-            <label for="vacant">
+            <input type="checkbox" name="vacant_sites" id="vacant_sites" checked="checked" />
+            <label for="vacant_sites">
                 <img src="{{ MEDIA_URL }}img/vacant.png" alt="vacant lot (point)" /> 
                 {% trans "public vacant lots" %}
             </label>
         </li>
         <li class="organizing">
-            <input type="checkbox" name="organizing" id="organizing" checked="checked" />
-            <label for="organizing">
+            <input type="checkbox" name="organizing_sites" id="organizing_sites" checked="checked" />
+            <label for="organizing_sites">
                 <img src="{{ MEDIA_URL }}img/organizing.png" alt="public vacant lot with organizers (point)" /> 
                 {% trans "public vacant sites being organized around" %}
             </label>
-            (<span class="organizing_sites count">{{ counts.organizing_sites }}</span>)
+            (<span class="organizing_sites count"></span>)
         </li>
         <li class="accessed">
-            <input type="checkbox" name="accessed" id="accessed" checked="checked" />
-            <label for="accessed">
+            <input type="checkbox" name="public_accessed_sites" id="public_accessed_sites" checked="checked" />
+            <label for="public_accessed_sites">
                 <img src="{{ MEDIA_URL }}img/accessed.png" alt="public vacant lot where groups have access (point)" />
                 {% trans "public vacant sites where groups have access" %}
             </label>
-            (<span class="accessed_sites count">{{ counts.accessed_sites }}</span>)
+            (<span class="public_accessed_sites count"></span>)
         </li>
         <li class="private_accessed">
-            <input type="checkbox" name="private_accessed" id="private_accessed" checked="checked" />
-            <label for="private_accessed">
+            <input type="checkbox" name="private_accessed_sites" id="private_accessed_sites" checked="checked" />
+            <label for="private_accessed_sites">
                 <img src="{{ MEDIA_URL }}img/private_accessed.png" alt="privately owned lot (point)" />
                 <a href="/news/2012/07/27/update-on-working-with-private-landowners/">
                     {% trans "private vacant sites being used by community" %}
                 </a>
             </label>
-            (<span class="private_accessed_sites count">{{ counts.private_accessed_sites }}</span>)
+            (<span class="private_accessed_sites count"></span>)
         </li>
         <li class="garden">
-            <input type="checkbox" name="garden" id="garden" />
-            <label for="garden">
+            <input type="checkbox" name="garden_sites" id="garden_sites" />
+            <label for="garden_sites">
                 <img src="{{ MEDIA_URL }}img/gardened.png" alt="community garden (point)" />
                 {% trans "community gardens on public land" %}
             </label>

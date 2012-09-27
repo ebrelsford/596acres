@@ -1,5 +1,5 @@
 {% extends "cms/main_template.html" %}
-{% load cms_tags i18n sekizai_tags %}
+{% load compress cms_tags i18n sekizai_tags %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -29,7 +29,9 @@
     {% endaddtoblock %}
 
     {% addtoblock "js" %}
+    {% compress js %}
     <script src="{{ MEDIA_URL }}map.js" type="text/javascript"></script>
+    {% endcompress %}
     {% endaddtoblock %}
 
     {% addtoblock "js" %}
@@ -225,14 +227,14 @@
                         <span class="organizing_lots_acres count">{{ counts.organizing_lots_acres }}</span> 
                         {% trans "acres" %}
                     </li>
-                    <li class="accessed">
-                        <span class="accessed_sites count">{{ counts.accessed_sites }}</span> 
+                    <li class="public_accessed">
+                        <span class="public_accessed_sites count">{{ counts.public_accessed_sites }}</span> 
                         {% trans "public vacant sites where groups have access" %}
                         {% trans "on" %}
-                        <span class="accessed_lots count">{{ counts.accessed_lots }}</span> 
+                        <span class="public_accessed_lots count">{{ counts.public_accessed_lots }}</span> 
                         {% trans "lots" %}
                         {% trans "on" %}
-                        <span class="accessed_lots_acres count">{{ counts.accessed_lots_acres }}</span> 
+                        <span class="public_accessed_lots_acres count">{{ counts.public_accessed_lots_acres }}</span> 
                         {% trans "acres" %}
                     </li>
                     <li class="private_accessed">

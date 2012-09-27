@@ -1,9 +1,9 @@
 import csv
 from datetime import date
-import geojson
 import json
 from random import randint
 import simplekml
+import ujson
 
 from django.core.cache import cache
 from django.conf import settings
@@ -20,24 +20,43 @@ from django.views.decorators.cache import cache_page
 from django_xhtml2pdf.utils import render_to_pdf_response
 
 from forms import ReviewForm
-from models import Lot, Owner, Review, LOT_QS
+from models import Lot, LotLayer, Owner, Review
 from organize.models import Note, Organizer, Watcher
 from photos.models import PhotoAlbum
 from settings import BASE_URL, OASIS_BASE_URL
 
 def lot_geojson(request):
     cacheable = _is_base_geojson_request(request.GET)
+
     cache_key = 'lots__views:lots_geojson:base'
     geojson_response = None
     if cacheable:
         geojson_response = cache.get(cache_key)
 
+    # TODO consider downloading everything at once, doing filtering client-side
     if not geojson_response:
         filters = _request_to_filters(request)
-        lots = _filter_lots(filters).distinct().select_related('owner', 'owner__type').annotate(Count('organizer'))
+
+        lots = _filter_lots(filters).distinct()
+        lots = lots.select_related('owner', 'owner__type')
+        lots = lots.annotate(Count('organizer'))
+
+        layers = LotLayer.objects.all().values_list('name', flat=True)
+
+        for layer in layers:
+            lots = lots.extra(
+                select={
+                    layer: 'lots_lotlayer.name=%s',
+                },
+                select_params=[
+                    layer,
+                ]
+            )
+
         recent_changes = _recent_changes()
-        lots_geojson = _lot_collection(lots, recent_changes)
-        geojson_response = geojson.dumps(lots_geojson)
+        lots_geojson = _lot_collection(lots, recent_changes, layers=layers)
+        geojson_response = ujson.dumps(lots_geojson)
+
         if cacheable:
             cache.set(cache_key, geojson_response, 6 * 60 * 60)
 
@@ -140,16 +159,28 @@ def _request_to_filters(request, override={}):
     params.update(override)
 
     try:
+        if not params['lot_types']:
+            params['lot_types'] = []
         params['lot_types'] = params['lot_types'].split(',')
-    except:
-        params['lot_types'] = ['vacant','organizing','accessed','private_accessed']
+        #del params['lot_types']
+    except Exception:
+        params['lot_types'] = []
+        #params['lot_types'] = [
+            #'vacant',
+            #'organizing',
+            #'public_accessed_lots',
+            #'private_accessed',
+        #]
 
     try:
         params['owner_types'] = params['owner_type'].split(',')
-    except:
+    except Exception:
         params['owner_types'] = ['city', 'private']
-    if 'private_accessed' not in params['lot_types'] and 'private' in params['owner_types']:
-        params['owner_types'].remove('private')
+    if 'lot_types' in params and params['lot_types']:
+        # Only include privately owned lots if we're looking for a layer that
+        # includes them.
+        if not ('private_accessed_sites' in params['lot_types'] or 'private_accessed_lots' in params['lot_types']) and 'private' in params['owner_types']:
+            params['owner_types'].remove('private')
 
     try:
         boroughs = [b.title() for b in params['boroughs'].split(',')]
@@ -157,7 +188,7 @@ def _request_to_filters(request, override={}):
             if any(map(lambda b: b not in settings.PUBLIC_BOROUGHS, boroughs)):
                 raise Exception('Only logged-in users can view all boroughs.')
         params['boroughs'] = boroughs
-    except:
+    except Exception:
         params['boroughs'] = settings.PUBLIC_BOROUGHS
 
     if 'source' in params:
@@ -212,14 +243,10 @@ def _filter_lots(filters):
         lots = lots.filter(area_acres__lte=filters['max_area'])
     if 'bbox' in filters:
         lots = lots.filter(centroid__within=filters['bbox'])
-
-    lot_types = filters['lot_types']
-    if len(lot_types) > 0:
-        lots_by_lot_type = Lot.objects.none()
-        for lot_type in lot_types:
-            if lot_type in LOT_QS:
-                lots_by_lot_type = lots_by_lot_type | Lot.objects.filter(LOT_QS[lot_type])
-        lots = lots & lots_by_lot_type
+    if 'owner_types' in filters and filters['owner_types']:
+        lots = lots.filter(owner__type__name__in=filters['owner_types'])
+    if 'lot_types' in filters and filters['lot_types']:
+        lots = lots.filter(lotlayer__name__in=filters['lot_types'])
 
     return lots.distinct()
 
@@ -278,36 +305,51 @@ def owner_details(request, id=None):
             del details[k]
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
-def _lot_collection(lots, recent_changes):
-    return geojson.FeatureCollection(features=[_lot_feature(lot, recent_changes) for lot in lots])
+def _lot_collection(lots, recent_changes, layers=[]):
+    features = [_lot_feature(lot, recent_changes, layers=layers) for lot in lots]
+    return {
+        'features': features,
+        'type': 'FeatureCollection',
+    }
 
-def _lot_feature(lot, recent_changes):
-    change = None
-    if lot.id in recent_changes:
-        change = recent_changes[lot.id].recent_change_label()
-
+def _lot_feature(lot, recent_changes, layers=[]):
     try:
         # XXX lot.lots_area_acres makes extra DB queries
-        area = round(float(lot.lots_area_acres), 3)
+        # TODO cache on a 'through' table
+        #area = round(float(lot.lots_area_acres), 3)
+        area = round(float(lot.area_acres), 3)
     except Exception:
         area = 0
 
-    properties={
+    # Bare minimum properties. Avoid adding others unless they're significant
+    # to reduce output size.
+    properties = {
         'area': area,
-        'is_garden': lot.actual_use and lot.actual_use.startswith('Garden'),
-        'has_organizers': lot.organizer__count > 0,
-        'group_has_access': lot.group_has_access,
-        'recent_change': change,
-        'accessible': lot.accessible,
-        'actual_use': lot.actual_use,
-        'owner_type': lot.owner.type.name,
     }
 
-    return geojson.Feature(
-        lot.bbl,
-        geometry=geojson.Point(coordinates=(lot.centroid.x, lot.centroid.y)),
-        properties=properties
-    )
+    if lot.id in recent_changes:
+        properties.update({
+            'recent_change': recent_changes[lot.id].recent_change_label(),
+        })
+
+    for layer in layers:
+        try:
+            if getattr(lot, layer):
+                properties.update({
+                    layer: True,
+                })
+        except Exception:
+            pass
+
+    return {
+        'id': lot.bbl,
+        'geometry': {
+            'type': 'Point',
+            'coordinates': [lot.centroid.x, lot.centroid.y],
+        },
+        'properties': properties,
+        'type': 'Feature',
+    }
 
 def _recent_changes(maximum=5):
     """Find recent changes globally, keyed by lot id"""
@@ -417,55 +459,82 @@ def add_review(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+def _lot_type_prefix(lot_type):
+    return '_'.join(lot_type.split('_')[:-1]) 
+
 def counts(request):
     """
     Get counts of each lot type for the given boroughs.
     """
+    # hold on to requested lot types
+    lot_types = request.GET.get('lot_types', [])
+    if lot_types: lot_types = lot_types.split(',')
+    lot_types = [_lot_type_prefix(t) for t in lot_types]
+
     # unset parents_only as counts use parents and children
-    filters = _request_to_filters(request, { 'parents_only': 'false' })
+    filters = _request_to_filters(request, { 
+        'lot_types': '',
+        'owner_types': 'city,private',
+        'parents_only': 'false',
+    })
     lots = _filter_lots(filters)
-    lot_types = (
-        'accessed_lots',
-        'accessed_sites',
-        'garden_lots',
-        'garden_sites',
-        'gutterspace',
-        'organizing_lots',
-        'organizing_sites',
-        'private_accessed_lots',
-        'private_accessed_sites',
-        'vacant_lots',
-        'vacant_sites',
+    totals = lots.values('lotlayer__name').annotate(
+        area=Sum('area_acres'),
+        count=Count('pk'),
     )
+
+    # fill with 0 as default
     c = {}
-    for lot_type in lot_types:
-        c[lot_type] = (lots & Lot.objects.filter(LOT_QS[lot_type]).distinct()).count()
+    for layer in LotLayer.objects.all():
+        c.update({
+            layer.name: 0,
+            layer.name + '_acres': 0,
+        })
 
-    acres_lot_types = (
-        'accessed_lots',
-        'garden_lots',
-        'gutterspace',
-        'organizing_lots',
-        'private_accessed_lots',
-        'vacant_lots',
-    )
-    for lot_type in acres_lot_types:
-        ls = lots & Lot.objects.filter(LOT_QS[lot_type]).distinct()
+    for row in totals:
+        layer = row['lotlayer__name']
+        if not layer or not _lot_type_prefix(layer) in lot_types: continue
 
-        # XXX NB: A little ugly, to sum over distinct lots. All of these 
-        # queries could be optimized.
-        acres = Lot.objects.filter(pk__in=ls).aggregate(acres=Sum('area_acres'))['acres']
-        if not acres:
-            acres = 0
-        c[lot_type + '_acres'] = str(round(acres, 3))
+        count = row['count']
+        try:
+            area = str(round(row['area'], 3))
+        except Exception:
+            area = 0
+
+        c.update({
+            layer: count,
+            layer + '_acres': area,
+        })
 
     return HttpResponse(json.dumps(c), mimetype='application/json')
 
 def _is_base_geojson_request(GET):
-    non_base_params = ('owner_code', 'owner_id', 'bbls', 'min_area',
-                       'max_area', 'source')
+    non_base_params = (
+        'bbls',
+        'max_area',
+        'min_area',
+        'owner_code',
+        'owner_id',
+        'source',
+    )
+
+    base_lot_types = (
+        'organizing_sites',
+        'private_accessed_sites',
+        'public_accessed_sites',
+        'vacant_sites',
+    )
+
+    base_boroughs = (
+        'Brooklyn',
+        'Manhattan',
+        'Queens',
+    )
+
     if any([GET.get(x, False) for x in non_base_params]):
         return False
-    return (GET.get('lot_types', '') == 'vacant,organizing,accessed,private_accessed' and
-            GET.get('boroughs', '') == 'Brooklyn,Manhattan,Queens' and
-            GET.get('parents_only', 'false') == 'true')
+    return all((
+        sorted(GET.get('lot_types', '').split(',')) == base_lot_types,
+        sorted(GET.get('boroughs', '').split(',')) == base_boroughs,
+        GET.get('parents_only', 'false') == 'true'
+    ))

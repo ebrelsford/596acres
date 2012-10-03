@@ -208,63 +208,72 @@
                 {% trans "You are currently looking at" %}:
                 <ul>
                     <li class="vacant">
-                        <span class="vacant_sites count">{{ counts.vacant_sites }}</span> 
-                        {% trans "public vacant sites" %}
-                        {% trans "on" %}
-                        <span class="vacant_lots count">{{ counts.vacant_lots }}</span> 
-                        {% trans "lots" %}
-                        {% trans "on" %}
-                        <span class="vacant_lots_acres count">{{ counts.vacant_lots_acres }}</span> 
+                        <span class="vacant_sites count"></span> 
+                        {% trans "public vacant sites" %} {% trans "on" %}
+                        <span class="vacant_lots count"></span> 
+                        {% trans "lots" %} {% trans "on" %}
+                        <span class="vacant_lots_acres acres count"></span> 
                         {% trans "acres" %}
+                        &hellip;<a class="compare-link" href="#">how big is that?</a>
+                        <span class="compare-text"></span>
                     </li>
+
                     <li class="organizing">
-                        <span class="organizing_sites count">{{ counts.organizing_sites }}</span> 
-                        {% trans "public vacant sites being organized around" %}
-                        {% trans "on" %}
-                        <span class="organizing_lots count">{{ counts.organizing_lots }}</span> 
-                        {% trans "lots" %}
-                        {% trans "on" %}
-                        <span class="organizing_lots_acres count">{{ counts.organizing_lots_acres }}</span> 
+                        <span class="organizing_sites count"></span> 
+                        {% trans "public vacant sites being organized around" %} {% trans "on" %}
+                        <span class="organizing_lots count"></span> 
+                        {% trans "lots" %} {% trans "on" %}
+                        <span class="organizing_lots_acres acres count"></span> 
                         {% trans "acres" %}
+                        &hellip;<a class="compare-link" href="#">how big is that?</a>
+                        <span class="compare-text"></span>
                     </li>
+
                     <li class="public_accessed">
-                        <span class="public_accessed_sites count">{{ counts.public_accessed_sites }}</span> 
-                        {% trans "public vacant sites where groups have access" %}
-                        {% trans "on" %}
-                        <span class="public_accessed_lots count">{{ counts.public_accessed_lots }}</span> 
-                        {% trans "lots" %}
-                        {% trans "on" %}
-                        <span class="public_accessed_lots_acres count">{{ counts.public_accessed_lots_acres }}</span> 
+                        <span class="public_accessed_sites count"></span> 
+                        {% trans "public vacant sites where groups have access" %} {% trans "on" %}
+                        <span class="public_accessed_lots count"></span> 
+                        {% trans "lots" %} {% trans "on" %}
+                        <span class="public_accessed_lots_acres acres count"></span> 
                         {% trans "acres" %}
+                        &hellip;<a class="compare-link" href="#">how big is that?</a>
+                        <span class="compare-text"></span>
                     </li>
+
                     <li class="private_accessed">
-                        <span class="private_accessed_sites count">{{ counts.private_accessed_sites }}</span> 
+                        <span class="private_accessed_sites count"></span> 
                         <a href="/news/2012/07/27/update-on-working-with-private-landowners/">
                             {% trans "private vacant sites being used by community" %}
                         </a>
                         {% trans "on" %}
-                        <span class="private_accessed_lots count">{{ counts.private_accessed_lots }}</span> 
-                        {% trans "lots" %}
-                        {% trans "on" %}
-                        <span class="private_accessed_lots_acres count">{{ counts.private_accessed_lots_acres }}</span> 
+                        <span class="private_accessed_lots count"></span> 
+                        {% trans "lots" %} {% trans "on" %}
+                        <span class="private_accessed_lots_acres acres count"></span> 
                         {% trans "acres" %}
+                        &hellip;<a class="compare-link" href="#">how big is that?</a>
+                        <span class="compare-text"></span>
                     </li>
+
                     <li class="garden">
-                        <span class="garden_sites count">{{ counts.garden_sites }}</span> 
-                        {% trans "community gardens on public land" %}
-                        {% trans "on" %}
-                        <span class="garden_lots count">{{ counts.garden_lots }}</span> 
+                        <span class="garden_sites count"></span> 
+                        {% trans "community gardens on public land" %} {% trans "on" %}
+                        <span class="garden_lots count"></span> 
                         {% trans "lots" %}
                         {% trans "on" %}
-                        <span class="garden_lots_acres count">{{ counts.garden_lots_acres }}</span> 
+                        <span class="garden_lots_acres acres count"></span> 
                         {% trans "acres" %}
+                        &hellip;<a class="compare-link" href="#">how big is that?</a>
+                        <span class="compare-text"></span>
                     </li>
+
                     <li class="gutterspace">
-                        <span class="gutterspace count">{{ counts.gutterspace }}</span> 
+                        <span class="gutterspace count"></span> 
                         <a href="/news/2012/04/02/gutterspaces/">{% trans "gutterspaces" %}</a>
                         {% trans "on" %}
-                        <span class="gutterspace_acres count">{{ counts.gutterspace_acres }}</span> 
+                        <span class="gutterspace_acres acres count"></span> 
                         {% trans "acres" %}
+                        &hellip;<a class="compare-link" href="#">how big is that?</a>
+                        <span class="compare-text"></span>
                     </li>
                 </ul>
             </div>

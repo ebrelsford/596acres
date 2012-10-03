@@ -83,6 +83,30 @@ function update_counts() {
         });
         $('.tally').removeClass('loading');
     });
+    $('.compare-text').text('');
+}
+
+function compare_size($el) {
+    $el.addClass('selected');
+    $('.tally').addClass('loading');
+    var $count_row = $el.parent();
+    $.getJSON('/size-compare/find/?acres=' + $count_row.find('.acres').text(),
+        function(data) {
+            $('.tally').removeClass('loading');
+            if (!data.success) return;
+
+            var text = '';
+            if (data.comparable_is === 'smaller') {
+                text = data.name + ' would fit into these lots ' + data.factor + ' times.';
+            }
+            else if (data.comparable_is === 'bigger') {
+                text = 'These lots would fit into ' + data.name + ' ' + data.factor + ' times.';
+            }
+            $count_row.find('.compare-text')
+                .text(text)
+                .show();
+        }
+    );
 }
 
 $(document).ready(function() {
@@ -270,4 +294,18 @@ $(document).ready(function() {
         }
     });
 
+    $('.compare-link').click(function(e) {
+        compare_size($(this));
+        e.preventDefault();
+        return false;
+    });
+
+    $(document).mouseup(function (e) {
+        // hide size comparison boxes
+        var container = $('.compare-text');
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.hide();
+            $('.compare-link').removeClass('selected');
+        }
+    });
 });

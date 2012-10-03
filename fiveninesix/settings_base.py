@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'newsletter',
     'organize',
     'photos',
+    'sizecompare',
 )
 
 CMS_CONTENT_CACHE_DURATION = 60

@@ -1,7 +1,7 @@
 import sys
 import traceback
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from mailreader.readers import NotesMailReader
 from mailreader.util import get_mail
@@ -19,13 +19,15 @@ class Command(BaseCommand):
         """
         self.stdout.write('mailreader: Running readmail')
 
-        try:
-            for mail in get_mail():
-                for reader in self.readers:
+        for mail in get_mail():
+            for reader in self.readers:
+                try:
                     if reader.should_read(**mail):
                         reader.read(verbose=True, **mail)
-        except Exception:
-            traceback.print_exc(file=sys.stdout)
-            raise CommandError('mailreader: There was an exception while reading mail')
+                except Exception:
+                    print 'There was an exception while reading mail with reader', reader
+                    print 'mail:', mail
+                    traceback.print_exc(file=sys.stdout)
+                    continue
 
         self.stdout.write('mailreader: Done running readmail')

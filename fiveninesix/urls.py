@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 
 from news.views import EntriesTaggedArchiveView
+from sizecompare import urls as sizecompare_urls
 
 admin.autodiscover()
 
@@ -28,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_watcher'),
     url(r'^watchers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_watcher'),
 
+    url(r'^size-compare/', include(sizecompare_urls)),
     url(r'^sessions/hide_map_overlay/$', 'sessions.views.hide_map_overlay'),
 
     # TODO extend BlogApphook, point to paginated views by default?

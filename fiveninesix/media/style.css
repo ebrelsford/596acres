@@ -742,3 +742,17 @@ ul.events {
 .expandee {
     display: none;
 }
+
+.compare-link.selected {
+    font-weight: bold;
+}
+.compare-text {
+    background-color: white;
+    border: 1px solid gray;
+    display: none;
+    margin-left: 15px;
+    margin-top: -15px;
+    padding: 15px;
+    position: absolute;
+    z-index: 1001;
+}

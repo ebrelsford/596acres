@@ -27,10 +27,7 @@ def consolidate_payloads(payload):
     if isinstance(payload, str):
         return (payload,)
     elif isinstance(payload, Iterable):
-        payloads = []
-        for p in payload:
-            payloads += consolidate_payloads(p.get_payload())
-        return payloads
+        return filter(None, [consolidate_payloads(p) for p in payload])
     elif not payload.is_multipart() and payload.get_content_type() == 'text/plain':
         return payload.get_payload().strip()
 

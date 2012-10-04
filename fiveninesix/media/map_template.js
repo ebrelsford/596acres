@@ -96,11 +96,14 @@ function compare_size($el) {
             if (!data.success) return;
 
             var text = '';
-            if (data.comparable_is === 'smaller') {
-                text = data.name + ' would fit into these lots ' + data.factor + ' times.';
+            if (data.factor === '1') {
+                text = 'These lots are the same size as ' + data.name + '.';
+            }
+            else if (data.comparable_is === 'smaller') {
+                text = 'These lots are ' + data.factor + ' times the size of ' + data.name + '.';
             }
             else if (data.comparable_is === 'bigger') {
-                text = 'These lots would fit into ' + data.name + ' ' + data.factor + ' times.';
+                text = 'These lots are ' + data.fraction + ' the size of ' + data.name + '.';
             }
             $count_row.find('.compare-text')
                 .text(text)

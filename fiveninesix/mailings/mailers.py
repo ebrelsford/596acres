@@ -39,7 +39,7 @@ class Mailer(object):
             drs = drs.filter(receiver_type=receiver_type)
 
         # XXX this is not very efficient
-        return [r.receiver_object for r in drs]
+        return [r.receiver_object for r in drs if r.receiver_object is not None]
 
     def get_context(self, recipients):
         """

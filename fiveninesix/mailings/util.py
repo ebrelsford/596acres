@@ -1,3 +1,6 @@
+import sys
+import traceback
+
 from mailings.models import Mailing
 
 def send_all(fake=False):
@@ -6,5 +9,10 @@ def send_all(fake=False):
     """
     recipients = []
     for mailing in Mailing.objects.all().select_subclasses():
-        recipients.extend(mailing.get_mailer().mail(fake=fake))
+        try:
+            recipients.extend(mailing.get_mailer().mail(fake=fake))
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
+            print "There was an exception while sending mailing", mailing
+            continue
     return recipients

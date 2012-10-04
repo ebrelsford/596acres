@@ -1,4 +1,4 @@
-{% load cms_tags i18n i18n_utils menu_tags sekizai_tags %}
+{% load cms_tags compress i18n i18n_utils menu_tags sekizai_tags %}
 
 <!doctype html>
 <head>
@@ -21,7 +21,9 @@
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/fav.ico" />
 
     {% addtoblock "css" %}
+    {% compress css %}
     <link rel="stylesheet" href="{{ MEDIA_URL }}style.css" type="text/css" media="screen" />
+    {% endcompress %}
     {% endaddtoblock %}
     {% addtoblock "css" %}
     <link rel="stylesheet" href="{{ MEDIA_URL }}jquery-ui/custom.css" type="text/css" />

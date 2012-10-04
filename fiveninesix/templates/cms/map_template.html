@@ -63,7 +63,9 @@
     {% endaddtoblock %}
 
     {% addtoblock "js" %}
+    {% compress js %}
     <script src="{{ MEDIA_URL }}map_template.js" type="text/javascript"></script>
+    {% endcompress %}
     {% endaddtoblock %}
 
     {% addtoblock "css" %}

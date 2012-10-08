@@ -97,7 +97,10 @@ class FacebookPhotoLoader(PhotoLoader):
         local_photo.external_url = photo['link']
         local_photo.created_time = parse(photo['created_time'])
         local_photo.updated_time = parse(photo['updated_time'])
-        local_photo.position = photo['position']
+        try:
+            local_photo.position = photo['position']
+        except Exception:
+            pass
         local_photo.save()
 
         # update photo no matter what

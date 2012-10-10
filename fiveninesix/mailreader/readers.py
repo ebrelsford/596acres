@@ -35,7 +35,7 @@ class MailReader(object):
         return False
 
 class NotesMailReader(MailReader): 
-    bbl_regex = '(?:".*"\s+)?(?:<)?notes\+(\d+)@.+(?:>)?'
+    bbl_regex = '(?:.*\s+)?<?notes\+(\d+)@.+>?'
     bbl_pattern = re.compile(bbl_regex)
 
     cutoff_line_pattern = '.*%s.*' % settings.MAILREADER_REPLY_PREFIX

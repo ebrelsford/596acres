@@ -8,5 +8,8 @@
 
 {% with entry.placeholders|choose_placeholder:"main" as main %}
     {{ main.get_plugins.0.text.body|striptags|truncatewords:"50"|cut:"GREEN WARRIORS UNITED"|cut:"Is this email not displaying correctly?View it in your browser."|safe }}
-    <a href="{{ title.get_absolute_url }}">{% trans "read the rest" %}</a>
+{% endwith %}
+
+{% with entry|get_preferred_translation_from_request:request as title %}
+    <a href="{{ title.get_absolute_url }}">{% trans "read the rest %}</a>
 {% endwith %}

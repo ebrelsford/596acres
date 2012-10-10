@@ -1,0 +1,13 @@
+{% autoescape off %}{% if is_note %}{{ MAILREADER_REPLY_PREFIX }}
+
+{% endif %}Greetings from 596 Acres. There has been a change to a lot you are organizing.
+
+{{ message }}
+
+View details here: {{ BASE_URL }}{% url lots.views.details bbl=lot.bbl %}{{ obj_url_suffix }}
+
+--
+{% if is_note %}If you reply to this email it will be posted as a public note on the lot's page.{% endif %}
+
+You are receiving this email because you are organizing lot {{ lot.bbl }} on 596acres.org. Please let us know if you would like to change this.
+{% endautoescape %}

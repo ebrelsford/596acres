@@ -41,49 +41,74 @@ def mail_organizers(subject, message, public_no_access=False,
         subject, 
         messages, 
         from_email=settings.ORGANIZERS_EMAIL, 
-        bcc=settings.MANAGERS,
         **kwargs
     )
 
-def mail_lot_organizers(lot, subject, message, exclude=[], **kwargs):
+def mail_lot_organizers(lot, subject, message, exclude=[], is_note=False, url_suffix=''):
     """
     Sends a message to organizers of a given lot or group of lots.
     """
     organizers = Organizer.objects.filter(lot__in=lot.lots, email__isnull=False)
-    _mail_multiple(
-        subject,
+    organizers = [o for o in organizers if o not in exclude]
+    messages = _get_messages(
+        organizers,
         message,
-        [o.email for o in organizers if o not in exclude],
-        **kwargs
+        'organize/notifications/organizers_text.txt',
+        url_suffix,
+        is_note=is_note,
     )
+    _mail_multiple_personalized(subject, messages, **_get_message_options(lot, is_note=is_note))
 
-def mail_watchers(lot, subject, message, **kwargs):             
+def mail_watchers(lot, subject, message, is_note=False, url_suffix=''):
     """
     Sends a message to watchers of a given lot or group of lots.
     """
     watchers = Watcher.objects.filter(lot__in=lot.lots, email__isnull=False)
+    messages = _get_messages(
+        watchers,
+        message,
+        'organize/notifications/watchers_text.txt',
+        url_suffix,
+        is_note=is_note,
+    )
+    _mail_multiple_personalized(subject, messages, **_get_message_options(lot, is_note=is_note))
+
+def _get_messages(objs, detail_message, template_name, obj_url_suffix, is_note=False):
     messages = {}
-    for watcher in watchers:
-        edit_url = settings.BASE_URL + watcher.get_edit_url()
+    for o in objs:
+        messages[o.email] = render_to_string(template_name, {
+            'BASE_URL': settings.BASE_URL,
+            'MAILREADER_REPLY_PREFIX': settings.MAILREADER_REPLY_PREFIX,
+            'is_note': is_note,
+            'lot': o.lot,
+            'message': detail_message,
+            'obj': o,
+            'obj_url_suffix': obj_url_suffix,
+        })
+    return messages
 
-        # TODO as a template
-        # TODO with settings.MAILREADER_REPLY_PREFIX
-        messages[watcher.email] = message + """
+def _get_message_options(lot, is_note=False):
+    if not is_note: return {}
+    return {
+        'from_email': _get_lot_email_address(lot),
+        'cc': [settings.ORGANIZERS_EMAIL],
+        'bcc': None,
+    }
 
-You are receiving this email because you are watching lot %s on 596acres.org. Please go here if you would like to change this: %s
-""" % (lot.bbl, edit_url)
-        pass
+def _get_lot_email_address(lot):
+    """
+    Get the from email for the given lot.
+    """
+    return '"596 Acres Lot %s" <notes+%s@596acres.org>' % (lot.bbl, lot.bbl,)
 
-    # TODO eg, from_email='"596 Acres Lot {{ lot.bbl }}" <notes+{{ lot.bbl }}@596acres.org>'
-    _mail_multiple_personalized(subject, messages, bcc=[], **kwargs)
-
-def _mail_multiple_personalized(subject, messages, bcc=[], **kwargs):
+def _mail_multiple_personalized(subject, messages, **kwargs):
     for email, message in messages.items():
-        _mail_multiple(subject, message, [email], bcc=bcc, **kwargs)
+        _mail_multiple(subject, message, [email], **kwargs)
 
 def _mail_multiple(subject, message, email_addresses, 
-                   from_email=settings.ORGANIZERS_EMAIL, bcc=settings.MANAGERS, 
-                   html_message=None, connection=None, fail_silently=True):
+                   from_email=settings.ORGANIZERS_EMAIL, cc=None,
+                   bcc=settings.MANAGERS, html_message=None, connection=None,
+                   fail_silently=True):
     """
     Sends a message to multiple email addresses. Based on 
     django.core.mail.mail_admins()
@@ -92,10 +117,11 @@ def _mail_multiple(subject, message, email_addresses,
         mail = EmailMultiAlternatives(
             u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject),
             message,
+            bcc=bcc,
+            cc=cc,
+            connection=connection,
             from_email=from_email,
             to=[email_address],
-            connection=connection,
-            bcc=bcc
         )          
         if html_message:
             mail.attach_alternative(html_message, 'text/html')

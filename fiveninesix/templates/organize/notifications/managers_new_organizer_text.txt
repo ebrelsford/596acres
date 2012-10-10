@@ -1,0 +1,9 @@
+Neat! A new organizer was created on 596acres.org.
+
+Details:
+name: {{ obj.name }}
+type: {{ obj.type.name }}
+phone: {{ obj.phone }}
+email: {{ obj.email }}
+url: {{ obj.url }}
+lot: {{ BASE_URL }}{% url lots.views.details bbl=obj.lot.bbl %}

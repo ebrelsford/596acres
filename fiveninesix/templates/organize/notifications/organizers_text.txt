@@ -4,7 +4,7 @@
 
 {{ message }}
 
-View details here: {{ BASE_URL }}{% url lots.views.details bbl=lot.bbl %}{{ obj_url_suffix }}
+View details here: {{ BASE_URL }}{{ obj.lot.get_absolute_url }}{{ obj_url_suffix }}
 
 --
 {% if is_note %}If you reply to this email it will be posted as a public note on the lot's page.{% endif %}

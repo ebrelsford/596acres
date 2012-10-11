@@ -727,6 +727,18 @@ ul.events {
     width: 300px;
 }
 
+.newsletter-excerpt {
+}
+.newsletter-excerpt .title {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+}
+
+.sidebar-section {
+    padding: 10px 0;
+}
+
 .expander {
     cursor: pointer;
 }

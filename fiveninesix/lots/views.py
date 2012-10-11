@@ -247,6 +247,8 @@ def _filter_lots(filters):
         lots = lots.filter(owner__type__name__in=filters['owner_types'])
     if 'lot_types' in filters and filters['lot_types']:
         lots = lots.filter(lotlayer__name__in=filters['lot_types'])
+    else:
+        return Lot.objects.none()
 
     return lots.distinct()
 

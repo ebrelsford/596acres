@@ -56,7 +56,7 @@ class NotesMailReader(MailReader):
 
     def should_read(self, from_address=None, to_address=None, subject=None,
                     payloads=None, **kwargs):
-
+        if from_address in settings.MAILREADER_IGNORE_FROM: return False
         return 'notes' in to_address
 
     def get_lot(self, to_address):

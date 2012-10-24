@@ -13,17 +13,17 @@
 
 <p>{% trans "Learn more about the group and get involved through" %}
     {% if lot.group_with_access.url %}
-    <a href="{{ lot.group_with_access.url }}">{% trans "their homepage" %}</a>,
+    <a href="{{ lot.group_with_access.url }}" target="_blank">{% trans "their homepage" %}</a>,
     {% endif %}
 
     {% if lot.group_with_access.facebook_page %}
-    <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}">
+    <a href="http://facebook.com/{{ lot.group_with_access.facebook_page }}" target="_blank">
         {% trans "their Facebook page" %}
     </a>,
     {% endif %}
 
     {% if lot.group_with_access.email %}
-    <a href="mailto:{{ lot.group_with_access.email }}">
+    <a href="mailto:{{ lot.group_with_access.email }}" target="_blank">
         {% trans "by emailing them" %}
     </a>,
     {% endif %}

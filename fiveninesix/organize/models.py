@@ -2,7 +2,7 @@ from hashlib import sha1
 import logging
 
 from django.conf import settings
-from django.db import models
+from django.contrib.gis.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
@@ -17,6 +17,9 @@ class Organizer(models.Model):
     """
     Someone organizing around a lot or lots.
     """
+    # so we can do spatial joins between Organizer and Lot
+    objects = models.GeoManager()
+
     name = models.CharField(_('name'), max_length=256)
     type = models.ForeignKey('OrganizerType')
     phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
@@ -50,6 +53,9 @@ class Watcher(models.Model):
     """
     Someone who is watching a lot.
     """
+    # so we can do spatial joins between Watcher and Lot
+    objects = models.GeoManager()
+
     name = models.CharField(_('name'), max_length=256)
     phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
     email = models.EmailField(_('email'), null=True, blank=True)

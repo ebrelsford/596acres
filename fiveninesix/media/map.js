@@ -10,16 +10,18 @@ var LotMap = {
     // filters
     //
     boroughs: ['Brooklyn', 'Manhattan', 'Queens',],
-    min_area: null,
-    max_area: null,
-    selectedAgency: null,
     lot_types: [
         'organizing_sites',
         'private_accessed_sites',
         'public_accessed_sites',
         'vacant_sites',
     ],
+    min_area: null,
+    max_area: null,
+    owners: null,
     parents_only: true,
+    selectedAgency: null,
+    user_types: null,
 
     //
     // styles
@@ -262,6 +264,9 @@ var LotMap = {
         if (f['owner_id']) {
             this.selectedAgency = f['owner_id'];
         }
+        if (f['user_types']) {
+            this.user_types = f['user_types'];
+        }
         if (f['lat'] && f['lon']) {
             this.options.center = this.getTransformedLonLat(f['lon'], f['lat']);
             this.options.zoomToFeatures = false;
@@ -270,6 +275,12 @@ var LotMap = {
             this.options.initialZoom = f['z'];
             this.options.zoomToFeatures = false;
         }
+    },
+
+    getCurrentBBOX: function() {
+        return this.olMap.getExtent()
+            .transform(this.epsg900913, this.epsg4326)
+            .toBBOX();
     },
 
     exportFilters: function() {
@@ -587,8 +598,8 @@ var LotMap = {
         if (this.boroughs) {
             extraParameters += '&boroughs=' + this.boroughs.join(',');
         }
-        if (this.selectedAgency !== null) {
-            extraParameters += '&owner_id=' + this.selectedAgency;
+        if (this.lot_types) {
+            extraParameters += '&lot_types=' + this.lot_types.join(',');
         }
         if (this.min_area !== null) {
             extraParameters += '&min_area=' + this.min_area;
@@ -596,11 +607,17 @@ var LotMap = {
         if (this.max_area !== null) {
             extraParameters += '&max_area=' + this.max_area;
         }
-        if (this.lot_types) {
-            extraParameters += '&lot_types=' + this.lot_types.join(',');
+        if (this.owners) {
+            extraParameters += '&owners=' + encodeURIComponent(this.owners.join(','));
+        }
+        if (this.user_types) {
+            extraParameters += '&user_types=' + this.user_types.join(',');
         }
         if (this.parents_only) {
             extraParameters += '&parents_only=' + this.parents_only;
+        }
+        if (this.selectedAgency !== null) {
+            extraParameters += '&owner_id=' + this.selectedAgency;
         }
         return this.options.queryString + extraParameters;
     },
@@ -639,7 +656,7 @@ var LotMap = {
     //
     filterByAgency: function(agency_id) {
         this.selectedAgency = agency_id === 'all' ? null : agency_id;
-        this.reloadLotLayer();
+        this.reloadLotLayer(this.options.zoomToFeatures);
     },
 
     //
@@ -649,7 +666,7 @@ var LotMap = {
     filterByArea: function(min, max) {
         this.min_area = min;
         this.max_area = max;
-        this.reloadLotLayer();
+        this.reloadLotLayer(this.options.zoomToFeatures);
     },
 
     //
@@ -657,7 +674,7 @@ var LotMap = {
     //
     filterByBoroughs: function(boroughs) {
         this.boroughs = boroughs;
-        this.reloadLotLayer(true);
+        this.reloadLotLayer(this.options.zoomToFeatures);
     },
 
     //
@@ -668,7 +685,17 @@ var LotMap = {
     //
     filterByLotType: function(types) {
         this.lot_types = types;
-        this.reloadLotLayer();
+        this.reloadLotLayer(this.options.zoomToFeatures);
+    },
+
+    filterByUserType: function(user_types) {
+        this.user_types = user_types;
+        this.reloadLotLayer(this.options.zoomToFeatures);
+    },
+
+    filterByOwners: function(owners) {
+        this.owners = owners;
+        this.reloadLotLayer(this.options.zoomToFeatures);
     },
 
     highlightLot: function(fid) {

@@ -1,0 +1,5 @@
+{% autoescape off %}{{ message }}
+
+--
+
+You are receiving this email because you are watching lot {{ lot.bbl }} on 596acres.org. Please let us know if you would like to change this. Please go here to change this: {{ BASE_URL }}{{ obj.get_edit_url }}{% endautoescape %}

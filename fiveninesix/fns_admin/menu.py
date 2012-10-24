@@ -14,20 +14,11 @@ class FNSAdminMenu(CMSAttachMenu):
         nodes.append(NavigationNode(_('Backend'), 
                                     reverse('admin:index'), 1))
 
-        nodes.append(NavigationNode(_('Email All Organizers'),
+        nodes.append(NavigationNode(_('Email Organizers and Watchers'),
                                     '/fnsadmin/organizers/mail/', 1))
 
         nodes.append(NavigationNode(_('Add News'),
                                     '/admin/cmsplugin_blog/entry/add/', 2))
-
-        for borough in ['Manhattan', 'Queens', 'Bronx', 'Staten Island']:
-            nodes.append(
-                NavigationNode(
-                    'Review %s Lots' % borough,
-                    reverse('en:fns_admin.views.review_lots', kwargs={ 'borough': borough }),
-                    3
-                )
-            )
 
         return nodes
 

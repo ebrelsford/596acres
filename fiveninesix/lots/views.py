@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.geos import Polygon
 from django.contrib.gis.measure import Distance
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
@@ -191,6 +191,16 @@ def _request_to_filters(request, override={}):
     except Exception:
         params['boroughs'] = settings.PUBLIC_BOROUGHS
 
+    try:
+        params['owners'] = params['owners'].split(',')
+    except Exception:
+        pass
+
+    try:
+        params['user_types'] = params['user_types'].split(',')
+    except Exception:
+        pass
+
     if 'source' in params:
         if params['source'] != 'all':
             params['source'] = params['source'].split(',')
@@ -245,6 +255,16 @@ def _filter_lots(filters):
         lots = lots.filter(centroid__within=filters['bbox'])
     if 'owner_types' in filters and filters['owner_types']:
         lots = lots.filter(owner__type__name__in=filters['owner_types'])
+    if 'owners' in filters and filters['owners']:
+        lots = lots.filter(owner__name__in=filters['owners'])
+    if 'user_types' in filters and filters['user_types']:
+        user_types = filters['user_types']
+        user_filters = Q()
+        if 'organizers' in user_types:
+            user_filters = user_filters | Q(organizer__isnull=False)
+        if 'watchers' in user_types:
+            user_filters = user_filters | Q(watcher__isnull=False)
+        lots = lots.filter(user_filters)
     if 'lot_types' in filters and filters['lot_types']:
         lots = lots.filter(lotlayer__name__in=filters['lot_types'])
     else:

@@ -1,46 +1,48 @@
 from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
-from django.db.models import Q
 from django.template.loader import render_to_string
 
 from organize.models import Organizer, Watcher
 
-def mail_organizers(subject, message, public_no_access=False, 
-                    public_access=False, private_access=False, **kwargs):
-    """
-    Sends a message to organizers. Can filter by the type of land and the 
-    status of the organizing.
-    """
-    organizers = Organizer.objects.filter(email__isnull=False).exclude(email='')
-
-    if not all((public_no_access, public_access, private_access)):
-        f = Q()
-
-        if public_no_access:
-            f = f | Q(lot__group_has_access=False, lot__owner__type__name='city')
-        if public_access:
-            f = f | Q(lot__group_has_access=True, lot__owner__type__name='city')
-        if private_access:
-            f = f | Q(lot__group_has_access=True, lot__owner__type__name='private')
-
-        organizers = organizers.filter(f)
-
+def mass_mailing(subject, message, objects, template_name, **kwargs):
     messages = {}
-    for organizer in organizers:
-        messages[organizer.email] = render_to_string(
-            'organize/notifications/mass_organizer_text.txt', 
-            {
-                'BASE_URL': settings.BASE_URL,
-                'lot': organizer.lot,
-                'message': message,
-                'organizer': organizer,
-            }
-        )
+    for obj in objects:
+        # message gets sent once to each unique email address, thanks to dict
+        messages[obj.email] = render_to_string(template_name, {
+            'BASE_URL': settings.BASE_URL,
+            'lot': obj.lot,
+            'message': message,
+            'obj': obj,
+        })
 
     _mail_multiple_personalized(
         subject, 
         messages, 
-        from_email=settings.ORGANIZERS_EMAIL, 
+        from_email=settings.ORGANIZERS_EMAIL,
+        **kwargs
+    )
+
+def mass_mail_watchers(subject, message, watchers, **kwargs):
+    """
+    Sends a message to watchers.
+    """
+    mass_mailing(
+        subject,
+        message,
+        watchers,
+        'organize/notifications/mass_watcher_text.txt',
+        **kwargs
+    )
+
+def mass_mail_organizers(subject, message, organizers, **kwargs):
+    """
+    Sends a message to organizers.
+    """
+    mass_mailing(
+        subject,
+        message,
+        organizers,
+        'organize/notifications/mass_organizer_text.txt',
         **kwargs
     )
 

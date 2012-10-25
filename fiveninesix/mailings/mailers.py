@@ -3,6 +3,7 @@ from itertools import groupby
 import logging
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.mail.message import EmailMessage
 from django.db.models import Count
 from django.template.loader import render_to_string
@@ -161,6 +162,26 @@ class DaysAfterAddedMailer(Mailer):
     def get_recipients(self):
         recipient_lists = [self._get_ctype_recipients(ct) for ct in self.mailing.target_types.all()]
         return reduce(lambda x,y: x+y, recipient_lists)
+
+    def get_context(self, recipients):
+        context = super(DaysAfterAddedMailer, self).get_context(recipients)
+        context['has_received_this_mailing'] = self.has_received(
+            self.mailing,
+            recipients[0]
+        )
+        return context
+
+    def has_received(self, mailing, recipient):
+        other_pks = recipient.__class__.objects.filter(
+            email=recipient.email
+        ).exclude(pk=recipient.pk).values_list('pk', flat=True)
+
+        records = DeliveryRecord.objects.filter(
+            mailing=mailing,
+            receiver_object_id__in=other_pks,
+            receiver_type=ContentType.objects.get_for_model(recipient)
+        )
+        return records.count() > 0
 
 class SuccessfulOrganizerMailer(Mailer):
     def get_recipient_queryset(self, ctype, already_received):

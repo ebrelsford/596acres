@@ -1,4 +1,4 @@
-Neat! A new organizer was created on 596acres.org.
+{% autoescape off %}Neat! A new organizer was created on 596acres.org.
 
 Details:
 name: {{ obj.name }}
@@ -6,4 +6,4 @@ type: {{ obj.type.name }}
 phone: {{ obj.phone }}
 email: {{ obj.email }}
 url: {{ obj.url }}
-lot: {{ BASE_URL }}{{ obj.lot.get_absolute_url }}
+lot: {{ BASE_URL }}{{ obj.lot.get_absolute_url }}{% endautoescape %}

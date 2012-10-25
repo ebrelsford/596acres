@@ -275,7 +275,7 @@ $(document).ready(function() {
     });
 
     $('.download a').click(function() {
-        window.location.href = '/lots/' + $(this).attr('class') + '?' + URI().query($('#map').data('lotmap').exportFilters()) + '&download=true';
+        window.location.href = '/lots/' + $(this).attr('class') + '?' + URI().query($('#map').data('lotmap').exportFilters()).query() + '&download=true';
         return false;
     });
 

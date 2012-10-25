@@ -3,7 +3,6 @@ from datetime import date
 import json
 from random import randint
 import simplekml
-import ujson
 
 from django.core.cache import cache
 from django.conf import settings
@@ -55,7 +54,7 @@ def lot_geojson(request):
 
         recent_changes = _recent_changes()
         lots_geojson = _lot_collection(lots, recent_changes, layers=layers)
-        geojson_response = ujson.dumps(lots_geojson)
+        geojson_response = json.dumps(lots_geojson)
 
         if cacheable:
             cache.set(cache_key, geojson_response, 6 * 60 * 60)

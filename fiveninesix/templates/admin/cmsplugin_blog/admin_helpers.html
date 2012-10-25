@@ -1,0 +1,11 @@
+{% if use_missing %}
+{% comment%}
+This was breaking, hardcoded for now.
+    <script type="text/javascript" src="{{ STATIC_URL|default:MEDIA_URL }}missing/n11ndata.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL|default:MEDIA_URL }}missing/n11n.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL|default:MEDIA_URL }}missing/urlify2.js"></script>
+{% endcomment %}
+    <script type="text/javascript" src="/static/missing/n11ndata.js"></script>
+    <script type="text/javascript" src="/static/missing/n11n.js"></script>
+    <script type="text/javascript" src="/static/missing/urlify2.js"></script>
+{% endif %}

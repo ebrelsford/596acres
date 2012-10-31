@@ -34,27 +34,16 @@ def notify_organizers_and_watchers(obj):
     if lot.group_has_access and isinstance(obj, Organizer): return
 
     message = _get_object_message(obj)
-    is_note = isinstance(obj, Note)
-    url_suffix = url_suffixes[obj.__class__]
+    kwargs = {}
+    try:
+        kwargs['excluded_emails'] = [obj.email]
+    except Exception:
+        kwargs['excluded_emails'] = []
+    kwargs['is_note'] = isinstance(obj, Note)
+    kwargs['url_suffix'] = url_suffixes[obj.__class__]
 
-    # TODO exclude email address of person who posted obj
-
-    mail_watchers(
-        lot,
-        'Watched lot updated!',
-        message,
-        is_note=is_note,
-        url_suffix=url_suffix,
-    )
-
-    mail_lot_organizers(
-        lot,
-        'Organized lot updated!',
-        message,
-        exclude=[obj],
-        is_note=is_note,
-        url_suffix=url_suffix,
-    )
+    mail_watchers(lot, 'Watched lot updated!', message, **kwargs)
+    mail_lot_organizers(lot, 'Organized lot updated!', message, **kwargs)
 
 def _get_object_message(o):
     """

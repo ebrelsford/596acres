@@ -46,12 +46,13 @@ def mass_mail_organizers(subject, message, organizers, **kwargs):
         **kwargs
     )
 
-def mail_lot_organizers(lot, subject, message, exclude=[], is_note=False, url_suffix=''):
+def mail_lot_organizers(lot, subject, message, excluded_emails=[],
+                        is_note=False, url_suffix=''):
     """
     Sends a message to organizers of a given lot or group of lots.
     """
     organizers = Organizer.objects.filter(lot__in=lot.lots, email__isnull=False)
-    organizers = [o for o in organizers if o not in exclude]
+    organizers = [o for o in organizers if o.email not in excluded_emails]
     messages = _get_messages(
         organizers,
         message,
@@ -59,13 +60,16 @@ def mail_lot_organizers(lot, subject, message, exclude=[], is_note=False, url_su
         url_suffix,
         is_note=is_note,
     )
-    _mail_multiple_personalized(subject, messages, **_get_message_options(lot, is_note=is_note))
+    _mail_multiple_personalized(subject, messages,
+                                **_get_message_options(lot, is_note=is_note))
 
-def mail_watchers(lot, subject, message, is_note=False, url_suffix=''):
+def mail_watchers(lot, subject, message, excluded_emails=[], is_note=False,
+                  url_suffix=''):
     """
     Sends a message to watchers of a given lot or group of lots.
     """
     watchers = Watcher.objects.filter(lot__in=lot.lots, email__isnull=False)
+    watchers = [w for w in watchers if w.email not in excluded_emails]
     messages = _get_messages(
         watchers,
         message,
@@ -73,7 +77,8 @@ def mail_watchers(lot, subject, message, is_note=False, url_suffix=''):
         url_suffix,
         is_note=is_note,
     )
-    _mail_multiple_personalized(subject, messages, **_get_message_options(lot, is_note=is_note))
+    _mail_multiple_personalized(subject, messages,
+                                **_get_message_options(lot, is_note=is_note))
 
 def _get_messages(objs, detail_message, template_name, obj_url_suffix, is_note=False):
     messages = {}

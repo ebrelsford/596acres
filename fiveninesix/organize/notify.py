@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.mail import mail_managers
 from django.template.loader import render_to_string
 
-from mail import mail_lot_organizers, mail_watchers
+from mail import mail_lot_organizers, mail_lot_watchers
 from models import Note, Organizer, Picture
 
 url_suffixes = {
@@ -42,7 +42,7 @@ def notify_organizers_and_watchers(obj):
     kwargs['is_note'] = isinstance(obj, Note)
     kwargs['url_suffix'] = url_suffixes[obj.__class__]
 
-    mail_watchers(lot, 'Watched lot updated!', message, **kwargs)
+    mail_lot_watchers(lot, 'Watched lot updated!', message, **kwargs)
     mail_lot_organizers(lot, 'Organized lot updated!', message, **kwargs)
 
 def _get_object_message(o):

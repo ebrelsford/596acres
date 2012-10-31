@@ -63,8 +63,8 @@ def mail_lot_organizers(lot, subject, message, excluded_emails=[],
     _mail_multiple_personalized(subject, messages,
                                 **_get_message_options(lot, is_note=is_note))
 
-def mail_watchers(lot, subject, message, excluded_emails=[], is_note=False,
-                  url_suffix=''):
+def mail_lot_watchers(lot, subject, message, excluded_emails=[], is_note=False,
+                      url_suffix=''):
     """
     Sends a message to watchers of a given lot or group of lots.
     """

@@ -106,10 +106,8 @@ var LotMap = {
     
     searchStyle: {
         pointRadius: 10,
-        fillColor: '#F3FA2D',
-        fillOpacity: 0.6,
-        strokeWidth: 1,
-        strokeColor: '#000000',
+        // XXX blah hardcode
+        externalGraphic: '/media/img/current_location.png',
     },
 
     init: function(options, elem) {
@@ -184,6 +182,7 @@ var LotMap = {
             }),
         });
         this.olMap.addLayer(this.search_layer);
+        //this.addControls([this.lot_layer, this.search_layer]);
 
         this.olMap.events.on({
             'moveend': function() {
@@ -577,8 +576,10 @@ var LotMap = {
     },
 
     setSearchFeature: function(lonLat) {
+        var t = this;
         this.search_layer.removeAllFeatures();
         var feature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(lonLat.lon, lonLat.lat));
+        // TODO a popup showing the address you searched for?
         this.search_layer.addFeatures([feature]);
     },
 

@@ -47,7 +47,9 @@
     {% endaddtoblock %}
 
     {% addtoblock "js" %}
+    {% compress js %}
     <script src="{{ MEDIA_URL }}search.js" type="text/javascript"></script>
+    {% endcompress %}
     {% endaddtoblock %}
 
     {% addtoblock "js" %}

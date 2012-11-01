@@ -52,7 +52,6 @@ var Search = {
         var t= this;
         geocode(this.$elem.find("input[name='address']").val(), this.latLngBounds, function(results, status) {
             t.$elem.find('.loading').hide();
-            console.log(results[0]);
             var state = get_component(results[0], 'administrative_area_level_1');
             if (state !== 'NY') {
                 t.$elem.find('.warning').text("Sorry, it doesn't seem that the address you entered is in New York. Try again?").show();

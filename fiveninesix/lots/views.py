@@ -302,18 +302,31 @@ def details(request, bbl=None):
     if review:
         review = review[0]
 
+    nearby_lots = Lot.objects.filter(
+        centroid__distance_lte=(lot.centroid, Distance(mi=.25)),
+        lotlayer__name__in=(
+            'organizing_sites',
+            'private_accessed_sites',
+            'public_accessed_sites',
+            'vacant_sites',
+        ),
+    ).exclude(pk=lot.pk).distance(lot.centroid).order_by('distance')
+    if nearby_lots.count() > 5:
+        nearby_lots = nearby_lots[:5]
+
     return render_to_response('lots/details.html', {
         'lot': lot,
-        'review': review,
-        'organizers': lot.organizer_set.all(),
-        'watchers_count': lot.watcher_set.all().count(),
+        'nearby_lots': nearby_lots,
         'notes': lot.note_set.all().order_by('added'),
+        'OASIS_BASE_URL': OASIS_BASE_URL,
+        'organizers': lot.organizer_set.all(),
         'photo_albums': PhotoAlbum.objects.filter(
             content_type=ContentType.objects.get_for_model(lot),
             object_id=lot.pk,
         ).all(),
         'pictures': lot.picture_set.all().order_by('added'),
-        'OASIS_BASE_URL': OASIS_BASE_URL,
+        'review': review,
+        'watchers_count': lot.watcher_set.all().count(),
     }, context_instance=RequestContext(request))
 
 def owner_details(request, id=None):

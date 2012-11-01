@@ -45,6 +45,18 @@
 {% with title=lot|lotname:"group" %}
 {% include "share_box_snippet.html" %}
 {% endwith %}
+
+{% if nearby_lots %}
+<h2>nearby lots</h2>
+<ul class="nearby-lots">
+    {% for nearby in nearby_lots %}
+    <li>
+        <a href="{{ nearby.get_absolute_url }}">{{ nearby|lotname:"group" }}</a>
+        {{ nearby|lot_short_description }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}
 
 {% block content_main %}

@@ -22,6 +22,14 @@ def lot_tab_label(lot):
         return lot.lot
 
 @register.filter
+def lot_short_description(lot):
+    if lot.group_has_access:
+        return mark_safe('-- a group has access here')
+    if 'organizing_sites' in lot.lotlayer_set.all().values_list('name', flat=True):
+        return mark_safe('-- a group is organizing here')
+    return ''
+
+@register.filter
 def lotname(lot, arg=None):
     """
     Get a display name for the given lot or lot group.

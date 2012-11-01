@@ -768,3 +768,8 @@ ul.events {
     position: absolute;
     z-index: 1001;
 }
+
+ul.nearby-lots {
+    list-style: none;
+    padding: 0;
+}

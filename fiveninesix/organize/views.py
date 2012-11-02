@@ -1,6 +1,6 @@
 import json
 
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 
@@ -59,8 +59,9 @@ def add_watcher(request, bbl=None):
     if request.method == 'POST':    
         form = WatcherForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
-            return redirect('lots.views.details', bbl=bbl)
+            watcher = form.save()
+            return redirect('organize.views.add_watcher_success', bbl=bbl,
+                            email_hash=watcher.email_hash[:10])
     else:
         form = WatcherForm(initial={
             'lot': lot,
@@ -71,6 +72,18 @@ def add_watcher(request, bbl=None):
     return render_to_response(template, {
         'form': form,
         'lot': lot,
+    }, context_instance=RequestContext(request))
+
+def add_watcher_success(request, bbl=None, email_hash=None):
+    lot = get_object_or_404(Lot, bbl=bbl)
+    try:
+        watcher = Watcher.objects.filter(email_hash__istartswith=email_hash)[0]
+    except Exception:
+        raise Http404
+
+    return render_to_response('organize/add_watcher_success.html', {
+        'lot': lot,
+        'watcher': watcher,
     }, context_instance=RequestContext(request))
 
 @fix_recaptcha_remote_ip

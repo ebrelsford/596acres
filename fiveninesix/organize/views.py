@@ -8,6 +8,7 @@ from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
 from forms import OrganizerForm, WatcherForm, NoteForm, PictureForm
 from lots.models import Lot
+from lots.util import get_nearby
 from models import Organizer, Watcher
 
 def details(request, bbl=None):
@@ -83,6 +84,7 @@ def add_watcher_success(request, bbl=None, email_hash=None):
 
     return render_to_response('organize/add_watcher_success.html', {
         'lot': lot,
+        'nearby_lots': get_nearby(lot),
         'watcher': watcher,
     }, context_instance=RequestContext(request))
 

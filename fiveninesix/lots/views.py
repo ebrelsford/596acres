@@ -20,6 +20,7 @@ from django_xhtml2pdf.utils import render_to_pdf_response
 
 from forms import ReviewForm
 from lots.load import convert_lon_lat_to_coordinates
+from lots.util import get_nearby
 from models import Lot, LotLayer, Owner, Review
 from organize.models import Note, Organizer, Watcher
 from photos.models import PhotoAlbum
@@ -303,21 +304,9 @@ def details(request, bbl=None):
     if review:
         review = review[0]
 
-    nearby_lots = Lot.objects.filter(
-        centroid__distance_lte=(lot.centroid, Distance(mi=.25)),
-        lotlayer__name__in=(
-            'organizing_sites',
-            'private_accessed_sites',
-            'public_accessed_sites',
-            'vacant_sites',
-        ),
-    ).exclude(pk=lot.pk).distance(lot.centroid).order_by('distance')
-    if nearby_lots.count() > 5:
-        nearby_lots = nearby_lots[:5]
-
     return render_to_response('lots/details.html', {
         'lot': lot,
-        'nearby_lots': nearby_lots,
+        'nearby_lots': get_nearby(lot),
         'notes': lot.note_set.all().order_by('added'),
         'OASIS_BASE_URL': OASIS_BASE_URL,
         'organizers': lot.organizer_set.all(),

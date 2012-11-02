@@ -56,7 +56,7 @@ class Watcher(models.Model):
 
     name = models.CharField(_('name'), max_length=256)
     phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
-    email = models.EmailField(_('email'), null=True, blank=True)
+    email = models.EmailField(_('email'))
     email_hash = models.CharField(max_length=40, null=True, blank=True)
     lot = models.ForeignKey(Lot)
     added = models.DateTimeField(auto_now_add=True)

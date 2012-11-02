@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^lots/(?P<bbl>\d+)/review/$', 'lots.views.add_review'),
     url(r'^lot/(?P<bbl>\d+)/json/$', 'lots.views.details_json'),
     url(r'^lot/(?P<bbl>\d+)/tabs/$', 'lots.views.tabs'),
+    url(r'^oasis_popup/', 'lots.views.oasis_popup'),
 
     url(r'^owners/(?P<id>\d+)/details/json/$', 'lots.views.owner_details'),
     url(r'^owners/json/$', 'lots.views.owners_json'),

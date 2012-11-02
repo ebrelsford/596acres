@@ -127,23 +127,43 @@ $(document).ready(function() {
             var $loading_clone = $('.popup_loading').clone();
             $(popup).find('div').append($loading_clone.addClass('copy').show());
 
-            $(popup).load('/lot/' + feature.fid + '/tabs/', function() {
-                // ....done loading
-                $loading_clone.remove();
+            if (feature.data.search_results) {
+                var lonLat = feature.geometry.getBounds().getCenterLonLat();
+                lonLat = $('#map').data('lotmap').getInverseLonLat(lonLat.lon, lonLat.lat);
 
-                // link to owner tab
-                $(popup).find('.tabs').tabs()
-                    .find('tr.owner').click(function() {
-                        $(this).parents('.tabs').tabs('select', '#owner');
+                var params = {
+                    latitude: lonLat.lat,
+                    longitude: lonLat.lon,
+                };
+                var address = feature.data.address;
+                if (address) params.address = address;
+                var query = feature.data.query;
+                if (query) params.query = query;
+                $(popup).load('/oasis_popup/?' + $.param(params), function() {
+                    // ....done loading
+                    $loading_clone.remove();
+                });
+            }
+            else {
+
+                $(popup).load('/lot/' + feature.fid + '/tabs/', function() {
+                    // ....done loading
+                    $loading_clone.remove();
+
+                    // link to owner tab
+                    $(popup).find('.tabs').tabs()
+                        .find('tr.owner').click(function() {
+                            $(this).parents('.tabs').tabs('select', '#owner');
+                            return false;
+                        });
+
+                    // link to organize
+                    $(popup).find('.organize-link').click(function() {
+                        $(popup).find('.tabs').tabs('select', '#organize');
                         return false;
                     });
-
-                // link to organize
-                $(popup).find('.organize-link').click(function() {
-                    $(popup).find('.tabs').tabs('select', '#organize');
-                    return false;
                 });
-            });
+            }
 
             // street view
             show_with_streetview('streetview', feature);
@@ -159,6 +179,8 @@ $(document).ready(function() {
 
         onFeatureHighlight: function(event) {
             var f = event.feature;
+            if (f.data.search_results) return;
+
             var acres = f.data.area;
             if (acres === 0) {
                 acres = 'almost 0';

@@ -19,6 +19,10 @@ def convert_coordinates_to_lon_lat(x, y):
         (lon, lat) = LCC(x, y, inverse=True)
         return (lon, lat)
 
+def convert_lon_lat_to_coordinates(lon, lat):
+    (x, y) = LCC(lon, lat)
+    return [c / METERS_PER_FOOT for c in (x, y)]
+
 def convert_sq_ft_to_acres(sq_ft):
     return sq_ft / 43560.0
 

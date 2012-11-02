@@ -104,11 +104,15 @@ var LotMap = {
         fillOpacity: 0,
     },
     
-    searchStyle: {
-        pointRadius: 10,
-        // XXX blah hardcode
-        externalGraphic: '/media/img/current_location.png',
-    },
+    searchStyle: new OpenLayers.StyleMap({
+        'default': new OpenLayers.Style({             
+            pointRadius: 10,
+            // XXX blah hardcode
+            externalGraphic: '/media/img/current_location.png',
+        }),
+        'select': {},
+        'temporary': {},
+    }),
 
     init: function(options, elem) {
         var t = this;
@@ -170,19 +174,16 @@ var LotMap = {
                         var features_extent = t.lot_layer.getDataExtent(); 
                         t.olMap.zoomToExtent(features_extent, false);
                     }
-                    t.addControls([t.lot_layer]);
                 }
             },
         });
 
         this.search_layer = new OpenLayers.Layer.Vector('search', {
             projection: this.olMap.displayProjection,
-            styleMap: new OpenLayers.StyleMap({
-                'default': this.searchStyle,
-            }),
+            styleMap: this.searchStyle,
         });
         this.olMap.addLayer(this.search_layer);
-        //this.addControls([this.lot_layer, this.search_layer]);
+        this.addControls([this.lot_layer, this.search_layer]);
 
         this.olMap.events.on({
             'moveend': function() {
@@ -448,6 +449,7 @@ var LotMap = {
     createAndOpenPopup: function(feature) {
         var t = this;
 
+        // XXX BLAH
         var popup_width = 300;
         var map_width = t.$elem.innerWidth();
         var max_width = map_width - 65;
@@ -455,6 +457,7 @@ var LotMap = {
         var content_div_width = popup_width - 50;
 
         var popup_height = 300;
+        if (feature.data.search_results) popup_height = 200;
         var map_height = t.$elem.innerHeight();
         var max_height = map_height - 65;
         if (popup_height > max_height) popup_height = max_height;
@@ -462,12 +465,13 @@ var LotMap = {
 
         var content = "<div style=\"width: " + content_div_width + "px !important; min-height: " + content_div_height + "px;\"></div>";
         var popup = new OpenLayers.Popup.Anchored("chicken", 
-                                    feature.geometry.getBounds().getCenterLonLat(),
-                                    new OpenLayers.Size(popup_width, popup_height),
-                                    content,
-                                    null, 
-                                    true, 
-                                    function(event) { t.selectControl.unselectAll(); });
+            feature.geometry.getBounds().getCenterLonLat(),
+            new OpenLayers.Size(popup_width, popup_height),
+            content,
+            null, 
+            true, 
+            function(event) { t.selectControl.unselectAll(); }
+        );
         popup.panMapIfOutOfView = true;
         feature.popup = popup;
         this.olMap.addPopup(popup);
@@ -575,11 +579,17 @@ var LotMap = {
         this.olMap.setCenter(l, 15);
     },
 
-    setSearchFeature: function(lonLat) {
-        var t = this;
+    setSearchFeature: function(lonLat, query, address) {
+        this.hoverControl.unselectAll();
+        this.selectControl.unselectAll();
+
         this.search_layer.removeAllFeatures();
         var feature = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(lonLat.lon, lonLat.lat));
-        // TODO a popup showing the address you searched for?
+        feature.data = {
+            address: address,
+            query: query,
+            search_results: true,
+        };
         this.search_layer.addFeatures([feature]);
     },
 

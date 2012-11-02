@@ -1,0 +1,25 @@
+<!doctype html>
+<body>
+<div class="lot-popup{% if organizers|length > 0 %} organized{% endif %}">
+
+    <p>
+        {% if address %}
+        This is the point we found for "{{ query }}".
+        {% else %}
+        This is where your browser is telling us you are.
+        {% endif %}
+    </p>
+
+    <p>
+        Not seeing a vacant lot that you expected to see here? 
+        Check <a href="{{ oasis_url }}" target="_blank">OASIS in this area</a>.
+        The vacant lots should be visible in brown.
+    </p>
+
+    <p>
+        Once you click on the lot you're looking for, the owner's name should be under Property Information, to the right of the map. This isn't always up do date, so check the "NYC Dept of Finanace Assessment Roll" link under "MORE INFO" to confirm it. When you know who the owner is, we have more pointers in our <a href="/resources/working-private-land-owners/">resources</a> and in our <a href="/frequently-asked-questions/">FAQs</a>.
+    </p>
+
+</div>
+<body>
+</html>

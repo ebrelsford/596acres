@@ -50,7 +50,8 @@ var Search = {
         this.$elem.find('.loading').show();
 
         var t= this;
-        geocode(this.$elem.find("input[name='address']").val(), this.latLngBounds, function(results, status) {
+        var query = this.$elem.find("input[name='address']").val();
+        geocode(query, this.latLngBounds, function(results, status) {
             t.$elem.find('.loading').hide();
             var state = get_component(results[0], 'administrative_area_level_1');
             if (state !== 'NY') {
@@ -62,7 +63,7 @@ var Search = {
             var latitude = results[0].geometry.location.lat();
             var transformed = t.map.getTransformedLonLat(longitude, latitude);
             t.map.olMap.setCenter(transformed, 15);
-            t.map.setSearchFeature(transformed);
+            t.map.setSearchFeature(transformed, query, results[0].formatted_address);
         });
     },
 

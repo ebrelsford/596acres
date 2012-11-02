@@ -19,6 +19,7 @@ from django.views.decorators.cache import cache_page
 from django_xhtml2pdf.utils import render_to_pdf_response
 
 from forms import ReviewForm
+from lots.load import convert_lon_lat_to_coordinates
 from models import Lot, LotLayer, Owner, Review
 from organize.models import Note, Organizer, Watcher
 from photos.models import PhotoAlbum
@@ -422,6 +423,33 @@ def tabs(request, bbl=None):
         'pictures': lot.picture_set.all().order_by('added'),
         'watchers_count': lot.watcher_set.all().count(),
         'OASIS_BASE_URL': OASIS_BASE_URL,
+    }, context_instance=RequestContext(request))
+
+def oasis_popup(request):
+    try:
+        address = request.GET['address']
+    except KeyError:
+        address = None
+    try:
+        latitude = request.GET['latitude']
+    except KeyError:
+        latitude = None
+    try:
+        longitude = request.GET['longitude']
+    except KeyError:
+        longitude = None
+    try:
+        query = request.GET['query']
+    except KeyError:
+        query = None
+
+    x, y = convert_lon_lat_to_coordinates(float(longitude), float(latitude))
+    oasis_url = settings.OASIS_LAT_LON_URL + 'x=%f&y=%f' % (x, y)
+
+    return render_to_response('lots/oasis_popup.html', {
+        'address': address,
+        'oasis_url': oasis_url,
+        'query': query,
     }, context_instance=RequestContext(request))
 
 def random(request):

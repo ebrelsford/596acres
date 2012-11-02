@@ -1,12 +1,12 @@
 {% extends "lots/base.html" %}
 {% load i18n %}
 
-{% block title %}{{ block.super }}: {% trans "Add watcher" %}{% endblock %}
+{% block title %}{{ block.super }}: {% trans "Watch a lot" %}{% endblock %}
 
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>{% trans "Add watcher" %}</h1>
+    <h1>{% trans "Watch a lot" %}</h1>
     <h2>
         {% include "organize/block_link_snippet.html" %}
     </h2>
@@ -16,4 +16,3 @@
     </div>
 </div>
 {% endblock %}
-

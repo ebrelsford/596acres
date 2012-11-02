@@ -1,12 +1,12 @@
 {% extends "base_with_sidebar.html" %}
-{% load i18n %}
+{% load i18n lot_filters %}
 
-{% block title %}{{ block.super }}{% trans "Change watched lots" %}{% endblock %}
+{% block title %}{{ block.super }}{% trans "Change the lots you're watching" %}{% endblock %}
 
 {% block content_main %}
 {{ block.super }}
 <div>
-    <h1>{% trans "Change watched lots" %}</h1>
+    <h1>{% trans "Change the lots you're watching" %}</h1>
     <div>
         {% if watchers %}
         <p>
@@ -16,7 +16,7 @@
                 {% for watcher in watchers %}
                 <li>
                     <a href="{% url lots.views.details bbl=watcher.lot.bbl %}">
-                        {{ watcher.lot.bbl }}
+                        {{ watcher.lot|lotname:"group" }}
                     </a>
                     (<a href="{% url organize.views.delete_watcher id=watcher.id hash=hash %}">
                         {% trans "stop watching" %}

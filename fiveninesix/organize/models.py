@@ -1,5 +1,4 @@
 from hashlib import sha1
-import logging
 
 from django.conf import settings
 from django.contrib.gis.db import models
@@ -8,10 +7,9 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from sorl.thumbnail import ImageField
-import mailchimp
-from mailchimp.chimpy.chimpy import ChimpyException
 
 from lots.models import Lot
+from newsletter.util import subscribe
 
 class Organizer(models.Model):
     """
@@ -148,29 +146,5 @@ def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs
 @receiver(post_save, sender=Organizer, dispatch_uid='organizer_subscribe_organizer_watcher')
 @receiver(post_save, sender=Watcher, dispatch_uid='watcher_subscribe_organizer_watcher')
 def subscribe_organizer_watcher(sender, created=False, instance=None, **kwargs):
-    if not instance or not instance.email:
-        return
-
-    merge_dict = {
-        'EMAIL': instance.email,
-        'GROUPINGS': [settings.MAILCHIMP_PARTCICIPATION_GROUP,],
-    }
-
-    if instance.name:
-        try:
-            first, last = instance.name.split()
-            merge_dict['FNAME'] = first
-            merge_dict['LNAME'] = last
-        except Exception:
-            merge_dict['FNAME'] = instance.name
-
-    if settings.DEBUG:
-        logging.debug('Would be subscribing %s to the mailing list with merge_dict %s' % (instance.email, merge_dict,))
-        return
-
-    try:
-        list = mailchimp.utils.get_connection().get_list_by_id(settings.MAILCHIMP_LIST_ID)
-        list.subscribe(instance.email, merge_dict)
-    except ChimpyException:
-        # thrown if user already subscribed--ignore
-        return
+    if created:
+        subscribe(instance, is_participating=True)

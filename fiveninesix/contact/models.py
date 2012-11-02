@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -5,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
-from settings import BASE_URL
+from newsletter.util import subscribe
 
 class AbstractContactRequest(models.Model):
     name = models.CharField(_('name'), max_length=128)
@@ -69,13 +70,15 @@ class ContactRequest(AbstractContactRequest):
     def get_label_for_mail(self):
         return 'message'
 
+
 @receiver(post_save, dispatch_uid='contact_model_saved')
-def contact_model_saved(sender, **kwargs):
-    if issubclass(sender, AbstractContactRequest):
-        _send_email_for_request(kwargs['instance'])
+def contact_model_saved(sender, created=False, instance=None, **kwargs):
+    if created and issubclass(sender, AbstractContactRequest):
+        _send_email_for_request(instance)
+        subscribe(instance)
 
 def _send_email_for_request(request):
-    admin_url = BASE_URL + reverse('admin:%s_%s_change' % (request._meta.app_label, request.__class__.__name__.lower()), args=(request.id,))
+    admin_url = settings.BASE_URL + reverse('admin:%s_%s_change' % (request._meta.app_label, request.__class__.__name__.lower()), args=(request.id,))
     mail_managers(
         'A new %s was sent via 596acres.org' % request.get_label_for_mail(), 
         """Oh man! A new %s was sent via 596acres.org.

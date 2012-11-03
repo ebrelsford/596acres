@@ -11,17 +11,33 @@ from sorl.thumbnail import ImageField
 from lots.models import Lot
 from newsletter.util import subscribe
 
-class Organizer(models.Model):
+class Participant(models.Model):
+    name = models.CharField(_('name'), max_length=256)
+    phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
+    email = models.EmailField(_('email'))
+    email_hash = models.CharField(max_length=40, null=True, blank=True)
+    lot = models.ForeignKey(Lot)
+    added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if self.email:
+            self.email_hash = sha1(settings.PARTICIPANT_SALT + self.email).hexdigest()
+        super(Participant, self).save(*args, **kwargs)
+
+class Organizer(Participant):
     """
     Someone organizing around a lot or lots.
     """
     # so we can do spatial joins between Organizer and Lot
     objects = models.GeoManager()
 
-    name = models.CharField(_('name'), max_length=256)
     type = models.ForeignKey('OrganizerType')
-    phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
-    email = models.EmailField(_('email'), null=True, blank=True)
     url = models.URLField(_('url'), null=True, blank=True)
     notes = models.TextField(_('notes'), null=True, blank=True)
     facebook_page = models.CharField(
@@ -33,12 +49,6 @@ class Organizer(models.Model):
                    'enter your personal Facebook page.'),
     )
 
-    lot = models.ForeignKey(Lot, null=True)
-    added = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return self.name
-
     def recent_change_label(self):
         return 'new organizer: %s' % self.name
 
@@ -47,27 +57,12 @@ class Organizer(models.Model):
             ('email_organizers', 'Can send an email to all organizers'),
         )
 
-class Watcher(models.Model):
+class Watcher(Participant):
     """
     Someone who is watching a lot.
     """
     # so we can do spatial joins between Watcher and Lot
     objects = models.GeoManager()
-
-    name = models.CharField(_('name'), max_length=256)
-    phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
-    email = models.EmailField(_('email'))
-    email_hash = models.CharField(max_length=40, null=True, blank=True)
-    lot = models.ForeignKey(Lot)
-    added = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if self.email:
-            self.email_hash = sha1(settings.WATCHER_SALT + self.email).hexdigest()
-        super(Watcher, self).save(*args, **kwargs)
 
     def recent_change_label(self):
         return 'new watcher'

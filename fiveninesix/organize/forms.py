@@ -29,6 +29,7 @@ class OrganizeForm(CaptchaForm):
 
 class OrganizerForm(OrganizeForm):
     class Meta:
+        exclude = ('added', 'email_hash')
         model = Organizer
         widgets = {
             'facebook_page': PrefixLabelTextInput('facebook.com/'),

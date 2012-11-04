@@ -18,6 +18,11 @@ class Lot(models.Model):
     parent_lot = models.ForeignKey('self', related_name='children', blank=True,
                                    null=True)
 
+    sandy_dropoff_site = models.BooleanField(default=False)
+    sandy_distribution_site = models.BooleanField(default=False)
+
+    name = models.CharField(_('name'), max_length=256, null=True, blank=True)
+
     address = models.CharField(_('address'), max_length=256, null=True, 
                                blank=True)
     borough = models.CharField(_('borough'), max_length=32, null=True, 
@@ -383,6 +388,10 @@ layer_filters = {
         ),
         group_has_access=False,
         owner__type__name='city',
+
+        # sandy
+        sandy_dropoff_site=False,
+        sandy_distribution_site=False,
     ),
 
     'organizing_sites': Q(
@@ -390,6 +399,10 @@ layer_filters = {
         group_has_access=False,
         owner__type__name='city',
         parent_lot=None,
+
+        # sandy
+        sandy_dropoff_site=False,
+        sandy_distribution_site=False,
     ),
 
     'private_accessed_lots': Q(
@@ -425,7 +438,11 @@ layer_filters = {
             is_vacant=True,
             group_has_access=False,
             organizer=None,
-            owner__type__name='city'
+            owner__type__name='city',
+
+            # sandy
+            sandy_dropoff_site=False,
+            sandy_distribution_site=False,
         ),
         ~Q(actual_use='gutterspace'),
     ),
@@ -438,9 +455,16 @@ layer_filters = {
             organizer=None,
             owner__type__name='city',
             parent_lot=None,
+
+            # sandy
+            sandy_dropoff_site=False,
+            sandy_distribution_site=False,
         ),
         ~Q(actual_use='gutterspace'),
     ),
+
+    'sandy_dropoff_sites': Q(sandy_dropoff_site=True,),
+    'sandy_distribution_sites': Q(sandy_distribution_site=True,),
 }
 
 def check_layers(lot):

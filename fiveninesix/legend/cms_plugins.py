@@ -14,4 +14,16 @@ class CMSLegendPlugin(CMSPluginBase):
         })
         return context
 
+class CMSSandyLegendPlugin(CMSPluginBase):
+    name = _('Sandy Map Legend')
+    render_template = 'legend/sandy_legend.html'
+
+    def render(self, context, instance, placeholder):
+        context.update({
+            'object': instance,
+            'placeholder': placeholder,
+        })
+        return context
+
 plugin_pool.register_plugin(CMSLegendPlugin)
+plugin_pool.register_plugin(CMSSandyLegendPlugin)

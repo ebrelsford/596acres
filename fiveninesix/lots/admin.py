@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.gis.admin import OSMGeoAdmin
 from django.core.urlresolvers import reverse
 
 from fiveninesix.admin import LotRelatedModelAdmin, view_in_oasis
@@ -7,7 +8,11 @@ from models import Lot, Owner, OwnerContact, OwnerType, Review, ExtendedDetails
 class ExtendedDetailsInline(admin.StackedInline):
     model = ExtendedDetails
 
-class LotAdmin(admin.ModelAdmin):
+class LotAdmin(OSMGeoAdmin):
+    default_lon = -8234558.58109
+    default_lat = 4963211.58171
+    default_zoom = 10
+
     search_fields = ('address', 'bbl')
     list_display = (
         'address', 'borough', 'bbl', 'zipcode', 'owner', 'area',
@@ -19,7 +24,8 @@ class LotAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'bbl', 
+                ('bbl', 'name',),
+                ('sandy_distribution_site', 'sandy_dropoff_site',),
                 ('address', 'borough', 'zipcode',),
                 ('area', 'area_acres',),
                 ('owner', 'owner_contact',),

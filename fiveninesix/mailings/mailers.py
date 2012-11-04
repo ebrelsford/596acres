@@ -231,7 +231,13 @@ class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
         if model == Organizer:
             # don't email welcome / two-week followup to Organizers of lots 
             #  that have been accessed
-            qs = qs.filter(lot__group_has_access=False)
+            qs = qs.filter(
+                lot__group_has_access=False,
+
+                # sandy
+                lot__sandy_distribution_site=False,
+                lot__sandy_dropoff_site=False,
+            )
         return qs
 
     def get_context(self, recipients):
@@ -253,7 +259,11 @@ class WatcherThresholdMailer(Mailer):
         # get lots without Organizers and with a certain number of Watchers
         lots = Lot.objects.annotate(watcher_count=Count('watcher')).filter(
             organizer=None,
-            watcher_count__gte=self.mailing.number_of_watchers
+            watcher_count__gte=self.mailing.number_of_watchers,
+
+            # sandy
+            sandy_distribution_site=False,
+            sandy_dropoff_site=False,
         )
 
         # get the Watchers of those lots

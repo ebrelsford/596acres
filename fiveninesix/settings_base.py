@@ -79,6 +79,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 CMS_TEMPLATES = (
     ('cms/main_template.html', 'Main Template'),
     ('cms/map_template.html', 'Map Template'),
+    ('cms/sandy_map_template.html', 'Sandy Map Template'),
     ('cms/breadcrumbless_template.html', 'Breadcrumbless Template'),
 )
 CMS_HIDE_UNTRANSLATED = False

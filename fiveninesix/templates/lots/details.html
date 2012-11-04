@@ -46,7 +46,7 @@
 {% include "share_box_snippet.html" %}
 {% endwith %}
 
-{% if nearby_lots %}
+{% if not lot.sandy_distribution_site and not lot.sandy_dropoff_site and nearby_lots %}
 <h2>nearby lots</h2>
 <ul class="nearby-lots">
     {% for nearby in nearby_lots %}
@@ -62,122 +62,126 @@
 {% block content_main %}
 {{ block.super }}
 <div id="lot-details">
-    <h1>{{ lot|lotname:"group" }}</h1>
+    {% if lot.sandy_dropoff_site or lot.sandy_distribution_site %}
+        {% include "lots/details_sandy.html" %}
+    {% else %}
+        <h1>{{ lot|lotname:"group" }}</h1>
 
-    {% if perms.lot.change_lot %}
-    <a href="{% url admin:lots_lot_change lot.pk %}">edit this lot</a>
-    {% endif %}
+        {% if perms.lot.change_lot %}
+        <a href="{% url admin:lots_lot_change lot.pk %}">edit this lot</a>
+        {% endif %}
 
-    {% if lot.group_has_access %}
-    {% include "lots/details_group_has_access.html" %}
-    {% endif %}
+        {% if lot.group_has_access %}
+        {% include "lots/details_group_has_access.html" %}
+        {% endif %}
 
-    {% if lot.is_vacant and not lot.group_has_access %}
-    <div>
-        <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}">
-            <img src="{{ MEDIA_URL }}img/star_fav_empty.png" />
-            {% trans "watch" %}
-        </a>
-        <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;">
-            <img src="{{ MEDIA_URL }}img/users.png" />
-            {% trans "organize" %}
-        </a>
+        {% if lot.is_vacant and not lot.group_has_access %}
         <div>
-            There {{ watchers_count|pluralize:"is,are" }} 
-            <span style="font-weight: bold;">{{ watchers_count }}</span>
-            neighbor{{ watchers_count|pluralize }} watching this lot.
-        </div>
-    </div>
-    {% endif %}
-
-    {% if not lot.is_vacant %}
-    <p style="font-weight: bold;">
-        {% trans "This lot isn't vacant." %}
-        {% if 'Garden' in lot.actual_use %}
-        {% trans "It is part of a community garden." %}
-        {% else %}
-        {% trans "According to our research it is being used as a" %} {{ lot.actual_use }}. 
-        {% trans "Know anything more about it?" %} 
-        <a href="{% url organize.views.add_note bbl=lot.bbl %}">{% trans "Leave a note!" %}</a>
-        {% endif %}
-    </p>
-    {% endif %}
-
-    {% if lot.children.count > 0 %}
-        <p>
-        {% blocktrans with lots_count=lot.lots|length area=lot|lot_acres_sum|floatformat:"3" %}
-        There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots with a total area of <span style="font-weight: bold;">{{ area }} acres</span> on this page. Anything you add to this page will apply to the lots as a whole. Here are the details for each:
-        {% endblocktrans %}
-        </p>
-    {% endif %}
-
-    {% comment %}
-    Show the basic details (address, OASIS, ...) for each lot in this group.
-    {% endcomment %}
-
-    <div id="lot-group-details" class="minimal-tabs {% if lot.children.count > 0 %}tabbed{% endif %}">
-        {% if lot.children.count > 0 %}
-        <ul>
-            {% for l in lot.lots %}
-            <li><a href="#{{ l.bbl }}">{{ l|lot_tab_label }}</a></li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
-        {% for l in lot.lots %}
-        <div id="{{ l.bbl }}">
-            <h2>{{ l|lotname }}</h2>
-
-            {% with lot=l %}
-            {% include "lots/details_basics.html" %}
-            {% endwith %}
-
-            {% if lot.children.count > 0 and lot|lot_ownercount != 1 %}
-            <div id="owner" class="section">
-                <h3>agency</h3>
-                {% with lot=l %}
-                {% include "lots/details_owner.html" %}
-                {% endwith %}
+            <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}">
+                <img src="{{ MEDIA_URL }}img/star_fav_empty.png" />
+                {% trans "watch" %}
+            </a>
+            <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;">
+                <img src="{{ MEDIA_URL }}img/users.png" />
+                {% trans "organize" %}
+            </a>
+            <div>
+                There {{ watchers_count|pluralize:"is,are" }} 
+                <span style="font-weight: bold;">{{ watchers_count }}</span>
+                neighbor{{ watchers_count|pluralize }} watching this lot.
             </div>
+        </div>
+        {% endif %}
+
+        {% if not lot.is_vacant %}
+        <p style="font-weight: bold;">
+            {% trans "This lot isn't vacant." %}
+            {% if 'Garden' in lot.actual_use %}
+            {% trans "It is part of a community garden." %}
+            {% else %}
+            {% trans "According to our research it is being used as a" %} {{ lot.actual_use }}. 
+            {% trans "Know anything more about it?" %} 
+            <a href="{% url organize.views.add_note bbl=lot.bbl %}">{% trans "Leave a note!" %}</a>
+            {% endif %}
+        </p>
+        {% endif %}
+
+        {% if lot.children.count > 0 %}
+            <p>
+            {% blocktrans with lots_count=lot.lots|length area=lot|lot_acres_sum|floatformat:"3" %}
+            There are <span style="font-weight: bold;">{{ lots_count }}</span> adjacent lots with a total area of <span style="font-weight: bold;">{{ area }} acres</span> on this page. Anything you add to this page will apply to the lots as a whole. Here are the details for each:
+            {% endblocktrans %}
+            </p>
+        {% endif %}
+
+        {% comment %}
+        Show the basic details (address, OASIS, ...) for each lot in this group.
+        {% endcomment %}
+
+        <div id="lot-group-details" class="minimal-tabs {% if lot.children.count > 0 %}tabbed{% endif %}">
+            {% if lot.children.count > 0 %}
+            <ul>
+                {% for l in lot.lots %}
+                <li><a href="#{{ l.bbl }}">{{ l|lot_tab_label }}</a></li>
+                {% endfor %}
+            </ul>
             {% endif %}
 
-        </div>
-        {% endfor %}
-    </div>
-    {% if lot.children.count > 0 %}
-        <p>
-        {% ifequal lot|lot_ownercount 1 %}
-            <span style="font-weight: bold;">{{ lot.owner.name }}</span> has control of all of the lots on this page:
-            <div id="owner" class="section">
-                <h3>agency</h3>
-                {% include "lots/details_owner.html" %}
+            {% for l in lot.lots %}
+            <div id="{{ l.bbl }}">
+                <h2>{{ l|lotname }}</h2>
+
+                {% with lot=l %}
+                {% include "lots/details_basics.html" %}
+                {% endwith %}
+
+                {% if lot.children.count > 0 and lot|lot_ownercount != 1 %}
+                <div id="owner" class="section">
+                    <h3>agency</h3>
+                    {% with lot=l %}
+                    {% include "lots/details_owner.html" %}
+                    {% endwith %}
+                </div>
+                {% endif %}
+
             </div>
-        {% endifequal %}
-        </p>
-    {% endif %}
+            {% endfor %}
+        </div>
+        {% if lot.children.count > 0 %}
+            <p>
+            {% ifequal lot|lot_ownercount 1 %}
+                <span style="font-weight: bold;">{{ lot.owner.name }}</span> has control of all of the lots on this page:
+                <div id="owner" class="section">
+                    <h3>agency</h3>
+                    {% include "lots/details_owner.html" %}
+                </div>
+            {% endifequal %}
+            </p>
+        {% endif %}
 
-    {% if lot.group_has_access %}
-    {% include "lots/pictures_details.html" %}
-    {% endif %}
+        {% if lot.group_has_access %}
+        {% include "lots/pictures_details.html" %}
+        {% endif %}
 
-    {% comment %}
-    Show the owner's details for each lot in this group.
-    {% endcomment %}
-    {% if lot.children.count == 0 %}
-    <div id="owner" class="section">
-        <h2><a name="agency">{% trans "agency" %}</a></h2>
-        {% include "lots/details_owner.html" %}
-    </div>
-    {% endif %}
+        {% comment %}
+        Show the owner's details for each lot in this group.
+        {% endcomment %}
+        {% if lot.children.count == 0 %}
+        <div id="owner" class="section">
+            <h2><a name="agency">{% trans "agency" %}</a></h2>
+            {% include "lots/details_owner.html" %}
+        </div>
+        {% endif %}
 
-    {% include "lots/details_government.html" %}
+        {% include "lots/details_government.html" %}
 
-    {% include "lots/details_organize.html" %}
+        {% include "lots/details_organize.html" %}
 
-    {% include "lots/details_notes.html" %}
+        {% include "lots/details_notes.html" %}
 
-    {% if not lot.group_has_access %}
-    {% include "lots/pictures_details.html" %}
+        {% if not lot.group_has_access %}
+        {% include "lots/pictures_details.html" %}
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %}

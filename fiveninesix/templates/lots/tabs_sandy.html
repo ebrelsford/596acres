@@ -1,0 +1,158 @@
+{% load i18n lot_filters %}
+
+{% if is_mobile %}
+<div class="lot-link-container">
+    <h1>
+        {{ lot.name }}
+    </h1>
+
+    <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">
+        {% trans "This site's page" %}
+    </a>
+    {% trans "has more information" %}.
+</div>
+
+<div id="lot">
+    <table>
+        <tr>
+            <th>{% trans "address" %}</th>
+            <td>
+                <span>{{ lot.address|default:'' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <th>{% trans "zipcode" %}</th>
+            <td>
+                <span>{{ lot.zipcode|default:'' }}</span>
+            </td>
+        </tr>
+    </table>
+
+    <div style="margin-top: 5px;">
+        <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> 
+            {% trans "watch" %}
+        </a>
+        <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;" target="_blank"><img src="{{ MEDIA_URL }}img/users.png" /> 
+            {% trans "organize" %}
+        </a>
+    </div>
+</div>
+
+{% else %}
+
+<div class="lot-link-container">
+    <h1>
+        {% if lot.name %}
+        {{ lot.name }}
+        {% else %}
+        {{ lot|lotname:"group" }}
+        {% endif %}
+        <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" />
+            {% trans "watch" %}
+        </a>
+    </h1>
+
+    <a href="{% url lots.views.details bbl=lot.bbl %}" target="_blank" style="font-weight: bold;">
+        {% trans "This site's page" %}
+    </a> {% trans "has more information" %}.
+</div>
+
+<div class="minimal-tabs tabs">
+    <ul>
+        <li><a href="#lot"><img src="{{ MEDIA_URL }}img/tabs_lot.png" /></a></li>
+        <li><a href="#organize"><img src="{{ MEDIA_URL }}img/tabs_organize.png" /></a></li>
+    </ul>
+    <div id="lot">
+        <table>
+            <tr>
+                <th>{% trans "address" %}</th>
+                <td>
+                    <span>{{ lot.address|default:'' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>{% trans "zipcode" %}</th>
+                <td>
+                    <span>{{ lot.zipcode|default:'' }}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="organize">
+        <div>
+            <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank">
+                <img src="{{ MEDIA_URL }}img/star_fav_empty.png" /> 
+                {% trans "watch" %}
+            </a>
+            <a class="fns-button" href="{% url add_organizer bbl=lot.bbl %}" style="margin-left: 3px;" target="_blank">
+                <img src="{{ MEDIA_URL }}img/users.png" /> 
+                {% trans "organize" %}
+            </a>
+            <div>There {{ watchers_count|pluralize:"is,are" }} <span style="font-weight: bold;">{{ watchers_count }}</span> neighbor{{ watchers_count|pluralize }} watching this lot.</div>
+        </div>
+        <div>
+            {% trans "Currently organizing here" %}:
+            <ul>
+            {% for organizer in organizers %}
+                <li class="organizer{% if forloop.last %} last{% endif %}">
+                    <div class="actions">
+                        <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}" target="_blank">
+                            <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />
+                        </a>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>{% trans "name" %}</th>
+                            <td>
+                                <span>{{ organizer.name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "type" %}</th>
+                            <td>
+                                <span>{{ organizer.type }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "site" %}</th>
+                            <td>
+                                <span>
+                                {% if organizer.url %}
+                                <a href="{{ organizer.url }}" target="_blank">{{ organizer.url }}</a>
+                                {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "phone" %}</th>
+                            <td>
+                                <span>{{ organizer.phone|default:"" }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "email" %}</th>
+                            <td>
+                                <span>
+                                {% if organizer.email %}
+                                <a href="mailto:{{ organizer.email }}" target="_blank">{{ organizer.email }}</a>
+                                {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "notes" %}</th>
+                            <td>
+                                <span>{{ organizer.notes|urlize|linebreaks }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            {% empty %}
+            {% trans "No one yet" %}.
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.conf import settings
 
 from news.views import EntriesTaggedArchiveView
+from organize.models import Organizer, Watcher
+from organize.views import DeleteParticipantView
 from sizecompare import urls as sizecompare_urls
 
 admin.autodiscover()
@@ -27,8 +29,24 @@ urlpatterns = patterns('',
         'ajax': True,
     }),
 
-    url(r'^watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_watcher'),
-    url(r'^watchers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_watcher'),
+    url(r'^watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
+    url(r'^organizers-and-watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
+    url(r'^organizers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_participant_organizer'),
+    url(r'^watchers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_participant_watcher'),
+
+    url(r'^organizers/delete/(?P<pk>\d+)/$', 
+        DeleteParticipantView.as_view(
+            model=Organizer,
+        ),
+        name='organize_organizer_delete',
+    ),
+
+    url(r'^watchers/delete/(?P<pk>\d+)/$', 
+        DeleteParticipantView.as_view(
+            model=Watcher,
+        ),
+        name='organize_watcher_delete',
+    ),
 
     url(r'^size-compare/', include(sizecompare_urls)),
     url(r'^sessions/hide_map_overlay/$', 'sessions.views.hide_map_overlay'),

@@ -1,0 +1,28 @@
+{% extends "lots/base.html" %}
+{% load i18n sekizai_tags %}
+
+{% block title %}{{ block.super }}: {% trans "Stop watching" %}{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="lot-details">
+    <h1>{% trans "Stop watching" %}</h1>
+    <h2>
+        {% include "organize/block_link_snippet.html" %}
+    </h2>
+    <div>
+        <p>
+            {% blocktrans %}
+            Are you sure you want to stop watching this lot?
+            {% endblocktrans %}
+        </p>
+        <p>
+            <form action="." method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next_url" value="{{ next_url }}" />
+                <input type="submit" value="Yes, stop watching" />
+            </form>
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -30,6 +30,10 @@ class Participant(models.Model):
             self.email_hash = sha1(settings.PARTICIPANT_SALT + self.email).hexdigest()
         super(Participant, self).save(*args, **kwargs)
 
+    @models.permalink
+    def get_edit_url(self):
+        return ('organize.views.edit_participant', (), { 'hash': self.email_hash[:9] })
+
 class Organizer(Participant):
     """
     Someone organizing around a lot or lots.
@@ -66,10 +70,6 @@ class Watcher(Participant):
 
     def recent_change_label(self):
         return 'new watcher'
-
-    @models.permalink
-    def get_edit_url(self):
-        return ('organize.views.edit_watcher', (), { 'hash': self.email_hash[:9] })
 
 class OrganizerType(models.Model):
     """

@@ -3,6 +3,7 @@ import json
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
+from django.views.generic.edit import DeleteView
 
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
@@ -152,20 +153,37 @@ def delete_organizer(request, bbl=None, id=None):
 
     return redirect('lots.views.details', bbl=bbl)
 
-def edit_watcher(request, hash=None):
-    watchers = Watcher.objects.filter(email_hash__istartswith=hash)
+def edit_participant(request, hash=None):
+    organizers = Organizer.objects.filter(email_hash__istartswith=hash).order_by('lot__bbl')
+    watchers = Watcher.objects.filter(email_hash__istartswith=hash).order_by('lot__bbl')
     email = None
     if watchers:
         email = watchers[0].email
 
-    return render_to_response('organize/edit_watcher.html', {
+    return render_to_response('organize/edit_participant.html', {
         'email': email,
         'hash': hash,
+        'organizers': organizers,
         'watchers': watchers,
     }, context_instance=RequestContext(request))
 
-def delete_watcher(request, id=None, hash=None):
+def delete_participant_organizer(request, id=None, hash=None):
+    organizer = get_object_or_404(Organizer, id=id, email_hash__istartswith=hash)
+    organizer.delete()
+    return redirect('organize.views.edit_participant', hash=hash)
+
+def delete_participant_watcher(request, id=None, hash=None):
     watcher = get_object_or_404(Watcher, id=id, email_hash__istartswith=hash)
     watcher.delete()
-    return redirect('organize.views.edit_watcher', hash=hash)
+    return redirect('organize.views.edit_participant', hash=hash)
 
+class DeleteParticipantView(DeleteView):
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteParticipantView, self).get_context_data(**kwargs)
+        context['lot'] = self.object.lot
+        context['next_url'] = self.request.GET.get('next_url')
+        return context
+
+    def get_success_url(self):
+        return self.request.POST.get('next_url', self.object.lot.get_absolute_url())

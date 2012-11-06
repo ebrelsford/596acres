@@ -167,16 +167,6 @@ def edit_participant(request, hash=None):
         'watchers': watchers,
     }, context_instance=RequestContext(request))
 
-def delete_participant_organizer(request, id=None, hash=None):
-    organizer = get_object_or_404(Organizer, id=id, email_hash__istartswith=hash)
-    organizer.delete()
-    return redirect('organize.views.edit_participant', hash=hash)
-
-def delete_participant_watcher(request, id=None, hash=None):
-    watcher = get_object_or_404(Watcher, id=id, email_hash__istartswith=hash)
-    watcher.delete()
-    return redirect('organize.views.edit_participant', hash=hash)
-
 class DeleteParticipantView(DeleteView):
 
     def get_context_data(self, **kwargs):

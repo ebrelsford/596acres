@@ -31,8 +31,6 @@ urlpatterns = patterns('',
 
     url(r'^watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
     url(r'^organizers-and-watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
-    url(r'^organizers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_participant_organizer'),
-    url(r'^watchers/(?P<hash>[^/]{9,})/delete/(?P<id>\d+)/$', 'organize.views.delete_participant_watcher'),
 
     url(r'^organizers/delete/(?P<pk>\d+)/$', 
         DeleteParticipantView.as_view(

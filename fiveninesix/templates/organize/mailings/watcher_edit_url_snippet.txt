@@ -1,1 +1,0 @@
-You can follow this link at any time if you would like to stop watching any lot you are watching: {{ BASE_URL }}{{ edit_url }}

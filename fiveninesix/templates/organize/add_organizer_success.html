@@ -1,0 +1,35 @@
+{% extends "lots/base.html" %}
+{% load i18n lot_filters %}
+
+{% block title %}{{ block.super }}: {% trans "Become an organizer" %}{% endblock %}
+
+{% block content_main %}
+{{ block.super }}
+<div id="lot-details">
+    <h1>{% trans "Become an organizer" %}</h1>
+    <h2>
+        {% include "organize/block_link_snippet.html" %}
+    </h2>
+    <div>
+        {% if lot.sandy_dropoff_site or lot.sandy_distribution_site %}
+        <p>Success! You are now organizing <a href="{{ lot.get_absolute_url }}">{{ lot.display_name }}</a>.</p>
+        {% else %}
+        <p>Success! You are now organizing a vacant lot that we're calling <a href="{{ lot.get_absolute_url }}">{{ lot.display_name }}</a>.</p>
+        {% endif %}
+        <p>You will now receive emails when that lot is updated--when new organizers sign up on the lot and notes are added to it. If this was an accident or if you change your mind in the future, you can stop organizing this lot at any time on <a href="{{ BASE_URL }}{{ object.get_edit_url }}">this page</a>. You should receive an email with this link soon.</p>
+        <p>Be aware that your contact information is now posted publicly on the <a href="{{ lot.get_absolute_url }}">lot's page</a> so others who are interested in the site can get in touch with you.</p>
+        {% if nearby_lots %}
+        <p>Also, here are some lots near this one you might be interested in:
+            <ul class="nearby-lots">
+                {% for nearby in nearby_lots %}
+                <li>
+                    <a href="{{ nearby.get_absolute_url }}">{{ nearby|lotname:"group" }}</a>
+                    {{ nearby|lot_short_description }}
+                </li>
+                {% endfor %}
+            </ul>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

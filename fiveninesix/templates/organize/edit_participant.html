@@ -3,12 +3,14 @@
 
 {% block title %}{{ block.super }}{% trans "Change the lots you're organizing and watching" %}{% endblock %}
 
+{% block breadcrumbs %}{% endblock %}
+
 {% block content_main %}
 {{ block.super }}
 <div>
     <h1>{% trans "Change the lots you're organizing and watching" %}</h1>
     <div>
-        {% if watchers %}
+        {% if organizers or watchers %}
         <p>
             {% trans "Hi" %} <strong>{{ email }}</strong>! 
 
@@ -48,7 +50,7 @@
         {% else %}
 
         <p>
-            {% trans "Looks like you're not watching any lots. Check out our" %} 
+            {% trans "Looks like you're not organizing or watching any lots. Check out our" %} 
             <a href="/">{% trans "map" %}</a>
             {% trans "and find a lot near you to watch" %}!
         </p>

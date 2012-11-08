@@ -773,3 +773,10 @@ ul.nearby-lots {
     list-style: none;
     padding: 0;
 }
+
+.messages {
+    border: 1px solid #2C8020;
+    font-weight: bold;
+    list-style: none;
+    padding: 10px;
+}

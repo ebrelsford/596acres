@@ -7,4 +7,5 @@ STEP 1: Call the city agency listed above and on the lot's page to ask them abou
 
 It would be great if you would add a note to the lot's page describing what you learned about the city's plans and what you know about the community's plans so that others can build on your knowledge.
 
-{% if not has_received_this_mailing %}{% include "organize/mailings/mailinglist_snippet.txt" %}{% endif %}{% endautoescape %}
+{% if not has_received_this_mailing %}{% include "organize/mailings/mailinglist_snippet.txt" %}{% endif %}
+{% include "organize/mailings/edit_url_snippet.txt" %}{% endautoescape %}

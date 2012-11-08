@@ -1,0 +1,1 @@
+You can follow this link at any time if you would like to stop organizing or watching any lot: {{ BASE_URL }}{{ edit_url }}

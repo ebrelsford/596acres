@@ -6,4 +6,4 @@ You are now watching {% include "organize/mailings/lot_info_snippet.txt" %}
 It would be great if you would add a note describing what you know about the city's or the community's plans for it to that page so that others can build on your knowledge. You don't have to reveal your name but a note is a great way to share information with the rest of the folks who are engaged here. If you want to know more about this lot, you can call the city agency listed on the lot's page to ask them about it. Here are some tips for your phone call: http://596acres.org/en/resources/advocacy-resources/
 
 {% if not has_received_this_mailing %}{% include "organize/mailings/mailinglist_snippet.txt" %}{% endif %}
-{% include "organize/mailings/watcher_edit_url_snippet.txt" %}{% endautoescape %}
+{% include "organize/mailings/edit_url_snippet.txt" %}{% endautoescape %}

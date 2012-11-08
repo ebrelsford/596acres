@@ -1,9 +1,3 @@
 {% load lot_filters %}
 
-<a href="{{ lot.get_absolute_url }}">
-    {% if lot.name %}
-    {{ lot.name }}
-    {% else %}
-    {{ lot|lotname:"group" }}
-    {% endif %}
-</a>
+<a href="{{ lot.get_absolute_url }}">{{ lot.display_name }}</a>

@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     }),
 
     url(r'^watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
-    url(r'^organizers-and-watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
+    url(r'^user-accounts/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
 
     url(r'^organizers/delete/(?P<pk>\d+)/$', 
         DeleteParticipantView.as_view(

@@ -44,7 +44,8 @@ class OrganizerForm(OrganizeForm):
         if is_creating:
             notify_managers(organizer)
             notify_organizers_and_watchers(organizer)
-        
+        return organizer
+
 class WatcherForm(OrganizeForm):
     class Meta:
         model = Watcher

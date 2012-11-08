@@ -90,6 +90,27 @@ class Lot(models.Model):
             { 'bbl': self.bbl }
         )
 
+    def _get_display_name(self, include_group=True):
+        if self.name:
+            return self.name
+        if self.children.count > 1 and include_group:
+            from lots.util import get_lot_group_name
+            return get_lot_group_name(self.lots)
+        return self._individual_name()
+    display_name = property(_get_display_name)
+
+    def _individual_name(self):
+        """
+        Get a display name for this lot.
+        """
+        return "%s %s %s, %s %s" % (
+            self.borough,
+            _('block'),
+            self.block,
+            _('lot'),
+            self.lot,
+        )
+
     def _get_lots(self):
         """
         Get the lots at this lot that make up a site. This includes this lot

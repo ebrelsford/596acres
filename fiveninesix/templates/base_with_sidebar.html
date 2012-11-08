@@ -3,6 +3,7 @@
 
 {% block content %}
 <div id="content" class="with-sidebar">
+
     {% block breadcrumbs %}
     <div id="breadcrumbs">
         <ul>
@@ -10,6 +11,7 @@
         </ul>
     </div>
     {% endblock %}
+
     {% block subnav %}
     <div class="subnav">
         <ul class="nav">
@@ -17,6 +19,17 @@
         </ul>
     </div>
     {% endblock %}
+
+    {% block messages %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endblock %}
+
     {% block content_main %}{% endblock %}
 </div>
 {% endblock %}

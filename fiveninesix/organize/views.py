@@ -1,8 +1,10 @@
 import json
 
+from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
+from django.views.generic import TemplateView
 from django.views.generic.edit import DeleteView
 
 from recaptcha_works.decorators import fix_recaptcha_remote_ip
@@ -42,7 +44,8 @@ def add_organizer(request, bbl=None):
         form = OrganizerForm(request.POST, user=request.user)
         if form.is_valid():
             organizer = form.save()
-            return redirect('lots.views.details', bbl=bbl)
+            return redirect('organize_organizer_add_success', bbl=bbl,
+                            email_hash=organizer.email_hash[:10])
     else:
         form = OrganizerForm(initial={
             'lot': lot,
@@ -62,7 +65,7 @@ def add_watcher(request, bbl=None):
         form = WatcherForm(request.POST, user=request.user)
         if form.is_valid():
             watcher = form.save()
-            return redirect('organize.views.add_watcher_success', bbl=bbl,
+            return redirect('organize_watcher_add_success', bbl=bbl,
                             email_hash=watcher.email_hash[:10])
     else:
         form = WatcherForm(initial={
@@ -76,18 +79,20 @@ def add_watcher(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
-def add_watcher_success(request, bbl=None, email_hash=None):
-    lot = get_object_or_404(Lot, bbl=bbl)
-    try:
-        watcher = Watcher.objects.filter(email_hash__istartswith=email_hash)[0]
-    except Exception:
-        raise Http404
+class AddParticipantSuccessView(TemplateView):
+    model = None
 
-    return render_to_response('organize/add_watcher_success.html', {
-        'lot': lot,
-        'nearby_lots': get_nearby(lot),
-        'watcher': watcher,
-    }, context_instance=RequestContext(request))
+    def get_context_data(self, **kwargs):
+        lot = get_object_or_404(Lot, bbl=kwargs['bbl'])
+
+        context = super(AddParticipantSuccessView, self).get_context_data(**kwargs)
+        context['lot'] = lot
+        try:
+            context['object'] = self.model.objects.filter(email_hash__istartswith=kwargs['email_hash'])[0]
+        except Exception:
+            raise Http404
+        context['nearby_lots'] = get_nearby(lot)
+        return context
 
 @fix_recaptcha_remote_ip
 def add_note(request, bbl=None):
@@ -147,12 +152,6 @@ def edit_organizer(request, bbl=None, id=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
-def delete_organizer(request, bbl=None, id=None):
-    organizer = get_object_or_404(Organizer, id=id)
-    organizer.delete()
-
-    return redirect('lots.views.details', bbl=bbl)
-
 def edit_participant(request, hash=None):
     organizers = Organizer.objects.filter(email_hash__istartswith=hash).order_by('lot__bbl')
     watchers = Watcher.objects.filter(email_hash__istartswith=hash).order_by('lot__bbl')
@@ -168,7 +167,6 @@ def edit_participant(request, hash=None):
     }, context_instance=RequestContext(request))
 
 class DeleteParticipantView(DeleteView):
-
     def get_context_data(self, **kwargs):
         context = super(DeleteParticipantView, self).get_context_data(**kwargs)
         context['lot'] = self.object.lot
@@ -176,4 +174,13 @@ class DeleteParticipantView(DeleteView):
         return context
 
     def get_success_url(self):
+        messages.info(self.request, self._get_success_message())
         return self.request.POST.get('next_url', self.object.lot.get_absolute_url())
+
+    def _get_success_message(self):
+        verb = 'working on'
+        if isinstance(self.object, Organizer):
+            verb = 'organizing'
+        elif isinstance(self.object, Watcher):
+            verb = 'watching'
+        return 'You are no longer %s lot %s.' % (verb, self.object.lot.display_name)

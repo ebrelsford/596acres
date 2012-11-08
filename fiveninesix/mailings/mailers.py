@@ -249,9 +249,8 @@ class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
         # consolidate lots (handy when merging mailings)
         context['lots'] = [r.lot for r in recipients]
 
-        # add url for watchers to edit their watchiness
-        if isinstance(recipients[0], Watcher):
-            context['edit_url'] = recipients[0].get_edit_url()
+        # url for changing what one's organizing/watching
+        context['edit_url'] = recipients[0].get_edit_url()
         return context
 
 class WatcherThresholdMailer(Mailer):

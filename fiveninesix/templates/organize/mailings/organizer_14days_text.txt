@@ -13,4 +13,4 @@ Here's a review from earlier - STEP 1: Call the city agency listed below and on 
 And you are an organizer on
 {% include "organize/mailings/lot_info_snippet.txt" %}
 We'd love to hear how it goes, so stay in touch!
-{% endautoescape %}
+{% include "organize/mailings/edit_url_snippet.txt" %}{% endautoescape %}

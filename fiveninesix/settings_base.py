@@ -218,3 +218,8 @@ PUBLIC_BOROUGHS = [
 NEWSLETTER_TAG = 'news from the acres'
 
 MAILREADER_REPLY_PREFIX = 'Reply with text above this line to post a public note.'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': '500px',
+    'width': '100%',
+}

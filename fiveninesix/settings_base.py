@@ -221,5 +221,6 @@ MAILREADER_REPLY_PREFIX = 'Reply with text above this line to post a public note
 
 TINYMCE_DEFAULT_CONFIG = {
     'height': '500px',
+    'theme': 'simple',
     'width': '100%',
 }

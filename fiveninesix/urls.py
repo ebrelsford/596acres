@@ -66,7 +66,9 @@ urlpatterns = patterns('',
     (r'^accounts/password/reset/confirm?uid=(?P<uidb36>.*)&token=(?P<token>.*)$', 'django.contrib.auth.views.password_reset_confirm'),
     (r'^accounts/password/reset/complete/$', 'django.contrib.auth.views.password_reset_complete'),
 
-    url(r'^', include('cms.urls')),
+    ('^activity/', include('actstream.urls')),
+
+    (r'^', include('cms.urls')),
 )
 
 if settings.DEBUG:

@@ -118,6 +118,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.messages',
     'django.contrib.admin',
+
+    'actstream',
     'cms',
     'menus',
     'mptt',
@@ -149,6 +151,7 @@ INSTALLED_APPS = (
 
     'about',
     'accounts',
+    'activity_stream',
     'fns_admin',
     'contact',
     'events',
@@ -223,4 +226,17 @@ TINYMCE_DEFAULT_CONFIG = {
     'height': '500px',
     'theme': 'simple',
     'width': '100%',
+}
+
+ACTSTREAM_SETTINGS = {
+    'MANAGER': 'activity_stream.managers.PlaceActionManager',
+    'MODELS': (
+        'auth.user',
+        'lots.lot',
+        'organize.note',
+        'organize.organizer',
+        'organize.picture',
+        'organize.watcher',
+    ),
+    'USE_JSONFIELD': True,
 }

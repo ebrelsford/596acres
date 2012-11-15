@@ -599,6 +599,7 @@ var LotMap = {
             search_results: true,
         };
         this.search_layer.addFeatures([feature]);
+        this.selectControl.select(feature);
     },
 
     getTransformedLonLat: function(longitude, latitude) {

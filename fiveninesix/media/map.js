@@ -209,6 +209,9 @@ var LotMap = {
         // map can go into fullscreen
         fullScreen: false,
 
+        // allow hovering over lots
+        hover: true,
+
         // the zoom for the map
         initialZoom: 10,
 
@@ -400,7 +403,9 @@ var LotMap = {
     //
     addControls: function(layers) {
         var t = this;
-        this.hoverControl = this.getControlHoverFeature(layers);
+        if (t.options.hover) {
+            this.hoverControl = this.getControlHoverFeature(layers);
+        }
         if (t.options.select) {
             this.selectControl = this.getControlSelectFeature(layers);
         }
@@ -408,8 +413,10 @@ var LotMap = {
 
     removeControls: function() {
         var t = this;
-        this.hoverControl.deactivate();
-        this.olMap.removeControl(this.hoverControl);
+        if (t.options.hover) {
+            this.hoverControl.deactivate();
+            this.olMap.removeControl(this.hoverControl);
+        }
         if (t.options.select) {
             this.selectControl.deactivate();
             this.olMap.removeControl(this.selectControl);

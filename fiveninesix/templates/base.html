@@ -42,7 +42,7 @@
 
     {% addtoblock "js" %}
     <script type="text/javascript">
-        $('form').submit(function() {
+        $('form:not(.filters)').submit(function() {
             $('input[type=submit]', this).attr('disabled', 'disabled');
         });
     </script>

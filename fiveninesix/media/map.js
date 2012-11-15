@@ -162,6 +162,12 @@ var LotMap = {
 
         this.olMap.zoomToMaxExtent();
 
+        this.search_layer = new OpenLayers.Layer.Vector('search', {
+            projection: this.olMap.displayProjection,
+            styleMap: this.searchStyle,
+        });
+        this.olMap.addLayer(this.search_layer);
+
         this.lot_layer = this.getLayer('lots', this.options.url + this.getQueryString());
         this.lot_layer.events.on({
             'loadend': function() {
@@ -178,11 +184,6 @@ var LotMap = {
             },
         });
 
-        this.search_layer = new OpenLayers.Layer.Vector('search', {
-            projection: this.olMap.displayProjection,
-            styleMap: this.searchStyle,
-        });
-        this.olMap.addLayer(this.search_layer);
         this.addControls([this.lot_layer, this.search_layer]);
 
         this.olMap.events.on({

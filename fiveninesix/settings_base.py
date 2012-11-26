@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'organize',
     'photos',
     'sizecompare',
+    'twitter',
 )
 
 CMS_CONTENT_CACHE_DURATION = 60

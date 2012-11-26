@@ -42,6 +42,12 @@
 
     {% addtoblock "js" %}
     <script type="text/javascript">
+        $('form:not(.filters)').submit(function() {
+            $('input[type=submit]', this).attr('disabled', 'disabled');
+        });
+    </script>
+
+    <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-21831100-4']);
     _gaq.push(['_trackPageview']);

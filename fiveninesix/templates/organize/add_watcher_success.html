@@ -1,5 +1,5 @@
 {% extends "lots/base.html" %}
-{% load i18n lot_filters %}
+{% load facebook_filters i18n lot_filters twitter_filters %}
 
 {% block title %}{{ block.super }}: {% trans "Watch a lot" %}{% endblock %}
 
@@ -29,6 +29,15 @@
             </ul>
         </p>
         {% endif %}
+        <p>
+            Let your friends know you're watching this lot! Share it on Twitter and Facebook:
+            <div>
+                {% with message="I just started watching "|add:lot.display_name|add:" on @596Acres" %}
+                {% tweet_button message link_to lot %}
+                {% endwith %}
+                {% like_button lot.get_absolute_url %}
+            </div>
+        </p>
     </div>
 </div>
 {% endblock %}

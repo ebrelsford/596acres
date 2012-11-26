@@ -1,5 +1,5 @@
 {% extends "lots/base.html" %}
-{% load i18n lot_filters %}
+{% load facebook_filters i18n lot_filters twitter_filters %}
 
 {% block title %}{{ block.super }}: {% trans "Become an organizer" %}{% endblock %}
 
@@ -30,6 +30,15 @@
             </ul>
         </p>
         {% endif %}
+        <p>
+            Let your friends know you're organizing here! Share it on Twitter and Facebook:
+            <div>
+                {% with message="I just started organizing "|add:lot.display_name|add:" on @596Acres" %}
+                {% tweet_button message link_to lot %}
+                {% endwith %}
+                {% like_button lot.get_absolute_url %}
+            </div>
+        </p>
     </div>
 </div>
 {% endblock %}

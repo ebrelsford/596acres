@@ -98,7 +98,7 @@ def _get_message_options(lot, is_note=False):
     if not is_note: return {}
     return {
         'from_email': _get_lot_email_address(lot),
-        'cc': [settings.ORGANIZERS_EMAIL],
+        'cc': None,
         'bcc': None,
     }
 

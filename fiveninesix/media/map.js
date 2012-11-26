@@ -162,6 +162,12 @@ var LotMap = {
 
         this.olMap.zoomToMaxExtent();
 
+        this.search_layer = new OpenLayers.Layer.Vector('search', {
+            projection: this.olMap.displayProjection,
+            styleMap: this.searchStyle,
+        });
+        this.olMap.addLayer(this.search_layer);
+
         this.lot_layer = this.getLayer('lots', this.options.url + this.getQueryString());
         this.lot_layer.events.on({
             'loadend': function() {
@@ -178,11 +184,6 @@ var LotMap = {
             },
         });
 
-        this.search_layer = new OpenLayers.Layer.Vector('search', {
-            projection: this.olMap.displayProjection,
-            styleMap: this.searchStyle,
-        });
-        this.olMap.addLayer(this.search_layer);
         this.addControls([this.lot_layer, this.search_layer]);
 
         this.olMap.events.on({
@@ -207,6 +208,9 @@ var LotMap = {
 
         // map can go into fullscreen
         fullScreen: false,
+
+        // allow hovering over lots
+        hover: true,
 
         // the zoom for the map
         initialZoom: 10,
@@ -399,7 +403,9 @@ var LotMap = {
     //
     addControls: function(layers) {
         var t = this;
-        this.hoverControl = this.getControlHoverFeature(layers);
+        if (t.options.hover) {
+            this.hoverControl = this.getControlHoverFeature(layers);
+        }
         if (t.options.select) {
             this.selectControl = this.getControlSelectFeature(layers);
         }
@@ -407,8 +413,10 @@ var LotMap = {
 
     removeControls: function() {
         var t = this;
-        this.hoverControl.deactivate();
-        this.olMap.removeControl(this.hoverControl);
+        if (t.options.hover) {
+            this.hoverControl.deactivate();
+            this.olMap.removeControl(this.hoverControl);
+        }
         if (t.options.select) {
             this.selectControl.deactivate();
             this.olMap.removeControl(this.selectControl);
@@ -591,6 +599,7 @@ var LotMap = {
             search_results: true,
         };
         this.search_layer.addFeatures([feature]);
+        this.selectControl.select(feature);
     },
 
     getTransformedLonLat: function(longitude, latitude) {

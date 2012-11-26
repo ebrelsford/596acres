@@ -10,5 +10,5 @@ action = Signal(providing_args=[
     'place',
     'target',
     'description',
-    'timestamp'
+    'timestamp',
 ])

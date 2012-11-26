@@ -1,6 +1,7 @@
 from hashlib import sha1
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -18,6 +19,7 @@ class Participant(models.Model):
     email_hash = models.CharField(max_length=40, null=True, blank=True)
     lot = models.ForeignKey(Lot)
     added = models.DateTimeField(auto_now_add=True)
+    added_by = models.ForeignKey(User, null=True, blank=True) # TODO capture
 
     class Meta:
         abstract = True
@@ -104,6 +106,7 @@ class Note(models.Model):
     text = models.TextField(_('note'))
     added = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot)
+    added_by = models.ForeignKey(User, null=True, blank=True) # TODO capture
 
     def __unicode__(self):
         return "%s: %s" % (self.noter, self.text[:50])
@@ -119,12 +122,42 @@ class Picture(models.Model):
     description = models.TextField(_('description'), null=True, blank=True)
     added = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot)
+    added_by = models.ForeignKey(User, null=True, blank=True) # TODO capture
 
 
 #
 # Handle signals.
 #
+from activity_stream.signals import action
 from notify import notify_organizers_and_watchers, notify_managers
+
+def _get_verb(sender):
+    default = 'added'
+    if isinstance(sender, Note):
+        return 'wrote'
+    if isinstance(sender, Organizer):
+        return 'started organizing'
+    if isinstance(sender, Picture):
+        return default
+    if isinstance(sender, Watcher):
+        return 'started watching'
+    return default
+
+@receiver(post_save, sender=Note, dispatch_uid='organize.models.add_action')
+@receiver(post_save, sender=Organizer, dispatch_uid='organize.models.add_action')
+@receiver(post_save, sender=Picture, dispatch_uid='organize.models.add_action')
+@receiver(post_save, sender=Watcher, dispatch_uid='organize.models.add_action')
+def add_action(sender, created=False, instance=None, **kwargs):
+    if not instance or not created:
+        return
+    action.send(
+        instance.added_by, # often will be anonymous/None
+        verb=_get_verb(instance),
+        action_object=instance, # action object, what was created
+        place=instance.lot.centroid, # where did it happen?
+        target=instance.lot, # what did it happen to?
+        data={},
+    )
 
 @receiver(post_save, sender=Note, dispatch_uid='note_send_organizer_watcher_update')
 @receiver(post_save, sender=Picture, dispatch_uid='picture_send_organizer_watcher_update')

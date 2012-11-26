@@ -22,7 +22,7 @@ def place_action_handler(verb, **kwargs):
     kwargs.pop('signal', None)
 
     actor = kwargs.pop('sender', None)
-    if not actor:
+    if not actor: # TODO or actor.is_anonymous
         actor = User.objects.get(pk=settings.ACTIVITY_STREAM_DEFAULT_ACTOR_PK)
     check_actionable_model(actor)
 

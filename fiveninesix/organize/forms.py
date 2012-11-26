@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.forms import ModelForm, HiddenInput, ModelChoiceField
 
 from recaptcha_works.fields import RecaptchaField
@@ -9,11 +10,7 @@ from widgets import PrefixLabelTextInput
 
 class CaptchaForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        try:
-            user = kwargs.pop('user')
-        except Exception:
-            user = None
-
+        user = kwargs.pop('user', None)
         super(CaptchaForm, self).__init__(*args, **kwargs)
 
         # if not logged in, add recaptcha. else, do nothing.
@@ -26,6 +23,22 @@ class OrganizeForm(CaptchaForm):
         queryset=Lot.objects.all(),
         widget=HiddenInput()
     )
+
+    added_by = ModelChoiceField(
+        label='added_by',
+        queryset=User.objects.all(),
+        required=False,
+        widget=HiddenInput()
+    )
+
+    def __init__(self, *args, **kwargs):
+        # add initial value for added_by based on the user kwarg
+        kwargs['initial'] = kwargs.get('initial', {})
+        user = kwargs.get('user', None)
+        if user.is_anonymous(): user = None
+        kwargs['initial']['added_by'] = user
+
+        super(OrganizeForm, self).__init__(*args, **kwargs)
 
 class OrganizerForm(OrganizeForm):
     class Meta:

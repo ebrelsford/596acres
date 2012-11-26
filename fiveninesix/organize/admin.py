@@ -4,7 +4,7 @@ from fiveninesix.admin import LotRelatedModelAdmin
 from models import Note, Organizer, OrganizerType, Watcher, Picture
 
 class OrganizerAdmin(LotRelatedModelAdmin):
-    list_display = ('name', 'email', 'phone', 'lot', 'added', 'lot_owner', 'view_lot', 'view_in_oasis',)
+    list_display = ('name', 'email', 'phone', 'lot', 'added', 'added_by', 'lot_owner', 'view_lot', 'view_in_oasis',)
     list_filter = ('added',)
     search_fields = ('name', 'email', 'lot__bbl',)
 

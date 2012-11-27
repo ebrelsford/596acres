@@ -19,7 +19,7 @@ class Participant(models.Model):
     email_hash = models.CharField(max_length=40, null=True, blank=True)
     lot = models.ForeignKey(Lot)
     added = models.DateTimeField(auto_now_add=True)
-    added_by = models.ForeignKey(User, null=True, blank=True) # TODO capture
+    added_by = models.ForeignKey(User, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -106,7 +106,7 @@ class Note(models.Model):
     text = models.TextField(_('note'))
     added = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot)
-    added_by = models.ForeignKey(User, null=True, blank=True) # TODO capture
+    added_by = models.ForeignKey(User, null=True, blank=True)
 
     def __unicode__(self):
         return "%s: %s" % (self.noter, self.text[:50])
@@ -122,7 +122,7 @@ class Picture(models.Model):
     description = models.TextField(_('description'), null=True, blank=True)
     added = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot)
-    added_by = models.ForeignKey(User, null=True, blank=True) # TODO capture
+    added_by = models.ForeignKey(User, null=True, blank=True)
 
 
 #

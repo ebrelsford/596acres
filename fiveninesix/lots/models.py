@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.core.files import File
 from django.db.models import Q
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import pre_save, post_delete, post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
+from activity_stream.signals import action
 from elaphe import barcode
 
 from i18n.utils import language_namespaced_view_name
@@ -505,6 +506,45 @@ def check_layers(lot):
                     l.lotlayer_set.add(layer)
             except Exception:
                 pass
+
+@receiver(pre_save, sender=Lot, dispatch_uid='lots.models.add_action_pre')
+def add_action_pre(sender, created=False, instance=None, **kwargs):
+    """
+    Detect changes on a lot and add actions for the significant ones.
+    """
+    if created or not instance: return
+
+    try:
+        old_instance = Lot.objects.get(pk=instance.pk)
+    except Exception:
+        return
+
+    # If someone got access to the lot record an action
+    if old_instance.group_has_access != instance.group_has_access:
+        if instance.group_with_access:
+            action.send(
+                instance.group_with_access,
+                verb='got access to',
+                target=instance,
+                place=instance.centroid,
+                action_type='lots.group_got_access',
+            )
+
+@receiver(post_save, sender=Lot, dispatch_uid='lots.models.add_action_post')
+def add_action_post(sender, created=False, instance=None, **kwargs):
+    """
+    Detect the addition of a (vacant) lot, add an action.
+    """
+    if not (instance and created and instance.is_vacant): return
+    action.send(
+        None,
+        verb='added',
+        target=instance,
+        place=instance.centroid,
+        description='new vacant lot added to database',
+        administrative=True,
+        action_type='lots.add_lot',
+    )
 
 @receiver(post_save, sender=Lot)
 def lot_save(sender, instance=None, **kwargs):

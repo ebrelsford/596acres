@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'cms.plugins.video',
     'tinymce',
     'compressor',
+    'jsonfield',
 
     'easy_thumbnails',
     'filer',

@@ -86,6 +86,21 @@ function update_counts() {
     $('.compare-text').text('');
 }
 
+/*
+ * Update activity stream.
+ */
+function update_activity_stream() {
+    var filters = null;
+    if (activity_stream_visible_only()) {
+        filters = $('#map').data('lotmap').exportFilters();
+    }
+    $('.activity-stream-container').data('activity_stream').load_activities(filters);
+}
+
+function activity_stream_visible_only() {
+    return $('.activity-stream-filters input[name="show_visible_only"]:checked').length > 0;
+}
+
 function compare_size($el) {
     $el.addClass('selected');
     $('.tally').addClass('loading');
@@ -208,6 +223,10 @@ $(document).ready(function() {
 
         onViewportChange: function() {
             update_counts();
+
+            if (activity_stream_visible_only()) {
+                update_activity_stream();
+            }
         },
     });
 
@@ -332,5 +351,10 @@ $(document).ready(function() {
             container.hide();
             $('.compare-link').removeClass('selected');
         }
+    });
+
+    $('.activity-stream-container').activity_stream();
+    $('.activity-stream-filters input[name="show_visible_only"]').change(function() {
+        update_activity_stream();
     });
 });

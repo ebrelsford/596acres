@@ -1,0 +1,9 @@
+{% extends "activity/action_detail_base.html" %}
+
+{% block actor %}
+{{ action.action_object.noter }}
+{% endblock %}
+
+{% block action_object %}
+"{{ action.action_object.text }}" on
+{% endblock %}

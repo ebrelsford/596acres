@@ -1,0 +1,11 @@
+{% load activity_tags %}
+
+<ul class="activity-stream-list">
+    {% for obj in object_list %}
+    <li class="activity-stream-list-item">
+        {% display_action obj %}
+    </li>
+    {% empty %}
+    No activities.
+    {% endfor %}
+</ul>

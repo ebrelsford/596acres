@@ -1,5 +1,5 @@
 {% extends "cms/main_template.html" %}
-{% load compress cms_tags i18n sekizai_tags %}
+{% load activity_tags compress cms_tags i18n sekizai_tags %}
 
 {% block stylesheets %}
     {{ block.super }}
@@ -69,6 +69,20 @@
     <script src="{{ MEDIA_URL }}map_template.js" type="text/javascript"></script>
     {% endcompress %}
     {% endaddtoblock %}
+
+    {% if request.user.is_superuser %}
+    {% addtoblock "js" %}
+    {% compress js %}
+    <script src="{{ MEDIA_URL }}activity-stream.js" type="text/javascript"></script>
+    {% endcompress %}
+    {% endaddtoblock %}
+
+    {% addtoblock "js" %}
+    {% compress js %}
+    <script src="{{ MEDIA_URL }}jquery.infinitescroll.min.js" type="text/javascript"></script>
+    {% endcompress %}
+    {% endaddtoblock %}
+    {% endif %}
 
     {% addtoblock "css" %}
     <link rel="stylesheet" href="{{ MEDIA_URL }}openlayers-fullscreen/css/fullscreen.css" type="text/css">
@@ -304,6 +318,22 @@
                     <a href="http://twitter.com/share" class="twitter-share-button" data-text="596 Acres" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
                 </div>
             </div>
+
+            {% if request.user.is_superuser %}
+            <h2>Recent Activities</h2>
+            <div class="activity-stream">
+                <div class="activity-stream-filters">
+                    <input id="show_visible_only" name="show_visible_only" type="checkbox" />
+                    <label for="show_visible_only">
+                        only show activities for lots currently visible on the map
+                    </label>
+                </div>
+                <div class="activity-stream-container"></div>
+                <div class="activity-stream-nav" style="display: none;">
+                    <a href="/activity-stream/">next page</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <div id="side">

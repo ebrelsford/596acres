@@ -67,6 +67,7 @@ urlpatterns = patterns('',
     (r'^accounts/password/reset/complete/$', 'django.contrib.auth.views.password_reset_complete'),
 
     ('^activity/', include('actstream.urls')),
+    ('^activity-stream/', include('activity_stream.urls')),
 
     (r'^', include('cms.urls')),
 )

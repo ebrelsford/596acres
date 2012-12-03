@@ -80,7 +80,7 @@ class Lot(models.Model):
     qrcode = models.ImageField(upload_to='qrcodes', null=True, blank=True)
 
     def __unicode__(self):
-        return self.bbl
+        return self.display_name
 
     @models.permalink
     def get_absolute_url(self):

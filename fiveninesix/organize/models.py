@@ -143,6 +143,19 @@ def _get_verb(sender):
         return 'started watching'
     return default
 
+def _get_actor(instance, added_by):
+    default = added_by
+
+    # Hold on to Organizer instance as actor
+    if isinstance(instance, Organizer):
+        return instance
+
+    # Don't keep track of the user who created the Watcher--keep anonymous
+    if isinstance(instance, Watcher):
+        return None
+
+    return default
+
 @receiver(post_save, sender=Note, dispatch_uid='organize.models.add_action')
 @receiver(post_save, sender=Organizer, dispatch_uid='organize.models.add_action')
 @receiver(post_save, sender=Picture, dispatch_uid='organize.models.add_action')
@@ -151,7 +164,7 @@ def add_action(sender, created=False, instance=None, **kwargs):
     if not instance or not created:
         return
     action.send(
-        instance.added_by, # often will be anonymous/None
+        _get_actor(instance, instance.added_by),
         verb=_get_verb(instance),
         action_object=instance, # action object, what was created
         place=instance.lot.centroid, # where did it happen?

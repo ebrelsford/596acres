@@ -5,5 +5,5 @@
 {% endblock %}
 
 {% block action_object %}
-"{{ action.action_object.text }}" on
+<a href="{{ action.target.get_absolute_url }}#notes" target="_blank">"{{ action.action_object.text|truncatewords:"15" }}"</a> on
 {% endblock %}

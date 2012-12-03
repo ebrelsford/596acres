@@ -1,5 +1,5 @@
 {% extends "activity/action_detail_base.html" %}
 
 {% block actor %}
-{{ action.action_object.name }}
+<a href="{{ action.target.get_absolute_url }}#notes" target="_blank">{{ action.action_object.name }}</a>
 {% endblock %}

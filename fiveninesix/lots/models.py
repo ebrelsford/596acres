@@ -538,7 +538,7 @@ def add_action_post(sender, created=False, instance=None, **kwargs):
     if not (instance and created and instance.is_vacant): return
     action.send(
         None,
-        verb='added',
+        verb='added a lot',
         target=instance,
         place=instance.centroid,
         description='new vacant lot added to database',

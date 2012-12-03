@@ -1,0 +1,9 @@
+{% extends "activity/action_detail_base.html" %}
+
+{% block actor %}
+someone
+{% endblock %}
+
+{% block verb %}
+posted a <a href="{{ action.target.get_absolute_url }}#pictures" target="_blank">picture</a> on
+{% endblock %}

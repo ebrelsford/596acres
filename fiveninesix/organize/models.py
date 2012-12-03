@@ -138,7 +138,8 @@ def _get_verb(sender):
     if isinstance(sender, Organizer):
         return 'started organizing'
     if isinstance(sender, Picture):
-        return default
+        # TODO link to picture
+        return 'posted a picture'
     if isinstance(sender, Watcher):
         return 'started watching'
     return default

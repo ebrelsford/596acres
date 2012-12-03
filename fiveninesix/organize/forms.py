@@ -35,7 +35,7 @@ class OrganizeForm(CaptchaForm):
         # add initial value for added_by based on the user kwarg
         kwargs['initial'] = kwargs.get('initial', {})
         user = kwargs.get('user', None)
-        if user.is_anonymous(): user = None
+        if not user or user.is_anonymous(): user = None
         kwargs['initial']['added_by'] = user
 
         super(OrganizeForm, self).__init__(*args, **kwargs)

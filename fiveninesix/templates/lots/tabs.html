@@ -4,11 +4,7 @@
     {% if lot.group_has_access %}
     {% include "lots/tabs_group_has_access.html" %}
     {% else %}
-        {% if lot.sandy_dropoff_site or lot.sandy_distribution_site %}
-        {% include "lots/tabs_sandy.html" %}
-        {% else %}
-        {% include "lots/tabs_no_access.html" %}
-        {% endif %}
+    {% include "lots/tabs_no_access.html" %}
     {% endif %}
 </div>
 <body>

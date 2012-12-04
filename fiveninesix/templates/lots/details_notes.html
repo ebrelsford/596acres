@@ -7,13 +7,13 @@
     <div>
         <ul class="notes">
         {% for note in notes %}
-            <li class="note {% cycle "odd" "even" %}">
-            <span class="head">
-                {% blocktrans with day=note.added|date:"F d, Y" timeofday=note.added|time:"g:ia" noter=note.noter %}
-                On {{ day }}, at {{ timeofday }}, {{ noter }} said:
-                {% endblocktrans %}
-            </span>
-            {{ note.text|urlize|linebreaks }}
+            <li id="note-{{ note.pk }}" class="note {% cycle "odd" "even" %}">
+                <span class="head">
+                    {% blocktrans with day=note.added|date:"F d, Y" timeofday=note.added|time:"g:ia" noter=note.noter %}
+                    On {{ day }}, at {{ timeofday }}, {{ noter }} said:
+                    {% endblocktrans %}
+                </span>
+                {{ note.text|urlize|linebreaks }}
             </li>
         {% endfor %}
         </ul>

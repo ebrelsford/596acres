@@ -63,6 +63,9 @@ class Organizer(Participant):
             ('email_organizers', 'Can send an email to all organizers'),
         )
 
+    def get_absolute_url(self):
+        return "%s#organizer-%d" % (self.lot.get_absolute_url(), self.pk)
+
 class Watcher(Participant):
     """
     Someone who is watching a lot.
@@ -113,6 +116,9 @@ class Note(models.Model):
 
     def recent_change_label(self):
         return 'new note: "%s"' % (self.text[:50])
+
+    def get_absolute_url(self):
+        return "%s#note-%d" % (self.lot.get_absolute_url(), self.pk)
 
 class Picture(models.Model):
     """

@@ -37,7 +37,7 @@
             {% endif %}
             <ul>
             {% for organizer in organizers %}
-                <li class="organizer{% if forloop.last %} last{% endif %}">
+                <li id="organizer-{{ organizer.pk }}" class="organizer{% if forloop.last %} last{% endif %}">
                     <div class="actions">
                         <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}">
                             <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />

@@ -1,13 +1,10 @@
 {% load i18n %}
 
 <div id="notes" class="section">
-    <h2 class="{% if lot.group_has_access %}expander{% endif %}">
-        {% if lot.group_has_access %}
-        <span class="icon"></span>
-        {% endif %}
+    <h2>
         <a name="notes">{% trans "notes" %}</a>
     </h2>
-    <div class="{% if lot.group_has_access %}expandee{% endif %}">
+    <div>
         <ul class="notes">
         {% for note in notes %}
             <li class="note {% cycle "odd" "even" %}">

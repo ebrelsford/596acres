@@ -1,8 +1,7 @@
 {% load i18n thumbnail %}
 
 <h1>
-    {{ lot.borough }}
-    {% trans "block" %} {{ lot.block }}, {% trans "lot" %} {{ lot.lot }}
+    <a href="{{ lot.get_absolute_url }}" target="_blank">{{ lot.display_name }}</a>
 </h1>
 
 <div>

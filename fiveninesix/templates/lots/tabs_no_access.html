@@ -82,7 +82,7 @@
 
 <div class="lot-link-container">
     <h1>
-        {{ lot|lotname:"group" }}
+        <a href="{{ lot.get_absolute_url }}" target="_blank">{{ lot.display_name }}</a>
         <a class="fns-button" href="{% url organize.views.add_watcher bbl=lot.bbl %}" target="_blank"><img src="{{ MEDIA_URL }}img/star_fav_empty.png" />
             {% trans "watch" %}
         </a>

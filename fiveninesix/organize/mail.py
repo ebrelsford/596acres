@@ -16,8 +16,8 @@ def mass_mailing(subject, message, objects, template_name, **kwargs):
         })
 
     _mail_multiple_personalized(
-        subject, 
-        messages, 
+        subject,
+        messages,
         from_email=settings.ORGANIZERS_EMAIL,
         **kwargs
     )
@@ -112,12 +112,11 @@ def _mail_multiple_personalized(subject, messages, **kwargs):
     for email, message in messages.items():
         _mail_multiple(subject, message, [email], **kwargs)
 
-def _mail_multiple(subject, message, email_addresses, 
-                   from_email=settings.ORGANIZERS_EMAIL, cc=None,
-                   bcc=settings.MANAGERS, html_message=None, connection=None,
-                   fail_silently=True):
+def _mail_multiple(subject, message, email_addresses,
+                   from_email=settings.ORGANIZERS_EMAIL, cc=None, bcc=None,
+                   html_message=None, connection=None, fail_silently=True):
     """
-    Sends a message to multiple email addresses. Based on 
+    Sends a message to multiple email addresses. Based on
     django.core.mail.mail_admins()
     """
     for email_address in email_addresses:
@@ -129,7 +128,7 @@ def _mail_multiple(subject, message, email_addresses,
             connection=connection,
             from_email=from_email,
             to=[email_address],
-        )          
+        )
         if html_message:
             mail.attach_alternative(html_message, 'text/html')
         mail.send(fail_silently=fail_silently)

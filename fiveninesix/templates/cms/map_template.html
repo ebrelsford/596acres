@@ -70,7 +70,6 @@
     {% endcompress %}
     {% endaddtoblock %}
 
-    {% if request.user.is_superuser %}
     {% addtoblock "js" %}
     {% compress js %}
     <script src="{{ MEDIA_URL }}activity-stream.js" type="text/javascript"></script>
@@ -82,7 +81,6 @@
     <script src="{{ MEDIA_URL }}jquery.infinitescroll.min.js" type="text/javascript"></script>
     {% endcompress %}
     {% endaddtoblock %}
-    {% endif %}
 
     {% addtoblock "css" %}
     <link rel="stylesheet" href="{{ MEDIA_URL }}openlayers-fullscreen/css/fullscreen.css" type="text/css">

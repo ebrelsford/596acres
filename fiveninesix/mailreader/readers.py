@@ -29,12 +29,12 @@ class MailReader(object):
     def read(self, from_address=None, to_address=None, subject=None,
              payloads=None, **kwargs):
         """
-        Attempt to read the given mail. Return True if successful, False 
+        Attempt to read the given mail. Return True if successful, False
         otherwise.
         """
         return False
 
-class NotesMailReader(MailReader): 
+class NotesMailReader(MailReader):
     bbl_regex = '(?:.*\s+)?<?notes\+(\d+)@.+>?'
     bbl_pattern = re.compile(bbl_regex)
 
@@ -42,7 +42,7 @@ class NotesMailReader(MailReader):
 
     gmail_prefix = re.compile('.*On .+ wrote:.*')
 
-    # These line patterns gathered using emails received and some tips as 
+    # These line patterns gathered using emails received and some tips as
     # suggested here:
     #  http://stackoverflow.com/questions/278788/parse-email-content-from-quoted-reply
     #  http://stackoverflow.com/questions/824205/while-processing-an-email-reply-how-can-i-ignore-any-email-client-specifics-th
@@ -80,7 +80,7 @@ class NotesMailReader(MailReader):
         """
         Try to get the text that the sender sent. Since the email will likely
         be in response to another email, we have to try to get rid of the
-        original message and any extra text the sender's email client put 
+        original message and any extra text the sender's email client put
         between the sender's message and the original.
         """
         lines = payload_text.split('\r\n')
@@ -107,7 +107,7 @@ class NotesMailReader(MailReader):
             pass
         return '\n'.join(lines).strip()
 
-    def read(self, from_address=None, to_address=None, subject=None, 
+    def read(self, from_address=None, to_address=None, subject=None,
              payloads=None, verbose=False, **kwargs):
         lot = self.get_lot(to_address)
         if not lot:
@@ -121,6 +121,10 @@ class NotesMailReader(MailReader):
             print combined_payloads
 
         text = self.get_note_text(from_address, combined_payloads)
+
+        # don't post empty notes!
+        if not text:
+            return False
 
         if verbose:
             print 'Ended up with:'

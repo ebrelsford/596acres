@@ -75,6 +75,9 @@
                 {% show_menu 0 100 100 100 "cms/menu.html" %}
                 <li>
                     <a href="{% url contact.views.contact_us %}">
+                        {% comment %}
+                        TODO use contextual {% trans %} for verb -- es: Contáctanos
+                        {% endcomment %}
                         <img src="{{ MEDIA_URL }}img/{% trans "contact" %}.png" alt="{% trans "contact" %}" />
                     </a>
                 </li>

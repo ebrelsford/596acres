@@ -36,6 +36,16 @@
             </label>
             (<span class="public_accessed_sites count"></span>)
         </li>
+        <li class="private_vacant_sites">
+            <input type="checkbox" name="private_vacant_sites" id="private_vacant_sites" checked="checked" />
+            <label for="private_vacant_sites">
+                <img src="{{ MEDIA_URL }}img/private_vacant_sites.png" alt="privately owned lot (point)" />
+                <a href="/resources/working-private-land-owners/">
+                    {% trans "private vacant sites" %}
+                </a>
+            </label>
+            (<span class="private_vacant_sites count"></span>)
+        </li>
         <li class="private_accessed">
             <input type="checkbox" name="private_accessed_sites" id="private_accessed_sites" checked="checked" />
             <label for="private_accessed_sites">

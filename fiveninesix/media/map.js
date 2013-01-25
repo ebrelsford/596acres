@@ -15,6 +15,7 @@ var LotMap = {
         'private_accessed_sites',
         'public_accessed_sites',
         'vacant_sites',
+        'private_vacant_sites',
     ],
     min_area: null,
     max_area: null,
@@ -82,6 +83,10 @@ var LotMap = {
             pointRadius: 7,
         },
         'vacant_sites': {
+        },
+
+        'private_vacant_sites': {
+            fillColor: '#3C8FE8',
         },
     },
 

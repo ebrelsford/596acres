@@ -37,6 +37,7 @@ def lot_geojson(request):
     # TODO consider downloading everything at once, doing filtering client-side
     if not geojson_response:
         filters = _request_to_filters(request)
+        print filters
 
         lots = _filter_lots(filters).distinct()
         lots = lots.select_related('owner', 'owner__type')
@@ -71,16 +72,16 @@ def lot_kml(request):
     """Download lots as KML, filtered using the given request"""
     # TODO use export.to_kml()
     kml = simplekml.Kml()
-    
+
     filters = _request_to_filters(request)
     for lot in _filter_lots(filters):
         kml.newpoint(
-            name=lot.bbl, 
+            name=lot.bbl,
             description="bbl: %s<br/>agency: %s<br/>area: %f acres" % (
                 lot.bbl,
                 lot.owner.name,
                 lot.area_acres or 0
-            ), 
+            ),
             coords=[(lot.centroid.x, lot.centroid.y)]
         )
 
@@ -163,25 +164,13 @@ def _request_to_filters(request, override={}):
         if not params['lot_types']:
             params['lot_types'] = []
         params['lot_types'] = params['lot_types'].split(',')
-        #del params['lot_types']
     except Exception:
         params['lot_types'] = []
-        #params['lot_types'] = [
-            #'vacant',
-            #'organizing',
-            #'public_accessed_lots',
-            #'private_accessed',
-        #]
 
     try:
         params['owner_types'] = params['owner_type'].split(',')
     except Exception:
         params['owner_types'] = ['city', 'private']
-    if 'lot_types' in params and params['lot_types']:
-        # Only include privately owned lots if we're looking for a layer that
-        # includes them.
-        if not ('private_accessed_sites' in params['lot_types'] or 'private_accessed_lots' in params['lot_types']) and 'private' in params['owner_types']:
-            params['owner_types'].remove('private')
 
     try:
         boroughs = [b.title() for b in params['boroughs'].split(',')]
@@ -473,7 +462,7 @@ def qrcode(request, bbl=None):
 @permission_required('lots.add_review')
 def add_review(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
-    if request.method == 'POST':    
+    if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             form.save()
@@ -494,7 +483,7 @@ def add_review(request, bbl=None):
             for field in fields:
                 initial_data[field] = last_review.__dict__[field]
 
-        form = ReviewForm(initial=initial_data) 
+        form = ReviewForm(initial=initial_data)
 
     return render_to_response('lots/add_review.html', {
         'form': form,
@@ -502,7 +491,7 @@ def add_review(request, bbl=None):
     }, context_instance=RequestContext(request))
 
 def _lot_type_prefix(lot_type):
-    return '_'.join(lot_type.split('_')[:-1]) 
+    return '_'.join(lot_type.split('_')[:-1])
 
 def counts(request):
     """
@@ -514,7 +503,7 @@ def counts(request):
     lot_types = [_lot_type_prefix(t) for t in lot_types]
 
     # unset parents_only as counts use parents and children
-    filters = _request_to_filters(request, { 
+    filters = _request_to_filters(request, {
         'lot_types': '',
         'owner_types': 'city,private',
         'parents_only': 'false',

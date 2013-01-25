@@ -24,17 +24,17 @@ class Lot(models.Model):
 
     name = models.CharField(_('name'), max_length=256, null=True, blank=True)
 
-    address = models.CharField(_('address'), max_length=256, null=True, 
+    address = models.CharField(_('address'), max_length=256, null=True,
                                blank=True)
-    borough = models.CharField(_('borough'), max_length=32, null=True, 
+    borough = models.CharField(_('borough'), max_length=32, null=True,
                                blank=True)
     bbl = models.CharField(_('bbl'), max_length=32, db_index=True)
     block = models.CharField(_('block'), max_length=32)
     lot = models.CharField(_('lot'), max_length=32)
-    zipcode = models.CharField(_('zipcode'), max_length=16, null=True, 
+    zipcode = models.CharField(_('zipcode'), max_length=16, null=True,
                                blank=True)
 
-    owner = models.ForeignKey('Owner', null=True, blank=True, 
+    owner = models.ForeignKey('Owner', null=True, blank=True,
                               verbose_name=_('owner'))
     owner_contact = models.ForeignKey(
         'OwnerContact', null=True, blank=True,
@@ -43,9 +43,9 @@ class Lot(models.Model):
         verbose_name=_('owner contact'),
     )
 
-    area = models.DecimalField(_('area'), max_digits=10, decimal_places=2, 
+    area = models.DecimalField(_('area'), max_digits=10, decimal_places=2,
                                null=True, blank=True)
-    area_acres = models.DecimalField(_('area acres'), max_digits=10, 
+    area_acres = models.DecimalField(_('area acres'), max_digits=10,
                                      decimal_places=6, null=True, blank=True)
 
     school_district = models.CharField(max_length=16, null=True, blank=True)
@@ -142,7 +142,7 @@ class Lot(models.Model):
 
     def get_oldest_ancestor(self):
         """
-        Get the oldest (top-most) ancestor of this lot. Returns this lot if 
+        Get the oldest (top-most) ancestor of this lot. Returns this lot if
         the lot has no parents. Assumes that each lot has one or zero parents.
         """
         ancestor = self
@@ -158,7 +158,7 @@ class Lot(models.Model):
         lot_code = barcode('qrcode', url, options={ 'version': 3 }, scale=5, margin=10, data_mode='8bits')
 
         temp_file_path = os.sep.join((FILE_UPLOAD_TEMP_DIR, 'qrcode.%s.png' % self.bbl))
-        
+
         f = open(temp_file_path, 'wb')
         lot_code.save(f, 'png')
         f = open(temp_file_path, 'rb')
@@ -279,7 +279,7 @@ class Owner(models.Model):
 
 class OwnerContact(models.Model):
     """
-    A contact for an Owner. Overrides the contact information in the Owner 
+    A contact for an Owner. Overrides the contact information in the Owner
     when present.
     """
     owner = models.ForeignKey(Owner)
@@ -320,7 +320,7 @@ class Review(models.Model):
     lot = models.ForeignKey(Lot)
     reviewer = models.ForeignKey(User, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
-    
+
     in_use = models.BooleanField(
         blank=False,
         null=False,
@@ -392,19 +392,19 @@ layer_filters = {
     ),
 
     'gutterspace': Q(
-        Q(accessible=False) | 
+        Q(accessible=False) |
         Q(actual_use='gutterspace'),
     ),
 
-    # TODO only makes sense if parent does not have access. might need to 
+    # TODO only makes sense if parent does not have access. might need to
     #  indicate hierarchy / places where the layers are mutually exclusive.
     'organizing_lots': Q(
         ~Q(
             parent_lot__group_has_access=True,
         ),
-        ~Q(organizer=None) | 
+        ~Q(organizer=None) |
         Q(
-            ~Q(parent_lot=None), 
+            ~Q(parent_lot=None),
             ~Q(parent_lot__organizer=None),
             parent_lot__group_has_access=False,
         ),
@@ -483,6 +483,23 @@ layer_filters = {
             sandy_distribution_site=False,
         ),
         ~Q(actual_use='gutterspace'),
+    ),
+
+    'private_vacant_lots': Q(
+        accessible=True,
+        is_vacant=True,
+        group_has_access=False,
+        organizer=None,
+        owner__type__name='private',
+    ),
+
+    'private_vacant_sites': Q(
+        accessible=True,
+        is_vacant=True,
+        group_has_access=False,
+        organizer=None,
+        owner__type__name='private',
+        parent_lot=None,
     ),
 
     'sandy_dropoff_sites': Q(sandy_dropoff_site=True,),

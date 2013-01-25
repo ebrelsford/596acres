@@ -25,7 +25,6 @@ class LotAdmin(OSMGeoAdmin):
         (None, {
             'fields': (
                 ('bbl', 'name',),
-                ('sandy_distribution_site', 'sandy_dropoff_site',),
                 ('address', 'borough', 'zipcode',),
                 ('area', 'area_acres',),
                 ('owner', 'owner_contact',),

@@ -294,6 +294,7 @@ def details(request, bbl=None):
         review = review[0]
 
     return render_to_response('lots/details.html', {
+        'BASE_URL': settings.BASE_URL,
         'lot': lot,
         'nearby_lots': get_nearby(lot),
         'notes': lot.note_set.all().order_by('added'),

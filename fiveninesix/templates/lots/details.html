@@ -39,7 +39,24 @@
 {% endaddtoblock %}
 {% endblock %}
 
-{% block title %}{{ block.super }}: Details{% endblock %}
+{% block title %}{{ block.super }}{% endblock %}
+
+{% block facebook_meta %}
+<meta property="og:title" content="{{ lot|lotname:"group" }}" />
+<meta property="og:url" content="{{ BASE_URL }}{{ lot.get_absolute_url }}" />
+<meta property="og:site_name" content="596 Acres" />
+
+{% if lot.is_vacant %}
+<meta property="og:description" content="A vacant lot in {{ lot.borough }}. Join neighbors on 596acres.org to start a project here." />
+{% else %}
+<meta property="og:description" content="An active lot in {{ lot.borough }}. Visit the lot's page on 596acres.org to get involved." />
+{% endif %}
+
+<meta property="og:latitude" content="{{ lot.centroid.y }}" />
+<meta property="og:longitude" content="{{ lot.centroid.x }}" />
+<meta property="og:locality" content="{{ lot.borough }}" />
+<meta property="og:region" content="NY" />
+{% endblock %}
 
 {% block inner_right %}
 {% with title=lot|lotname:"group" %}

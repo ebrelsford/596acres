@@ -1,6 +1,7 @@
 {% load cms_tags compress i18n i18n_utils menu_tags sekizai_tags %}
 
 <!doctype html>
+<html xmlns:og="http://ogp.me/ns#">
 <head>
     <title>
         {% trans "596 Acres" %}: {% block title %}{% endblock %}
@@ -10,6 +11,8 @@
 
     <meta name="description" content="Public vacant lots in New York City. Find the lot in your life. Contact the owner. Grow something. We can help." />
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+
+    {% block facebook_meta %}{% endblock %}
 
     {% if is_mobile %}
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />

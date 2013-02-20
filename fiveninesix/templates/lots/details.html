@@ -57,11 +57,6 @@ TODO find an appropriate one if this lot has images.
 {% else %}
 <meta property="og:description" content="An active lot in {{ lot.borough }}. Visit the lot's page on 596acres.org to get involved." />
 {% endif %}
-
-<meta property="og:latitude" content="{{ lot.centroid.y }}" />
-<meta property="og:longitude" content="{{ lot.centroid.x }}" />
-<meta property="og:locality" content="{{ lot.borough }}" />
-<meta property="og:region" content="NY" />
 {% endblock %}
 
 {% block inner_right %}

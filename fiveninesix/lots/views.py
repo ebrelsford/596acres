@@ -37,7 +37,6 @@ def lot_geojson(request):
     # TODO consider downloading everything at once, doing filtering client-side
     if not geojson_response:
         filters = _request_to_filters(request)
-        print filters
 
         lots = _filter_lots(filters).distinct()
         lots = lots.select_related('owner', 'owner__type')

@@ -5,16 +5,21 @@ from django.template.loader import render_to_string
 from mail import mail_lot_organizers, mail_lot_watchers
 from models import Note, Organizer, Picture
 
+
 url_suffixes = {
     Note: '#notes',
     Picture: '#pictures',
     Organizer: '#organizers',
 }
 
+
 def notify_managers(obj):
     obj_model_name = obj.__class__.__name__.lower()
-    subject_template_name = 'organize/notifications/managers_new_%s_subject.txt' % obj_model_name
-    text_template_name = 'organize/notifications/managers_new_%s_text.txt' % obj_model_name
+    template_dir = 'organize/notifications'
+    subject_template_name = '%s/managers_new_%s_subject.txt' % (template_dir,
+                                                                obj_model_name)
+    text_template_name = '%s/managers_new_%s_text.txt' % (template_dir,
+                                                          obj_model_name)
 
     subject = render_to_string(subject_template_name).strip()
     message = render_to_string(text_template_name, {
@@ -22,6 +27,7 @@ def notify_managers(obj):
         'BASE_URL': settings.BASE_URL,
     })
     mail_managers(subject, message)
+
 
 def notify_organizers_and_watchers(obj):
     """
@@ -44,6 +50,7 @@ def notify_organizers_and_watchers(obj):
 
     mail_lot_watchers(lot, 'Watched lot updated!', message, **kwargs)
     mail_lot_organizers(lot, 'Organized lot updated!', message, **kwargs)
+
 
 def _get_object_message(o):
     """

@@ -59,8 +59,6 @@ def mail_facilitators(lot, subject, message, excluded_emails=[],
     facilitators += settings.FACILITATORS[lot.borough]
     facilitators = [f for f in facilitators if f not in excluded_emails]
 
-    print facilitators
-
     messages = _get_facilitator_messages(
         facilitators,
         lot,
@@ -69,7 +67,6 @@ def mail_facilitators(lot, subject, message, excluded_emails=[],
         url_suffix,
         is_note=is_note,
     )
-    print messages
     _mail_multiple_personalized(subject, messages, fail_silently=False,
                                 **_get_message_options(lot, is_note=is_note))
 

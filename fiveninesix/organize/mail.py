@@ -50,6 +50,30 @@ def mass_mail_organizers(subject, message, organizers, **kwargs):
     )
 
 
+def mail_facilitators(lot, subject, message, excluded_emails=[],
+                      is_note=False, url_suffix=''):
+    """
+    Sends a message to facilitators.
+    """
+    facilitators = settings.FACILITATORS['global']
+    facilitators += settings.FACILITATORS[lot.borough]
+    facilitators = [f for f in facilitators if f not in excluded_emails]
+
+    print facilitators
+
+    messages = _get_facilitator_messages(
+        facilitators,
+        lot,
+        message,
+        'organize/notifications/facilitators_text.txt',
+        url_suffix,
+        is_note=is_note,
+    )
+    print messages
+    _mail_multiple_personalized(subject, messages, fail_silently=False,
+                                **_get_message_options(lot, is_note=is_note))
+
+
 def mail_lot_organizers(lot, subject, message, excluded_emails=[],
                         is_note=False, url_suffix=''):
     """
@@ -97,6 +121,21 @@ def _get_messages(objs, detail_message, template_name, obj_url_suffix,
             'lot': o.lot,
             'message': detail_message,
             'obj': o,
+            'obj_url_suffix': obj_url_suffix,
+        })
+    return messages
+
+
+def _get_facilitator_messages(facilitators, lot, detail_message, template_name,
+                              obj_url_suffix, is_note=False):
+    messages = {}
+    for facilitator in facilitators:
+        messages[facilitator] = render_to_string(template_name, {
+            'BASE_URL': settings.BASE_URL,
+            'MAILREADER_REPLY_PREFIX': settings.MAILREADER_REPLY_PREFIX,
+            'is_note': is_note,
+            'lot': lot,
+            'message': detail_message,
             'obj_url_suffix': obj_url_suffix,
         })
     return messages

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.mail import mail_managers
 from django.template.loader import render_to_string
 
-from mail import mail_lot_organizers, mail_lot_watchers
+from mail import mail_lot_organizers, mail_lot_watchers, mail_facilitators
 from models import Note, Organizer, Picture
 
 
@@ -27,6 +27,25 @@ def notify_managers(obj):
         'BASE_URL': settings.BASE_URL,
     })
     mail_managers(subject, message)
+
+
+def notify_facilitators(obj):
+    """
+    Send facilitators updates.
+    """
+    lot = obj.lot
+    if not lot: return
+
+    message = _get_object_message(obj)
+    kwargs = {}
+    try:
+        kwargs['excluded_emails'] = [obj.email]
+    except Exception:
+        kwargs['excluded_emails'] = []
+    kwargs['is_note'] = isinstance(obj, Note)
+    kwargs['url_suffix'] = url_suffixes[obj.__class__]
+
+    mail_facilitators(lot, 'Lot updated!', message, **kwargs)
 
 
 def notify_organizers_and_watchers(obj):

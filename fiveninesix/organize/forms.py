@@ -4,7 +4,7 @@ from django.forms import ModelForm, HiddenInput, ModelChoiceField
 from recaptcha_works.fields import RecaptchaField
 
 from lots.models import Lot
-from notify import notify_managers, notify_organizers_and_watchers
+from notify import notify_organizers_and_watchers, notify_facilitators
 from models import Organizer, Watcher, Note, Picture
 from widgets import PrefixLabelTextInput
 
@@ -55,20 +55,20 @@ class OrganizerForm(OrganizeForm):
 
         organizer = super(self.__class__, self).save()
         if is_creating:
-            notify_managers(organizer)
             notify_organizers_and_watchers(organizer)
+            notify_facilitators(organizer)
         return organizer
 
 class WatcherForm(OrganizeForm):
     class Meta:
         model = Watcher
         exclude = ('added', 'email_hash')
-        
+
 class NoteForm(OrganizeForm):
     class Meta:
         model = Note
         exclude = ('added',)
-        
+
 class PictureForm(OrganizeForm):
     class Meta:
         model = Picture

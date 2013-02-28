@@ -135,7 +135,7 @@ class Picture(models.Model):
 # Handle signals.
 #
 from activity_stream.signals import action
-from notify import notify_organizers_and_watchers, notify_managers
+from notify import notify_organizers_and_watchers, notify_facilitators
 
 def _get_verb(sender):
     default = 'added'
@@ -187,9 +187,7 @@ def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs
     """
     if instance and created:
         notify_organizers_and_watchers(instance)
-
-        if isinstance(instance, Note):
-            notify_managers(instance)
+        notify_facilitators(instance)
 
 @receiver(post_save, sender=Organizer, dispatch_uid='organizer_subscribe_organizer_watcher')
 @receiver(post_save, sender=Watcher, dispatch_uid='watcher_subscribe_organizer_watcher')

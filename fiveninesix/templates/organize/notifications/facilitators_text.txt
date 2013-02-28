@@ -1,0 +1,13 @@
+{% autoescape off %}{% if is_note %}{{ MAILREADER_REPLY_PREFIX }}
+
+{% endif %}Hello again from 596 Acres. There has been a change to a lot, and we
+thought you should know about it.
+
+{{ message }}
+
+View details here: {{ BASE_URL }}{{ lot.get_absolute_url }}{{ obj_url_suffix }}
+
+--
+{% if is_note %}If you reply to this email it will be posted as a public note on the lot's page.
+
+{% endif %}You are receiving this email because you are are a facilitator in this part of the city.{% endautoescape %}

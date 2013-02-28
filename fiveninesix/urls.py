@@ -32,14 +32,14 @@ urlpatterns = patterns('',
     url(r'^watchers/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
     url(r'^user-accounts/(?P<hash>[^/]{9,})/$', 'organize.views.edit_participant'),
 
-    url(r'^organizers/delete/(?P<pk>\d+)/$', 
+    url(r'^organizers/delete/(?P<pk>\d+)/$',
         DeleteParticipantView.as_view(
             model=Organizer,
         ),
         name='organize_organizer_delete',
     ),
 
-    url(r'^watchers/delete/(?P<pk>\d+)/$', 
+    url(r'^watchers/delete/(?P<pk>\d+)/$',
         DeleteParticipantView.as_view(
             model=Watcher,
         ),
@@ -50,7 +50,7 @@ urlpatterns = patterns('',
     url(r'^sessions/hide_map_overlay/$', 'sessions.views.hide_map_overlay'),
 
     # TODO extend BlogApphook, point to paginated views by default?
-    url(r'^news/tag/(?P<tag>[^/]+)/$', 
+    url(r'^news/tag/(?P<tag>[^/]+)/$',
         EntriesTaggedArchiveView.as_view(),
         name='blog_archive_tagged_paginated'
     ),

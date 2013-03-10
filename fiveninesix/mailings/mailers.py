@@ -24,9 +24,7 @@ class Mailer(object):
         self.mailing.save()
 
     def get_recipients(self):
-        """
-        Get the recipients to which this mailing should be sent.
-        """
+        """Get the recipients to which this mailing should be sent."""
         return ()
 
     def get_already_received(self, receiver_type=None):
@@ -59,6 +57,11 @@ class Mailer(object):
     def build_message(self, recipients, context):
         return render_to_string(self.mailing.text_template_name, context)
 
+    def build_bcc(self, recipients):
+        """Get a list of email addresses to BCC."""
+        return (settings.FACILITATORS.get('global', []) +
+                settings.FACILITATORS.get(recipients[0].lot.borough, []))
+
     def add_delivery_records(self, recipients, sent=True):
         """
         Add a DeliveryRecord to each recipient.
@@ -75,9 +78,7 @@ class Mailer(object):
         return drs
 
     def mail(self, fake=False):
-        """
-        Get intended recipients, prepare the message, send it.
-        """
+        """Get intended recipients, prepare the message, send it."""
         recipients = self.get_recipients()
 
         # faking it--just add delivery records for recipients and jump out
@@ -107,7 +108,8 @@ class Mailer(object):
         self._send(
             self.build_subject(recipients, context),
             self.build_message(recipients, context),
-            email
+            email,
+            bcc=self.build_bcc(recipients),
         )
         return self.add_delivery_records(recipients)
 
@@ -115,11 +117,13 @@ class Mailer(object):
               from_email=settings.ORGANIZERS_EMAIL,
               bcc=[settings.ORGANIZERS_EMAIL], connection=None,
               fail_silently=True):
+        # subject cannot contain newlines
+        subject = subject.replace('\n', '').strip()
 
-        subject = subject.replace('\n', '').strip() # subject cannot contain newlines
-
-        logging.debug('mailings: sending mail with subject "%s" to %s' % (subject, email_address))
-        logging.debug('mailings: full text: "%s"' % message)
+        logging.debug('sending mail with subject "%s" to %s'
+                      % (subject, email_address))
+        logging.debug('bcc: %s' % (bcc,))
+        logging.debug('full text: "%s"' % message)
 
         mail = EmailMessage(
             u'%s%s' % (settings.EMAIL_SUBJECT_PREFIX, subject),

@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
 register = template.Library()
@@ -52,4 +53,8 @@ def lot_contact(lot):
         else:
             return '%s (%s)' % (lot.owner.person, lot.owner.phone)
     elif lot.owner.type.name == 'private':
-        return '596acres@gmail.com to learn more'
+        try:
+            facilitator_email = settings.FACILITATORS['global'][0]
+        except Exception:
+            facilitator_email = ''
+        return '%s to learn more' % facilitator_email

@@ -12,6 +12,7 @@ from lots.models import Lot
 from mailings.models import DeliveryRecord
 from organize.models import Organizer, Watcher
 
+
 class Mailer(object):
 
     def __init__(self, mailing):
@@ -33,7 +34,7 @@ class Mailer(object):
         Find entities [of a particular type] that already received the mailing.
         """
         drs = DeliveryRecord.objects.filter(
-            sent=True, 
+            sent=True,
             mailing=self.mailing,
         )
         if receiver_type:
@@ -44,7 +45,7 @@ class Mailer(object):
 
     def get_context(self, recipients):
         """
-        Get the context to be used when constructing the subject and text of 
+        Get the context to be used when constructing the subject and text of
         the mailing.
         """
         return {
@@ -99,20 +100,20 @@ class Mailer(object):
 
     def _prepare_and_send_message(self, recipients, email):
         """
-        Build the subject and text of the message, email it to the given 
+        Build the subject and text of the message, email it to the given
         email address.
         """
         context = self.get_context(recipients)
         self._send(
-            self.build_subject(recipients, context), 
+            self.build_subject(recipients, context),
             self.build_message(recipients, context),
             email
         )
         return self.add_delivery_records(recipients)
 
-    def _send(self, subject, message, email_address, 
-              from_email=settings.ORGANIZERS_EMAIL, 
-              bcc=[settings.ORGANIZERS_EMAIL], connection=None, 
+    def _send(self, subject, message, email_address,
+              from_email=settings.ORGANIZERS_EMAIL,
+              bcc=[settings.ORGANIZERS_EMAIL], connection=None,
               fail_silently=True):
 
         subject = subject.replace('\n', '').strip() # subject cannot contain newlines
@@ -127,15 +128,16 @@ class Mailer(object):
             to=[email_address],
             connection=connection,
             bcc=bcc,
-        )          
+        )
         mail.send(fail_silently=fail_silently)
+
 
 class DaysAfterAddedMailer(Mailer):
 
     def get_recipient_queryset(self, model):
         """
-        Check for entities added in the time between the last time the mailing 
-        was sent and now, shifting backward in time for the number of days 
+        Check for entities added in the time between the last time the mailing
+        was sent and now, shifting backward in time for the number of days
         after an entity is added that we want to send them the mailing.
         """
         delta = timedelta(days=self.mailing.days_after_added)
@@ -183,14 +185,15 @@ class DaysAfterAddedMailer(Mailer):
         )
         return records.count() > 0
 
+
 class SuccessfulOrganizerMailer(Mailer):
     def get_recipient_queryset(self, ctype, already_received):
         # successful organizers / watchers
         qs = ctype.model_class().objects.filter(lot__group_has_access=True)
 
         # remove lots where anyone else on this lot has received this mailing.
-        # these people are latecomers and congratulating them would be a bit 
-        # weird. 
+        # these people are latecomers and congratulating them would be a bit
+        # weird.
         #
         # NB: if a person is the first of a type (eg, Watcher) and the lot
         # already had access, they will get this message anyway. this will be
@@ -222,6 +225,7 @@ class SuccessfulOrganizerMailer(Mailer):
         recipient_lists = [self._get_ctype_recipients(ct) for ct in self.mailing.target_types.all()]
         return reduce(lambda x,y: x+y, recipient_lists)
 
+
 class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
     """
     DaysAfterAddedMailer customized for 596.
@@ -229,7 +233,7 @@ class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
     def get_recipient_queryset(self, model):
         qs = super(DaysAfterWatcherOrganizerAddedMailer, self).get_recipient_queryset(model)
         if model == Organizer:
-            # don't email welcome / two-week followup to Organizers of lots 
+            # don't email welcome / two-week followup to Organizers of lots
             #  that have been accessed
             qs = qs.filter(
                 lot__group_has_access=False,
@@ -253,6 +257,7 @@ class DaysAfterWatcherOrganizerAddedMailer(DaysAfterAddedMailer):
         context['edit_url'] = recipients[0].get_edit_url()
         return context
 
+
 class WatcherThresholdMailer(Mailer):
     def get_recipients(self):
         # get lots without Organizers and with a certain number of Watchers
@@ -267,13 +272,15 @@ class WatcherThresholdMailer(Mailer):
 
         # get the Watchers of those lots
         watchers = Watcher.objects.filter(lot__in=lots)
-        
+
         received = self.get_already_received()
 
         return list(set(watchers) - set(received))
 
     def _get_watcher_count(self, recipients):
-        return Lot.objects.filter(id=recipients[0].lot.id).annotate(watcher_count=Count('watcher')).values('watcher_count')[0]['watcher_count']
+        lots = Lot.objects.filter(id=recipients[0].lot.id)
+        lots = lots.annotate(watcher_count=Count('watcher'))
+        return lots.values('watcher_count')[0]['watcher_count']
 
     def get_context(self, recipients):
         context = super(WatcherThresholdMailer, self).get_context(recipients)

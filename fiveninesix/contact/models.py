@@ -1,11 +1,9 @@
-from django.conf import settings
-from django.core.mail import mail_managers
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
+from mailutils import mail_facilitators
 from newsletter.util import subscribe
 
 
@@ -29,12 +27,6 @@ class AbstractContactRequest(models.Model):
     class Meta:
         abstract = True
 
-    def get_text_for_mail(self):
-        return """name: %s
-email: %s
-phone: %s
-""" % (self.name, self.email, self.phone)
-
 
 class LotInformationRequest(AbstractContactRequest):
     """
@@ -44,12 +36,6 @@ class LotInformationRequest(AbstractContactRequest):
     story = models.TextField(_('a story about the lot'))
     notes = models.TextField(_('anything else we should know about the lot'),
                              null=True, blank=True)
-
-    def get_text_for_mail(self):
-        return super(self.__class__, self).get_text_for_mail() + """location: %s
-story: %s
-notes: %s
-""" % (self.location, self.story, self.notes)
 
     def get_label_for_mail(self):
         return 'lot information request'
@@ -66,11 +52,6 @@ class JoinUsRequest(AbstractContactRequest):
     address = models.CharField(_('where we should put a map?'), max_length=128,
                                null=True, blank=True)
 
-    def get_text_for_mail(self):
-        return super(self.__class__, self).get_text_for_mail() + """reason: %s
-address: %s
-""" % (self.reason, self.address)
-
     def get_label_for_mail(self):
         return 'map-distribution team submission'
 
@@ -79,10 +60,6 @@ class ContactRequest(AbstractContactRequest):
     """A generic message to the team."""
     message = models.TextField(_('message'))
 
-    def get_text_for_mail(self):
-        return super(self.__class__, self).get_text_for_mail() + """message: %s
-""" % (self.message,)
-
     def get_label_for_mail(self):
         return 'message'
 
@@ -90,16 +67,14 @@ class ContactRequest(AbstractContactRequest):
 @receiver(post_save, dispatch_uid='contact_model_saved')
 def contact_model_saved(sender, created=False, instance=None, **kwargs):
     if created and issubclass(sender, AbstractContactRequest):
-        _send_email_for_request(instance)
+        _send_email_for_contact_request(instance)
         subscribe(instance)
 
 
-def _send_email_for_request(request):
-    admin_url = settings.BASE_URL + reverse('admin:%s_%s_change' % (request._meta.app_label, request.__class__.__name__.lower()), args=(request.id,))
-    mail_managers(
-        'A new %s was sent via 596acres.org' % request.get_label_for_mail(),
-        """Oh man! A new %s was sent via 596acres.org.
-
-Details:
-%s
-""" % (request.get_label_for_mail(), request.get_text_for_mail(), admin_url))
+def _send_email_for_contact_request(contact_request):
+    mail_facilitators(
+        'A new %s was sent via 596acres.org' % contact_request.get_label_for_mail(),
+        message_template='contact/notifications/facilitators_text.txt',
+        borough=contact_request.borough,
+        contact_request=contact_request,
+    )

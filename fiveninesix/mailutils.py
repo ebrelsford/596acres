@@ -6,25 +6,28 @@ from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
 
-def mail_facilitators(subject, message, borough=None, lot=None,
-                      excluded_emails=[], is_note=False, obj_url_suffix=''):
+def mail_facilitators(subject, message_content=None,
+                      message_template='organize/notifications/facilitators_text.txt',
+                      borough=None, excluded_emails=[],
+                      lot=None, is_note=False, **kwargs):
     """
     Sends a message to facilitators.
     """
-    facilitators = settings.FACILITATORS['global']
+    facilitators = []
+    facilitators += settings.FACILITATORS['global']
     facilitators += settings.FACILITATORS.get(borough, [])
     facilitators = [f for f in facilitators if f not in excluded_emails]
 
     messages = _get_facilitator_messages(
         facilitators,
-        'organize/notifications/facilitators_text.txt',
+        message_template,
         is_note=is_note,
         lot=lot,
-        message=message,
-        obj_url_suffix=obj_url_suffix,
+        message=message_content,
+        **kwargs
     )
     mail_multiple_personalized(subject, messages, fail_silently=False,
-                                **get_message_options(lot, is_note=is_note))
+                               **get_message_options(lot, is_note=is_note))
 
 
 def _get_facilitator_messages(facilitators, template_name, **kwargs):

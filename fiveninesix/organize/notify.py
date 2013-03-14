@@ -48,7 +48,7 @@ def notify_facilitators(obj):
     except Exception:
         kwargs['excluded_emails'] = []
 
-    mail_facilitators('Lot updated!', message, **kwargs)
+    mail_facilitators('Lot updated!', message_content=message, **kwargs)
 
 
 def notify_organizers_and_watchers(obj):

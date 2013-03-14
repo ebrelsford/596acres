@@ -14,6 +14,16 @@ class AbstractContactRequest(models.Model):
     email = models.EmailField(_('email'))
     phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
 
+    BOROUGH_CHOICES = (
+        ('Brooklyn', 'Brooklyn'),
+        ('Bronx', 'Bronx'),
+        ('Manhattan', 'Manhattan'),
+        ('Queens', 'Queens'),
+        ('Staten Island', 'Staten Island'),
+    )
+    borough = models.CharField(_('borough'), max_length=32, null=True,
+                               blank=True, choices=BOROUGH_CHOICES)
+
     handled = models.BooleanField(_('handled'), default=False)
 
     class Meta:

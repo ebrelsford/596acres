@@ -1,6 +1,7 @@
 *.pyc
 .*.swp
 .Python
+.ropeproject
 
 settings.py
 fiveninesix/media/CACHE
@@ -18,6 +19,7 @@ build
 data
 include
 /lib
+logs
 /media
 noncode
 scripts

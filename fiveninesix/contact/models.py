@@ -41,21 +41,6 @@ class LotInformationRequest(AbstractContactRequest):
         return 'lot information request'
 
 
-class JoinUsRequest(AbstractContactRequest):
-    """A request to help become part of the team."""
-    REASON_CHOICES = (
-        ('DIST', 'help distribute maps'),
-        ('SUGGEST', 'suggest location'),
-    )
-    reason = models.CharField(_('how I can help'), max_length=16,
-                              choices=REASON_CHOICES)
-    address = models.CharField(_('where we should put a map?'), max_length=128,
-                               null=True, blank=True)
-
-    def get_label_for_mail(self):
-        return 'map-distribution team submission'
-
-
 class ContactRequest(AbstractContactRequest):
     """A generic message to the team."""
     message = models.TextField(_('message'))

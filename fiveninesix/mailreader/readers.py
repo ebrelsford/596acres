@@ -5,6 +5,7 @@ from django.conf import settings
 from lots.models import Lot
 from organize.models import Note
 
+
 class MailReader(object):
     from_name_regex = '(.+?)\s.+'
     from_name_pattern = re.compile(from_name_regex)
@@ -33,6 +34,7 @@ class MailReader(object):
         otherwise.
         """
         return False
+
 
 class NotesMailReader(MailReader):
     bbl_regex = '(?:.*\s+)?<?notes\+(\d+)@.+>?'

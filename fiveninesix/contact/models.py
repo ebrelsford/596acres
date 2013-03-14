@@ -37,7 +37,9 @@ phone: %s
 
 
 class LotInformationRequest(AbstractContactRequest):
-    """A request for more information about a lot, or to give a story about a lot."""
+    """
+    A request for more information about a lot, or to give a story about a lot.
+    """
     location = models.TextField(_('location of the lot'))
     story = models.TextField(_('a story about the lot'))
     notes = models.TextField(_('anything else we should know about the lot'),
@@ -100,8 +102,4 @@ def _send_email_for_request(request):
 
 Details:
 %s
-
-View on the site: %s
-
-Thanks! Have a lovely day.
 """ % (request.get_label_for_mail(), request.get_text_for_mail(), admin_url))

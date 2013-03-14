@@ -5,13 +5,16 @@ from recaptcha_works.fields import RecaptchaField
 
 from models import ContactRequest, LotInformationRequest
 
+
 class RecaptchaForm(ModelForm):
     recaptcha = RecaptchaField(label=_("Prove you're human"))
+
 
 class LotInformationRequestForm(RecaptchaForm):
     class Meta:
         model = LotInformationRequest
         exclude = ('handled',)
+
 
 class ContactRequestForm(RecaptchaForm):
     class Meta:

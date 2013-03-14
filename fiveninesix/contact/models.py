@@ -8,13 +8,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from newsletter.util import subscribe
 
+
 class AbstractContactRequest(models.Model):
     name = models.CharField(_('name'), max_length=128)
     email = models.EmailField(_('email'))
     phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
 
     handled = models.BooleanField(_('handled'), default=False)
-    
+
     class Meta:
         abstract = True
 
@@ -23,6 +24,7 @@ class AbstractContactRequest(models.Model):
 email: %s
 phone: %s
 """ % (self.name, self.email, self.phone)
+
 
 class LotInformationRequest(AbstractContactRequest):
     """A request for more information about a lot, or to give a story about a lot."""
@@ -39,6 +41,7 @@ notes: %s
 
     def get_label_for_mail(self):
         return 'lot information request'
+
 
 class JoinUsRequest(AbstractContactRequest):
     """A request to help become part of the team."""
@@ -59,6 +62,7 @@ address: %s
     def get_label_for_mail(self):
         return 'map-distribution team submission'
 
+
 class ContactRequest(AbstractContactRequest):
     """A generic message to the team."""
     message = models.TextField(_('message'))
@@ -77,13 +81,14 @@ def contact_model_saved(sender, created=False, instance=None, **kwargs):
         _send_email_for_request(instance)
         subscribe(instance)
 
+
 def _send_email_for_request(request):
     admin_url = settings.BASE_URL + reverse('admin:%s_%s_change' % (request._meta.app_label, request.__class__.__name__.lower()), args=(request.id,))
     mail_managers(
-        'A new %s was sent via 596acres.org' % request.get_label_for_mail(), 
+        'A new %s was sent via 596acres.org' % request.get_label_for_mail(),
         """Oh man! A new %s was sent via 596acres.org.
-        
-Details: 
+
+Details:
 %s
 
 View on the site: %s

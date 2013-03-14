@@ -43,6 +43,16 @@ class LotInformationRequest(AbstractContactRequest):
 
 class ContactRequest(AbstractContactRequest):
     """A generic message to the team."""
+
+    REASON_CHOICES = (
+        ('event', 'event invitation'),
+        ('press', 'press inquiry'),
+        ('visioning', 'visioning session request (please specify a borough)'),
+    )
+    reason = models.CharField(_('reason'), max_length=32, blank=True,
+                              null=True, choices=REASON_CHOICES,
+                              help_text=_('Why are you contacting us?'))
+
     message = models.TextField(_('message'))
 
     def get_label_for_mail(self):

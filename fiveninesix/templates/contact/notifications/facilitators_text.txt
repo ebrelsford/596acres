@@ -13,7 +13,7 @@ story: {{ contact_request.story }}
 {% endif %}{% if contact_request.notes %}
 notes: {{ contact_request.notes }}
 {% endif %}{% if contact_request.reason %}
-reason: {{ contact_request.reason }}
+reason: {{ contact_request.get_reason_display }}
 {% endif %}{% if contact_request.address %}
 address: {{ contact_request.address }}
 {% endif %}{% if contact_request.message %}

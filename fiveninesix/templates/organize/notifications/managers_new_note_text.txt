@@ -1,6 +1,0 @@
-{% autoescape off %}A new note was added on 596acres.org.
-
-Details:
-from: {{ obj.noter }}
-text: {{ obj.text }}
-lot: {{ BASE_URL }}{{ obj.lot.get_absolute_url }}{% endautoescape %}

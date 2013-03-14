@@ -1,7 +1,3 @@
-from django.conf import settings
-from django.core.mail import mail_managers
-from django.template.loader import render_to_string
-
 from .mail import mail_lot_organizers, mail_lot_watchers
 from .models import Note, Organizer, Picture
 from mailutils import mail_facilitators
@@ -12,22 +8,6 @@ url_suffixes = {
     Picture: '#pictures',
     Organizer: '#organizers',
 }
-
-
-def notify_managers(obj):
-    obj_model_name = obj.__class__.__name__.lower()
-    template_dir = 'organize/notifications'
-    subject_template_name = '%s/managers_new_%s_subject.txt' % (template_dir,
-                                                                obj_model_name)
-    text_template_name = '%s/managers_new_%s_text.txt' % (template_dir,
-                                                          obj_model_name)
-
-    subject = render_to_string(subject_template_name).strip()
-    message = render_to_string(text_template_name, {
-        'obj': obj,
-        'BASE_URL': settings.BASE_URL,
-    })
-    mail_managers(subject, message)
 
 
 def notify_facilitators(obj):

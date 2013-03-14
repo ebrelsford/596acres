@@ -12,6 +12,7 @@ from sorl.thumbnail import ImageField
 from lots.models import Lot
 from newsletter.util import subscribe
 
+
 class Participant(models.Model):
     name = models.CharField(_('name'), max_length=256)
     phone = models.CharField(_('phone'), max_length=32, null=True, blank=True)
@@ -35,6 +36,7 @@ class Participant(models.Model):
     @models.permalink
     def get_edit_url(self):
         return ('organize.views.edit_participant', (), { 'hash': self.email_hash[:9] })
+
 
 class Organizer(Participant):
     """
@@ -66,6 +68,7 @@ class Organizer(Participant):
     def get_absolute_url(self):
         return "%s#organizer-%d" % (self.lot.get_absolute_url(), self.pk)
 
+
 class Watcher(Participant):
     """
     Someone who is watching a lot.
@@ -76,6 +79,7 @@ class Watcher(Participant):
     def recent_change_label(self):
         return 'new watcher'
 
+
 class OrganizerType(models.Model):
     """
     A type of organizer (eg, individual, non-profit, governmental agency, ...)
@@ -85,6 +89,7 @@ class OrganizerType(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class Meeting(models.Model):
     """
@@ -100,6 +105,7 @@ class Meeting(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class Note(models.Model):
     """
@@ -120,6 +126,7 @@ class Note(models.Model):
     def get_absolute_url(self):
         return "%s#note-%d" % (self.lot.get_absolute_url(), self.pk)
 
+
 class Picture(models.Model):
     """
     A picture of a lot.
@@ -137,6 +144,7 @@ class Picture(models.Model):
 from activity_stream.signals import action
 from notify import notify_organizers_and_watchers, notify_facilitators
 
+
 def _get_verb(sender):
     default = 'added'
     if isinstance(sender, Note):
@@ -150,6 +158,7 @@ def _get_verb(sender):
         return 'started watching'
     return default
 
+
 def _get_actor(instance, added_by):
     default = added_by
 
@@ -162,6 +171,7 @@ def _get_actor(instance, added_by):
         return None
 
     return default
+
 
 @receiver(post_save, sender=Note, dispatch_uid='organize.models.add_action')
 @receiver(post_save, sender=Organizer, dispatch_uid='organize.models.add_action')
@@ -179,6 +189,7 @@ def add_action(sender, created=False, instance=None, **kwargs):
         data={},
     )
 
+
 @receiver(post_save, sender=Note, dispatch_uid='note_send_organizer_watcher_update')
 @receiver(post_save, sender=Picture, dispatch_uid='picture_send_organizer_watcher_update')
 def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs):
@@ -188,6 +199,7 @@ def send_organizer_watcher_update(sender, created=False, instance=None, **kwargs
     if instance and created:
         notify_organizers_and_watchers(instance)
         notify_facilitators(instance)
+
 
 @receiver(post_save, sender=Organizer, dispatch_uid='organizer_subscribe_organizer_watcher')
 @receiver(post_save, sender=Watcher, dispatch_uid='watcher_subscribe_organizer_watcher')

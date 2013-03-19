@@ -180,7 +180,7 @@ msgstr "Ven a Nuestro Proximo Evento"
 
 #: getinvolved/menu.py:17
 msgid "Work With Us"
-msgstr "Trabajar Con Nostros"
+msgstr "Trabaje Con Nostros"
 
 #: legend/cms_plugins.py:7
 msgid "Map Legend"
@@ -512,7 +512,7 @@ msgstr ""
 
 #: templates/cms/map_template.html:138 templates/cms/map_template.html:185
 msgid "Boroughs"
-msgstr ""
+msgstr "Condados"
 
 #: templates/cms/map_template.html:144
 msgid "City Council Districts"
@@ -547,7 +547,7 @@ msgstr "Agencia"
 
 #: templates/cms/map_template.html:180
 msgid "all"
-msgstr "todo"
+msgstr "todas"
 
 #: templates/cms/map_template.html:224
 msgid "You are currently looking at"
@@ -657,12 +657,12 @@ msgstr "déjanos saber"
 msgid "if you have any questions, and if you like what you see here please"
 msgstr ""
 "si tienes alguna pregunta, y si aprecia el trabajo que estamos haciendo por "
-"favor"
+"favor considere dar una"
 
 #: templates/cms/map_template.html:356
 #: templates/cms/sandy_map_template.html:138
 msgid "donate"
-msgstr "dona"
+msgstr "donacion"
 
 #: templates/cms/map_template.html:361
 #: templates/cms/sandy_map_template.html:143

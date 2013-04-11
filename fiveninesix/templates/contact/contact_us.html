@@ -4,15 +4,81 @@
 {% block title %}{% trans "Contact Us" %}{% endblock %}
 
 {% block content_main %}
+<script>
+(function() {
+    var borough_reasons = ['event', 'lot_in_life', 'visioning',];
+    var borough_reasons_required = ['lot_in_life', 'visioning',];
+
+    var row_required_message = '<div class="errorlist">Please enter a borough</div>';
+
+    function show_hide_borough() {
+        var $row_borough = $('#row_borough');
+        var reason = $('#id_reason').val();
+        if (borough_reasons.indexOf(reason) >= 0) {
+            $row_borough.show();
+        }
+        else {
+            $row_borough.hide();
+        }
+    }
+
+    $(document).ready(function() {
+        var $row_borough = $('#row_borough');
+
+        show_hide_borough();
+
+        // Selectively show the borough input
+        $('#id_reason').change(function() {
+            show_hide_borough();
+        });
+
+        $('#id_borough').change(function() {
+            $row_borough.find('.errorlist').remove();
+        });
+
+        $('form.contact-form').submit(function(e) {
+            // Simple borough validation
+            var borough_is_required = borough_reasons_required.indexOf($('#id_reason').val()) >= 0;
+            if (borough_is_required && $('#id_borough').val() === '') {
+                // Show error message
+                if ($row_borough.find('td errorlist').length === 0) {
+                    $row_borough.find('td').prepend(row_required_message);
+                }
+
+                // Reactivate submit button
+                $('.contact-form input[type=submit]').removeAttr('disabled');
+
+                e.preventDefault();
+                return false;
+            }
+        });
+
+    });
+})();
+</script>
+
 <p>
     {% trans "Have a question or comment for us or about this project? Use the form below!" %}
 </p>
-<form method="post" action=".">
+<form class="contact-form" method="post" action=".">
     {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+
     <table>
-    {{ form.as_table }}
+        {% for field in form %}
+        <tr id="row_{{ field.html_name }}">
+            <th>{{ field.label_tag }}:</th>
+            <td>
+                {{ field.errors }}
+                {{ field }}
+            </td>
+        </tr>
+        {% endfor %}
     </table>
     <input type="submit" value="{% trans "submit" %}" />
 </form>
 {% endblock %}
-

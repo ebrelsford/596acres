@@ -45,12 +45,15 @@ class ContactRequest(AbstractContactRequest):
     """A generic message to the team."""
 
     REASON_CHOICES = (
-        ('event', 'event invitation'),
-        ('press', 'press inquiry'),
-        ('visioning', 'visioning session request (please specify a borough)'),
+        ('other_city', _("I'm in a city that's not New York")),
+        ('event', _('invite us to your event')),
+        ('press', _('press inquiry')),
+        ('visioning', _('request a community land access workshop')),
+        ('lot_in_life', _('tell us about the lot in your life')),
+        ('other', _('other')),
     )
-    reason = models.CharField(_('reason'), max_length=32, blank=True,
-                              null=True, choices=REASON_CHOICES,
+    reason = models.CharField(_('reason'), max_length=32,
+                              choices=REASON_CHOICES,
                               help_text=_('Why are you contacting us?'))
 
     message = models.TextField(_('message'))

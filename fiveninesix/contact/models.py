@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -45,11 +46,11 @@ class ContactRequest(AbstractContactRequest):
     """A generic message to the team."""
 
     REASON_CHOICES = (
-        ('other_city', _("I'm in a city that's not New York")),
-        ('event', _('invite us to your event')),
-        ('press', _('press inquiry')),
         ('visioning', _('request a community land access workshop')),
         ('lot_in_life', _('tell us about the lot in your life')),
+        ('event', _('invite us to your event')),
+        ('press', _('press inquiry')),
+        ('other_city', _("I'm in a city that's not New York")),
         ('other', _('other')),
     )
     reason = models.CharField(_('reason'), max_length=32,
@@ -70,9 +71,17 @@ def contact_model_saved(sender, created=False, instance=None, **kwargs):
 
 
 def _send_email_for_contact_request(contact_request):
+    recipients = None
+    if contact_request.reason in ('other', 'other_city', 'press',):
+        recipients = settings.CONTACT_TARGETS.get(contact_request.reason)
+    elif contact_request.reason is 'event' and contact_request.borough is None:
+        recipients = settings.CONTACT_TARGETS.get(contact_request.reason)
+
     mail_facilitators(
-        'A new %s was sent via 596acres.org' % contact_request.get_label_for_mail(),
+        ('A new %s was sent via 596acres.org'
+            % contact_request.get_label_for_mail()),
         message_template='contact/notifications/facilitators_text.txt',
         borough=contact_request.borough,
         contact_request=contact_request,
+        recipients=recipients,
     )

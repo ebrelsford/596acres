@@ -9,17 +9,18 @@ from django.template.loader import render_to_string
 def mail_facilitators(subject, message_content=None,
                       message_template='organize/notifications/facilitators_text.txt',
                       borough=None, excluded_emails=[],
-                      lot=None, is_note=False, **kwargs):
+                      lot=None, is_note=False, recipients=None, **kwargs):
     """
     Sends a message to facilitators.
     """
-    facilitators = []
-    facilitators += settings.FACILITATORS['global']
-    facilitators += settings.FACILITATORS.get(borough, [])
-    facilitators = [f for f in facilitators if f not in excluded_emails]
+    if not recipients:
+        facilitators = []
+        facilitators += settings.FACILITATORS['global']
+        facilitators += settings.FACILITATORS.get(borough, [])
+        recipients = [f for f in facilitators if f not in excluded_emails]
 
     messages = _get_facilitator_messages(
-        facilitators,
+        recipients,
         message_template,
         is_note=is_note,
         lot=lot,

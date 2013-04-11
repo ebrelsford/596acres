@@ -54,7 +54,7 @@ class ContactRequest(AbstractContactRequest):
         ('other', _('other')),
     )
     reason = models.CharField(_('reason'), max_length=32,
-                              choices=REASON_CHOICES,
+                              choices=REASON_CHOICES, default='other',
                               help_text=_('Why are you contacting us?'))
 
     message = models.TextField(_('message'))

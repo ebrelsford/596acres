@@ -7,9 +7,11 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+
+        orm.ContactRequest.objects.update(reason='other')
         
         # Changing field 'ContactRequest.reason'
-        db.alter_column('contact_contactrequest', 'reason', self.gf('django.db.models.fields.CharField')(default='other', max_length=32))
+        db.alter_column('contact_contactrequest', 'reason', self.gf('django.db.models.fields.CharField')(max_length=32))
 
 
     def backwards(self, orm):
@@ -28,7 +30,7 @@ class Migration(SchemaMigration):
             'message': ('django.db.models.fields.TextField', [], {}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '32', 'null': 'True', 'blank': 'True'}),
-            'reason': ('django.db.models.fields.CharField', [], {'max_length': '32'})
+            'reason': ('django.db.models.fields.CharField', [], {'default': "'other'", 'max_length': '32'})
         },
         'contact.lotinformationrequest': {
             'Meta': {'object_name': 'LotInformationRequest'},

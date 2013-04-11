@@ -558,6 +558,7 @@ def _is_base_geojson_request(GET):
 
     base_boroughs = (
         'Brooklyn',
+        'Bronx',
         'Manhattan',
         'Queens',
     )

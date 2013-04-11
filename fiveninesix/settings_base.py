@@ -216,6 +216,7 @@ THUMBNAIL_PROCESSORS = (
 )
 
 PUBLIC_BOROUGHS = [
+    'Bronx',
     'Brooklyn',
     'Manhattan',
     'Queens',

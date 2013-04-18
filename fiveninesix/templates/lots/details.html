@@ -86,6 +86,10 @@ TODO find an appropriate one if this lot has images.
     <a href="{% url admin:lots_lot_change lot.pk %}">edit this lot</a>
     {% endif %}
 
+    {% if perms.organize.change_watcher %}
+    | <a href="{% url admin:organize_watcher_changelist %}?q={{ lot.bbl }}">who's watching this lot?</a>
+    {% endif %}
+
     {% if lot.group_has_access %}
     {% include "lots/details_group_has_access.html" %}
     {% endif %}

@@ -87,6 +87,7 @@ def lot_kml(request):
     response = HttpResponse(mimetype='application/vnd.google-earth.kml+xml')
     if 'download' in request.GET and request.GET['download'] == 'true':
         response['Content-Disposition'] = 'attachment; filename="596acres (%s).kml"' % date.today().strftime('%m-%d-%Y')
+    response.write('<?xml version="1.0" encoding="UTF-8"?>')
     response.write(kml.kml(format=False))
     return response
 

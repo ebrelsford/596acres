@@ -570,7 +570,7 @@ if(this.controls==null){ this.controls=[];if(OpenLayers.Control!=null){ if(OpenL
 if(OpenLayers.Control.Zoom){this.controls.push(new OpenLayers.Control.Zoom());}else if(OpenLayers.Control.PanZoom){this.controls.push(new OpenLayers.Control.PanZoom());}
 if(OpenLayers.Control.ArgParser){this.controls.push(new OpenLayers.Control.ArgParser());}
 if(OpenLayers.Control.Attribution){this.controls.push(new OpenLayers.Control.Attribution());}}}
-for(var i=0,len=this.controls.length;i<len;i++){this.addControlToMap(this.controls[i]);}
+for(var i=0,len=this.controls.length;i<len;i++){try{this.addControlToMap(this.controls[i]);} catch(e){};}
 this.popups=[];this.unloadDestroy=OpenLayers.Function.bind(this.destroy,this);OpenLayers.Event.observe(window,'unload',this.unloadDestroy); if(options&&options.layers){delete this.center;this.addLayers(options.layers);if(options.center&&!this.getCenter()){ this.setCenter(options.center,options.zoom);}}},getViewport:function(){return this.viewPortDiv;},render:function(div){this.div=OpenLayers.Util.getElement(div);OpenLayers.Element.addClass(this.div,'olMap');this.viewPortDiv.parentNode.removeChild(this.viewPortDiv);this.div.appendChild(this.viewPortDiv);this.updateSize();},unloadDestroy:null,updateSizeDestroy:null,destroy:function(){ if(!this.unloadDestroy){return false;} 
 if(this.panTween){this.panTween.stop();this.panTween=null;}
 OpenLayers.Event.stopObserving(window,'unload',this.unloadDestroy);this.unloadDestroy=null;if(this.updateSizeDestroy){OpenLayers.Event.stopObserving(window,'resize',this.updateSizeDestroy);}else{this.events.unregister("resize",this,this.updateSize);}

@@ -19,6 +19,7 @@ def notify_facilitators(obj):
 
     message = _get_object_message(obj)
     kwargs = {
+        'borough': lot.borough,
         'is_note': isinstance(obj, Note),
         'lot': lot,
         'obj_url_suffix': url_suffixes[obj.__class__],

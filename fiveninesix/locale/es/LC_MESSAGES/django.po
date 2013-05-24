@@ -127,7 +127,7 @@ msgid "press inquiry"
 msgstr "consulta de prensa"
 
 #: contact/models.py:53
-msgid "i'm in a city that's not new york"
+msgid "I'm in a city that's not New York"
 msgstr "Vivo en una ciudad que no es Nueva York"
 
 #: contact/models.py:54
@@ -136,7 +136,7 @@ msgstr "otro"
 
 #: contact/models.py:56
 msgid "reason"
-msgstr ""
+msgstr "tema"
 
 #: contact/models.py:58
 msgid "Why are you contacting us?"

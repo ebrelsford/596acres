@@ -57,3 +57,22 @@ def get_lot_group_name(lots):
         _(lot_label),
         lot_text,
     )
+
+
+def merge(to_merge_bbls, parent_bbl):
+    """
+    Merge the lots represented by the given bbls on the lot represented by
+    parent_bbl.
+    """
+    to_merge = Lot.objects.filter(bbl__in=to_merge_bbls)
+    parent = Lot.objects.get(bbl=parent_bbl)
+
+    parent_watchers = parent.watcher_set.all().values_list('email', flat=True)
+    parent_organizers = parent.organizer_set.all().values_list('email', flat=True)
+
+    for lot in to_merge:
+        # Move watchers and organizers over, avoiding duplicates on the parent
+        lot.watcher_set.exclude(email__in=parent_watchers).update(lot=parent)
+        lot.organizer_set.exclude(email__in=parent_organizers).update(lot=parent)
+
+    to_merge.update(parent_lot=parent)

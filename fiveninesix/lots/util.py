@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from lots.models import Lot
 
+
 def get_nearby(lot, count=5, distance=Distance(mi=.25)):
     nearby_lots = Lot.objects.filter(
         centroid__distance_lte=(lot.centroid, distance),
@@ -17,6 +18,7 @@ def get_nearby(lot, count=5, distance=Distance(mi=.25)):
         nearby_lots = nearby_lots[:count]
     return nearby_lots
 
+
 def _lot_name_chunk_text(names, label, plural_label=None):
     """
     Consolidate a chunk of a lot group's name (borough, block, or lot).
@@ -25,6 +27,7 @@ def _lot_name_chunk_text(names, label, plural_label=None):
         return names[0], label
     else:
         return ', '.join(sorted(names)), plural_label or label + 's'
+
 
 def get_lot_group_name(lots):
     """

@@ -434,6 +434,7 @@ form > table td input[type=text] {
 }
 #lot-details .section table,
 #lot-details .section tr {
+    table-layout: fixed;
     width: 100%;
 }
 #lot-details .section th {
@@ -441,6 +442,14 @@ form > table td input[type=text] {
 }
 #lot-details .section td {
     width: 70%;
+
+    /* Break long URLs */
+    hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    word-break: break-all;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
 }
 #lot-details h1 {
     margin-top: 0;

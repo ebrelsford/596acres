@@ -54,6 +54,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 
+    'honeypot.middleware.HoneypotMiddleware',
+
     'cms.middleware.multilingual.MultilingualURLMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
@@ -134,6 +136,7 @@ INSTALLED_APPS = (
     'tinymce',
     'compressor',
     'jsonfield',
+    'honeypot',
 
     'easy_thumbnails',
     'filer',
@@ -243,3 +246,5 @@ ACTSTREAM_SETTINGS = {
     ),
     'USE_JSONFIELD': True,
 }
+
+HONEYPOT_FIELD_NAME = 'officeaddress'

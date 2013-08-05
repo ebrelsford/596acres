@@ -30,6 +30,7 @@ def details(request, bbl=None):
         })
     return HttpResponse(json.dumps(details), mimetype='application/json')
 
+
 def details_tab(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
 

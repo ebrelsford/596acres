@@ -14,6 +14,7 @@ from lots.models import Lot
 from lots.util import get_nearby
 from models import Organizer, Watcher
 
+
 def details(request, bbl=None):
     organizers = Organizer.objects.filter(lot__bbl=bbl)
 
@@ -40,7 +41,7 @@ def details_tab(request, bbl=None):
 @fix_recaptcha_remote_ip
 def add_organizer(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
-    if request.method == 'POST':    
+    if request.method == 'POST':
         form = OrganizerForm(request.POST, user=request.user)
         if form.is_valid():
             organizer = form.save()
@@ -58,10 +59,11 @@ def add_organizer(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+
 @fix_recaptcha_remote_ip
 def add_watcher(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
-    if request.method == 'POST':    
+    if request.method == 'POST':
         form = WatcherForm(request.POST, user=request.user)
         if form.is_valid():
             watcher = form.save()
@@ -79,6 +81,7 @@ def add_watcher(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+
 class AddParticipantSuccessView(TemplateView):
     model = None
 
@@ -94,10 +97,11 @@ class AddParticipantSuccessView(TemplateView):
         context['nearby_lots'] = get_nearby(lot)
         return context
 
+
 @fix_recaptcha_remote_ip
 def add_note(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
-    if request.method == 'POST':    
+    if request.method == 'POST':
         form = NoteForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
@@ -114,10 +118,11 @@ def add_note(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+
 @fix_recaptcha_remote_ip
 def add_picture(request, bbl=None):
     lot = get_object_or_404(Lot, bbl=bbl)
-    if request.method == 'POST':    
+    if request.method == 'POST':
         form = PictureForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             form.save()
@@ -134,12 +139,13 @@ def add_picture(request, bbl=None):
         'lot': lot,
     }, context_instance=RequestContext(request))
 
+
 @fix_recaptcha_remote_ip
 def edit_organizer(request, bbl=None, id=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     organizer = get_object_or_404(Organizer, id=id)
 
-    if request.method == 'POST':    
+    if request.method == 'POST':
         form = OrganizerForm(request.POST, instance=organizer)
         if form.is_valid():
             organizer = form.save()
@@ -151,6 +157,7 @@ def edit_organizer(request, bbl=None, id=None):
         'form': form,
         'lot': lot,
     }, context_instance=RequestContext(request))
+
 
 def edit_participant(request, hash=None):
     organizers = Organizer.objects.filter(email_hash__istartswith=hash).order_by('lot__bbl')
@@ -165,6 +172,7 @@ def edit_participant(request, hash=None):
         'organizers': organizers,
         'watchers': watchers,
     }, context_instance=RequestContext(request))
+
 
 class DeleteParticipantView(DeleteView):
     def get_context_data(self, **kwargs):

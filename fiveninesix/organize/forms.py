@@ -80,7 +80,6 @@ class NoteForm(OrganizeForm):
         exclude = ('added',)
 
     def save(self, force_insert=False, force_update=False, commit=True):
-        print 'save'
         note = super(NoteForm, self).save()
         user = note.added_by
         status = PENDING_STATUS

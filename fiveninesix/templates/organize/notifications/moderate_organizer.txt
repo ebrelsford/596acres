@@ -1,0 +1,7 @@
+{% autoescape off %}A new organizer named {{ organizer.name }}  was posted on {{ lot }}!
+
+This information will not be live on the site until you approve it.
+
+The lot's page is here: {{ BASE_URL }}{% url lots_lot_details bbl=lot.bbl %}
+
+Approve it here: {{ BASE_URL }}{% url admin:organize_organizer_changelist %}?status=IP{% endautoescape %}

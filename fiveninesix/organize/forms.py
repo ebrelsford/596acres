@@ -57,14 +57,23 @@ class OrganizerForm(OrganizeForm):
         }
 
     def save(self, force_insert=False, force_update=False, commit=True):
-        is_creating = False
-        if not self.instance.id:
-            is_creating = True
+        organizer = super(OrganizerForm, self).save()
+        status = PENDING_STATUS
 
-        organizer = super(self.__class__, self).save()
-        if is_creating:
-            notify_organizers_and_watchers(organizer)
-            notify_facilitators(organizer)
+        # Automoderate
+        monitor_entry = MonitorEntry.objects.create(
+            content_object=organizer,
+            timestamp=datetime.now()
+        )
+        monitor_entry.moderate(status, None)
+
+        # Notify facilitators that this organizer needs moderation
+        mail_facilitators('New organizer needs moderation',
+            message_template='organize/notifications/moderate_organizer.txt',
+            borough=organizer.lot.borough,
+            lot=organizer.lot,
+            organizer=organizer,
+        )
         return organizer
 
 
@@ -102,6 +111,7 @@ class NoteForm(OrganizeForm):
                 lot=note.lot,
                 note=note,
             )
+        return note
 
 
 class PictureForm(OrganizeForm):

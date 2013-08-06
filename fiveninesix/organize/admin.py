@@ -5,7 +5,7 @@ from django_monitor.admin import MonitorAdmin
 from fiveninesix.admin import LotRelatedModelAdmin
 from models import Note, Organizer, OrganizerType, Watcher, Picture
 
-class OrganizerAdmin(LotRelatedModelAdmin):
+class OrganizerAdmin(LotRelatedModelAdmin, MonitorAdmin):
     list_display = ('name', 'email', 'phone', 'added', 'lot_owner', 'view_lot',
                     'view_in_oasis',)
     list_filter = ('added', 'lot__borough',)

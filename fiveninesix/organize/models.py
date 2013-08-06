@@ -173,7 +173,6 @@ def _get_actor(instance, added_by):
     return default
 
 
-@receiver(post_save, sender=Organizer, dispatch_uid='organize.models.add_action')
 @receiver(post_save, sender=Picture, dispatch_uid='organize.models.add_action')
 @receiver(post_save, sender=Watcher, dispatch_uid='organize.models.add_action')
 def add_action(sender, created=False, instance=None, **kwargs):
@@ -213,9 +212,11 @@ import django_monitor
 from django_monitor.util import save_handler
 
 django_monitor.nq(Note)
+django_monitor.nq(Organizer)
 
 # Disconnect monitor's post-save handler
 post_save.disconnect(save_handler, sender=Note)
+post_save.disconnect(save_handler, sender=Organizer)
 
 
 #
@@ -226,7 +227,7 @@ from django.dispatch import receiver
 from django_monitor import post_moderation
 
 
-@receiver(post_moderation, sender=Note, dispatch_uid='organize_note')
+@receiver(post_moderation, sender=Note, dispatch_uid='organize_create_note')
 def create_note(sender, instance, **kwargs):
     """
     Once a Note is moderated and approved, make it official and let everyone
@@ -238,3 +239,18 @@ def create_note(sender, instance, **kwargs):
     add_action(sender, created=True, instance=instance, **kwargs)
     send_organizer_watcher_update(sender, created=True, instance=instance,
                                   **kwargs)
+
+
+@receiver(post_moderation, sender=Organizer,
+          dispatch_uid='organize_create_organizer')
+def create_organizer(sender, instance, **kwargs):
+    """
+    Once an Organizer is moderated and approved, make it official and let
+    everyone know.
+    """
+    if not instance.is_approved:
+        return
+
+    add_action(sender, created=True, instance=instance, **kwargs)
+    notify_organizers_and_watchers(instance)
+    notify_facilitators(instance)

@@ -37,62 +37,64 @@
             {% endif %}
             <ul>
             {% for organizer in organizers %}
-                <li id="organizer-{{ organizer.pk }}" class="organizer{% if forloop.last %} last{% endif %}">
-                    <div class="actions">
-                        <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}">
-                            <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />
-                        </a>
-                    </div>
-                    <table>
-                        <tr>
-                            <th>{% trans "name" %}</th>
-                            <td>
-                                <span>{{ organizer.name }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{% trans "type" %}</th>
-                            <td>
-                                <span>{{ organizer.type }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{% trans "site" %}</th>
-                            <td>
-                                <span>
-                                {% if organizer.url %}
-                                <a href="{{ organizer.url }}" target="_blank">{{ organizer.url }}</a>
-                                {% endif %}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{% trans "phone" %}</th>
-                            <td>
-                                <span>{{ organizer.phone|default:"" }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{% trans "email" %}</th>
-                            <td>
-                                <span>
-                                {% if organizer.email %}
-                                <a href="mailto:{{ organizer.email }}" target="_blank">{{ organizer.email }}</a>
-                                {% endif %}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{% trans "notes" %}</th>
-                            <td>
-                                <span>{{ organizer.notes|urlize|linebreaks }}</span>
-                            </td>
-                        </tr>
-                    </table>
-                    {% if organizer.facebook_page %}
-                        <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border: none; overflow: hidden; width: 299px; height: 395px; padding-left: 50px; padding-top: 10px;" src="http://www.facebook.com/plugins/likebox.php?href={{ "http://facebook.com/"|add:organizer.facebook_page|urlencode:"" }}&amp;width=298&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=395"></iframe>
-                    {% endif %}
-                </li>
+                {% if organizer.is_approved %}
+                    <li id="organizer-{{ organizer.pk }}" class="organizer{% if forloop.last %} last{% endif %}">
+                        <div class="actions">
+                            <a class="edit" href="{% url organize.views.edit_organizer bbl=lot.bbl id=organizer.id %}">
+                                <img title="edit this organizer" alt="edit this organizer" src="{{ MEDIA_URL }}img/doc_edit.png" />
+                            </a>
+                        </div>
+                        <table>
+                            <tr>
+                                <th>{% trans "name" %}</th>
+                                <td>
+                                    <span>{{ organizer.name }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{% trans "type" %}</th>
+                                <td>
+                                    <span>{{ organizer.type }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{% trans "site" %}</th>
+                                <td>
+                                    <span>
+                                    {% if organizer.url %}
+                                    <a href="{{ organizer.url }}" target="_blank">{{ organizer.url }}</a>
+                                    {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{% trans "phone" %}</th>
+                                <td>
+                                    <span>{{ organizer.phone|default:"" }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{% trans "email" %}</th>
+                                <td>
+                                    <span>
+                                    {% if organizer.email %}
+                                    <a href="mailto:{{ organizer.email }}" target="_blank">{{ organizer.email }}</a>
+                                    {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{% trans "notes" %}</th>
+                                <td>
+                                    <span>{{ organizer.notes|urlize|linebreaks }}</span>
+                                </td>
+                            </tr>
+                        </table>
+                        {% if organizer.facebook_page %}
+                            <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border: none; overflow: hidden; width: 299px; height: 395px; padding-left: 50px; padding-top: 10px;" src="http://www.facebook.com/plugins/likebox.php?href={{ "http://facebook.com/"|add:organizer.facebook_page|urlencode:"" }}&amp;width=298&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=395"></iframe>
+                        {% endif %}
+                    </li>
+                {% endif %}
             {% empty %}
             {% trans "No one yet" %}.
             {% endfor %}

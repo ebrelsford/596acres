@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from django_monitor.admin import MonitorAdmin
+
 from fiveninesix.admin import LotRelatedModelAdmin
 from models import Note, Organizer, OrganizerType, Watcher, Picture
 
@@ -23,9 +25,10 @@ class WatcherAdmin(LotRelatedModelAdmin):
     list_filter = ('added',)
     search_fields = ('name', 'email', 'lot__bbl',)
 
-class NoteAdmin(LotRelatedModelAdmin):
+class NoteAdmin(LotRelatedModelAdmin, MonitorAdmin):
     list_display = ('noter', 'text', 'added', 'view_lot', 'view_in_oasis',)
     list_filter = ('added',)
+    readonly_fields = ('lot',)
     search_fields = ('noter', 'text', 'lot__bbl',)
 
 class PictureAdmin(LotRelatedModelAdmin):

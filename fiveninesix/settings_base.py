@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'compressor',
     'jsonfield',
     'honeypot',
+    'django_monitor',
 
     'easy_thumbnails',
     'filer',

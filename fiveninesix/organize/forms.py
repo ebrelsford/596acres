@@ -1,10 +1,15 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.forms import ModelForm, HiddenInput, ModelChoiceField
 
+from django_monitor.conf import PENDING_STATUS, APPROVED_STATUS
+from django_monitor.models import MonitorEntry
 from recaptcha_works.fields import RecaptchaField
 
 from lots.models import Lot
 from notify import notify_organizers_and_watchers, notify_facilitators
+from mailutils import mail_facilitators
 from models import Organizer, Watcher, Note, Picture
 from widgets import PrefixLabelTextInput
 
@@ -73,6 +78,31 @@ class NoteForm(OrganizeForm):
     class Meta:
         model = Note
         exclude = ('added',)
+
+    def save(self, force_insert=False, force_update=False, commit=True):
+        print 'save'
+        note = super(NoteForm, self).save()
+        user = note.added_by
+        status = PENDING_STATUS
+
+        if user and user.is_authenticated() and user.is_staff:
+            status = APPROVED_STATUS
+
+        # Automoderate
+        monitor_entry = MonitorEntry.objects.create(
+            content_object=note,
+            timestamp=datetime.now()
+        )
+        monitor_entry.moderate(status, user)
+
+        if status == PENDING_STATUS:
+            # Notify facilitators that this note needs moderation
+            mail_facilitators('New note needs moderation',
+                message_template='organize/notifications/moderate_note.txt',
+                borough=note.lot.borough,
+                lot=note.lot,
+                note=note,
+            )
 
 
 class PictureForm(OrganizeForm):

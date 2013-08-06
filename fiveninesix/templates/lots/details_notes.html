@@ -7,14 +7,16 @@
     <div>
         <ul class="notes">
         {% for note in notes %}
-            <li id="note-{{ note.pk }}" class="note {% cycle "odd" "even" %}">
-                <span class="head">
-                    {% blocktrans with day=note.added|date:"F d, Y" timeofday=note.added|time:"g:ia" noter=note.noter %}
-                    On {{ day }}, at {{ timeofday }}, {{ noter }} said:
-                    {% endblocktrans %}
-                </span>
-                {{ note.text|urlize|linebreaks }}
-            </li>
+            {% if note.is_approved %}
+                <li id="note-{{ note.pk }}" class="note {% cycle "odd" "even" %}">
+                    <span class="head">
+                        {% blocktrans with day=note.added|date:"F d, Y" timeofday=note.added|time:"g:ia" noter=note.noter %}
+                        On {{ day }}, at {{ timeofday }}, {{ noter }} said:
+                        {% endblocktrans %}
+                    </span>
+                    {{ note.text|urlize|linebreaks }}
+                </li>
+            {% endif %}
         {% endfor %}
         </ul>
         <a class="fns-button" href="{% url organize.views.add_note bbl=lot.bbl %}"><img src="{{ MEDIA_URL }}img/spechbubble_16.png" />

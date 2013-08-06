@@ -20,6 +20,7 @@ django-jsonfield==0.8.12
 django-mailchimp==0.1.30
 django-missing==0.1.4
 django-model-utils==1.1.0
+django-monitor==0.2.1a
 django-mptt==0.5.1
 django-recaptcha-works==0.3.4
 django-sekizai==0.6.1

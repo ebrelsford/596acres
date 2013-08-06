@@ -8,6 +8,7 @@ from notify import notify_organizers_and_watchers, notify_facilitators
 from models import Organizer, Watcher, Note, Picture
 from widgets import PrefixLabelTextInput
 
+
 class CaptchaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -16,6 +17,7 @@ class CaptchaForm(ModelForm):
         # if not logged in, add recaptcha. else, do nothing.
         if not user or user.is_anonymous():
             self.fields['recaptcha'] = RecaptchaField(label="Prove you're human")
+
 
 class OrganizeForm(CaptchaForm):
     lot = ModelChoiceField(
@@ -40,6 +42,7 @@ class OrganizeForm(CaptchaForm):
 
         super(OrganizeForm, self).__init__(*args, **kwargs)
 
+
 class OrganizerForm(OrganizeForm):
     class Meta:
         exclude = ('added', 'email_hash')
@@ -59,15 +62,18 @@ class OrganizerForm(OrganizeForm):
             notify_facilitators(organizer)
         return organizer
 
+
 class WatcherForm(OrganizeForm):
     class Meta:
         model = Watcher
         exclude = ('added', 'email_hash')
 
+
 class NoteForm(OrganizeForm):
     class Meta:
         model = Note
         exclude = ('added',)
+
 
 class PictureForm(OrganizeForm):
     class Meta:

@@ -8,8 +8,7 @@ from django_monitor.models import MonitorEntry
 from recaptcha_works.fields import RecaptchaField
 
 from lots.models import Lot
-from notify import notify_organizers_and_watchers, notify_facilitators
-from mailutils import mail_facilitators
+from mailutils import mail_moderators
 from models import Organizer, Watcher, Note, Picture
 from widgets import PrefixLabelTextInput
 
@@ -68,7 +67,7 @@ class OrganizerForm(OrganizeForm):
         monitor_entry.moderate(status, None)
 
         # Notify facilitators that this organizer needs moderation
-        mail_facilitators('New organizer needs moderation',
+        mail_moderators('New organizer needs moderation',
             message_template='organize/notifications/moderate_organizer.txt',
             borough=organizer.lot.borough,
             lot=organizer.lot,
@@ -105,7 +104,7 @@ class NoteForm(OrganizeForm):
 
         if status == PENDING_STATUS:
             # Notify facilitators that this note needs moderation
-            mail_facilitators('New note needs moderation',
+            mail_moderators('New note needs moderation',
                 message_template='organize/notifications/moderate_note.txt',
                 borough=note.lot.borough,
                 lot=note.lot,

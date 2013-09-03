@@ -31,6 +31,30 @@ def mail_facilitators(subject, message_content=None,
                                **get_message_options(lot, is_note=is_note))
 
 
+def mail_moderators(subject, message_content=None,
+                    message_template='organize/notifications/facilitators_text.txt',
+                    borough=None, excluded_emails=[], lot=None, is_note=False,
+                    recipients=None, **kwargs):
+    """
+    Send a message to moderators.
+    """
+    if not recipients:
+        moderators = settings.MODERATORS
+        recipients = [f for f in moderators if f not in excluded_emails]
+
+    messages = _get_facilitator_messages(
+        recipients,
+        message_template,
+        is_note=is_note,
+        lot=lot,
+        message=message_content,
+        **kwargs
+    )
+    mail_multiple_personalized(subject, messages, fail_silently=False,
+                               cc=('organizers@596acres.org',),
+                               **get_message_options(lot, is_note=is_note))
+
+
 def _get_facilitator_messages(facilitators, template_name, **kwargs):
     messages = {}
     context = kwargs

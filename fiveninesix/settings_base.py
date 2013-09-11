@@ -11,7 +11,7 @@ TEMPLATE_DEBUG = DEBUG
 gettext = lambda s: s
 LANGUAGES = [
     ('en', gettext('English')),
-    ('es', gettext('Spanish')),
+    ('es', gettext('Español')),
 ]
 DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = 'en'

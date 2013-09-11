@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-24 11:20-0400\n"
+"POT-Creation-Date: 2013-09-10 22:36-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,8 +35,8 @@ msgid "English"
 msgstr "Inglés"
 
 #: settings_base.py:14
-msgid "Spanish"
-msgstr "Español"
+msgid "Español"
+msgstr ""
 
 #: about/menu.py:9
 msgid "about menu"
@@ -70,20 +70,20 @@ msgstr "Comprueba que eres un humano"
 #: contact/models.py:12 lots/models.py:25 mailings/models.py:19
 #: organize/models.py:17 photos/models.py:11 photos/models.py:33
 #: photos/models.py:82 sizecompare/models.py:5
-#: templates/lots/details_organize.html:49 templates/lots/owner_details.html:4
+#: templates/lots/details_organize.html:50 templates/lots/owner_details.html:4
 #: templates/lots/tabs_no_access.html:246 templates/organize/tab.html:10
 msgid "name"
 msgstr "nombre"
 
 #: contact/models.py:13 organize/models.py:19
-#: templates/lots/details_organize.html:77
+#: templates/lots/details_organize.html:78
 #: templates/lots/owner_details.html:35 templates/lots/tabs_no_access.html:274
 #: templates/organize/tab.html:38
 msgid "email"
 msgstr "email"
 
 #: contact/models.py:14 organize/models.py:18
-#: templates/lots/details_organize.html:71
+#: templates/lots/details_organize.html:72
 #: templates/lots/owner_details.html:23 templates/lots/tabs_no_access.html:268
 #: templates/organize/tab.html:32
 msgid "phone"
@@ -331,36 +331,36 @@ msgstr ""
 msgid "Organizing Tally"
 msgstr ""
 
-#: organize/models.py:50
+#: organize/models.py:49
 msgid "url"
 msgstr ""
 
-#: organize/models.py:51 templates/lots/details_notes.html:5
-#: templates/lots/details_organize.html:87
+#: organize/models.py:50 templates/lots/details_notes.html:5
+#: templates/lots/details_organize.html:88
 #: templates/lots/owner_details.html:57 templates/lots/tabs_no_access.html:284
 #: templates/organize/tab.html:48
 msgid "notes"
 msgstr "notas"
 
-#: organize/models.py:53
+#: organize/models.py:52
 msgid "facebook page"
 msgstr ""
 
-#: organize/models.py:115
+#: organize/models.py:114
 #, fuzzy
 msgid "your name"
 msgstr "su nombre"
 
-#: organize/models.py:116
+#: organize/models.py:115
 #, fuzzy
 msgid "note"
 msgstr "notas"
 
-#: organize/models.py:135 photos/models.py:89
+#: organize/models.py:134 photos/models.py:89
 msgid "picture"
 msgstr "foto"
 
-#: organize/models.py:136 photos/models.py:34 photos/models.py:83
+#: organize/models.py:135 photos/models.py:34 photos/models.py:83
 msgid "description"
 msgstr "descripción"
 
@@ -392,15 +392,15 @@ msgstr ""
 msgid "596 Acres"
 msgstr ""
 
-#: templates/base.html:85 templates/lots/owner_details.html:11
+#: templates/base.html:91 templates/lots/owner_details.html:11
 msgid "contact"
 msgstr "contacto"
 
-#: templates/base.html:90
+#: templates/base.html:96
 msgid "about"
 msgstr "quienes somos"
 
-#: templates/base.html:98
+#: templates/base.html:104
 msgid "frequently asked questions"
 msgstr "preguntas más frecuentes"
 
@@ -971,15 +971,15 @@ msgstr ""
 msgid "In their words"
 msgstr ""
 
-#: templates/lots/details_notes.html:12
+#: templates/lots/details_notes.html:13
 #, python-format
 msgid ""
 "\n"
-"                    On %(day)s, at %(timeofday)s, %(noter)s said:\n"
-"                    "
+"                        On %(day)s, at %(timeofday)s, %(noter)s said:\n"
+"                        "
 msgstr ""
 
-#: templates/lots/details_notes.html:21
+#: templates/lots/details_notes.html:23
 msgid "add a note"
 msgstr ""
 
@@ -1013,23 +1013,23 @@ msgstr ""
 msgid "Organizers"
 msgstr ""
 
-#: templates/lots/details_organize.html:55
+#: templates/lots/details_organize.html:56
 #: templates/lots/tabs_no_access.html:252 templates/organize/tab.html:16
 msgid "type"
 msgstr ""
 
-#: templates/lots/details_organize.html:61
+#: templates/lots/details_organize.html:62
 #: templates/lots/owner_details.html:49 templates/lots/tabs_no_access.html:258
 #: templates/organize/tab.html:22
 msgid "site"
 msgstr "sitio"
 
-#: templates/lots/details_organize.html:98
+#: templates/lots/details_organize.html:100
 #: templates/lots/tabs_no_access.html:292
 msgid "No one yet"
 msgstr ""
 
-#: templates/lots/details_organize.html:105
+#: templates/lots/details_organize.html:107
 msgid "organize in this lot"
 msgstr ""
 
@@ -1142,6 +1142,10 @@ msgstr ""
 msgid "We don't know who owns this lot"
 msgstr ""
 
+#: templates/menu/language_chooser.html:3
+msgid "ver en"
+msgstr "view in"
+
 #: templates/news/newsletter_archive.html:26
 #: templates/news/recent_excerpt.html:15
 msgid "read the rest"
@@ -1155,7 +1159,13 @@ msgstr ""
 msgid "Add note"
 msgstr ""
 
-#: templates/organize/add_note.html:14
+#: templates/organize/add_note.html:15
+msgid ""
+"Due to spam we are temporarily moderating notes. Please be patient while we "
+"approve your note."
+msgstr ""
+
+#: templates/organize/add_note.html:17
 msgid "Please enter your note below."
 msgstr ""
 
@@ -1169,12 +1179,18 @@ msgstr "organiza"
 
 #: templates/organize/add_organizer.html:45
 msgid ""
+"Due to spam we are temporarily moderating organizers. Please be patient "
+"while we approve your information."
+msgstr ""
+
+#: templates/organize/add_organizer.html:48
+msgid ""
 "\n"
 "            Awesome! Tell us a little about yourself.\n"
 "            "
 msgstr ""
 
-#: templates/organize/add_organizer.html:50
+#: templates/organize/add_organizer.html:53
 msgid ""
 "\n"
 "            You can be an individual person or an organization. We think "
@@ -1185,7 +1201,7 @@ msgid ""
 "            "
 msgstr ""
 
-#: templates/organize/add_organizer.html:55
+#: templates/organize/add_organizer.html:58
 msgid ""
 "\n"
 "            If you select \"community based organization\" from the dropdown "
@@ -1327,6 +1343,9 @@ msgstr ""
 #: templates/registration/password_reset_email.html:25
 msgid "Your username:"
 msgstr ""
+
+#~ msgid "Spanish"
+#~ msgstr "Español"
 
 #~ msgid "how I can help"
 #~ msgstr "cómo puedo ayudar"

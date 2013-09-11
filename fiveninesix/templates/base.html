@@ -68,9 +68,15 @@
     <div id="outer">
         <div id="top">
             <a id="logo" href="/"><div></div></a>
+
+            <div class="language-chooser">
+                {% language_chooser %}
+            </div>
+
             <div class="newsletter">
                 {% include "newsletter/mailchimp_signup.html" %}
             </div>
+
             <div class="clear"></div>
         </div>
         <div id="nav">

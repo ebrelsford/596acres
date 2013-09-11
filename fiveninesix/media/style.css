@@ -809,3 +809,10 @@ ul.nearby-lots {
 .activity-stream-list-item .meta {
     font-size: 10px;
 }
+
+
+.language-chooser {
+    float: left;
+    margin-left: 50px;
+    margin-top: 7px;
+}

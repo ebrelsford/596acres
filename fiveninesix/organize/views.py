@@ -1,6 +1,7 @@
 import json
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
@@ -142,6 +143,7 @@ def add_picture(request, bbl=None):
 
 
 @fix_recaptcha_remote_ip
+@login_required
 def edit_organizer(request, bbl=None, id=None):
     lot = get_object_or_404(Lot, bbl=bbl)
     organizer = get_object_or_404(Organizer, id=id)

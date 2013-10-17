@@ -51,7 +51,6 @@ def mail_moderators(subject, message_content=None,
         **kwargs
     )
     mail_multiple_personalized(subject, messages, fail_silently=False,
-                               cc=('organizers@596acres.org',),
                                **get_message_options(lot, is_note=is_note))
 
 

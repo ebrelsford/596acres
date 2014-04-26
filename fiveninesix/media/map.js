@@ -158,12 +158,7 @@ var LotMap = {
             this.olMap.addControl(panel);
         }
 
-        var cloudmade = new OpenLayers.Layer.CloudMade("CloudMade", {
-            key: '781b27aa166a49e1a398cd9b38a81cdf',
-            styleId: '15434',
-            transitionEffect: 'resize',
-        });
-        this.olMap.addLayer(cloudmade);
+        this.olMap.addLayer(new OpenLayers.Layer.Stamen('toner'));
 
         this.olMap.zoomToMaxExtent();
 

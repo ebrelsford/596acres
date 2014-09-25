@@ -562,6 +562,7 @@ def _is_base_geojson_request(GET):
         'Bronx',
         'Manhattan',
         'Queens',
+        'Staten Island',
     )
 
     if any([GET.get(x, False) for x in non_base_params]):

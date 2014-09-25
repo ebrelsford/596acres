@@ -44,8 +44,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'johnny.middleware.LocalStoreClearMiddleware',
-    'johnny.middleware.QueryCacheMiddleware',
+    #'johnny.middleware.LocalStoreClearMiddleware',
+    #'johnny.middleware.QueryCacheMiddleware',
 
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -224,6 +224,7 @@ PUBLIC_BOROUGHS = [
     'Brooklyn',
     'Manhattan',
     'Queens',
+    'Staten Island',
 ]
 NEWSLETTER_TAG = 'news from the acres'
 

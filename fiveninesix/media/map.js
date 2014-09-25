@@ -9,7 +9,7 @@ var LotMap = {
     //
     // filters
     //
-    boroughs: ['Bronx', 'Brooklyn', 'Manhattan', 'Queens',],
+    boroughs: ['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'],
     lot_types: [
         'organizing_sites',
         'private_accessed_sites',

@@ -283,7 +283,7 @@ def owners_json(request):
 
 def details(request, bbl=None):
     # Redirect to Living Lots NYC
-    return redirect('http://livinglotsnyc.org/lot/' + bbl)
+    return redirect('http://livinglotsnyc.org/lot/' + bbl, permanent=True)
 
 def owner_details(request, id=None):
     owner = get_object_or_404(Owner, id=id)

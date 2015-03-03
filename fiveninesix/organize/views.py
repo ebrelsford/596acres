@@ -2,7 +2,7 @@ import json
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -12,7 +12,6 @@ from recaptcha_works.decorators import fix_recaptcha_remote_ip
 
 from forms import OrganizerForm, WatcherForm, NoteForm, PictureForm
 from lots.models import Lot
-from lots.util import get_nearby
 from models import Organizer, Watcher
 
 

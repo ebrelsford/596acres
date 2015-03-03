@@ -282,32 +282,8 @@ def owners_json(request):
     return HttpResponse(json.dumps(owners), mimetype='application/json')
 
 def details(request, bbl=None):
-    lot = get_object_or_404(Lot, bbl=bbl)
-
-    # if lot has a parent (and on...), redirect to that
-    l = lot.get_oldest_ancestor()
-    if l != lot:
-        return redirect('lots.views.details', bbl=l.bbl)
-
-    review = Review.objects.filter(lot=lot).order_by('-added')
-    if review:
-        review = review[0]
-
-    return render_to_response('lots/details.html', {
-        'BASE_URL': settings.BASE_URL,
-        'lot': lot,
-        'nearby_lots': get_nearby(lot),
-        'notes': lot.note_set.all().order_by('added'),
-        'OASIS_BASE_URL': OASIS_BASE_URL,
-        'organizers': lot.organizer_set.all(),
-        'photo_albums': PhotoAlbum.objects.filter(
-            content_type=ContentType.objects.get_for_model(lot),
-            object_id=lot.pk,
-        ).all(),
-        'pictures': lot.picture_set.all().order_by('added'),
-        'review': review,
-        'watchers_count': lot.watcher_set.all().count(),
-    }, context_instance=RequestContext(request))
+    # Redirect to Living Lots NYC
+    return redirect('http://livinglotsnyc.org/lot/' + bbl)
 
 def owner_details(request, id=None):
     owner = get_object_or_404(Owner, id=id)

@@ -87,9 +87,10 @@ class AddParticipantSuccessView(TemplateView):
     model = None
 
     def get(self, request, *args, **kwargs):
+        email_hash = self.model.objects.filter(email_hash__istartswith=kwargs['email_hash'])[0].email_hash
         url = 'http://livinglotsnyc.org/lot/%s/grow-community/organize/%s/edit/' % (
             kwargs['bbl'],
-            kwargs['email_hash'],
+            email_hash,
         )
         return HttpResponsePermanentRedirect(url)
 

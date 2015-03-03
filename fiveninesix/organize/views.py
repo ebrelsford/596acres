@@ -2,7 +2,7 @@ import json
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -87,17 +87,12 @@ def add_watcher(request, bbl=None):
 class AddParticipantSuccessView(TemplateView):
     model = None
 
-    def get_context_data(self, **kwargs):
-        lot = get_object_or_404(Lot, bbl=kwargs['bbl'])
-
-        context = super(AddParticipantSuccessView, self).get_context_data(**kwargs)
-        context['lot'] = lot
-        try:
-            context['object'] = self.model.objects.filter(email_hash__istartswith=kwargs['email_hash'])[0]
-        except Exception:
-            raise Http404
-        context['nearby_lots'] = get_nearby(lot)
-        return context
+    def get(self, request, *args, **kwargs):
+        url = 'http://livinglotsnyc.org/lot/%s/grow-community/organize/%s/edit/' % (
+            kwargs['bbl'],
+            kwargs['email_hash'],
+        )
+        return HttpResponsePermanentRedirect(url)
 
 
 @fix_recaptcha_remote_ip
